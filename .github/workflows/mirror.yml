@@ -1,4 +1,4 @@
-name: Miror
+name: Mirror
 
 on:
   workflow_dispatch:
