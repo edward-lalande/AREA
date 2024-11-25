@@ -1,0 +1,5 @@
+*.txt
+api-gateway
+time-services
+user-services
+.env
