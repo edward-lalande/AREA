@@ -29,6 +29,6 @@ func GetTime(c *gin.Context) {
 
 	c.JSON(resp.StatusCode, gin.H{
 		"headers": resp.Header,
-		"body":    string(respBody),
+		"body":    utils.BytesToJson(respBody),
 	})
 }
