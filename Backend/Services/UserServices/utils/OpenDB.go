@@ -9,7 +9,8 @@ import (
 )
 
 func OpenDB(r *gin.Context) *pgx.Conn {
-	connConfig, errConfig := pgx.ParseConfig("postgresql://root:password@localhost:5432/user")
+	pathDb := GetEnvKey("DB")
+	connConfig, errConfig := pgx.ParseConfig(pathDb)
 
 	if errConfig != nil {
 		r.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur de configuration de connexion"})
