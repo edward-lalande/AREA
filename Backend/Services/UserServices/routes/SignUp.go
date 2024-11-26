@@ -32,8 +32,11 @@ func writeInDB(receivedData SignUp, db *pgx.Conn) error {
 }
 
 func SignUpUserHandler(c *gin.Context) {
-	var receivedData SignUp
-	var db *pgx.Conn = utils.OpenDB(c)
+	var (
+		receivedData SignUp
+		db           *pgx.Conn = utils.OpenDB(c)
+	)
+
 	if db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open Database"})
 		return
@@ -49,11 +52,17 @@ func SignUpUserHandler(c *gin.Context) {
 		return
 	}
 
+	token, err := utils.CreateToken(receivedData.Mail)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	if writeValue := writeInDB(receivedData, db); writeValue != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": writeValue})
 		return
 	}
 
 	db.Close(c)
-	c.JSON(http.StatusOK, gin.H{"token": "bene"})
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }

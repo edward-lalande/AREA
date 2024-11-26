@@ -44,7 +44,13 @@ func LoginUserHandler(c *gin.Context) {
 	row := db.QueryRow(context.Background(), "SELECT id, name FROM \"User\" WHERE mail = $1 AND password = $2",
 		receivedData.Mail, receivedData.Password)
 	_ = row.Scan(&user.Id, &user.Login)
-
 	db.Close(c)
-	c.JSON(http.StatusOK, gin.H{"token": "bene"})
+
+	token, err := utils.CreateToken(receivedData.Mail)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"token": token, "test: ": "okok"})
 }
