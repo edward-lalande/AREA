@@ -23,15 +23,7 @@ This project is composed of three parts:
 
 We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Flutter*** for the Mobile.
 
-## Usage
-
-```sh
-
-./build_application.sh && ./launch_application.sh
-
-```
-
-We will implement a Docker file later.
+We will implement a Docker file later to simplify the usage and deployement of the application.
 
 ## Documentation:
 
@@ -39,6 +31,8 @@ We will implement a Docker file later.
 
 ## Co-Contributors
 
-| [<img src="https://avatars.githubusercontent.com/u/114899301?v=4" width=85><br><sub>Paul Bardeur</sub>](https://github.com/paulbardeur) | [<img src="https://avatars.githubusercontent.com/u/114470214?v=4" width=85><br><sub>Edward Lalande</sub>](https://github.com/edward-lalande) | [<img src="https://avatars.githubusercontent.com/u/91876984?v=4" width=85><br><sub>Timothee Plisson</sub>](https://github.com/timotheeplisson) | [<img src="https://avatars.githubusercontent.com/u/72039683?v=4" width=85><br><sub>Keliane Katary</sub>](https://github.com/Keliane002)
-| :------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------: |
+[<img src="https://avatars.githubusercontent.com/u/114899301?v=4" width=85><br><sub>Paul Bardeur</sub><br />](https://github.com/paulbardeur)
+[<img src="https://avatars.githubusercontent.com/u/114470214?v=4" width=85><br><sub>Edward Lalande</sub><br />](https://github.com/edward-lalande)
+[<img src="https://avatars.githubusercontent.com/u/91876984?v=4" width=85><br><sub>Timothee Plisson</sub><br />](https://github.com/timotheeplisson)
+[<img src="https://avatars.githubusercontent.com/u/72039683?v=4" width=85><br><sub>Keliane Katary</sub><br />](https://github.com/Keliane002)
 
