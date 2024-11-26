@@ -11,10 +11,11 @@ type PingFrom struct {
 	DateTimeServices bool
 }
 
-// @title Tag Service API
 func ApplyRoutes(r *gin.Engine) {
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/ping", Ping)
+
+	r.GET("/services", Services)
 
 	r.GET("/user", userGet)
 	r.POST("/user", userPost)
