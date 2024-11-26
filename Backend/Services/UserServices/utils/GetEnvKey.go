@@ -11,7 +11,7 @@ func GetEnvKey(key string) string {
 	viper.SetConfigFile(".env")
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error on oppeing .env")
+		fmt.Fprintf(os.Stderr, "Error on oppening .env")
 		return ""
 	}
 
