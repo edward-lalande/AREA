@@ -3,3 +3,5 @@ api-gateway
 time-services
 user-services
 .env
+node_modules/
+build/
