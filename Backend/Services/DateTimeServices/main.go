@@ -2,6 +2,7 @@ package main
 
 import (
 	"date-time-service/routes"
+	"date-time-service/utils"
 	"fmt"
 	"io"
 	"net/http"
@@ -11,8 +12,15 @@ import (
 	"github.com/robfig/cron"
 )
 
+// func
+
 func BackUpLocalDataCall() {
-	resp, err := http.Get("https://timeapi.io/api/time/current/zone?timeZone=Europe%2FParis")
+	var (
+		continent string
+		city      string
+	)
+
+	resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + continent + "%2F" + city)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error while calling the API:", err)
 		return
