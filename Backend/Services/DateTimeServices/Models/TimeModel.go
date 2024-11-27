@@ -4,8 +4,8 @@ type DataReceive struct {
 	Token     string `json:"token"`
 	City      string `json:"city"`
 	Continent string `json:"continent"`
-	Hour      string `json:"hour"`
-	Minute    string `json:"minute"`
+	Hour      int    `json:"hour"`
+	Minute    int    `json:"minute"`
 }
 
 type Database struct {
@@ -13,6 +13,6 @@ type Database struct {
 	Mail      string
 	City      string
 	Continent string
-	Hour      string
-	Minute    string
+	Hour      int
+	Minute    int
 }
