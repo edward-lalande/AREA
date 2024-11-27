@@ -52,5 +52,5 @@ func LoginUserHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token, "test: ": "okok"})
+	c.JSON(http.StatusOK, gin.H{"token": token})
 }
