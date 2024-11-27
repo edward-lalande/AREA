@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	models "date-time-service/Models"
 	"date-time-service/routes"
 	"date-time-service/utils"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -12,32 +15,68 @@ import (
 	"github.com/robfig/cron"
 )
 
+func getDatabaseSlice() []models.Database {
+	var databaseSlice []models.Database
+	db := utils.OpenDB(nil)
+
+	rows, err := db.Query(context.Background(), "SELECT * FROM \"Action\"")
+
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error on reading response of the query", err)
+		return nil
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var database models.Database
+		err := rows.Scan(&database.Id, &database.Mail, &database.Continent, &database.City, &database.Hour, &database.Minute)
+		if err != nil {
+			log.Fatal(err)
+			return nil
+		}
+		databaseSlice = append(databaseSlice, database)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+		return nil
+	}
+
+	return databaseSlice
+}
+
 func BackUpLocalDataCall() {
-	var (
-		continent string
-		city      string
-	)
-
-	resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + continent + "%2F" + city)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error while calling the API:", err)
+	databaseSlice := getDatabaseSlice()
+	if databaseSlice == nil {
 		return
 	}
-	defer resp.Body.Close()
+	for _, slice := range databaseSlice {
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error reading the response body:", err)
-		return
+		resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + slice.Continent + "%2F" + slice.City)
+		if err != nil {
+			log.Fatal("Error while calling the API:", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal("Error reading the response body:", err)
+			return
+		}
+
+		jsonBody := utils.BytesToJson(body)
+
+		if jsonBody["hour"].(float64) == float64(slice.Hour) && jsonBody["minute"].(float64) == float64(slice.Minute) {
+			fmt.Println("Hour and minutes is equal for ", slice.Id)
+		}
 	}
-
-	fmt.Println(string(body))
 }
 
 func InitCronScheduler() *cron.Cron {
 	c := cron.New()
 
-	c.AddFunc("@every 00h00m25s", BackUpLocalDataCall)
+	c.AddFunc("@every 00h00m05s", BackUpLocalDataCall)
 
 	c.Start()
 	return c
