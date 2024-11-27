@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/myWidgets/my_button.dart';
 import '../myWidgets/my_app_bar_area.dart';
-import '../myWidgets/my_email_text_field.dart';
+import '../myWidgets/my_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
