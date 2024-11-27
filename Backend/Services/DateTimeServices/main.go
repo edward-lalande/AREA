@@ -12,8 +12,6 @@ import (
 	"github.com/robfig/cron"
 )
 
-// func
-
 func BackUpLocalDataCall() {
 	var (
 		continent string
