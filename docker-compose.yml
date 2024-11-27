@@ -3,8 +3,55 @@ version: '3'
 services:
 
   frontend:
-    image: frontend
+    build: Frontend
+    container_name: frontend
     environment:
       PORT: 3000
     ports:
       - 3000:3000
+
+  api-gateway:
+    build: Backend/ApiGateway
+    container_name: api-gateway
+    environment:
+      PORT: 8080
+      USER_API: "http://127.0.0.1:8081/"
+      TIME_API: "http://127.0.0.1:8082/"
+    ports:
+      - 8080:8080
+
+  user-services:
+    build: Backend/Services/UserServices
+    container_name: user-services
+    environment: 
+      PORT: 8081
+      API_GATEWAY: http://127.0.0.1:8080/
+      DB: postgresql://root:password@localhost:5432/user
+      SECRET_KEY: PET
+    ports:
+      - 8081:8081
+
+  user-services-db:
+    image: postgres:alpine
+    container_name: user-services-db
+    restart: always
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker-entrypoint-initdb.d/init.sql
+      - ./database/user.sql
+
+  time-services:
+    build: Backend/Services/DateTimeServices
+    container_name: time-services
+    environment:
+      PORT: 8082
+      API_GATEWAY: http://127.0.0.1:8080/
+      DATE_TIME_API: http://worldtimeapi.org/api/timezone/Etc/UTC
+      DB: postgresql://root:password@localhost:5433/user
+    ports:
+      - 8082:8082
