@@ -1,0 +1,11 @@
+FROM golang:alpine
+
+WORKDIR /app
+
+COPY . /app
+
+RUN go build -o time-services .
+
+EXPOSE 8082
+
+CMD ["./time-services"]
