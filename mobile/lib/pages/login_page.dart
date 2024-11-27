@@ -1,72 +1,63 @@
 import 'package:flutter/material.dart';
-import '../myWidgets/area_app_bar.dart';
+import 'package:flutter_application_1/myWidgets/my_button.dart';
+import '../myWidgets/my_app_bar_area.dart';
+import '../myWidgets/my_email_text_field.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-        appBar: const MyAppBarArea(
-                        appbartitle:
-
-                            Text(
-                              "AREA",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 55.0,
-                                fontFamily: 'Avenir'
-
-                              ),
-                            ),
-
-                      ),
-
-        body: SingleChildScrollView(
-
-          child: Column(
-            children: [
-
-              Container(
-                color: Colors.white,
-                height: 40.0,
-                width: MediaQuery.sizeOf(context).width,
-
-                child: const Text(
-                  "Log in",
-                  textAlign: TextAlign.center,
+      appBar: const MyAppBarArea(
+        appbartitle: Padding(
+          padding: EdgeInsets.only(top: 45),
+          child: Text(
+                  "Area",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.0,
-                    fontFamily: 'Avenir'
+                    fontFamily: "Avenir",
+                    fontSize: 65,
 
                   ),),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 100, left: 35, right: 35),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.black,
-                    ),
-                    child: const TextField(
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                                    prefixIcon: Icon(
-                                        Icons.email,
-                                        color: Colors.white,
-                                    ),
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white),
-                        ),
-                    ),
-                  ),
-              ),
-            ],
-          ),
         ),
-      );
-  }
+      ),
+      body: Column(
+        children: [
+           Container(
+            color: Colors.white,
+            height: 100,
+            width: MediaQuery.sizeOf(context).width,
+            child: const Text(
+              "Log in",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: "Avenir",
+                fontSize: 35,
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.white,
+            child: 
+            Container(
+              color: Colors.white,
+              child: const MyTextField(hintText: "Email",)
+            ),
+          
+          ),
+          Container(
+            color: Colors.white,
+            child: const MyTextField(hintText: "Password",)
+          ),
+          const Padding(padding: EdgeInsets.only(top: 30),
+          child: SizedBox(height: 30,)),
+          const SizedBox(
+            height: 50,
+            width: 375,
+            child: MyButton(title: "Log in",)
+          ),
+        ],
+      ),
+    );
+  } 
 }
