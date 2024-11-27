@@ -5,8 +5,32 @@ import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
 import { AreaButton, GoogleButton } from "./elements/AreaButton";
+import { useState } from "react";
+import axios from "axios";
+
+function signUpMe(email: string, name: string, lastname: string, password: string) {
+	const url = "http://127.0.0.1:8080/user"
+	const body = {
+		routes: "sign-up",
+		mail: email,
+		name,
+		lastname,
+		password
+	}
+	axios.post(url, body).then((rep) => {
+		console.log(rep)
+		window.location.href = "/"
+	}).catch((e) => {
+		console.error(e)
+	})
+}
 
 const SignupForm: React.FC = () => {
+
+    const [email, setEmail] = useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [lastname, setLastname] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
 	return (
 
@@ -18,13 +42,13 @@ const SignupForm: React.FC = () => {
 				<AreaTypography variant="h4" text="Sign up" />
 
 				<AreaBox sx={{ width: "100%", maxWidth: 400, mb: 2 }}>
-					<AreaTextField label="Email" />
-					<AreaTextField label="Password" type="password" />
-					<AreaTextField label="Name" />
-					<AreaTextField label="Surname" />
+					<AreaTextField label="Email" onChange={(s) => setEmail(s.target.value)} />
+					<AreaTextField label="Password" type="password" onChange={(s) => setPassword(s.target.value)}/>
+					<AreaTextField label="Name" onChange={(s) => setName(s.target.value)}/>
+					<AreaTextField label="Lastname" onChange={(s) => setLastname(s.target.value)}/>
 				</AreaBox>
 
-				<AreaButton text="Sign up" />
+				<AreaButton text="Sign up" onClick={() => signUpMe(email, name, lastname, password)}/>
 
 				<AreaTextDivider text="or" />
 
