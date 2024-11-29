@@ -26,6 +26,7 @@ class MyTextField extends StatelessWidget {
             color: fieldBgColor,
           ),
           child: TextField(
+            textAlignVertical: TextAlignVertical.center,
             style: TextStyle(color: inputColor),
             decoration: InputDecoration(
               border: InputBorder.none,
