@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/myWidgets/my_button.dart';
-import '../myWidgets/my_app_bar_area.dart';
-import '../myWidgets/my_text_field.dart';
+import '../myWidgets/area_app_bar.dart';
+import '../myWidgets/my_button.dart';
+import '../myWidgets/my_text_fields.dart';
+import '../myWidgets/my_divider_text.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBarArea(
         appbartitle: Padding(
-          padding: EdgeInsets.only(top: 45),
-          child: Text(
-                  "Area",
-                  style: TextStyle(
-                    fontFamily: "Avenir",
-                    fontSize: 65,
-
-                  ),),
+            padding: EdgeInsets.only(top: 45),
+            child: Text(
+              "AREA",
+              style: TextStyle(
+                fontFamily: "Avenir",
+                fontSize: 65,
+                ),
+              ),
         ),
       ),
       body: Column(
@@ -36,28 +37,50 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            color: Colors.white,
-            child: 
-            Container(
-              color: Colors.white,
-              child: const MyTextField(hintText: "Email",)
+
+          const MyTextField(
+            hintText: "Email",
+            hintTextColor: Colors.white,
+            bgColor: Colors.white,
+            fieldBgColor: Colors.black,
+            padding: EdgeInsets.only(
+              top: 50, bottom: 0, left: 35, right: 35
             ),
-          
+            inputColor: Colors.white,
+            prefixIcon: Icon(
+                Icons.email,
+                color: Colors.white,
+              ),
           ),
-          Container(
-            color: Colors.white,
-            child: const MyTextField(hintText: "Password",)
+          const MyTextField(
+            hintText: "Password",
+            hintTextColor: Colors.white,
+            bgColor: Colors.white,
+            fieldBgColor: Colors.black,
+            padding: EdgeInsets.only(
+              top: 40, bottom: 0, left: 35, right: 35
+            ),
+            inputColor: Colors.white,
+            prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
           ),
-          const Padding(padding: EdgeInsets.only(top: 30),
-          child: SizedBox(height: 30,)),
-          const SizedBox(
-            height: 50,
-            width: 375,
-            child: MyButton(title: "Log in",)
+          const MyButton(
+              padding: EdgeInsets.only(
+                left: 35, right: 35, top: 35
+              ),
+              title: "Log in",
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+          ),
+          const MyDividerText(
+            bgColor: Colors.white,
+            padding: EdgeInsets.only(top: 35, right: 35, left: 35),
+            textBetween: "Or"
           ),
         ],
       ),
     );
-  } 
+  }
 }
