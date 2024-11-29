@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
-  const MyTextField({super.key, required this.hintText});
-  
+  const MyTextField({super.key, required this.hintText, required this.bgColor,
+  required this.fieldBgColor, required this.hintTextColor, required this.inputColor,
+  required this.padding, required this.prefixIcon});
+
   final String hintText;
-  
+  final Color hintTextColor;
+  final Color inputColor;
+  final Color bgColor;
+  final Color fieldBgColor;
+  final EdgeInsets padding;
+  final Widget prefixIcon;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 75, left: 35, right: 35),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.black,
-        ),
-        child: TextField(
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            prefixIcon: const Icon(
-              Icons.email,
-              color: Colors.white,
+    return Container(
+      color: bgColor,
+
+      child: Padding(
+        padding: padding,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: fieldBgColor,
+          ),
+          child: TextField(
+            style: TextStyle(color: inputColor),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              prefixIcon: prefixIcon,
+              hintText: hintText,
+              hintStyle: TextStyle(color: hintTextColor),
             ),
-            hintText: hintText,
-            hintStyle: const TextStyle(color: Colors.white),
           ),
         ),
       ),
