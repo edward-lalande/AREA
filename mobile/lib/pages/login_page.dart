@@ -73,11 +73,33 @@ class LoginPage extends StatelessWidget {
               title: "Log in",
               backgroundColor: Colors.black,
               textColor: Colors.white,
+              fontSize: 20,
+              spaceBetweenIconAndText: 10,
           ),
           const MyDividerText(
             bgColor: Colors.white,
             padding: EdgeInsets.only(top: 35, right: 35, left: 35),
             textBetween: "Or"
+          ),
+          MyButton(
+              padding: const EdgeInsets.only(
+                left: 35, right: 35, top: 35
+              ),
+              title: "Continue with Google",
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 15,
+              spaceBetweenIconAndText: 10,
+              prefixIcon: Container(
+                        width: 35,
+                        height: 35,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white38,
+                        ),
+                        child: Image.asset('assets/google.png'),
+                      ),
           ),
         ],
       ),
