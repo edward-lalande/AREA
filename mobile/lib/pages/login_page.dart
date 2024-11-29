@@ -101,6 +101,10 @@ class LoginPage extends StatelessWidget {
                         child: Image.asset('assets/google.png'),
                       ),
           ),
+          Container(
+            height: 170,
+            color: Colors.white,
+          )
         ],
       ),
     );
