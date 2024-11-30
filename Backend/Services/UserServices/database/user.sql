@@ -1,7 +1,7 @@
-CREATE TABLE "User" (
-    id           SERIAL NOT NULL PRIMARY KEY,
-    mail         VARCHAR(32),
-    password     VARCHAR(32),
-    name         VARCHAR(32),
-    lastname     VARCHAR(32)
+CREATE TABLE IF NOT EXISTS "User" (
+    id SERIAL PRIMARY KEY,
+    mail VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255),
+    lastname VARCHAR(255)
 );
