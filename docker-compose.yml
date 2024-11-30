@@ -15,8 +15,8 @@ services:
     container_name: api-gateway
     environment:
       PORT: 8080
-      USER_API: "http://127.0.0.1:8081/"
-      TIME_API: "http://127.0.0.1:8082/"
+      USER_API: http://user-services:8081/
+      TIME_API: http://time-services:8082/
     ports:
       - 8080:8080
 
@@ -25,11 +25,13 @@ services:
     container_name: user-services
     environment: 
       PORT: 8081
-      API_GATEWAY: http://127.0.0.1:8080/
-      DB: postgresql://root:password@localhost:5432/user
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@user-services-db:5432/user
       SECRET_KEY: PET
     ports:
       - 8081:8081
+    depends_on:
+      - user-services-db
 
   user-services-db:
     image: postgres:alpine
@@ -42,16 +44,21 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./docker-entrypoint-initdb.d/init.sql
-      - ./database/user.sql
+      - user-db-data:/var/lib/postgresql/data
+      - ./Backend/Services/UserServices/database/user.sql:/docker-entrypoint-initdb.d/init.sql
 
   time-services:
     build: Backend/Services/DateTimeServices
     container_name: time-services
     environment:
       PORT: 8082
-      API_GATEWAY: http://127.0.0.1:8080/
+      API_GATEWAY: http://api-gateway:8080/
       DATE_TIME_API: http://worldtimeapi.org/api/timezone/Etc/UTC
-      DB: postgresql://root:password@localhost:5433/user
+      DB: postgresql://root:password@user-services-db:5432/user
     ports:
       - 8082:8082
+    depends_on:
+      - user-services-db
+
+volumes:
+  user-db-data:
