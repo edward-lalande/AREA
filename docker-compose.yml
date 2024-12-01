@@ -1,7 +1,6 @@
-version: '3'
+version: '3.8'
 
 services:
-
   frontend:
     build: Frontend
     container_name: frontend
@@ -17,6 +16,7 @@ services:
       PORT: 8080
       USER_API: http://user-services:8081/
       TIME_API: http://time-services:8082/
+      DISCORD_API: http://discord:8083/
     ports:
       - 8080:8080
 
@@ -34,18 +34,15 @@ services:
       - user-services-db
 
   user-services-db:
-    image: postgres:alpine
+    build: Backend/Services/UserServices/Database
     container_name: user-services-db
-    restart: always
     environment:
-      POSTGRES_DB: user
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: user
     ports:
       - 5432:5432
-    volumes:
-      - user-db-data:/var/lib/postgresql/data
-      - ./Backend/Services/UserServices/database/user.sql:/docker-entrypoint-initdb.d/init_user.sql
+    restart: always
 
   time-services:
     build: Backend/Services/DateTimeServices
@@ -54,26 +51,42 @@ services:
       PORT: 8082
       API_GATEWAY: http://api-gateway:8080/
       DATE_TIME_API: http://worldtimeapi.org/api/timezone/Etc/UTC
-      DB: postgresql://root:password@time-services-db:5432/user
+      DB: postgresql://root:password@time-services-db:5433/time
     ports:
       - 8082:8082
     depends_on:
       - time-services-db
 
   time-services-db:
-    image: postgres:alpine
+    build: Backend/Services/DateTimeServices/Database
     container_name: time-services-db
-    restart: always
     environment:
-      POSTGRES_DB: user
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: time
     ports:
-      - 5433:5432
-    volumes:
-      - time-services-db:/var/lib/postgresql/data
-      - ./Backend/Services/DateTimeServices/database/time.sql:/docker-entrypoint-initdb.d/init_time.sql
+      - 5433:5433
+    restart: always
 
-volumes:
-  user-db-data:
-  time-services-db:
+  discord:
+    build: Backend/Services/Discord
+    container_name: discord
+    environment:
+      PORT: 8083
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@discord-db:5434/discord
+    ports:
+      - 8083:8083
+    depends_on:
+      - discord-db
+
+  discord-db:
+    build: Backend/Services/Discord/Database
+    container_name: discord-db
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: discord
+    ports:
+      - 5434:5434
+    restart: always
