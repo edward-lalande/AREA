@@ -50,6 +50,7 @@ func BackUpLocalDataCall() {
 	if databaseSlice == nil {
 		return
 	}
+
 	for _, slice := range databaseSlice {
 
 		resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + slice.Continent + "/" + slice.City)
