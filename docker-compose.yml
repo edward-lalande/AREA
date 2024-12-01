@@ -45,7 +45,7 @@ services:
       - 5432:5432
     volumes:
       - user-db-data:/var/lib/postgresql/data
-      - ./Backend/Services/UserServices/database/user.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Backend/Services/UserServices/database/user.sql:/docker-entrypoint-initdb.d/init_user.sql
 
   time-services:
     build: Backend/Services/DateTimeServices
@@ -54,11 +54,11 @@ services:
       PORT: 8082
       API_GATEWAY: http://api-gateway:8080/
       DATE_TIME_API: http://worldtimeapi.org/api/timezone/Etc/UTC
-      DB: postgresql://root:password@user-services-db:5432/user
+      DB: postgresql://root:password@time-services-db:5432/user
     ports:
       - 8082:8082
     depends_on:
-      - user-services-db
+      - time-services-db
 
   time-services-db:
     image: postgres:alpine
@@ -71,8 +71,9 @@ services:
     ports:
       - 5433:5432
     volumes:
-      - user-db-data:/var/lib/postgresql/data
-      - ./Backend/Services/DateTimeServices/database/time.sql:/docker-entrypoint-initdb.d/init.sql
+      - time-services-db:/var/lib/postgresql/data
+      - ./Backend/Services/DateTimeServices/database/time.sql:/docker-entrypoint-initdb.d/init_time.sql
 
 volumes:
   user-db-data:
+  time-services-db:
