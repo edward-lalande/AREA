@@ -60,5 +60,19 @@ services:
     depends_on:
       - user-services-db
 
+  time-services-db:
+    image: postgres:alpine
+    container_name: time-services-db
+    restart: always
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5433:5432
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+      - ./Backend/Services/DateTimeServices/database/time.sql:/docker-entrypoint-initdb.d/init.sql
+
 volumes:
   user-db-data:
