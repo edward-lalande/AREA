@@ -61,7 +61,7 @@ class PasswordPage extends StatelessWidget {
             title: "Send Reset Link",
             backgroundColor: Colors.black,
             textColor: Colors.white,
-            fontSize: 20,
+            fontSize: 17,
             spaceBetweenIconAndText: 10,
             onPressed: (context) {
               if (emailController.text.isNotEmpty) {
@@ -140,7 +140,7 @@ class PasswordPage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 80,
+            height: 200,
             color: Colors.white,
           )
         ],

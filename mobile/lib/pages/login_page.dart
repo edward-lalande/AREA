@@ -15,21 +15,37 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: const MyAppBarArea(
+      appBar: MyAppBarArea(
         appbartitle: Padding(
-          padding: EdgeInsets.only(top: 45),
-          child: Text(
-            "AREA",
-            style: TextStyle(
-              fontFamily: "Avenir",
-              fontSize: 65,
-            ),
+          padding: const EdgeInsets.only(top: 45),
+          child: Column(
+            children: [
+              MyButton(
+                padding: const EdgeInsets.only(left: 10),
+                title: "",
+                prefixIcon: const Icon(Icons.settings, color: Colors.black,),
+                backgroundColor: Colors.white,
+                textColor: Colors.white,
+                fontSize: 0,
+                spaceBetweenIconAndText: 0,
+                onPressed: (context) {
+                    context.go('/home');
+                },
+              ),
+              const Text(
+                "AREA",
+                style: TextStyle(
+                  fontFamily: "Avenir",
+                  fontSize: 65,
+                ),
+              ),
+            ],
+          ),
           ),
         ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           child: Column(
         children: [
           Container(
@@ -80,10 +96,10 @@ class LoginPage extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    "Forget you're",
+                    "Forget your",
                     style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w300),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 7),
                   GestureDetector(
                     onTap: () {
                       context.go('/password');
@@ -100,7 +116,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    "   ?",
+                    "  ?",
                     style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w900),
                   ),
                 ],
@@ -153,7 +169,7 @@ class LoginPage extends StatelessWidget {
             },
           ),
           Container(
-            height: 100,
+            height: 250,
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.only(),

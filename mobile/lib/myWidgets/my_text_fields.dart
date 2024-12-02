@@ -13,7 +13,7 @@ class MyTextField extends StatelessWidget {
   final EdgeInsets padding;
   final Widget prefixIcon;
   final bool obscureText;
-  final controller;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
