@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AreaBox } from "./elements/AreaBox";
 import { AreaLink } from "./elements/AreaLink";
 import { AreaPaper } from "./elements/AreaPaper";
@@ -5,30 +6,34 @@ import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
 import { AreaButton, GoogleButton } from "./elements/AreaButton";
-import { useState } from "react";
+import { Alert, Snackbar } from "@mui/material";
+
 import axios from "axios";
-
-async function loginMe(email: string, password: string) {
-	const url = "http://127.0.0.1:8080/user"
-	const body = {
-		routes: "login",
-		mail: email,
-		password
-	}
-	axios.post(url, body).then((rep) => {
-		console.log(rep)
-		window.location.href = "/";
-	}).catch((e) => {
-		console.error(e)
-	})
-
-}
-
 
 const LoginForm: React.FC = () => {
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+	const [open, setOpen] = useState<boolean>(false);
+
+	const login = (email: string, password: string) => {
+
+		const url: string = "http://127.0.0.1:8080/user";
+
+		const data = {
+			routes: "login",
+			mail: email,
+			password
+		};
+
+		axios.post(url, data).then(() => {
+			window.location.href = "/";
+		}).catch(() => {
+			setOpen(true);
+		});
+	
+	}
 
 	return (
 
@@ -44,7 +49,7 @@ const LoginForm: React.FC = () => {
 					<AreaTextField label="Password" type="password" onChange={(s) => setPassword(s.target.value)} />
 				</AreaBox>
 
-				<AreaButton text="Log in" onClick={() => loginMe(email, password)}/>
+				<AreaButton text="Log in" onClick={() => login(email, password)}/>
 
 				<AreaTextDivider text="or" />
 
@@ -54,6 +59,17 @@ const LoginForm: React.FC = () => {
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />
 					<AreaLink href="/signup" text="Signup here" />
 				</AreaBox>
+
+				<Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+					<Alert
+						onClose={() => setOpen(false)}
+						severity="error"
+						variant="filled"
+						sx={{ width:"100%" }}
+					>
+						Login: Invalid email or password
+					</Alert>
+				</Snackbar>	
 
 			</AreaPaper>
 
