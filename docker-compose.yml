@@ -81,6 +81,10 @@ services:
       PORT: 8083
       API_GATEWAY: http://api-gateway:8080/
       DB: postgresql://root:password@discord-db:5434/discord
+      CLIENT_ID: 1313077002005385236
+      CLIENT_SECRET: Ku7K2lQYvws_L-xp7ialrt11weriVHyk
+      REDIRECT_WEB: http://localhost:8083/callback
+      REDIRECT_MOBILE: http://localhost:8083/mobile-callback
     ports:
       - 8083:8083
     depends_on:

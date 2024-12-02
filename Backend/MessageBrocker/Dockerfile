@@ -6,6 +6,6 @@ COPY . /app
 
 RUN go build -o message-brocker .
 
-EXPOSE 8081
+EXPOSE 8084
 
 CMD ["./message-brocker"]
