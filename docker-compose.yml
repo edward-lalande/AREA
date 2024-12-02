@@ -20,6 +20,12 @@ services:
     ports:
       - 8080:8080
 
+  message-brocker:
+    build: Backend/MessageBrocker
+    container_name: message-brocker
+    ports:
+      - 8084:8084
+
   user-services:
     build: Backend/Services/UserServices
     container_name: user-services

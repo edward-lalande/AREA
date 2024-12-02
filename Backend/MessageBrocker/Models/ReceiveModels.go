@@ -1,8 +1,10 @@
 package models
 
-type ReceivedAction struct {
+type ReceivedActionToReactions struct {
 	UserToken          string `json:"user_token"`
-	Service            string `json:"service"`
+	ServiceSenderId    int    `json:"service_sender_id"`
+	ServiceReceiverId  int    `json:"service_receiver_id"`
 	ActionId           int    `json:"action_id"`
 	ReactionIdentifyer int    `json:"reaction_identifyer"`
+	Message            string `json:"message"`
 }

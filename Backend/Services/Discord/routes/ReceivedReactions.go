@@ -17,8 +17,8 @@ func ReceivedReactions(c *gin.Context) {
 		return
 	}
 
-	_, err := db.Exec(c, "INSERT INTO \"Reaction\" (action_id, reaction_identifyer, user_email, message)"+
-		" VALUES($1, $2, $3, $4, $5)", receivedData.ActionId, receivedData.ReactionIdentifyer, receivedData.UserEmail, receivedData.Message)
+	_, err := db.Exec(c, "INSERT INTO \"Reactions\" (service_id, action_id, reaction_identifyer, user_email, message)"+
+		" VALUES($1, $2, $3, $4, $5, $6)", receivedData.ServiceId, receivedData.ActionId, receivedData.ReactionIdentifyer, receivedData.UserEmail, receivedData.Message)
 	if err != nil {
 		c.JSON(http.StatusInsufficientStorage, gin.H{"error": err.Error()})
 		return

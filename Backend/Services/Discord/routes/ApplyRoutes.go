@@ -11,4 +11,5 @@ func ApplyRoutes(r *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{"ping": "pong"})
 	})
 	r.POST("/create-reactions", ReceivedReactions)
+	r.POST("/active-reactions", ActiveReactions)
 }

@@ -16,9 +16,12 @@ import (
 )
 
 func getDatabaseSlice() []models.Database {
-	var databaseSlice []models.Database
+	var databaseSlice []models.Database = nil
 	db := utils.OpenDB(nil)
 
+	if db == nil {
+		return nil
+	}
 	rows, err := db.Query(context.Background(), "SELECT * FROM \"Action\"")
 
 	if err != nil {
