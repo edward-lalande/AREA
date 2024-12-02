@@ -32,7 +32,7 @@ const SignupForm: React.FC = () => {
 		};
 
 		axios.post(url, data).then(() => {
-			window.location.href = "/";
+			window.location.href = "/login";
 		}).catch(() => {
 			setOpen(true);
 		});
