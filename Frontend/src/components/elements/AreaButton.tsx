@@ -91,19 +91,44 @@ const Logout: React.FC<ButtonProps> = (props) => {
                 borderColor: "red",
                 color: "red",
                 borderRadius: 10,
+                maxWidth: 150,
                 py: 1.5,
                 textTransform: "none",
                 fontWeight: "bold",
                 fontSize: "1rem",
                 mb: 1,
-                maxWidth: 150,
+                ...props.sx
+            }}
+            {...props}
+            >
+                Logout
+        </Button>
+    );
+};
+
+const DiscordButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+                borderColor: "#fff",
+                backgroundColor: "#5865f2",
+                color: "#fff",
+                borderRadius: 5,
+                py: 1.5,
+                textTransform: "none",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                mb: 1,
+                maxWidth: 400,
                 ...props.sx
             }}
             {...props}
         >
-            Logout
+            Continue with Discord
         </Button>
     );
 };
-  
-export { AreaButton, CreateButton, GoogleButton, Logout };
+
+export { AreaButton, GoogleButton, DiscordButton, Logout, CreateButton };

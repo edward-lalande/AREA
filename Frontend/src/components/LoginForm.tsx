@@ -5,8 +5,9 @@ import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { AreaButton, GoogleButton } from "./elements/AreaButton";
 import { Alert, Snackbar } from "@mui/material";
+
+import { AreaButton, DiscordButton } from "./elements/AreaButton";
 
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -60,7 +61,7 @@ const LoginForm: React.FC = () => {
 
 				<AreaTextDivider text="or" />
 
-				<GoogleButton />
+				<DiscordButton />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />
