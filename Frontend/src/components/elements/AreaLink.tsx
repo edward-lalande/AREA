@@ -9,9 +9,9 @@ const AreaLink: React.FC<AreaLinkProps> = ({ text, ...props }) => {
         <Link
             {...props}
             sx={{
-                ...props.sx,
                 color: "black",
-                textDecoration: "underline #000000"
+                textDecoration: "underline #000000",
+                ...props.sx
             }}
 		>
             {text}

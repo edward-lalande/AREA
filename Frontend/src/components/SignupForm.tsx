@@ -6,7 +6,9 @@ import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
 import { AreaButton, GoogleButton } from "./elements/AreaButton";
+
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 import axios from "axios";
 
@@ -18,6 +20,8 @@ const SignupForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
 
 	const [open, setOpen] = useState<boolean>(false);
+
+	const [_, setCookie] = useCookies();
 
 	const signup = (email: string, name: string, lastname: string, password: string) => {
 
@@ -31,8 +35,11 @@ const SignupForm: React.FC = () => {
 			lastname
 		};
 
-		axios.post(url, data).then(() => {
+		axios.post(url, data).then((res) => {
+
+			setCookie("token", res.data.body.token);
 			window.location.href = "/login";
+
 		}).catch(() => {
 			setOpen(true);
 		});

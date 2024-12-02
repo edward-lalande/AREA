@@ -9,6 +9,7 @@ import { AreaButton, GoogleButton } from "./elements/AreaButton";
 import { Alert, Snackbar } from "@mui/material";
 
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const LoginForm: React.FC = () => {
 
@@ -16,6 +17,9 @@ const LoginForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
 
 	const [open, setOpen] = useState<boolean>(false);
+
+	//eslint-disable-next-line
+	const [cookie, setCookie] = useCookies();
 
 	const login = (email: string, password: string) => {
 
@@ -27,8 +31,11 @@ const LoginForm: React.FC = () => {
 			password
 		};
 
-		axios.post(url, data).then(() => {
+		axios.post(url, data).then((res) => {
+
+			setCookie("token", res.data.body.token);
 			window.location.href = "/";
+
 		}).catch(() => {
 			setOpen(true);
 		});
