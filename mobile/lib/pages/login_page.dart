@@ -27,7 +27,10 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Column(
         children: [
           Container(
             color: Colors.white,
@@ -150,10 +153,10 @@ class LoginPage extends StatelessWidget {
             },
           ),
           Container(
-            height: 125,
+            height: 100,
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 18),
+              padding: const EdgeInsets.only(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -187,6 +190,8 @@ class LoginPage extends StatelessWidget {
           ),
         ],
       ),
+        )
+      )
     );
   }
 }

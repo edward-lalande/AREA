@@ -26,7 +26,8 @@ class PasswordPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
           Container(
             color: Colors.white,
@@ -139,11 +140,12 @@ class PasswordPage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 130,
+            height: 80,
             color: Colors.white,
           )
         ],
       ),
+      )
     );
   }
 }
