@@ -9,6 +9,7 @@ class MyButton extends StatelessWidget {
     required this.padding,
     required this.fontSize,
     required this.spaceBetweenIconAndText,
+    required this.onPressed,
     this.prefixIcon,
   });
 
@@ -19,6 +20,7 @@ class MyButton extends StatelessWidget {
   final Widget? prefixIcon;
   final double fontSize;
   final double spaceBetweenIconAndText;
+  final void Function(BuildContext)? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,11 @@ class MyButton extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: TextButton(
+          onPressed: () {
+            if (onPressed != null) {
+              onPressed!(context);
+            }
+          },
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all<Color>(backgroundColor),
             foregroundColor: WidgetStateProperty.all<Color>(textColor),
@@ -44,7 +51,6 @@ class MyButton extends StatelessWidget {
               },
             ),
           ),
-          onPressed: () {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
