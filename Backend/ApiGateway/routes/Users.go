@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func userGet(c *gin.Context) {
+func UserGet(c *gin.Context) {
 	var body models.UsersGet
 	c.ShouldBindJSON(&body)
 	value := utils.GetEnvKey("USER_API")
@@ -35,7 +35,7 @@ func userGet(c *gin.Context) {
 	})
 }
 
-func userPost(c *gin.Context) {
+func UserPost(c *gin.Context) {
 	var body models.UserInformation
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
