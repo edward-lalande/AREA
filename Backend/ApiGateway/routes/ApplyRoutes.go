@@ -21,4 +21,5 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/user", userPost)
 
 	r.GET("/time", GetTime)
+	r.POST("/time", PostTime)
 }
