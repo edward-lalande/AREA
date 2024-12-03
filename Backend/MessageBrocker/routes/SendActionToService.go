@@ -14,8 +14,9 @@ func SendActionToService(c *gin.Context) {
 	var receivedData models.ReceivedActionToReactions
 	var services map[int]string = make(map[int]string)
 
-	services[0] = "http://time-services:8082/"
-	services[1] = "http://discord:8083/"
+	services[0] = "http://user-services:8082/"
+	services[1] = "http://time-services:8082/"
+	services[2] = "http://discord:8083/"
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
 		return
@@ -46,5 +47,5 @@ func SendActionToService(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println(resp)
+	fmt.Println(resp.Body)
 }
