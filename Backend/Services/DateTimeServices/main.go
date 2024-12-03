@@ -16,10 +16,13 @@ import (
 )
 
 func getDatabaseSlice() []models.Database {
-	var databaseSlice []models.Database
+	var databaseSlice []models.Database = nil
 	db := utils.OpenDB(nil)
 
-	rows, err := db.Query(context.Background(), "SELECT * FROM \"Action\"")
+	if db == nil {
+		return nil
+	}
+	rows, err := db.Query(context.Background(), "SELECT * FROM \"TimeAction\"")
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error on reading response of the query", err)
@@ -29,7 +32,7 @@ func getDatabaseSlice() []models.Database {
 
 	for rows.Next() {
 		var database models.Database
-		err := rows.Scan(&database.Id, &database.Mail, &database.Continent, &database.City, &database.Hour, &database.Minute)
+		err := rows.Scan(&database.Id, &database.Mail, &database.Continent, &database.City, &database.Hour, &database.Minute, &database.ReactionServiceId)
 		if err != nil {
 			log.Fatal(err)
 			return nil
@@ -100,7 +103,6 @@ func main() {
 
 		c.Next()
 	})
-
 	routes.ApplyRoutes(r)
 
 	r.Run(":8082")
