@@ -20,7 +20,7 @@ func ReceivedReactions(c *gin.Context) {
 
 	fmt.Println("Discord received: EDWARD AREA C'EST EZ LA VIE DE MA MERE")
 	_, err := db.Exec(c, "INSERT INTO \"DiscordReactions\" (service_id, action_id, reaction_identifyer, user_email, message)"+
-		" VALUES($1, $2, $3, $4, $5, $6)", receivedData.ServiceId, receivedData.ActionId, receivedData.ReactionIdentifyer, receivedData.UserEmail, receivedData.Message)
+		" VALUES($1, $2, $3, $4, $5)", receivedData.ServiceId, receivedData.ActionId, receivedData.ReactionIdentifyer, receivedData.UserEmail, receivedData.Message)
 	if err != nil {
 		c.JSON(http.StatusInsufficientStorage, gin.H{"error": err.Error()})
 		return

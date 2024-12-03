@@ -18,8 +18,8 @@ func PostTime(c *gin.Context) {
 	}
 
 	db := utils.OpenDB(c)
-	_, err := db.Exec(c, "INSERT INTO \"TimeAction\" (user_mail, continent, city, hour, minute, reaction_service_id)"+
-		" VALUES($1, $2, $3, $4, $5, $6)", receivedData.Token, receivedData.Continent, receivedData.City, receivedData.Hour, receivedData.Minute, receivedData.ReactionServiceId)
+	_, err := db.Exec(c, "INSERT INTO \"TimeAction\" (user_mail, continent, city, hour, minute, reaction_service_id, reaction_id)"+
+		" VALUES($1, $2, $3, $4, $5, $6, $7)", receivedData.Token, receivedData.Continent, receivedData.City, receivedData.Hour, receivedData.Minute, receivedData.ReactionServiceId, 0) // remplacer le reaction_id par le token + la len stp petit con de Edward sale merde mange le caca
 	if err != nil {
 		c.JSON(http.StatusInsufficientStorage, gin.H{"error": err.Error()})
 		return

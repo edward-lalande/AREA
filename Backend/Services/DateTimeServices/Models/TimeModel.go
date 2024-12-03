@@ -18,14 +18,9 @@ type Database struct {
 	Hour              int
 	Minute            int
 	ReactionServiceId int
+	ReactionId        int
 }
-
-/*
-{
-    "service_id": 0,
-    "action_id": 1,
-    "reaction_identifyer": 2,
-    "user_email": "ccaca",
-    "message": "test"
+type TimeModelSendReaction struct {
+	ReactionServiceId int `json:"reaction_service_id"`
+	ReactionId        int `json:"reaction_id"`
 }
-*/
