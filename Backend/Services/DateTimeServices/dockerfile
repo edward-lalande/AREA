@@ -4,8 +4,11 @@ WORKDIR /app
 
 COPY . /app
 
-RUN go build -o time-services .
+# RUN go install github.com/cespare/reflex@latest
+# RUN go build -o time-services .
 
 EXPOSE 8082
 
-CMD ["./time-services"]
+CMD go run main.go
+# CMD reflex -r '\.go$' -s go run main.go
+# CMD ./time-services
