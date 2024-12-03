@@ -13,7 +13,14 @@ CREATE TABLE IF NOT EXISTS "TimeAction" (
     city                VARCHAR(255),
     hour                INT,
     minute              INT,
-    reaction_service_id INT
+    reaction_service_id INT,
+    reaction_id         INT
+);
+
+CREATE TABLE IF NOT EXISTS "DiscordUser" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          VARCHAR(255),
+    access_token        VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS "DiscordReactions" (
