@@ -9,10 +9,10 @@ const AreaTypography: React.FC<AreaTypographyProps> = ({ text, ...props }) => {
         <Typography
             variant="h5"
             fontWeight="bold"
+            {...props}
             sx={{
                 ...props.sx
             }}
-            {...props}
         >
             {text}
         </Typography>

@@ -8,6 +8,7 @@ import ThemeProvider from "./components/ThemeProvider";
 import "./App.css"
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/PrivateRoute";
+import Create from "./components/Create";
 
 const App: React.FC = () => {
 
@@ -27,6 +28,10 @@ const App: React.FC = () => {
         {
             path: "/account",
             element: <ProtectedRoute children={<Account/>} />
+        },
+        {
+            path: "/create",
+            element: <ProtectedRoute children={<Create/>} />
         },
         {
             path: "*",

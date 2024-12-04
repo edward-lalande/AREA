@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
 
                 <AreaLink href="/" text="Services" sx={{ fontSize: "1.5em", textDecoration: "none" }} />
                 <AreaLink href="/" text="Areas" sx={{ fontSize: "1.5em", textDecoration: "none" }} /> 
-                <CreateButton />
+                <CreateButton text="Create" />
 
                 <IconButton href="/account">
                     <Avatar sx={{ border: "3px solid black", width: 48, height: 48 }}>P</Avatar>
