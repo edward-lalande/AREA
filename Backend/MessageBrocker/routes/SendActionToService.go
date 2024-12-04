@@ -23,17 +23,17 @@ func SendActionToService(c *gin.Context) {
 		return
 	}
 	sendBody := struct {
-		ServiceId          int    `json:"service_id"`
-		ActionId           int    `json:"action_id"`
-		ReactionIdentifyer int    `json:"reaction_identifyer"`
+		ReactionIdentifyer string `json:"reaction_identifyer"`
+		ReactionType       int    `json:"reaction_type"`
 		UserEmail          string `json:"user_email"`
 		Message            string `json:"message"`
+		ChannelId          string `json:"channel_id"`
 	}{
-		receivedData.ServiceSenderId,
-		receivedData.ActionId,
 		receivedData.ReactionIdentifyer,
+		receivedData.ReactionType,
 		receivedData.UserToken,
 		receivedData.Message,
+		receivedData.ChannelId,
 	}
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(sendBody)

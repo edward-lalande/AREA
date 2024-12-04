@@ -6,8 +6,11 @@ type DataReceive struct {
 	Continent         string `json:"continent"`
 	Hour              int    `json:"hour"`
 	Minute            int    `json:"minute"`
+	ReactionType      int    `json:"reaction_type"`
 	ReactionServiceId int    `json:"reaction_service_id"`
 	Message           string `json:"message"`
+	ServerId          string `json:"server_id"`
+	ChannelId         string `json:"channel_id"`
 }
 
 type Database struct {
@@ -18,9 +21,9 @@ type Database struct {
 	Hour              int
 	Minute            int
 	ReactionServiceId int
-	ReactionId        int
+	ReactionId        string
 }
 type TimeModelSendReaction struct {
-	ReactionServiceId int `json:"reaction_service_id"`
-	ReactionId        int `json:"reaction_id"`
+	ReactionServiceId int    `json:"reaction_service_id"`
+	ReactionId        string `json:"reaction_id"`
 }
