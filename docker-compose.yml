@@ -1,4 +1,4 @@
-# version: '3.8'
+version: '3.8'
 
 services:
   frontend:
@@ -63,12 +63,7 @@ services:
       - 8082:8082
     depends_on:
       - area-db
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./Backend/Services/DateTimeServices
-          target: /app
-
+  
   discord:
     build: Backend/Services/Discord
     container_name: discord
