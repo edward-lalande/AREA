@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	models "date-time-service/Models"
 	"date-time-service/routes"
 	"date-time-service/utils"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -16,20 +18,24 @@ import (
 )
 
 func getDatabaseSlice() []models.Database {
-	var databaseSlice []models.Database
+	var databaseSlice []models.Database = nil
 	db := utils.OpenDB(nil)
 
-	rows, err := db.Query(context.Background(), "SELECT * FROM \"Action\"")
+	if db == nil {
+		return nil
+	}
+	rows, err := db.Query(context.Background(), "SELECT * FROM \"TimeAction\"")
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error on reading response of the query", err)
 		return nil
 	}
 	defer rows.Close()
+	defer db.Close(context.Background())
 
 	for rows.Next() {
 		var database models.Database
-		err := rows.Scan(&database.Id, &database.Mail, &database.Continent, &database.City, &database.Hour, &database.Minute)
+		err := rows.Scan(&database.Id, &database.Mail, &database.Continent, &database.City, &database.Hour, &database.Minute, &database.ReactionServiceId, &database.ReactionId)
 		if err != nil {
 			log.Fatal(err)
 			return nil
@@ -69,7 +75,15 @@ func BackUpLocalDataCall() {
 		jsonBody := utils.BytesToJson(body)
 
 		if jsonBody["hour"].(float64) == float64(slice.Hour) && jsonBody["minute"].(float64) == float64(slice.Minute) {
-			fmt.Println("Hour and minutes is equal for ", slice.Id)
+			send := models.TimeModelSendReaction{}
+			var buf bytes.Buffer
+
+			send.ReactionId = slice.ReactionId
+			send.ReactionServiceId = slice.ReactionServiceId
+			if err := json.NewEncoder(&buf).Encode(send); err != nil {
+				return
+			}
+			http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 		}
 	}
 }
@@ -77,7 +91,7 @@ func BackUpLocalDataCall() {
 func InitCronScheduler() *cron.Cron {
 	c := cron.New()
 
-	c.AddFunc("@every 00h00m05s", BackUpLocalDataCall)
+	c.AddFunc("@every 00h00m40s", BackUpLocalDataCall)
 
 	c.Start()
 	return c
@@ -100,7 +114,6 @@ func main() {
 
 		c.Next()
 	})
-
 	routes.ApplyRoutes(r)
 
 	r.Run(":8082")
