@@ -17,8 +17,11 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.GET("/services", Services)
 
-	r.GET("/user", userGet)
-	r.POST("/user", userPost)
+	r.GET("/user", UserGet)
+	r.POST("/user", UserPost)
+
+	r.GET("/discord", DiscordGet)
+	r.POST("/discord", DiscordPost)
 
 	r.GET("/time", GetTime)
 	r.POST("/time", PostTime)

@@ -15,7 +15,9 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/oauth2", oauth.OAuthFront)
 	r.GET("/callback", oauth.CallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
+	r.POST("/register", RegisterToken)
 
 	r.POST("/create-reactions", ReceivedReactions)
 	r.POST("/active-reactions", ActiveReactions)
+	r.POST("/trigger", Trigger)
 }

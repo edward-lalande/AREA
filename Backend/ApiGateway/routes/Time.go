@@ -5,7 +5,6 @@ import (
 	"api-gateway/utils"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -20,7 +19,7 @@ func PostTime(c *gin.Context) {
 		return
 	}
 
-	jsonModels := models.TimeDataToSend{body.Token, body.City, body.Continent, body.Hour, body.Minute, body.ReactionServiceId, body.Message}
+	jsonModels := models.TimeDataToSend{body.Token, body.City, body.Continent, body.Hour, body.Minute, body.ReactionType, body.ReactionServiceId, body.ServerId, body.ChannelId, body.Message}
 	jsonBody, err := json.Marshal(jsonModels)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -48,7 +47,7 @@ func PostTime(c *gin.Context) {
 func GetTime(c *gin.Context) {
 	var body models.DateTimeResponse
 	c.ShouldBindJSON(&body)
-	fmt.Println(utils.GetEnvKey("TIME_API") + body.Routes)
+
 	resp, err := http.Get(utils.GetEnvKey("TIME_API") + body.Routes)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
