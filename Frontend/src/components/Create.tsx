@@ -30,13 +30,13 @@ const Create: React.FC = () => {
 
     const [page, setPage] = useState("Create");
 
-    const [hour, setHour] = useState<string>("");
-    const [minute, setMinute] = useState<string>("");
+    const [hour, setHour] = useState<number>(0);
+    const [minute, setMinute] = useState<number>(0);
 
     const [channel, setChannel] = useState<string>("");
     const [message, setMessage] = useState<string>("");
 
-    const createArea = (hour: string, minute: string, channel: string, message: string) => {
+    const createArea = (hour: number, minute: number, channel: string, message: string) => {
 
         const url: string = "http://127.0.0.1:8080/time";
 
@@ -119,8 +119,8 @@ const Create: React.FC = () => {
 
                     <AreaTypography variant="h2" text="Every day at" sx={{ mb: 5 }} />
 
-                    <AreaTextField label="Hour" onChange={(s) => setHour(s.target.value)} sx={{ width: "20vw" }} />
-                    <AreaTextField label="Minute" onChange={(s) => setMinute(s.target.value)} sx={{ width: "20vw" }} />
+                    <AreaTextField label="Hour" onChange={(s) => setHour(Number(s.target.value))} sx={{ width: "20vw" }} />
+                    <AreaTextField label="Minute" onChange={(s) => setMinute(Number(s.target.value))} sx={{ width: "20vw" }} />
 
                     <AreaButton text="Valid" onClick={() => {setAction("Every day at"); setPage("Create"); }}/>
 
