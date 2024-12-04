@@ -3,7 +3,7 @@ package area
 import (
 	"bytes"
 	models "discord-service/Models"
-	"discord-service/utils"
+	utils "discord-service/utils"
 	"encoding/json"
 	"fmt"
 	"net/http"

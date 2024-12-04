@@ -3,7 +3,7 @@ package routes
 import (
 	"context"
 	models "discord-service/Models"
-	"discord-service/utils"
+	utils "discord-service/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
