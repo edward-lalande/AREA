@@ -4,7 +4,6 @@ import (
 	"context"
 	models "discord-service/Models"
 	"discord-service/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,8 +28,5 @@ func ActiveReactions(c *gin.Context) {
 	if err := row.Scan(&count); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
-	}
-	if count >= 1 {
-		fmt.Println("REACTION OK: ", count)
 	}
 }
