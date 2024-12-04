@@ -2,13 +2,23 @@ package routes
 
 import (
 	"bytes"
+	"crypto/rand"
 	models "date-time-service/Models"
 	"date-time-service/utils"
+	"encoding/hex"
 	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+func GenerateCryptoID() string {
+	bytes := make([]byte, 16)
+	if _, err := rand.Read(bytes); err != nil {
+		panic(err)
+	}
+	return hex.EncodeToString(bytes)
+}
 
 func PostTime(c *gin.Context) {
 	var receivedData models.DataReceive
@@ -16,10 +26,10 @@ func PostTime(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
+	reactionIdentifyer := GenerateCryptoID()
 	db := utils.OpenDB(c)
 	_, err := db.Exec(c, "INSERT INTO \"TimeAction\" (user_mail, continent, city, hour, minute, reaction_service_id, reaction_id)"+
-		" VALUES($1, $2, $3, $4, $5, $6, $7)", receivedData.Token, receivedData.Continent, receivedData.City, receivedData.Hour, receivedData.Minute, receivedData.ReactionServiceId, 0) // remplacer le reaction_id par le token + la len stp petit con de Edward sale merde mange le caca
+		" VALUES($1, $2, $3, $4, $5, $6, $7)", receivedData.Token, receivedData.Continent, receivedData.City, receivedData.Hour, receivedData.Minute, receivedData.ReactionServiceId, reactionIdentifyer)
 	if err != nil {
 		c.JSON(http.StatusInsufficientStorage, gin.H{"error": err.Error()})
 		return
@@ -31,15 +41,21 @@ func PostTime(c *gin.Context) {
 		ServiceSenderId    int    `json:"service_sender_id"`
 		ServiceReceiverId  int    `json:"service_receiver_id"`
 		ActionId           int    `json:"action_id"`
-		ReactionIdentifyer int    `json:"reaction_identifyer"`
+		ReactionIdentifyer string `json:"reaction_identifyer"`
+		ReactionType       int    `json:"reaction_type"`
 		Message            string `json:"message"`
+		ServerId           string `json:"server_id"`
+		ChannelId          string `json:"channel_id"`
 	}{
 		receivedData.Token,
 		1,
-		2,
+		receivedData.ReactionServiceId,
 		0,
-		0,
+		reactionIdentifyer,
+		receivedData.ReactionType,
 		receivedData.Message,
+		receivedData.ServerId,
+		receivedData.ChannelId,
 	}
 	var buf bytes.Buffer
 	if err := json.NewEncoder(&buf).Encode(messageToSend); err != nil {
@@ -51,5 +67,5 @@ func PostTime(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusAccepted, gin.H{"status": resp.Body})
+	c.JSON(resp.StatusCode, gin.H{"status": resp.Body})
 }
