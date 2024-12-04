@@ -42,19 +42,20 @@ const Create: React.FC = () => {
 
 		const data = {
 			routes: "time",
-            token: "token",
+            token: "caca",
 			city: "Paris",
 			continent: "Europe",
             hour,
             minute,
+            reaction_type: 0,
             reaction_service_id: 2,
-            channel,
-            message
+            message,
+            channel_id: channel
 		};
 
         axios.post(url, data).then(() => {
 
-            console.log("Area created!");
+            window.location.href = "/";
 
         });
 
