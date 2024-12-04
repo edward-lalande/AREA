@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AreaBox } from "./elements/AreaBox";
 import { AreaLink } from "./elements/AreaLink";
+import { Alert, Snackbar } from "@mui/material";
 import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { Alert, Snackbar } from "@mui/material";
-
 import { AreaButton, DiscordButton } from "./elements/AreaButton";
 
 import axios from "axios";
@@ -18,6 +17,7 @@ const LoginForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
 
 	const [open, setOpen] = useState<boolean>(false);
+	const [popup, setPopup] = useState<Window | null>(null);
 
 	//eslint-disable-next-line
 	const [cookie, setCookie] = useCookies();
@@ -43,6 +43,35 @@ const LoginForm: React.FC = () => {
 	
 	}
 
+	const authDiscord = () => {
+
+		const url: string = "http://127.0.0.1:8083/oauth2";
+
+		axios.get(url).then((res) => {
+
+			const width = 500;
+			const height = 600;
+			const left = (window.innerWidth - width) / 2;
+			const top = (window.innerHeight - height) / 2;
+			
+			const popup = window.open(
+				res.data,
+				'_blank',
+				`width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
+			);
+
+			setPopup(popup);
+
+		});
+
+	}
+
+	useEffect(() => {
+
+		// Trigger l'URL de la popup //
+
+	}, [popup]);
+
 	return (
 
 		<AreaBox width="100vw" height="100vh" sx={{ background: "#F2F2F2" }} >
@@ -61,7 +90,7 @@ const LoginForm: React.FC = () => {
 
 				<AreaTextDivider text="or" />
 
-				<DiscordButton />
+				<DiscordButton onClick={authDiscord} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />

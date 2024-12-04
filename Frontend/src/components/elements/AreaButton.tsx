@@ -7,6 +7,11 @@ interface AreaButtonProps extends ButtonProps {
     text: string;
 }
 
+interface ServiceButtonProps extends ButtonProps {
+    text: string;
+    backgroundColor: string;
+}
+
 const AreaButton: React.FC<AreaButtonProps> = ({ text, ...props }) => {
     return (
         <Button
@@ -30,12 +35,37 @@ const AreaButton: React.FC<AreaButtonProps> = ({ text, ...props }) => {
     );
 };
 
-const CreateButton: React.FC<ButtonProps> = (props) => {
+const ServiceButton: React.FC<ServiceButtonProps> = ({ text, backgroundColor, ...props }) => {
     return (
         <Button
         variant="contained"
         fullWidth
-        href="/"
+        sx={{
+                backgroundColor,
+                color: "#fff",
+                borderRadius: 8,
+                fontWeight: "bold",
+                height: "8vw",
+                width: "8vw",
+                py: 1.5,
+                fontSize: "1rem",
+                textTransform: "none",
+                maxWidth: 400,
+                ...props.sx
+            }}
+            {...props}
+        >
+            {text}
+        </Button>
+    );
+};
+
+const CreateButton: React.FC<AreaButtonProps> = ({ text, ...props }) => {
+    return (
+        <Button
+        variant="contained"
+        fullWidth
+        href="/create"
         sx={{
                 backgroundColor: "#000",
                 color: "#fff",
@@ -51,7 +81,32 @@ const CreateButton: React.FC<ButtonProps> = (props) => {
             }}
             {...props}
         >
-            Create
+            {text}
+        </Button>
+    )
+};
+
+const AddButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <Button
+        variant="contained"
+        fullWidth
+        sx={{
+            color: "black",
+            backgroundColor: "white",
+            borderRadius: 10,
+            ml: 1,
+            fontWeight: "bold",
+            fontSize: "1.2em",
+            textTransform: "none",
+            width: "10%",
+            minWidth: 100,
+            height: "65%",
+            ...props.sx
+        }}
+            {...props}
+        >
+            Add
         </Button>
     )
 };
@@ -131,4 +186,4 @@ const DiscordButton: React.FC<ButtonProps> = (props) => {
     );
 };
 
-export { AreaButton, GoogleButton, DiscordButton, Logout, CreateButton };
+export { AreaButton, GoogleButton, DiscordButton, Logout, CreateButton, AddButton, ServiceButton };
