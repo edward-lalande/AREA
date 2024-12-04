@@ -4,6 +4,7 @@ import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'pages/password_page.dart';
 import 'pages/signup_page.dart';
+import 'pages/host_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +32,10 @@ GoRouter appRouter(BuildContext context) {
       GoRoute(
         path: '/login',
         builder: (context, state) => LoginPage(),
+      ),
+      GoRoute(
+        path: '/host',
+        builder: (context, state) => const HostPage(),
       ),
       GoRoute(
         path: '/home',

@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
                 fontSize: 0,
                 spaceBetweenIconAndText: 0,
                 onPressed: (context) {
-                    context.go('/home');
+                    context.go('/host');
                 },
               ),
               const Text(
