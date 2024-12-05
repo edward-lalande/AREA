@@ -123,20 +123,26 @@ class _SignUpPageState extends State<SignUpPage> {
                 textColor: Colors.white,
                 fontSize: 20,
                 spaceBetweenIconAndText: 10,
-
                 onPressed: (context) async {
-                  if (await sendSignUp(firstNameController.text, lastNameController.text,
-                    emailController.text, passwordController.text)) {
+                  bool tmp = await sendSignUp(
+                    body: {
+                      "routes": "sign-up",
+                      "mail": emailController.text,
+                      "password": passwordController.text,
+                      "name": firstNameController.text,
+                      "lastname": lastNameController.text
+                    }
+                  );
+                  if (tmp) {
                     if (context.mounted) {
                       context.go("/login");
                     }
+                  } else {
+                    if (context.mounted) {
+                      context.go("/signup");
+                    }
                   }
-                  else {
-                    context.mounted ? ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Veuillez entrer toutes les informations nécessaires')),
-                    ): null;
-                  }
-                },
+                }
               ),
 
               const MyDividerText(

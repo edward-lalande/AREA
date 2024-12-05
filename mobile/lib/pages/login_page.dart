@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../utils/post_request.dart';
 import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
 import '../myWidgets/my_title.dart';
@@ -102,16 +104,25 @@ class LoginPage extends StatelessWidget {
                   textColor: Colors.white,
                   fontSize: 20,
                   spaceBetweenIconAndText: 10,
-                  onPressed: (context) {
-                    if (usernameController.text.isNotEmpty
-                    && passwordController.text.isNotEmpty) {
-                      context.go('/home');
+                  onPressed: (context) async {
+                    bool tmp = await sendSignUp(
+                      body: {
+                        "routes": "login",
+                        "mail": usernameController.text,
+                        "password": passwordController.text
+                        }
+                    );
+                    if (tmp) {
+                      if (context.mounted) {
+                        context.go("/home");
+                      }
+
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Veuillez entrer vos informations de connexion')),
-                      );
+                      if (context.mounted) {
+                        context.go("/login");
+                      }
                     }
-                  },
+                  }
                 ),
                 const MyDividerText(
                   bgColor: Colors.white,
