@@ -5,7 +5,7 @@ import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { AreaButton, GoogleButton } from "./elements/AreaButton";
+import { AreaButton, DiscordButton } from "./elements/AreaButton";
 
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -66,7 +66,7 @@ const SignupForm: React.FC = () => {
 
 				<AreaTextDivider text="or" />
 
-				<GoogleButton />
+				<DiscordButton />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="Already on AREA?" sx={{ mr: 2 }} />

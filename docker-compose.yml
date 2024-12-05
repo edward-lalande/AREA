@@ -20,26 +20,36 @@ services:
     ports:
       - 8080:8080
 
+  message-brocker:
+    build: Backend/MessageBrocker
+    container_name: message-brocker
+    environment:
+      USER_API: http://user-services:8082/
+      TIME_API: http://time-services:8082/
+      DISCORD_API: http://discord:8083/
+    ports:
+      - 8084:8084
+
   user-services:
     build: Backend/Services/UserServices
     container_name: user-services
     environment: 
       PORT: 8081
       API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@user-services-db:5432/user
+      DB: postgresql://root:password@area-db:5432/area
       SECRET_KEY: PET
     ports:
       - 8081:8081
     depends_on:
-      - user-services-db
+      - area-db
 
-  user-services-db:
-    build: Backend/Services/UserServices/Database
-    container_name: user-services-db
+  area-db:
+    build: Backend/Database
+    container_name: area-db
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: user
+      POSTGRES_DB: area
     ports:
       - 5432:5432
     restart: always
@@ -51,22 +61,17 @@ services:
       PORT: 8082
       API_GATEWAY: http://api-gateway:8080/
       DATE_TIME_API: http://worldtimeapi.org/api/timezone/Etc/UTC
-      DB: postgresql://root:password@time-services-db:5433/time
+      DB: postgresql://root:password@area-db:5432/area
+      MESSAGE_BROCKER: "http://message-brocker:8084/"
     ports:
       - 8082:8082
     depends_on:
-      - time-services-db
-
-  time-services-db:
-    build: Backend/Services/DateTimeServices/Database
-    container_name: time-services-db
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: time
-    ports:
-      - 5433:5433
-    restart: always
+      - area-db
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./Backend/Services/DateTimeServices
+          target: /app
 
   discord:
     build: Backend/Services/Discord
@@ -74,19 +79,14 @@ services:
     environment:
       PORT: 8083
       API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@discord-db:5434/discord
+      MESSAGE_BROCKER: "http://message-brocker:8084/"
+      DB: postgresql://root:password@area-db:5432/area
+      CLIENT_ID: 1313077002005385236
+      CLIENT_SECRET: Ku7K2lQYvws_L-xp7ialrt11weriVHyk
+      REDIRECT_WEB: http://localhost:8083/callback
+      REDIRECT_MOBILE: http://localhost:8083/mobile-callback
+      BOT_TOKEN: MTMxMzA3NzAwMjAwNTM4NTIzNg.GATaQr.oeLw_BYAncCgHUoImxp1YK97Bn_NCgEIWkmDq4
     ports:
       - 8083:8083
     depends_on:
-      - discord-db
-
-  discord-db:
-    build: Backend/Services/Discord/Database
-    container_name: discord-db
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: discord
-    ports:
-      - 5434:5434
-    restart: always
+      - area-db
