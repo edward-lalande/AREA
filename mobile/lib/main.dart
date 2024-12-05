@@ -47,7 +47,7 @@ GoRouter appRouter(BuildContext context) {
       ),
       GoRoute(
         path: '/signup',
-        builder: (context, state) => SignUpPage(),
+        builder: (context, state) => const SignUpPage(),
       ),
     ],
      errorBuilder: (context, state) => const  Scaffold(
