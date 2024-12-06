@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
-import '../myWidgets/area_app_bar.dart';
+import '../myWidgets/my_title.dart';
 import '../myWidgets/my_divider_text.dart';
 
 class PasswordPage extends StatelessWidget {
@@ -12,36 +12,26 @@ class PasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
-      appBar: const MyAppBarArea(
-        appbartitle: Padding(
-          padding: EdgeInsets.only(top: 45),
-          child: Text(
-            "AREA",
-            style: TextStyle(
-              fontFamily: "Avenir",
-              fontSize: 65,
-            ),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
         children: [
-          Container(
-            color: Colors.white,
-            height: 100,
-            width: MediaQuery.sizeOf(context).width,
-            child: const Text(
-              "Reset Password",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "Avenir",
-                fontSize: 35,
-              ),
+          const MyTitle(
+              title: "AREA",
+              fontSize: 45,
+              padding: EdgeInsets.only(top: 80),
+              color: Colors.black
             ),
-          ),
+            const MyTitle(
+              title: "Reset Password",
+              fontSize: 30,
+              padding: EdgeInsets.only(top: 30, bottom: 50),
+              color: Colors.black
+            ),
           MyTextField(
             controller: emailController,
             obscureText: false,
@@ -104,10 +94,10 @@ class PasswordPage extends StatelessWidget {
             },
           ),
           Container(
-            height: 127,
+            height: 130,
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -129,7 +119,7 @@ class PasswordPage extends StatelessWidget {
                         decoration: TextDecoration.underline,
                         color: Colors.blue,
                         fontFamily: "Avenir",
-                        fontSize: 15,
+                        fontSize: 16,
                         decorationColor: Colors.blue,
                         decorationThickness: 2,
                       ),
@@ -140,12 +130,13 @@ class PasswordPage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 200,
+            height: 150,
             color: Colors.white,
           )
         ],
       ),
       )
+    ),
     );
   }
 }
