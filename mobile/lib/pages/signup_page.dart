@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../myWidgets/area_app_bar.dart';
+import '../myWidgets/my_title.dart';
 import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
 import '../myWidgets/my_divider_text.dart';
@@ -23,38 +23,25 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: const MyAppBarArea(
-        appbartitle: Padding(
-          padding: EdgeInsets.only(top: 45),
-          child: Text(
-            "AREA",
-            style: TextStyle(
-              fontFamily: "Avenir",
-              fontSize: 65,
-            ),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(0),
+        physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              Container(
-                color: Colors.white,
-                height: 100,
-                width: MediaQuery.sizeOf(context).width,
-                child: const Text(
-                  "Sign Up",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: "Avenir",
-                    fontSize: 35,
-                  ),
+              const MyTitle(
+                  title: "AREA",
+                  fontSize: 45,
+                  padding: EdgeInsets.only(top: 80),
+                  color: Colors.black
                 ),
-              ),
+                const MyTitle(
+                  title: "Sign Up",
+                  fontSize: 30,
+                  padding: EdgeInsets.only(top: 30, bottom: 50),
+                  color: Colors.black
+                ),
               // Prénom
               MyTextField(
                 controller: firstNameController,
@@ -63,7 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 hintTextColor: Colors.black,
                 bgColor: Colors.white,
                 fieldBgColor: Colors.white,
-                padding: const EdgeInsets.only(top: 50, bottom: 0, left: 35, right: 35),
+                padding: const EdgeInsets.only(top: 0, bottom: 0, left: 35, right: 35),
                 inputColor: Colors.black,
                 prefixIcon: const Icon(
                   Icons.person,
@@ -174,10 +161,10 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
 
               Container(
-                height: 210,
+                height: 130,
                 color: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -199,7 +186,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             decoration: TextDecoration.underline,
                             color: Colors.blue,
                             fontFamily: "Avenir",
-                            fontSize: 15,
+                            fontSize: 16,
                             decorationColor: Colors.blue,
                             decorationThickness: 2,
                           ),
@@ -211,8 +198,8 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ],
           ),
-        ),
       ),
+    ),
     );
   }
 }
