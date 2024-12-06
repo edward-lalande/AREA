@@ -23,10 +23,25 @@ class LoginPage extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
               children: [
+                  MyButton(title: "",
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black,
+                  padding: const EdgeInsets.only(top: 30, left: 25),
+                  fontSize: 0,
+                  spaceBetweenIconAndText: 0,
+                  prefixIcon: const Icon(
+                    size: 30,
+                    Icons.settings,
+
+                  ),
+                onPressed: (context) {
+                  context.go("/host");
+                })
+                ,
                 const MyTitle(
                   title: "AREA",
                   fontSize: 45,
-                  padding: EdgeInsets.only(top: 100),
+                  padding: EdgeInsets.only(top: 30),
                   color: Colors.black
                 ),
                 const MyTitle(
