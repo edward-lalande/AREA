@@ -22,7 +22,7 @@ func Trigger(c *gin.Context) {
 	}
 
 	db := utils.OpenDB(c)
-	row := db.QueryRow(c, "SELECT user_token, reaction_type, message, channel_id FROM \"DiscordReactions\" WHERE reaction_identifyer = $1", receivedData.ReactionIdentifyer)
+	row := db.QueryRow(c, "SELECT user_token, reaction_type, message, channel_id FROM \"DiscordReactions\" WHERE area_id = $1", receivedData.ReactionIdentifyer)
 
 	if err := row.Scan(&user.UserEmail, &user.ReactionType, &user.Message, &user.Channel); err != nil {
 		fmt.Println(err.Error())
