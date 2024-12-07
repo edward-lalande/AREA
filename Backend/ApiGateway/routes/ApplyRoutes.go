@@ -17,6 +17,8 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.GET("/services", Services)
 
+	r.POST("/area", Area)
+
 	r.GET("/user", UserGet)
 	r.POST("/user", UserPost)
 
