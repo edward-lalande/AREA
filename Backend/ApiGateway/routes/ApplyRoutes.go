@@ -26,5 +26,4 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/discord", DiscordPost)
 
 	r.GET("/time", GetTime)
-	r.POST("/time", PostTime)
 }
