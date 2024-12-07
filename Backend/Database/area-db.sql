@@ -8,18 +8,24 @@ CREATE TABLE IF NOT EXISTS "User" (
 
 CREATE TABLE IF NOT EXISTS "TimeAction" (
     id                  SERIAL PRIMARY KEY,
-    user_mail           VARCHAR(255),
+    area_id             VARCHAR(255),
     continent           VARCHAR(255),
     city                VARCHAR(255),
     hour                INT,
-    minute              INT,
-    reaction_service_id INT,
-    reaction_id         VARCHAR(255)
+    minute              INT
+);
+
+CREATE TABLE IF NOT EXISTS "Area" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          VARCHAR(255),
+    area_id             VARCHAR(255),
+    service_action_id   INT,
+    service_reaction_id INT
 );
 
 CREATE TABLE IF NOT EXISTS "DiscordReactions" (
     id                  SERIAL PRIMARY KEY,
-    reaction_identifyer VARCHAR(255),
+    area_id             VARCHAR(255),
     reaction_type       INT,
     user_token          VARCHAR(255),
     channel_id          VARCHAR(255),
@@ -29,6 +35,6 @@ CREATE TABLE IF NOT EXISTS "DiscordReactions" (
 CREATE TABLE IF NOT EXISTS "DiscordActions" (
     id                  SERIAL PRIMARY KEY,
     action_id           INT,
-    reaction_identifyer INT,
+    area_id             INT,
     user_token          VARCHAR(255)
 );
