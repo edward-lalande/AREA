@@ -1,11 +1,11 @@
 package models
 
 type ReactionReceiveData struct {
-	UserToken          string `json:"user_token"`
-	ReactionIdentifyer string `json:"reaction_identifyer"`
-	ReactionType       int    `json:"reaction_type"`
-	Message            string `json:"message"`
-	ChannelId          string `json:"channel_id"`
+	AreaId       string `json:"area_id"`
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	ChannelID    string `json:"channel_id"`
+	Message      string `json:"message"`
 }
 
 type ActiveReactionData struct {
