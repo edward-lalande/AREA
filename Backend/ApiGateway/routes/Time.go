@@ -11,6 +11,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func SendTime(areaId string, action models.TypeTimeAction, c *gin.Context) *http.Response {
+	var data models.TimeActionSend
+	data.AreaId = areaId
+	data.City = action.City
+	data.Continent = action.Continent
+	data.Hour = action.Hour
+	data.Minute = action.Minute
+
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("TIME_API")+"action", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+
+	return resp
+}
+
 func PostTime(c *gin.Context) {
 	var body models.TimeDataReceive
 
