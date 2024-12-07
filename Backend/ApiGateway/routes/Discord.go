@@ -11,6 +11,35 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context, receivedData models.TypeDiscordReaction) *http.Response {
+	sendingData := struct {
+		AreaId       string `json:"area_id"`
+		UserToken    string `json:"user_token"`
+		ReactionType int    `json:"reaction_type"`
+		ChannelID    string `json:"channel_id"`
+		Message      string `json:"message"`
+	}{
+		AreaId:       areaId,
+		UserToken:    userToken,
+		ReactionType: receivedData.ReactionType,
+		ChannelID:    receivedData.ChannelID,
+		Message:      receivedData.Message,
+	}
+
+	jsonBody, err := json.Marshal(sendingData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+	return resp
+}
+
 func DiscordGet(c *gin.Context) {
 	var data models.DiscordGet
 
