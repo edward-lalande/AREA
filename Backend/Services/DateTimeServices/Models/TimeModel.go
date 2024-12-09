@@ -17,6 +17,15 @@ type Database struct {
 	Minute    int    `json:"minute"`
 }
 
+type GetTimeAction struct {
+	ActionId   string `json:"action_id"`
+	ActionType string `json:"action_type"`
+	City       string `json:"city"`
+	Continent  string `json:"continent"`
+	Hour       int    `json:"hour"`
+	Minute     int    `json:"minute"`
+}
+
 // LAST
 type DataReceive struct {
 	Token             string `json:"token"`

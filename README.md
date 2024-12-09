@@ -23,7 +23,14 @@ This project is composed of three parts:
 
 We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Flutter*** for the Mobile.
 
-We will implement a Docker file later to simplify the usage and deployement of the application.
+## Usage
+
+To use the Application you only need to
+```sh
+    docker-compose up -d
+```
+
+And it will launch the application
 
 ## Documentation:
 

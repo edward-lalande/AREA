@@ -29,7 +29,7 @@ type TypeDiscordReaction struct {
 }
 
 type PayloadItem struct {
-	UserToken string           `json:"user_token"`
-	Action    *json.RawMessage `json:"action,omitempty"`
-	Reaction  *json.RawMessage `json:"reaction,omitempty"`
+	UserToken string             `json:"user_token"`
+	Action    *json.RawMessage   `json:"action,omitempty"`
+	Reactions []*json.RawMessage `json:"reactions,omitempty"`
 }

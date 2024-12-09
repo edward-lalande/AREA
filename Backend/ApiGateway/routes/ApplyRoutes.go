@@ -12,13 +12,16 @@ type PingFrom struct {
 }
 
 func ApplyRoutes(r *gin.Engine) {
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/ping", Ping)
+
+	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	r.GET("/services", Services)
 
 	r.POST("/area", Area)
 
+	r.POST("/webhooks-discord", DiscordWebHooks)
 	r.GET("/user", UserGet)
 	r.POST("/user", UserPost)
 

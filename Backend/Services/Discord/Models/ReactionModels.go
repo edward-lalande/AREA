@@ -8,6 +8,13 @@ type ReactionReceiveData struct {
 	Message      string `json:"message"`
 }
 
+type ReactionGet struct {
+	ReactionId   int    `json:"reaction_id"`
+	ReactionType int    `json:"reaction_type"`
+	ChannelID    string `json:"channel_id"`
+	Message      string `json:"message"`
+}
+
 type ActiveReactionData struct {
 	ServiceId int `json:"service_id"`
 	ActionId  int `json:"action_id"`

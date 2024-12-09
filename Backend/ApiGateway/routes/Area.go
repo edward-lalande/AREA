@@ -3,11 +3,9 @@ package routes
 import (
 	models "api-gateway/Models"
 	"api-gateway/utils"
-	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +30,7 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 		return nil
 	}
 
-	_, err := db.Exec(context.Background(), query, userToken, areaID, serviceActionID, serviceReactionID)
+	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
 	if err != nil {
 		return err
 	}
@@ -51,7 +49,6 @@ func Area(c *gin.Context) {
 
 	for _, item := range payload {
 		var action models.BaseAction
-		var reaction models.BaseReaction
 
 		if item.Action != nil {
 			if err := json.Unmarshal(*item.Action, &action); err != nil {
@@ -61,39 +58,44 @@ func Area(c *gin.Context) {
 
 			switch action.ActionID {
 			case 1:
-				var action models.TypeTimeAction
-				if err := json.Unmarshal(*item.Action, &action); err != nil {
+				var actionData models.TypeTimeAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
 					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type1 action data"})
 					return
 				}
-				resp := SendTime(areaID, action, c)
+				resp := SendTime(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
-		if item.Reaction != nil {
-			if err := json.Unmarshal(*item.Reaction, &reaction); err != nil {
-				c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reaction data"})
+		for _, reactionData := range item.Reactions {
+			var reaction models.BaseReaction
+			if err := json.Unmarshal(*reactionData, &reaction); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 				return
 			}
 
 			switch reaction.ReactionID {
 			case 2:
-				var reaction models.TypeDiscordReaction
-				if err := json.Unmarshal(*item.Reaction, &reaction); err != nil {
-					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type0 reaction data"})
+				var reactionDetail models.TypeDiscordReaction
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 					return
 				}
-				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reaction)
+				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
-		err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID)
-		if err != nil {
-			log.Printf("Failed to write area: %v", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write area"})
-			return
+		for _, reactionData := range item.Reactions {
+			var reaction models.BaseReaction
+			_ = json.Unmarshal(*reactionData, &reaction)
+
+			err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write area"})
+				return
+			}
 		}
 	}
 }

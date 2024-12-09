@@ -32,5 +32,6 @@ func sendMessage(information models.Reactions) (*http.Response, error) {
 func FindReactions(id int, information models.Reactions) (*http.Response, error) {
 	var Reactions map[int]func(models.Reactions) (*http.Response, error) = make(map[int]func(models.Reactions) (*http.Response, error))
 	Reactions[0] = sendMessage
+
 	return Reactions[id](information)
 }
