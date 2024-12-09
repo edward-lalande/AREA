@@ -7,8 +7,15 @@ import '../myWidgets/my_text_fields.dart';
 import '../myWidgets/my_title.dart';
 import '../myWidgets/my_divider_text.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -162,7 +169,6 @@ class LoginPage extends StatelessWidget {
                     child: Image.asset('assets/google.png'),
                   ),
                   onPressed: (context) {
-                    // OATH2
                     context.go('/home');
                   },
                 ),
