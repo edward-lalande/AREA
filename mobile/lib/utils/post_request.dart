@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -18,8 +17,11 @@ Future<bool> sendSignUp({Map<String, dynamic>? body}) async
 }
 
 
-Future<String> getOAuthUrl(String apiUrl) async
+Future<String> getOAuthUrl(String  service) async
 {
+    //url en dure discord => MVP dans 2 jours
+
+    final apiUrl = "http://127.0.0.1:8083/oauth2";
     try {
 
       final response = await http.get(Uri.parse(apiUrl));
@@ -40,15 +42,16 @@ Future<String> getOAuthUrl(String apiUrl) async
 
 //class exeption + secure+strorage
 
-void logByOAuth(BuildContext context, String apiUrl) async
+/*void logByOAuth(BuildContext context, String apiUrl) async
 {
+
     try {
         String fetchedUrl = await getOAuthUrl(apiUrl);
 
         if (context.mounted) {
-            context.go(fetchedUrl);
+            print(fetchedUrl);
         }
     } catch (e) {
         print("ERRORRRR");
     }
-}
+}*/

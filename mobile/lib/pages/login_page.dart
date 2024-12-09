@@ -6,6 +6,7 @@ import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
 import '../myWidgets/my_title.dart';
 import '../myWidgets/my_divider_text.dart';
+import '../myWidgets/my_web_view.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 MyButton(
                   padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
-                  title: "Continue with Google",
+                  title: "Continue with Discord",
                   backgroundColor: Colors.black,
                   textColor: Colors.white,
                   fontSize: 17,
@@ -168,8 +169,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: Image.asset('assets/google.png'),
                   ),
-                  onPressed: (context) {
-                    context.go('/home');
+                  onPressed: (context) async {
+                      String url = await getOAuthUrl("discord");
+                      if (context.mounted) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WebViewPage(url: url),
+                          ),
+                        );
+                      }
                   },
                 ),
                 Container(
