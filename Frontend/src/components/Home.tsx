@@ -6,9 +6,12 @@ import { AreaTypography } from "./elements/AreaTypography";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import axios from "axios";
+import { ServiceButton } from "./elements/AreaButton";
 
 interface Service {
+	id: number;
 	name: string;
+	color: string;
 }
 
 const Home: React.FC = () => {
@@ -21,17 +24,16 @@ const Home: React.FC = () => {
 
 		axios.get(url).then((res) => {
 
-            setServices(res.data);
+			console.log(res.data);
+			setServices(res.data.services);
 
         });
 
 	};
 
 	useEffect(() => {
-
 		getServices();
-
-	}, [services]);
+	}, []);
 
 	return (
 
@@ -45,9 +47,13 @@ const Home: React.FC = () => {
 
 					<AreaTypography variant="h2" text="Services" />
 
-					{services && services.map<JSX.Element>((service: Service) => {
-						return (<p>service.name</p>);
-					})}
+					<AreaBox sx={{ height: "30vh", width: "98vw", flexDirection: "row", gap: 5 }}>
+
+						{services && services.map<JSX.Element>((service: Service) => {
+							return (<ServiceButton key={service.id} text={service.name} backgroundColor={service.color} />);
+						})}
+
+					</AreaBox>
 
 				</AreaBox> 
 
