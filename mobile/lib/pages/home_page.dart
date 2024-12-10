@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                             activeIcon: Icon(Icons.my_library_add_outlined),
                             icon: Icon(
                                 color: Colors.black,
-                                Icons.my_library_add,
+                                Icons.my_library_books,
                             ),
                             label: "MyArea's",
                         ),
