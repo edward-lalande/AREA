@@ -3,12 +3,24 @@ package routes
 import (
 	"context"
 	"net/http"
-	"poc-crud-users/Models"
+	models "poc-crud-users/Models"
 	"poc-crud-users/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
+// DeleteUser deletes a user from the database.
+//
+// @Summary Delete a user
+// @Description Deletes a user from the "User" table in the database using the provided user ID.
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id body models.LoginId true "User ID"
+// @Success 200 {object} map[string]interface{} "Confirmation of the deleted user"
+// @Failure 400 {object} map[string]interface{} "Bad Request: Invalid input"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /user [delete]
 func DeleteUser(c *gin.Context) {
 	var receivedData models.LoginId
 	var user models.User
