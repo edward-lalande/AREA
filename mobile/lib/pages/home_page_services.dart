@@ -48,6 +48,7 @@ class _HomePageServicesState extends State<HomePageServices> {
                                     padding: const EdgeInsets.only(),
                                 )
                             ),
+                            const SizedBox(width: 5,),
                             Card(
                                 elevation: 7,
                                 child: SampleCard(
