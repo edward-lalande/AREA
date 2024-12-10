@@ -8,6 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Post Time Actions
+// @Summary Post an Actions
+// @Description Post an time actions, receive by the Message Brocker (handler of communication between services) and register it to him database
+// @Tags Actions Date Time services
+// @Accept json
+// @Produce json
+// @Param routes body models.TimeActionReceive true "It contains the Area Id, the location and the time of the Area"
+// @Success 200 {object} map[string]string "Response is the Id of the Area"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /actions [post]
 func RegisterAction(c *gin.Context) {
 	var dataReceived models.TimeActionReceive
 	db := utils.OpenDB(c)
