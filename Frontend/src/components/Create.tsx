@@ -43,19 +43,19 @@ const Create: React.FC = () => {
 		const data = [{
             user_token: "AREA",
             action: {
-                action_id: 2,
+                action_id: 1,
                 action_type: 0,
                 continent: "Europe",
                 city: "Paris",
                 hour,   
                 minute
             },
-            reaction: {
-                reaction_id: 3,
+            reactions: [{
+                reaction_id: 2,
                 reaction_type: 0,
                 channel_id: channel,
                 message
-            }
+            }]
 		}];
 
         axios.post(url, data).then(() => {

@@ -16,5 +16,5 @@ import (
 // @Success 200 {object} models.GetTimeAction "Reactions name with parameters of it as object"
 // @Router /actions [get]
 func GetActions(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"actions": gin.H{"At time": models.GetTimeAction{}}})
+	c.JSON(http.StatusOK, gin.H{"actions": gin.H{"At time": models.GetTimeAction{1, 0, "", "", 0, 0}}})
 }

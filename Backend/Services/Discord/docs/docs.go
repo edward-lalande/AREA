@@ -162,10 +162,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Response is the received data",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.ReactionGet"
                         }
                     },
                     "400": {
@@ -313,6 +310,23 @@ const docTemplate = `{
                 },
                 "user_token": {
                     "type": "string"
+                }
+            }
+        },
+        "models.ReactionGet": {
+            "type": "object",
+            "properties": {
+                "channel_id": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "reaction_id": {
+                    "type": "integer"
+                },
+                "reaction_type": {
+                    "type": "integer"
                 }
             }
         },

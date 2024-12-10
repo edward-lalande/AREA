@@ -18,8 +18,8 @@ type Database struct {
 }
 
 type GetTimeAction struct {
-	ActionId   string `json:"action_id"`
-	ActionType string `json:"action_type"`
+	ActionId   int    `json:"action_id"`
+	ActionType int    `json:"action_type"`
 	City       string `json:"city"`
 	Continent  string `json:"continent"`
 	Hour       int    `json:"hour"`

@@ -9,6 +9,17 @@ definitions:
     - access_token
     - user_token
     type: object
+  models.ReactionGet:
+    properties:
+      channel_id:
+        type: string
+      message:
+        type: string
+      reaction_id:
+        type: integer
+      reaction_type:
+        type: integer
+    type: object
   models.ReactionReceiveData:
     properties:
       area_id:
@@ -129,9 +140,7 @@ paths:
         "200":
           description: Response is the received data
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.ReactionGet'
         "400":
           description: Invalid request it contains the error
           schema:
