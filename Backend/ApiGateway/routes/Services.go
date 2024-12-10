@@ -8,25 +8,24 @@ import (
 )
 
 type serviceList struct {
-	name string
-	url  string
-	isUp bool
+	name  string
+	url   string
+	color string
 }
 
 func Services(c *gin.Context) {
 	var servicesArray []serviceList
-	var uppedServices []string
+	var uppedServices []serviceList
 
-	servicesArray = append(servicesArray, serviceList{"User Services", utils.GetEnvKey("USER_API"), false})
-	servicesArray = append(servicesArray, serviceList{"Date Time Services", utils.GetEnvKey("TIME_API"), false})
-	servicesArray = append(servicesArray, serviceList{"Discord Services", utils.GetEnvKey("DISCORD_API"), false})
+	servicesArray = append(servicesArray, serviceList{"Date Time Services", utils.GetEnvKey("TIME_API"), "white"})
+	servicesArray = append(servicesArray, serviceList{"Discord Services", utils.GetEnvKey("DISCORD_API"), "purple"})
 
 	for _, service := range servicesArray {
 		_, err := http.Get(service.url + "ping")
 		if err != nil {
 			continue
 		}
-		uppedServices = append(uppedServices, service.name)
+		uppedServices = append(uppedServices, service)
 	}
 
 	c.JSON(http.StatusOK, uppedServices)

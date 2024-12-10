@@ -6,11 +6,6 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-type PingFrom struct {
-	UserServices     bool
-	DateTimeServices bool
-}
-
 func ApplyRoutes(r *gin.Engine) {
 	r.GET("/ping", Ping)
 
@@ -20,6 +15,9 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/services", Services)
 
 	r.POST("/area", Area)
+
+	r.GET("/actions", GetActions)
+	r.GET("/reactions", GetReactions)
 
 	r.POST("/webhooks-discord", DiscordWebHooks)
 	r.GET("/user", UserGet)

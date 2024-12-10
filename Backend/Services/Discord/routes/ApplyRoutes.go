@@ -17,9 +17,11 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/access-token", oauth.GetAccessToken)
 	r.POST("/register", RegisterToken)
 
-	// r.GET("/webhooks", WebHooksHandling)
-
+	r.GET("/actions", func(c *gin.Context) {
+		c.JSON(http.StatusAccepted, nil)
+	})
 	r.GET("/reactions", GetReactions)
+
 	r.POST("/reaction", ReceivedReactions)
 
 	r.POST("/active-reactions", ActiveReactions)

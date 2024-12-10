@@ -11,7 +11,12 @@ func ApplyRoutes(r *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{"ping": "pong"})
 	})
 
-	r.GET("/time", GetActions)
+	r.GET("/actions", GetActions)
+
+	r.GET("/reactions", func(c *gin.Context) {
+		c.JSON(http.StatusAccepted, nil)
+	})
+
 	r.POST("/action", RegisterAction)
 	r.POST("/time", PostTime)
 }
