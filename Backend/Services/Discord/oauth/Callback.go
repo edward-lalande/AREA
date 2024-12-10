@@ -15,6 +15,11 @@ import (
 // @Success 200 {object} map[string]string "the code to redirect to"
 // @Router /callback [get]
 func CallBack(c *gin.Context) {
-	code, _ := c.GetQuery("code")
-	c.JSON(http.StatusOK, gin.H{"code": code})
+	code, exists := c.GetQuery("code")
+	if !exists {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing code"})
+		return
+	}
+	redirectURL := "http://localhost:3000/login?code=" + code
+	c.Redirect(http.StatusFound, redirectURL)
 }

@@ -10,6 +10,7 @@ import { AreaButton, DiscordButton } from "./elements/AreaButton";
 
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
 
@@ -17,10 +18,21 @@ const LoginForm: React.FC = () => {
     const [password, setPassword] = useState<string>("");
 
 	const [open, setOpen] = useState<boolean>(false);
-	const [popup, setPopup] = useState<Window | null>(null);
 
 	//eslint-disable-next-line
 	const [cookie, setCookie] = useCookies();
+
+	const [searchParams] = useSearchParams();
+
+	useEffect(() => {
+
+		const code = searchParams.get("code");
+
+		if (code) {
+			getToken(code);
+		}
+
+	}, [searchParams]);
 
 	const login = (email: string, password: string) => {
 
@@ -49,28 +61,22 @@ const LoginForm: React.FC = () => {
 
 		axios.get(url).then((res) => {
 
-			const width = 500;
-			const height = 600;
-			const left = (window.innerWidth - width) / 2;
-			const top = (window.innerHeight - height) / 2;
-			
-			const popup = window.open(
-				res.data,
-				'_blank',
-				`width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
-			);
-
-			setPopup(popup);
+			window.location.href = res.data;
 
 		});
 
 	}
 
-	useEffect(() => {
+	const getToken = (code: string) => {
 
-		// Trigger l'URL de la popup //
+		const url: string = "http://127.0.0.1:8083/access-token";
 
-	}, [popup]);
+		axios.post(url, { code }).then((res) => {
+			setCookie("token", res.data.body.access_token);
+			window.location.href = "/";
+		});
+		
+	}
 
 	return (
 
