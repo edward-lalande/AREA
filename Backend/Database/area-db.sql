@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS "Area" (
     service_reaction_id INT
 );
 
+CREATE TABLE IF NOT EXISTS "DiscordUser" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          VARCHAR(255),
+    access_token        VARCHAR(255)
+);
+
 CREATE TABLE IF NOT EXISTS "DiscordReactions" (
     id                  SERIAL PRIMARY KEY,
     area_id             VARCHAR(255),
