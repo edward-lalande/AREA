@@ -10,6 +10,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Discord Services
+// @Summary Trigger an Area
+// @Description Actions triggerd the reactions and call the trigger route
+// @Tags Discord trigger
+// @Accept json
+// @Produce json
+// @Param routes body models.TriggerdModels true "It contains the Area Id to the reactions"
+// @Success 200 {object} map[string]string "Response of the reactions"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /trigger [post]
 func Trigger(c *gin.Context) {
 	var (
 		receivedData models.TriggerdModels
