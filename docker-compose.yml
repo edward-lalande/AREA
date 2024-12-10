@@ -34,12 +34,12 @@ services:
     build: Backend/Services/UserServices
     container_name: user-services
     environment: 
-      PORT: 8081
+      PORT: 8085
       API_GATEWAY: http://api-gateway:8080/
       DB: postgresql://root:password@area-db:5432/area
       SECRET_KEY: PET
     ports:
-      - 8081:8081
+      - 8085:8085
     depends_on:
       - area-db
 
