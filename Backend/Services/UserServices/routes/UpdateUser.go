@@ -9,6 +9,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UpdateUser updates an existing user's information in the database.
+//
+// @Summary Update user information
+// @Description Updates a user's details such as email, password, first name, and last name in the "User" table.
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body models.UserInformation true "User information to update"
+// @Success 200 {object} map[string]interface{} "Confirmation of the updated user"
+// @Failure 400 {object} map[string]interface{} "Bad Request: Invalid input or user not found"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /user [post]
 func UpdateUser(c *gin.Context) {
 	var receivedData models.UserInformation
 	var user models.User
