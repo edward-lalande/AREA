@@ -38,20 +38,25 @@ const Create: React.FC = () => {
 
     const createArea = (hour: number, minute: number, channel: string, message: string) => {
 
-        const url: string = "http://127.0.0.1:8080/time";
+        const url: string = "http://127.0.0.1:8080/area";
 
-		const data = {
-			routes: "time",
-            token: "caca",
-			city: "Paris",
-			continent: "Europe",
-            hour,
-            minute,
-            reaction_type: 0,
-            reaction_service_id: 2,
-            message,
-            channel_id: channel
-		};
+		const data = [{
+            user_token: "AREA",
+            action: {
+                action_id: 2,
+                action_type: 0,
+                continent: "Europe",
+                city: "Paris",
+                hour,   
+                minute
+            },
+            reaction: {
+                reaction_id: 3,
+                reaction_type: 0,
+                channel_id: channel,
+                message
+            }
+		}];
 
         axios.post(url, data).then(() => {
 
