@@ -46,6 +46,17 @@ func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context,
 	return resp
 }
 
+// Get Discord services
+// @Summary Get Data from discord services
+// @Description Get data from discord like ping, access-token...
+// @Tags Discord api-gateway
+// @Accept json
+// @Produce json
+// @Param routes body models.DiscordGet true "routes you would like to access to Discord"
+// @Success 200 {object} map[string]string "Response of Discord"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /discord [get]
 func DiscordGet(c *gin.Context) {
 	var data models.DiscordGet
 
@@ -71,6 +82,17 @@ func DiscordGet(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// Post Discord services
+// @Summary Post Data to discord services
+// @Description Post data to discord for oauth
+// @Tags Discord api-gateway
+// @Accept json
+// @Produce json
+// @Param routes body models.DiscordPost true "routes you would like to access to Discord, code of the user and token of him if already exists"
+// @Success 200 {object} map[string]string "Response of Discord"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /discord [post]
 func DiscordPost(c *gin.Context) {
 	var (
 		data        models.DiscordPost

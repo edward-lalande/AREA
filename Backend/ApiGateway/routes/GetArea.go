@@ -19,6 +19,15 @@ type reactionsList struct {
 	url  string
 }
 
+// Get Actions of all services
+// @Summary Get actions from all services
+// @Description Get actions from all services
+// @Tags Area api-gateway
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Actions name with parameters of it as object"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /actions [get]
 func GetActions(c *gin.Context) {
 	var servicesArray []actionsList
 	var actions []map[string]interface{}
@@ -47,6 +56,15 @@ func GetActions(c *gin.Context) {
 	c.JSON(http.StatusOK, actions)
 }
 
+// Get Reactions of all services
+// @Summary Get reactions from all services
+// @Description Get reactions from all services
+// @Tags Area api-gateway
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Reactions name with parameters of it as object"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /reactions [get]
 func GetReactions(c *gin.Context) {
 	var servicesArray []reactionsList
 	var reactions []any

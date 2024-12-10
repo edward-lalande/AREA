@@ -18,8 +18,6 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 	accessTokenUrl := "https://discord.com/api/oauth2/token"
-	// userToken, _ := c.GetQuery("token")
-	// db := utils.OpenDB(c)
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))

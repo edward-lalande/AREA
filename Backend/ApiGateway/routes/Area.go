@@ -38,6 +38,17 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 	return nil
 }
 
+// Create Area doc
+// @Summary Create a new actions-reactions or actions-multiple reactions
+// @Description Create a new combination of action and reaction (Area) for a users
+// @Tags Area api-gateway
+// @Accept json
+// @Produce json
+// @Param payload body []models.PayloadItem true "Data for all actions-reactions"
+// @Success 200 {object} map[string]string "Response of all Services with the details of the executions"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /area [post]
 func Area(c *gin.Context) {
 	var payload []models.PayloadItem
 	areaID := GenerateCryptoID()
