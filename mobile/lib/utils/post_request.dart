@@ -1,26 +1,35 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<bool> sendSignUp({Map<String, dynamic>? body}) async
+Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
 {
+  //'http://127.0.0.1:8080/user'
 
+  try {
     final response = await http.post(
-        Uri.parse('http://127.0.0.1:8080/user'),
-        body: json.encode(body),
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(body),
     );
     if (response.statusCode == 200) {
-        return true;
+      return true;
     } else {
-        return false;
+      print('ERRRORR : ${response.statusCode}, ${response.body}');
+      return false;
     }
+  } catch (e) {
+    print('ERRORRRRR : $e');
+    return false;
+  }
 }
 
 
 Future<String> getOAuthUrl(String  service) async
 {
     //url en dure discord => MVP dans 2 jours
+    // "http://10.0.2.2:8083/oauth2"
 
-    final apiUrl = "http://127.0.0.1:8083/oauth2";
+    final apiUrl = "http://10.0.2.2:8083/oauth2";
     try {
 
       final response = await http.get(Uri.parse(apiUrl));
