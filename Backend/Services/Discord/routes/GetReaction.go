@@ -8,5 +8,5 @@ import (
 )
 
 func GetReactions(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"reactions": models.ReactionGet{}})
+	c.JSON(http.StatusOK, gin.H{"reactions": gin.H{"Send message on channel":models.ReactionGet{}}})
 }
