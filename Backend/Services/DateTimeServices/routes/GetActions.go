@@ -8,5 +8,5 @@ import (
 )
 
 func GetActions(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"actions": models.GetTimeAction{}})
+	c.JSON(http.StatusOK, gin.H{"actions": gin.H{"At time": models.GetTimeAction{}}})
 }
