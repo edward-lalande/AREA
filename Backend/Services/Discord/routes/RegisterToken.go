@@ -9,6 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Discord Services
+// @Summary Register a token
+// @Description Register the token of the user to an associated token if exists in the user database
+// @Tags Discord OAUTH2
+// @Accept json
+// @Produce json
+// @Param routes body models.OauthInformationSignUp true "It must contains the access token of discord and the user token if exists"
+// @Success 200 {object} map[string]string "Response of the reactions"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /register [post]
 func RegisterToken(c *gin.Context) {
 	var oauthInfo models.OauthInformationSignUp
 
