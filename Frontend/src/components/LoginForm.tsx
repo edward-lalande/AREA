@@ -10,7 +10,7 @@ import { AreaButton, DiscordButton } from "./elements/AreaButton";
 
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
 
@@ -23,16 +23,6 @@ const LoginForm: React.FC = () => {
 	const [cookie, setCookie] = useCookies();
 
 	const [searchParams] = useSearchParams();
-
-	useEffect(() => {
-
-		const code = searchParams.get("code");
-
-		if (code) {
-			getToken(code);
-		}
-
-	}, [searchParams]);
 
 	const login = (email: string, password: string) => {
 
@@ -77,6 +67,16 @@ const LoginForm: React.FC = () => {
 		});
 		
 	}
+
+	useEffect(() => {
+
+		const code = searchParams.get("code");
+
+		if (code) {
+			getToken(code);
+		}
+
+	}, [, searchParams]);
 
 	return (
 
