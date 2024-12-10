@@ -1,6 +1,8 @@
 package routes
 
 import (
+	_ "api-gateway/docs"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -9,9 +11,7 @@ import (
 func ApplyRoutes(r *gin.Engine) {
 	r.GET("/ping", Ping)
 
-	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/services", Services)
 
 	r.POST("/area", Area)

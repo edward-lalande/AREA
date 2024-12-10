@@ -15,6 +15,15 @@ type serviceList struct {
 	Color            string `json:"color"`
 }
 
+// Get Up services
+// @Summary Get all services up
+// @Description Get services up with name to display, routes to call it to the api-gateway, url and color to display
+// @Tags Area api-gateway
+// @Accept json
+// @Produce json
+// @Success 200 {object} serviceList "services up with name to display, routes to call it to the api-gateway, url and color to display"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /services [get]
 func Services(c *gin.Context) {
 	var servicesArray []serviceList
 	var uppedServices []serviceList
