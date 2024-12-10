@@ -31,7 +31,7 @@ GoRouter appRouter(BuildContext context) {
     routes: [
        GoRoute(
         path: '/',
-        builder: (context, state) => LoginPage(),
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: '/login',

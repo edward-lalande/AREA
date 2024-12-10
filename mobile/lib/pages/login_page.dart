@@ -48,78 +48,78 @@ class _LoginPageState extends State<LoginPage> {
                     })
                     ,
                     const MyTitle(
-                    title: "AREA",
-                    fontSize: 45,
-                    padding: EdgeInsets.only(top: 30),
-                    color: Colors.black
+                        title: "AREA",
+                        fontSize: 45,
+                        padding: EdgeInsets.only(top: 30),
+                        color: Colors.black
                     ),
                     const MyTitle(
-                    title: "Log in",
-                    fontSize: 30,
-                    padding: EdgeInsets.only(top: 30, bottom: 50),
-                    color: Colors.black
+                        title: "Log in",
+                        fontSize: 30,
+                        padding: EdgeInsets.only(top: 30, bottom: 50),
+                        color: Colors.black
                     ),
                     MyTextField(
-                    controller: usernameController,
-                    obscureText: false,
-                    hintText: "Email",
-                    hintTextColor: Colors.black,
-                    bgColor: Colors.white,
-                    fieldBgColor: Colors.white,
-                    padding: const EdgeInsets.only(top: 0, bottom: 0, left: 35, right: 35),
-                    inputColor: Colors.black,
-                    prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.black,
-                    ),
-                    ),
-                    MyTextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    hintText: "Password",
-                    hintTextColor: Colors.black,
-                    bgColor: Colors.white,
-                    fieldBgColor: Colors.white,
-                    padding: const EdgeInsets.only(top: 50, bottom: 0, left: 35, right: 35),
-                    inputColor: Colors.black,
-                    prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Colors.black,
-                    ),
-                    ),
-                    Container(
-                    color: Colors.white,
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 36, top: 6),
-                        child: Row(
-                        children: [
-                            const Text(
-                            "Forget your",
-                            style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w300),
-                            ),
-                            const SizedBox(width: 7),
-                            GestureDetector(
-                            onTap: () {
-                                context.go('/password');
-                            },
-                            child: const Text(
-                                "Password",
-                                style: TextStyle(
-                                fontFamily: 'Avenir',
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.blue,
-                                decorationThickness: 2,
-                                ),
-                            ),
-                            ),
-                            const Text(
-                            "  ?",
-                            style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w900),
-                            ),
-                        ],
+                        controller: usernameController,
+                        obscureText: false,
+                        hintText: "Email",
+                        hintTextColor: Colors.black,
+                        bgColor: Colors.white,
+                        fieldBgColor: Colors.white,
+                        padding: const EdgeInsets.only(top: 0, bottom: 0, left: 35, right: 35),
+                        inputColor: Colors.black,
+                        prefixIcon: const Icon(
+                            Icons.email,
+                            color: Colors.black,
                         ),
                     ),
+                    MyTextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        hintText: "Password",
+                        hintTextColor: Colors.black,
+                        bgColor: Colors.white,
+                        fieldBgColor: Colors.white,
+                        padding: const EdgeInsets.only(top: 50, bottom: 0, left: 35, right: 35),
+                        inputColor: Colors.black,
+                        prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Colors.black,
+                        ),
+                    ),
+                    Container(
+                        color: Colors.white,
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 36, top: 6),
+                            child: Row(
+                            children: [
+                                const Text(
+                                "Forget your",
+                                style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w300),
+                                ),
+                                const SizedBox(width: 7),
+                                GestureDetector(
+                                onTap: () {
+                                    context.go('/password');
+                                },
+                                child: const Text(
+                                    "Password",
+                                    style: TextStyle(
+                                    fontFamily: 'Avenir',
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue,
+                                    decorationThickness: 2,
+                                    ),
+                                ),
+                                ),
+                                const Text(
+                                    "  ?",
+                                    style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w900),
+                                ),
+                            ],
+                            ),
+                        ),
                     ),
                     MyButton(
                     padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
