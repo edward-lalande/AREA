@@ -19,8 +19,8 @@ func Services(c *gin.Context) {
 	var servicesArray []serviceList
 	var uppedServices []serviceList
 
-	servicesArray = append(servicesArray, serviceList{"Date Time Services", "time", utils.GetEnvKey("TIME_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Discord Services", "discord", utils.GetEnvKey("DISCORD_API"), "purple"})
+	servicesArray = append(servicesArray, serviceList{"Date Time Services", "time", utils.GetEnvKey("TIME_API"), "#b3b3b3"})
+	servicesArray = append(servicesArray, serviceList{"Discord Services", "discord", utils.GetEnvKey("DISCORD_API"), "#7289da"})
 
 	for _, service := range servicesArray {
 		fmt.Println("call: ", service.Url+"ping")
