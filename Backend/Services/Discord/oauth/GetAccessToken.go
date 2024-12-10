@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Discord OAUTH2
+// @Summary Get
+// @Description Send the code received by the frontend to get the discord access-token of the user
+// @Tags Discord OAUTH2
+// @Accept json
+// @Produce json
+// @Params object models.OauthInformation true "The code must be send as object and the token is not necessary, it can be null"
+// @Success 200 {object} map[string]string "the code to redirect to"
+// @Router /access-token [post]
 func GetAccessToken(c *gin.Context) {
 	var receivedData models.OauthInformation
 
