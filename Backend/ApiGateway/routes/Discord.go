@@ -11,6 +11,52 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func DiscordWebHooks(c *gin.Context) {
+	var a any
+	c.ShouldBindJSON(&a)
+	c.JSON(http.StatusAccepted, a)
+}
+
+func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context, receivedData models.TypeDiscordReaction) *http.Response {
+	sendingData := struct {
+		AreaId       string `json:"area_id"`
+		UserToken    string `json:"user_token"`
+		ReactionType int    `json:"reaction_type"`
+		ChannelID    string `json:"channel_id"`
+		Message      string `json:"message"`
+	}{
+		AreaId:       areaId,
+		UserToken:    userToken,
+		ReactionType: receivedData.ReactionType,
+		ChannelID:    receivedData.ChannelID,
+		Message:      receivedData.Message,
+	}
+
+	jsonBody, err := json.Marshal(sendingData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+	return resp
+}
+
+// Get Discord services
+// @Summary Get Data from discord services
+// @Description Get data from discord like ping, access-token...
+// @Tags Discord api-gateway
+// @Accept json
+// @Produce json
+// @Param routes body models.DiscordGet true "routes you would like to access to Discord"
+// @Success 200 {object} map[string]string "Response of Discord"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /discord [get]
 func DiscordGet(c *gin.Context) {
 	var data models.DiscordGet
 
@@ -36,6 +82,17 @@ func DiscordGet(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// Post Discord services
+// @Summary Post Data to discord services
+// @Description Post data to discord for oauth
+// @Tags Discord api-gateway
+// @Accept json
+// @Produce json
+// @Param routes body models.DiscordPost true "routes you would like to access to Discord, code of the user and token of him if already exists"
+// @Success 200 {object} map[string]string "Response of Discord"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /discord [post]
 func DiscordPost(c *gin.Context) {
 	var (
 		data        models.DiscordPost

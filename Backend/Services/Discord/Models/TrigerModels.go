@@ -1,7 +1,7 @@
 package models
 
 type TriggerdModels struct {
-	ReactionIdentifyer string `json:"reaction_identifyer"`
+	ReactionIdentifyer string `json:"area_id"`
 }
 
 type TriggerdUserModel struct {

@@ -1,0 +1,84 @@
+definitions:
+  models.GetTimeAction:
+    properties:
+      action_id:
+        type: string
+      action_type:
+        type: string
+      city:
+        type: string
+      continent:
+        type: string
+      hour:
+        type: integer
+      minute:
+        type: integer
+    type: object
+  models.TimeActionReceive:
+    properties:
+      area_id:
+        type: string
+      city:
+        type: string
+      continent:
+        type: string
+      hour:
+        type: integer
+      minute:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: Get Actions from Date Time services
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reactions name with parameters of it as object
+          schema:
+            $ref: '#/definitions/models.GetTimeAction'
+      summary: Get Actions from Date Time services
+      tags:
+      - Actions Date Time services
+    post:
+      consumes:
+      - application/json
+      description: Post an time actions, receive by the Message Brocker (handler of
+        communication between services) and register it to him database
+      parameters:
+      - description: It contains the Area Id, the location and the time of the Area
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.TimeActionReceive'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response of Discord
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Post an Actions
+      tags:
+      - Actions Date Time services
+swagger: "2.0"

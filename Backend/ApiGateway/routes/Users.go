@@ -11,6 +11,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Get User services
+// @Summary Get to the user services
+// @Description Routes get user services
+// @Tags User api-gateway
+// @Accept json
+// @Produce json
+// @Param Object body models.UsersGet true "routes wanted to the user services"
+// @Success 200 {object} map[string]string "User services responses"
+// @Failure 400 {object} map[string]string "Bad requests"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /user [get]
 func UserGet(c *gin.Context) {
 	var body models.UsersGet
 	c.ShouldBindJSON(&body)
@@ -35,6 +46,17 @@ func UserGet(c *gin.Context) {
 	})
 }
 
+// Post User services
+// @Summary Post a new users to the user database without OAUTH2 or login
+// @Description Routes to add a new user to the database
+// @Tags User api-gateway
+// @Accept json
+// @Produce json
+// @Param Object body models.UserInformation true "user information to login or sign-up"
+// @Success 200 {string} string "User Token"
+// @Failure 400 {object} map[string]string "Bad requests"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /user [post]
 func UserPost(c *gin.Context) {
 	var body models.UserInformation
 	if err := c.ShouldBindJSON(&body); err != nil {

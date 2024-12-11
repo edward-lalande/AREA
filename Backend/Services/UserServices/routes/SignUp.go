@@ -31,6 +31,19 @@ func writeInDB(receivedData SignUp, db *pgx.Conn) error {
 	return dbExecError
 }
 
+// SignUpUserHandler registers a new user and generates an authentication token.
+//
+// @Summary User registration
+// @Description Registers a new user by saving their details in the database. If successful, a JWT token is generated and returned.
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param user body SignUp true "User details for registration"
+// @Success 200 {object} map[string]interface{} "JWT token for authentication"
+// @Failure 400 {object} map[string]interface{} "Bad Request: User already exists or invalid input"
+// @Failure 502 {object} map[string]interface{} "Bad Gateway: Error parsing request data"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /signup [post]
 func SignUpUserHandler(c *gin.Context) {
 	var (
 		receivedData SignUp

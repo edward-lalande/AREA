@@ -23,11 +23,28 @@ This project is composed of three parts:
 
 We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Flutter*** for the Mobile.
 
-We will implement a Docker file later to simplify the usage and deployement of the application.
+## Usage
+
+To use the Application you only need to
+```sh
+    docker-compose up -d
+```
+
+And it will launch the application
 
 ## Documentation:
 
 [Wiki](https://shorturl.at/1yxb8) Containing everything you need to know to be able to develop on this project
+
+### Swagger Link in Local Host:
+- Api-Gateway
+    - http://127.0.0.1:8080/swagger/index.html
+- Date Time Api
+    - http://127.0.0.1:8082/swagger/index.html
+- Discord Api
+    - http://127.0.0.1:8083/swagger/index.html
+- User Services
+    - http://127.0.0.1:8085/swagger/index.html
 
 ## Co-Contributors
 

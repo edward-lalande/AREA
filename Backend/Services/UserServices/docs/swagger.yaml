@@ -1,0 +1,201 @@
+definitions:
+  models.Login:
+    properties:
+      mail:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginId:
+    properties:
+      id:
+        type: integer
+    type: object
+  models.UserInformation:
+    properties:
+      id:
+        type: integer
+      lastname:
+        type: string
+      mail:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  routes.SignUp:
+    properties:
+      lastname:
+        type: string
+      mail:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user by verifying their email and password, then
+        generates a JWT token upon successful login.
+      parameters:
+      - description: User credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JWT token for authentication
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'Bad Request: Invalid credentials'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User login
+      tags:
+      - Authentication
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new user by saving their details in the database. If
+        successful, a JWT token is generated and returned.
+      parameters:
+      - description: User details for registration
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/routes.SignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JWT token for authentication
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'Bad Request: User already exists or invalid input'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+        "502":
+          description: 'Bad Gateway: Error parsing request data'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User registration
+      tags:
+      - Authentication
+  /user:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a user from the "User" table in the database using the
+        provided user ID.
+      parameters:
+      - description: User ID
+        in: body
+        name: id
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Confirmation of the deleted user
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'Bad Request: Invalid input'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a user
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Updates a user's details such as email, password, first name, and
+        last name in the "User" table.
+      parameters:
+      - description: User information to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserInformation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Confirmation of the updated user
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'Bad Request: Invalid input or user not found'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update user information
+      tags:
+      - Users
+  /users:
+    get:
+      description: Fetches the details of a user from the "User" table in the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved user information
+          schema:
+            items:
+              $ref: '#/definitions/routes.SignUp'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Retrieve user information
+      tags:
+      - Users
+swagger: "2.0"
