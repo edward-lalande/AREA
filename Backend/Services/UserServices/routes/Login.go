@@ -22,6 +22,18 @@ func isUserExists(receivedData models.Login, db *pgx.Conn) bool {
 	return count == 1
 }
 
+// LoginUserHandler logs in a user and generates an authentication token.
+//
+// @Summary User login
+// @Description Authenticates a user by verifying their email and password, then generates a JWT token upon successful login.
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param credentials body models.Login true "User credentials"
+// @Success 200 {object} map[string]interface{} "JWT token for authentication"
+// @Failure 400 {object} map[string]interface{} "Bad Request: Invalid credentials"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /login [post]
 func LoginUserHandler(c *gin.Context) {
 	var receivedData models.Login
 	var user models.User

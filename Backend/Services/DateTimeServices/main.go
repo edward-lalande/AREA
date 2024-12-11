@@ -35,7 +35,7 @@ func getDatabaseSlice() []models.Database {
 
 	for rows.Next() {
 		var database models.Database
-		err := rows.Scan(&database.Id, &database.Mail, &database.Continent, &database.City, &database.Hour, &database.Minute, &database.ReactionServiceId, &database.ReactionId)
+		err := rows.Scan(&database.Id, &database.AreaId, &database.Continent, &database.City, &database.Hour, &database.Minute)
 		if err != nil {
 			log.Fatal(err)
 			return nil
@@ -76,10 +76,8 @@ func BackUpLocalDataCall() {
 
 		if jsonBody["hour"].(float64) == float64(slice.Hour) && jsonBody["minute"].(float64) == float64(slice.Minute) {
 			send := models.TimeModelSendReaction{}
+			send.ReactionId = slice.AreaId
 			var buf bytes.Buffer
-
-			send.ReactionId = slice.ReactionId
-			send.ReactionServiceId = slice.ReactionServiceId
 			if err := json.NewEncoder(&buf).Encode(send); err != nil {
 				return
 			}

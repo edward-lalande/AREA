@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetUser retrieves a user's details from the database.
+//
+// @Summary Retrieve user information
+// @Description Fetches the details of a user from the "User" table in the database.
+// @Tags Users
+// @Produce json
+// @Success 200 {object} []SignUp "Successfully retrieved user information"
+// @Failure 500 {object} map[string]interface{} "Internal Server Error"
+// @Router /users [get]
 func GetUser(c *gin.Context) {
 	var value []SignUp
 	db := utils.OpenDB(c)

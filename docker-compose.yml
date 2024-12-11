@@ -14,7 +14,7 @@ services:
     container_name: api-gateway
     environment:
       PORT: 8080
-      USER_API: http://user-services:8081/
+      USER_API: http://user-services:8085/
       TIME_API: http://time-services:8082/
       DISCORD_API: http://discord:8083/
     ports:
@@ -24,7 +24,7 @@ services:
     build: Backend/MessageBrocker
     container_name: message-brocker
     environment:
-      USER_API: http://user-services:8082/
+      USER_API: http://user-services:8085/
       TIME_API: http://time-services:8082/
       DISCORD_API: http://discord:8083/
     ports:
@@ -34,12 +34,12 @@ services:
     build: Backend/Services/UserServices
     container_name: user-services
     environment: 
-      PORT: 8081
+      PORT: 8085
       API_GATEWAY: http://api-gateway:8080/
       DB: postgresql://root:password@area-db:5432/area
       SECRET_KEY: PET
     ports:
-      - 8081:8081
+      - 8085:8085
     depends_on:
       - area-db
 

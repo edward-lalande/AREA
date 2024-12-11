@@ -1,0 +1,233 @@
+definitions:
+  models.OauthInformationSignUp:
+    properties:
+      access_token:
+        type: string
+      user_token:
+        type: string
+    required:
+    - access_token
+    - user_token
+    type: object
+  models.ReactionGet:
+    properties:
+      channel_id:
+        type: string
+      message:
+        type: string
+      reaction_id:
+        type: integer
+      reaction_type:
+        type: integer
+    type: object
+  models.ReactionReceiveData:
+    properties:
+      area_id:
+        type: string
+      channel_id:
+        type: string
+      message:
+        type: string
+      reaction_type:
+        type: integer
+      user_token:
+        type: string
+    type: object
+  models.TriggerdModels:
+    properties:
+      area_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /access-token:
+    post:
+      consumes:
+      - application/json
+      description: Send the code received by the frontend to get the discord access-token
+        of the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get
+      tags:
+      - Discord OAUTH2
+  /callback:
+    get:
+      consumes:
+      - application/json
+      description: Send the code received by discord to the frontend
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by discord to the frontend
+      tags:
+      - Discord OAUTH2
+  /oauth2:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 discord
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 discord
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 discord
+      tags:
+      - Discord OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the reactions received by the message brocker with all
+        informations nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReactionReceiveData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Reactions
+      tags:
+      - Discord Area
+  /reactions:
+    get:
+      consumes:
+      - application/json
+      description: send all the reactions available on the discord services as an
+        object arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            $ref: '#/definitions/models.ReactionGet'
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the reactions
+      tags:
+      - Discord Area
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register the token of the user to an associated token if exists
+        in the user database
+      parameters:
+      - description: It must contains the access token of discord and the user token
+          if exists
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthInformationSignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response of the reactions
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a token
+      tags:
+      - Discord OAUTH2
+  /trigger:
+    post:
+      consumes:
+      - application/json
+      description: Actions triggerd the reactions and call the trigger route
+      parameters:
+      - description: It contains the Area Id to the reactions
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.TriggerdModels'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response of the reactions
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Trigger an Area
+      tags:
+      - Discord trigger
+swagger: "2.0"

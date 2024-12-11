@@ -23,7 +23,7 @@ func SendActionToService(c *gin.Context) {
 		return
 	}
 	sendBody := struct {
-		ReactionIdentifyer string `json:"reaction_identifyer"`
+		ReactionIdentifyer string `json:"area_id"`
 		ReactionType       int    `json:"reaction_type"`
 		UserEmail          string `json:"user_email"`
 		Message            string `json:"message"`

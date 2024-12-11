@@ -1,10 +1,9 @@
 package models
 
 type TriggerModelGateway struct {
-	ReactionServiceId int    `json:"reaction_service_id"`
-	ReactionId        string `json:"reaction_id"`
+	AreaId string `json:"area_id"`
 }
 
 type TriggerdModelsSending struct {
-	ReactionIdentifyer string `json:"reaction_identifyer"`
+	ReactionIdentifyer string `json:"area_id"`
 }
