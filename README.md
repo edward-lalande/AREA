@@ -36,6 +36,16 @@ And it will launch the application
 
 [Wiki](https://shorturl.at/1yxb8) Containing everything you need to know to be able to develop on this project
 
+### Swagger Link in Local Host:
+- Api-Gateway
+    - http://127.0.0.1:8080/swagger/index.html
+- Date Time Api
+    - http://127.0.0.1:8082/swagger/index.html
+- Discord Api
+    - http://127.0.0.1:8083/swagger/index.html
+- User Services
+    - http://127.0.0.1:8085/swagger/index.html
+
 ## Co-Contributors
 
 [<img src="https://avatars.githubusercontent.com/u/114899301?v=4" width=85><br><sub>Paul Bardeur</sub><br />](https://github.com/paulbardeur)
