@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.white38,
                         ),
-                        child: Image.asset('assets/google.png'),
+                        child: Image.asset('assets/discord-logo.png'),
                     ),
                     onPressed: (context) async {
                         String url = await getOAuthUrl(url: "http://10.0.2.2:8083/oauth2");
