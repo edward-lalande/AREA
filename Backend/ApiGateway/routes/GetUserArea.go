@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-Backend/Database/area-db.sql
+
 func searchActions(c *gin.Context, actionId int, areaId string) map[string]interface{} {
 	var actionsDb = map[int]string{
 		1: "\"TimeAction\"",

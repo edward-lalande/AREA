@@ -65,3 +65,11 @@ type PayloadItem struct {
 	// required: true
 	Reactions []*json.RawMessage `json:"reactions,omitempty"`
 }
+
+type AreaDatabase struct {
+	Id                int    `json:"id"`
+	UserToken         string `json:"user_token"`
+	AreaId            string `json:"area_id"`
+	ServiceActionId   int    `json:"service_action_id"`
+	ServiceReactionId int    `json:"service_reaction_id"`
+}

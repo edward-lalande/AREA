@@ -12,3 +12,8 @@ type TimeActionSend struct {
 	Hour      int    `json:"hour"`
 	Minute    int    `json:"minute"`
 }
+
+type TimeActionDatabase struct {
+	TimeActionSend
+	Id int `json:"id"`
+}
