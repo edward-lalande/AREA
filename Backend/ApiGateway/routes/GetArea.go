@@ -50,7 +50,7 @@ func GetActions(c *gin.Context) {
 		if err := json.Unmarshal(body, &jsonResponse); err != nil {
 			continue
 		}
-		actions = append(actions, gin.H{service.name: jsonResponse})
+		actions = append(actions, jsonResponse)
 	}
 
 	c.JSON(http.StatusOK, actions)
@@ -88,7 +88,7 @@ func GetReactions(c *gin.Context) {
 			continue
 		}
 
-		reactions = append(reactions, gin.H{service.name: jsonResponse})
+		reactions = append(reactions, jsonResponse)
 	}
 
 	c.JSON(http.StatusOK, reactions)

@@ -1,0 +1,20 @@
+{
+    "name": "Discord Services",
+    "actions": [
+        {
+            "name": "Send message on channel",
+            "reaction_id": 2,
+            "reaction_type": 0,
+            "arguments": [
+                {
+                    "name": "channel_id",
+                    "type": "string"
+                },
+                {
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

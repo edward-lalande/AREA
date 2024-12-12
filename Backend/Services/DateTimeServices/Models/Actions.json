@@ -1,0 +1,28 @@
+{
+"name": "Date Time Services",
+"actions": [
+        {
+            "name": "At time",
+            "action_id": 1,
+            "action_type": 0,
+            "arguments": [
+                {
+                    "name": "hour",
+                    "type": "number"
+                },
+                {
+                    "name": "minute",
+                    "type": "number"
+                },
+                {
+                    "name": "city",
+                    "type": "string"
+                },
+                {
+                    "name": "continent",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

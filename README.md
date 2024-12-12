@@ -30,10 +30,13 @@ We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Fl
 - Discord
 - Google
 - Github
+- Gitlab
 - Spotify
 - BlueSky
 - Uber
-- Microsoft
+- TicketMaster
+- Miro
+- Steam
 - Twilio
 - Bureau of Economic Analysis
 
