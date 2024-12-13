@@ -26,10 +26,9 @@ const LoginForm: React.FC = () => {
 
 	const login = (email: string, password: string) => {
 
-		const url: string = "http://127.0.0.1:8080/user";
+		const url: string = "http://127.0.0.1:8080/login";
 
 		const data = {
-			routes: "login",
 			mail: email,
 			password
 		};
@@ -76,7 +75,7 @@ const LoginForm: React.FC = () => {
 			getToken(code);
 		}
 
-	}, [, searchParams]);
+	}, [searchParams]);
 
 	return (
 
