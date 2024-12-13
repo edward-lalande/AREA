@@ -7,8 +7,9 @@ import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
 import { AreaButton, DiscordButton } from "./elements/AreaButton";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useSearchParams } from "react-router-dom";
 
 import axios from "axios";
 
@@ -24,12 +25,13 @@ const SignupForm: React.FC = () => {
 	//eslint-disable-next-line
 	const [cookie, setCookie] = useCookies();
 
+	const [searchParams] = useSearchParams();
+
 	const signup = (email: string, name: string, lastname: string, password: string) => {
 
-		const url: string = "http://127.0.0.1:8080/user";
+		const url: string = "http://127.0.0.1:8080/sign-up";
 
 		const data = {
-			routes: "sign-up",
 			mail: email,
 			password,
 			name,
@@ -46,6 +48,40 @@ const SignupForm: React.FC = () => {
 		});
 	
 	}
+
+	const authDiscord = () => {
+
+		const url: string = "http://127.0.0.1:8083/oauth2";
+
+		axios.get(url).then((res) => {
+
+			window.location.href = res.data;
+
+		});
+
+	}
+
+	const getToken = (code: string) => {
+
+		const url: string = "http://127.0.0.1:8083/access-token";
+
+		axios.post(url, { code }).then((res) => {
+			setCookie("token", res.data.body.access_token);
+			window.location.href = "/";
+		});
+		
+	}
+
+	useEffect(() => {
+
+		const code = searchParams.get("code");
+
+		if (code) {
+			getToken(code);
+		}
+
+	}, [searchParams]);
+
 
 	return (
 
@@ -67,7 +103,7 @@ const SignupForm: React.FC = () => {
 
 				<AreaTextDivider text="or" />
 
-				<DiscordButton />
+				<DiscordButton onClick={authDiscord} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="Already on AREA?" sx={{ mr: 2 }} />
