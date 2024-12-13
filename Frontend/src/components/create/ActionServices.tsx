@@ -30,9 +30,7 @@ const ActionServices: React.FC<ActionServicesProps> = ({
 
             const actions: ActionServices[] = res.data;
 
-            setActions(actions.slice(0, -1));
-
-            console.log(actions.slice(0, -1));
+            setActions(actions.filter(element => element !== null));
 
         });
 
