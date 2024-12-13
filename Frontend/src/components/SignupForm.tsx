@@ -21,7 +21,8 @@ const SignupForm: React.FC = () => {
 
 	const [open, setOpen] = useState<boolean>(false);
 
-	const [_, setCookie] = useCookies();
+	//eslint-disable-next-line
+	const [cookie, setCookie] = useCookies();
 
 	const signup = (email: string, name: string, lastname: string, password: string) => {
 

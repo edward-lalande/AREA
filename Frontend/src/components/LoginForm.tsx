@@ -76,7 +76,7 @@ const LoginForm: React.FC = () => {
 			getToken(code);
 		}
 
-	}, [, searchParams]);
+	}, [searchParams]);
 
 	return (
 
