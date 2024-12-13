@@ -5,9 +5,9 @@ services:
     build: Frontend
     container_name: frontend
     environment:
-      PORT: 3000
+      PORT: 8081
     ports:
-      - 3000:3000
+      - 8081:8081
 
   api-gateway:
     build: Backend/ApiGateway
@@ -53,6 +53,19 @@ services:
     ports:
       - 5432:5432
     restart: always
+
+  mobile:
+    build: Mobile
+    container_name: mobile
+    environment:
+      FLUTTER_HOME: /home/developer/flutter
+      PATH: /home/developer/flutter/bin:/home/developer/flutter/bin/cache/dart-sdk/bin:$PATH
+    volumes:
+      - ./Mobile:/home/developer/app
+    ports:
+      - 3001:3001
+    depends_on:
+      - api-gateway
 
   time-services:
     build: Backend/Services/DateTimeServices

@@ -11,12 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DiscordWebHooks(c *gin.Context) {
-	var a any
-	c.ShouldBindJSON(&a)
-	c.JSON(http.StatusAccepted, a)
-}
-
 func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context, receivedData models.TypeDiscordReaction) *http.Response {
 	sendingData := struct {
 		AreaId       string `json:"area_id"`

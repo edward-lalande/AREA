@@ -19,12 +19,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/actions", GetActions)
 	r.GET("/reactions", GetReactions)
 
-	r.POST("/webhooks-discord", DiscordWebHooks)
-	r.GET("/user", UserGet)
-	r.POST("/user", UserPost)
-
-	r.GET("/discord", DiscordGet)
-	r.POST("/discord", DiscordPost)
-
-	r.GET("/time", GetTime)
+	r.POST("/login", UserLogin)
+	r.POST("/sign-up", UserSignUp)
+	r.POST("/update-user", UserUpdate)
 }

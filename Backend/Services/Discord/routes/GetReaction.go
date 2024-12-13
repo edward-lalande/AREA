@@ -1,7 +1,7 @@
 package routes
 
 import (
-	models "discord-service/Models"
+	"discord-service/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,5 +18,12 @@ import (
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"reactions": gin.H{"Send message on channel": models.ReactionGet{2, 0, "", ""}}})
+	b, err := utils.OpenFile("Models/Reactions.json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	json := utils.BytesToJson(b)
+
+	c.JSON(http.StatusOK, json)
 }

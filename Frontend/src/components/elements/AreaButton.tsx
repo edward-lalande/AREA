@@ -2,6 +2,7 @@ import React from "react";
 import { Button, ButtonProps } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { AreaTypography } from "./AreaTypography";
 
 interface AreaButtonProps extends ButtonProps {
     text: string;
@@ -181,7 +182,8 @@ const DiscordButton: React.FC<ButtonProps> = (props) => {
             }}
             {...props}
         >
-            Continue with Discord
+            <img src="discord-logo.png" alt="discord logo" width={44} height={44}/>
+            <AreaTypography variant="h6" text="Continue with Discord" sx={{ ml: 2 }}/>
         </Button>
     );
 };

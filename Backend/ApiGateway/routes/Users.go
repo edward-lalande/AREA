@@ -11,29 +11,37 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Get User services
-// @Summary Get to the user services
-// @Description Routes get user services
+// Post User services
+// @Summary Update a user
+// @Description Update a user to the user services database
 // @Tags User api-gateway
 // @Accept json
 // @Produce json
-// @Param Object body models.UsersGet true "routes wanted to the user services"
-// @Success 200 {object} map[string]string "User services responses"
+// @Param Object body models.SignUp true "user information to update"
+// @Success 200 {string} string "User Token"
 // @Failure 400 {object} map[string]string "Bad requests"
 // @Failure 500 {object} map[string]string "Internal error"
-// @Router /user [get]
-func UserGet(c *gin.Context) {
-	var body models.UsersGet
-	c.ShouldBindJSON(&body)
+// @Router /update-user [post]
+func UserUpdate(c *gin.Context) {
+	var data models.SignUp
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	value := utils.GetEnvKey("USER_API")
 
-	resp, err := http.Get(value + body.RoutesWanted)
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp, err := http.Post(value+"update", "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	defer resp.Body.Close()
-
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -47,31 +55,76 @@ func UserGet(c *gin.Context) {
 }
 
 // Post User services
-// @Summary Post a new users to the user database without OAUTH2 or login
-// @Description Routes to add a new user to the database
+// @Summary Login a user
+// @Description Login a user to the user services database
 // @Tags User api-gateway
 // @Accept json
 // @Produce json
-// @Param Object body models.UserInformation true "user information to login or sign-up"
+// @Param Object body models.Login true "user information to login"
 // @Success 200 {string} string "User Token"
 // @Failure 400 {object} map[string]string "Bad requests"
 // @Failure 500 {object} map[string]string "Internal error"
-// @Router /user [post]
-func UserPost(c *gin.Context) {
-	var body models.UserInformation
-	if err := c.ShouldBindJSON(&body); err != nil {
+// @Router /login [post]
+func UserLogin(c *gin.Context) {
+	var data models.Login
+
+	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	value := utils.GetEnvKey("USER_API")
 
-	jsonBody, err := json.Marshal(body)
+	jsonBody, err := json.Marshal(data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	resp, err := http.Post(value+body.RoutesWanted, "application/json", bytes.NewBuffer(jsonBody))
+	resp, err := http.Post(value+"login", "application/json", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(resp.StatusCode, gin.H{
+		"headers": resp.Header,
+		"body":    utils.BytesToJson(respBody),
+	})
+}
+
+// Post User services
+// @Summary Sign up a user
+// @Description Sign up a user to the user services database
+// @Tags User api-gateway
+// @Accept json
+// @Produce json
+// @Param Object body models.SignUp true "user information to sign-up"
+// @Success 200 {string} string "User Token"
+// @Failure 400 {object} map[string]string "Bad requests"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /sign-up [post]
+func UserSignUp(c *gin.Context) {
+	var data models.SignUp
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	value := utils.GetEnvKey("USER_API")
+
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp, err := http.Post(value+"sign-up", "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
