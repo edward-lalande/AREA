@@ -150,6 +150,16 @@ func safeActionHandler(c *gin.Context, actionId int, areaId string) (map[string]
 	return handler(c, areaId, actionType), nil
 }
 
+// Get Area of a user
+// @Summary Get area from a users in all servieces by sending an array of object of area
+// @Description Get area from a users in all servieces by sending an array of object of area
+// @Tags Area api-gateway
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Reactions name with parameters of it as object"
+// @Failure 400 {object} map[string]string "Bad Requests"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /areas [get]
 func GetUserAreas(c *gin.Context) {
 	token := c.GetHeader("token")
 	if token == "" {
