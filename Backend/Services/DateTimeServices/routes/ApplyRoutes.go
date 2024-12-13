@@ -18,6 +18,13 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.GET("/actions", GetActions)
 
+	r.GET("action-name", func(c *gin.Context) {
+		c.String(http.StatusOK, "At time")
+	})
+	r.GET("reaction-name", func(c *gin.Context) {
+		c.String(http.StatusOK, "")
+	})
+
 	r.GET("/reactions", func(c *gin.Context) {
 		c.JSON(http.StatusAccepted, nil)
 	})

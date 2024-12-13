@@ -15,5 +15,5 @@ type TimeActionSend struct {
 
 type TimeActionDatabase struct {
 	TimeActionSend
-	Id int `json:"id"`
+	Id         int    `json:"id"`
 }

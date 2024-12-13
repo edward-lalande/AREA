@@ -25,10 +25,13 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/actions", func(c *gin.Context) {
 		c.JSON(http.StatusAccepted, nil)
 	})
+
+	r.GET("/action-name", GetActionsName)
+	r.GET("/reaction-name", GetReactionsName)
+
 	r.GET("/reactions", GetReactions)
 
 	r.POST("/reaction", ReceivedReactions)
 
-	r.POST("/active-reactions", ActiveReactions)
 	r.POST("/trigger", Trigger)
 }
