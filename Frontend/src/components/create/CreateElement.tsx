@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Action, Reaction, Parameters, CreatePage } from "../Create";
 import { AreaBox } from "../elements/AreaBox";
 import { AddButton, AreaButton } from "../elements/AreaButton";
 import { AreaTypography } from "../elements/AreaTypography";
 
 import axios from "axios";
+import { Alert, Snackbar } from "@mui/material";
 
 type CreateElementProps = {
     action: Action | undefined;
@@ -11,6 +13,7 @@ type CreateElementProps = {
     reaction: Reaction | undefined;
     reactionParameters: Parameters | undefined;
     setPage: (value: CreatePage) => void;
+    setReset: (value: boolean) => void;
 };
 
 const CreateElement: React.FC<CreateElementProps> = ({
@@ -19,7 +22,10 @@ const CreateElement: React.FC<CreateElementProps> = ({
     reaction,
     reactionParameters,
     setPage,
+    setReset
 }) => {
+
+    const [open, setOpen] = useState<boolean>(false);
 
     const createArea = (action: Action, reaction: Reaction) => {
 
@@ -28,20 +34,21 @@ const CreateElement: React.FC<CreateElementProps> = ({
         const data = [{
             user_token: "AREA",
             action: {
-                action_id: action.id,
-                action_type: action.type,
+                action_id: action.action_id,
+                action_type: action.action_type,
                 ...actionParameters
             },
             reactions: [{
-                reaction_id: reaction.id,
-                reaction_type: reaction.type,
+                reaction_id: reaction.reaction_id,
+                reaction_type: reaction.reaction_type,
                 ...reactionParameters
             }]
         }];
 
         axios.post(url, data).then(() => {
 
-            window.location.href = "/";
+            setOpen(true);
+            setReset(true);
 
         });
 
@@ -64,6 +71,17 @@ const CreateElement: React.FC<CreateElementProps> = ({
             </AreaBox>
 
             { action && reaction && <AreaButton text="Create area" onClick={() => createArea(action, reaction)}/> }
+
+            <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+                <Alert
+                    onClose={() => setOpen(false)}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width:"100%", m: 2 }}
+                >
+                    Info: Area created!
+                </Alert>
+			</Snackbar>	
 
         </AreaBox>
 

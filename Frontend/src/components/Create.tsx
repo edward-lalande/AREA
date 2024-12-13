@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AreaBox } from "./elements/AreaBox";
 import { AreaPaper } from "./elements/AreaPaper";
 
@@ -11,6 +11,7 @@ import ActionParameters from "./create/ActionParameters";
 import ActionServices from "./create/ActionServices";
 import ReactionParameters from "./create/ReactionParameters";
 import ReactionServices from "./create/ReactionServices";
+import { BlobOptions } from "buffer";
 
 export enum CreatePage {
     CREATE,
@@ -29,15 +30,15 @@ export interface Argument {
 
 export interface Action {
     name: string;
-    id: number;
-    type: number;
+    action_id: number;
+    action_type: number;
     arguments: Argument[];
 }
 
 export interface Reaction {
     name: string;
-    id: number;
-    type: number;
+    reaction_id: number;
+    reaction_type: number;
     arguments: Argument[];
 }
 
@@ -47,16 +48,32 @@ export type Parameters = {
 
 const Create: React.FC = () => {
 
+    const [reset, setReset] = useState<boolean>(false);
+
     const [action, setAction] = useState<Action>();
     const [reaction, setReaction] = useState<Reaction>();
 
-    const [selectedActions, setselectedActions] = useState<Action[]>([]);
+    const [selectedActions, setSelectedActions] = useState<Action[]>([]);
     const [selectedReactions, setSelectedReactions] = useState<Reaction[]>([]);
 
     const [actionParameters, setActionParameters] = useState<Parameters>();
     const [reactionParameters, setReactionParameters] = useState<Parameters>();
 
     const [page, setPage] = useState<CreatePage>(CreatePage.CREATE);
+
+    useEffect(() => {
+
+        if (reset) {
+            setAction(undefined);
+            setReaction(undefined);
+            setSelectedActions([]);
+            setSelectedReactions([]);
+            setActionParameters(undefined);
+            setReactionParameters(undefined);
+            setReset(false);
+        }
+
+    }, [reset]);
 
 	return (
 
@@ -73,13 +90,14 @@ const Create: React.FC = () => {
                         actionParameters={actionParameters}
                         reactionParameters={reactionParameters}
                         setPage={setPage}
+                        setReset={setReset}
                     />
                 }
 
                 { page === CreatePage.ACTION_SERVICES &&
                     <ActionServices
                         setPage={setPage}
-                        setSelectedActions={setselectedActions}
+                        setSelectedActions={setSelectedActions}
                     />
                 }
 
