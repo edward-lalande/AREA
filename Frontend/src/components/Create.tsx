@@ -1,70 +1,79 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AreaBox } from "./elements/AreaBox";
-import { AddButton, ServiceButton } from "./elements/AreaButton";
 import { AreaPaper } from "./elements/AreaPaper";
-import { AreaTypography } from "./elements/AreaTypography";
+
 import Footer from "./Footer";
-
 import Navbar from "./Navbar";
-import { AreaButton } from "./elements/AreaButton";
+import CreateElement from "./create/CreateElement";
+import ActionElement from "./create/ActionElement";
+import ReactionElement from "./create/ReactionElement";
+import ActionParameters from "./create/ActionParameters";
+import ActionServices from "./create/ActionServices";
+import ReactionParameters from "./create/ReactionParameters";
+import ReactionServices from "./create/ReactionServices";
+import { BlobOptions } from "buffer";
 
-import axios from "axios";
-import { AreaTextField } from "./elements/AreaTextFiled";
+export enum CreatePage {
+    CREATE,
+    ACTION,
+    REACTION,
+    ACTION_SERVICES,
+    REACTION_SERVICES,
+    ACTION_ARGUMENTS,
+    REACTION_ARGUMENTS
+}
 
-const services: string[] = [
-    "Time"
-];
+export interface Argument {
+    name: string;
+    type: string;
+}
 
-const actions: string[] = [
-    "Every day at"
-];
+export interface Action {
+    name: string;
+    action_id: number;
+    action_type: number;
+    arguments: Argument[];
+}
 
-const reactions: string[] = [
-    "Send a message on channel"
-];
+export interface Reaction {
+    name: string;
+    reaction_id: number;
+    reaction_type: number;
+    arguments: Argument[];
+}
+
+export type Parameters = {
+    [value: string]: string | number;
+}
 
 const Create: React.FC = () => {
 
-    const [action, setAction] = useState<string>("");
-    const [reaction, setReaction] = useState<string>("");
+    const [reset, setReset] = useState<boolean>(false);
 
-    const [page, setPage] = useState("Create");
+    const [action, setAction] = useState<Action>();
+    const [reaction, setReaction] = useState<Reaction>();
 
-    const [hour, setHour] = useState<number>(0);
-    const [minute, setMinute] = useState<number>(0);
+    const [selectedActions, setSelectedActions] = useState<Action[]>([]);
+    const [selectedReactions, setSelectedReactions] = useState<Reaction[]>([]);
 
-    const [channel, setChannel] = useState<string>("");
-    const [message, setMessage] = useState<string>("");
+    const [actionParameters, setActionParameters] = useState<Parameters>();
+    const [reactionParameters, setReactionParameters] = useState<Parameters>();
 
-    const createArea = (hour: number, minute: number, channel: string, message: string) => {
+    const [page, setPage] = useState<CreatePage>(CreatePage.CREATE);
 
-        const url: string = "http://127.0.0.1:8080/area";
+    useEffect(() => {
 
-		const data = [{
-            user_token: "AREA",
-            action: {
-                action_id: 1,
-                action_type: 0,
-                continent: "Europe",
-                city: "Paris",
-                hour,   
-                minute
-            },
-            reactions: [{
-                reaction_id: 2,
-                reaction_type: 0,
-                channel_id: channel,
-                message
-            }]
-		}];
+        if (reset) {
+            setAction(undefined);
+            setReaction(undefined);
+            setSelectedActions([]);
+            setSelectedReactions([]);
+            setActionParameters(undefined);
+            setReactionParameters(undefined);
+            setReset(false);
+        }
 
-        axios.post(url, data).then(() => {
-
-            window.location.href = "/";
-
-        });
-
-    };
+    }, [reset]);
 
 	return (
 
@@ -74,87 +83,66 @@ const Create: React.FC = () => {
 
                 <Navbar />
 
-                { page === "Create" &&
+                { page === CreatePage.CREATE && 
+                    <CreateElement 
+                        action={action}
+                        reaction={reaction}
+                        actionParameters={actionParameters}
+                        reactionParameters={reactionParameters}
+                        setPage={setPage}
+                        setReset={setReset}
+                    />
+                }
 
-                <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
+                { page === CreatePage.ACTION_SERVICES &&
+                    <ActionServices
+                        setPage={setPage}
+                        setSelectedActions={setSelectedActions}
+                    />
+                }
 
-                    <AreaTypography variant="h2" text="Create an area" sx={{ mb: 5 }} />
+                { page === CreatePage.ACTION &&
+                    <ActionElement
+                        selectedActions={selectedActions}
+                        setPage={setPage}
+                        setAction={setAction}
+                    />
+                }
 
-                    <AreaBox sx={{ flexDirection: "row", gap: 2, backgroundColor: "#000", width: "50vw", padding: "2%", borderRadius: 5 }}>
-                        <AreaTypography variant="h3" text={action ? "If" : "If this"} color="white" />
-                        {action ? <AreaTypography text={action + " " + hour + ":" + minute} color="white" /> : <AddButton onClick={() => setPage("Select service")}/>} 
-                    </AreaBox>
+                { action && page === CreatePage.ACTION_ARGUMENTS &&
+                    <ActionParameters
+                        action={action}
+                        actionParameters={actionParameters}
+                        setActionParameters={setActionParameters}
+                        setPage={setPage}
+                    />
+                }
 
-                    <AreaBox sx={{ flexDirection: "row", gap: 2, backgroundColor: "grey", width: "50vw", padding: "2%", borderRadius: 5, mb: 2 }}>
-                        <AreaTypography variant="h3" text={action ? "Then" : "Then that"} color="white" />
-                        {reaction ? <AreaTypography text={reaction} color="white" /> : action && <AddButton onClick={() => setPage("Select reaction")}/>} 
-                    </AreaBox>
+                { page === CreatePage.REACTION_SERVICES &&
+                    <ReactionServices
+                        setPage={setPage}
+                        setSelectedReactions={setSelectedReactions}
+                    />
+                }
 
-                    { action && reaction && <AreaButton text="Create area" onClick={() => createArea(hour, minute, channel, message)}/> }
+                { page === CreatePage.REACTION &&
 
-                </AreaBox> }
+                    <ReactionElement
+                        selectedReactions={selectedReactions}
+                        setPage={setPage}
+                        setReaction={setReaction}
+                    />
 
-                { page === "Select service" &&
+                }
 
-                <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
-
-                    <AreaTypography variant="h2" text="Select a service" sx={{ mb: 5 }} />
-
-                    {services && services.map<JSX.Element>((value: string) => {
-                        return (<ServiceButton text={value} backgroundColor="#000" onClick={() => setPage("Select action")}/>);
-                    })}
-
-                </AreaBox> }
-
-                { page === "Select action" &&
-
-                <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
-
-                    <AreaTypography variant="h2" text="Select an action" sx={{ mb: 5 }} />
-
-                    {actions && actions.map<JSX.Element>((value: string) => {
-                        return (<ServiceButton text={value} backgroundColor="#000" onClick={() => setPage("Select hour")}/>);
-                    })}
-
-                </AreaBox> }
-
-                { page === "Select hour" &&
-
-                <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
-
-                    <AreaTypography variant="h2" text="Every day at" sx={{ mb: 5 }} />
-
-                    <AreaTextField label="Hour" onChange={(s) => setHour(Number(s.target.value))} sx={{ width: "20vw" }} />
-                    <AreaTextField label="Minute" onChange={(s) => setMinute(Number(s.target.value))} sx={{ width: "20vw" }} />
-
-                    <AreaButton text="Valid" onClick={() => {setAction("Every day at"); setPage("Create"); }}/>
-
-                </AreaBox> }
-
-                { page === "Select reaction" &&
-
-                <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
-
-                    <AreaTypography variant="h2" text="Select an action" sx={{ mb: 5 }} />
-
-                    {reactions && reactions.map<JSX.Element>((value: string) => {
-                        return (<ServiceButton text={value} backgroundColor="#000" onClick={() => setPage("Select channel")}/>);
-                    })}
-
-                </AreaBox> }
-
-                { page === "Select channel" &&
-
-                <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
-
-                    <AreaTypography variant="h2" text="Select channel (id) and message" sx={{ mb: 5 }} />
-
-                    <AreaTextField label="Channel (id)" onChange={(s) => setChannel(s.target.value)} sx={{ width: "20vw" }} />
-                    <AreaTextField label="Message" onChange={(s) => setMessage(s.target.value)} sx={{ width: "20vw" }} />
-
-                    <AreaButton text="Valid" onClick={() => {setReaction("Send a message on channel"); setPage("Create"); }}/>
-
-                </AreaBox> }
+                { reaction && page === CreatePage.REACTION_ARGUMENTS &&
+                    <ReactionParameters
+                        reaction={reaction}
+                        reactionParameters={reactionParameters}
+                        setReactionParameters={setReactionParameters}
+                        setPage={setPage}
+                    />
+                }
 
                 <Footer />
 

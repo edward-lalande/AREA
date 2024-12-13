@@ -1,6 +1,6 @@
 {
     "name": "Discord Services",
-    "actions": [
+    "reactions": [
         {
             "name": "Send message on channel",
             "reaction_id": 2,
