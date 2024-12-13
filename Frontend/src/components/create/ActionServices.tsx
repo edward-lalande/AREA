@@ -1,11 +1,18 @@
-import { Reaction, CreatePage } from "../Create";
+import { useEffect, useState } from "react";
+import { Action, CreatePage } from "../Create";
 import { AreaBox } from "../elements/AreaBox";
 import { ServiceButton } from "../elements/AreaButton";
 import { AreaTypography } from "../elements/AreaTypography";
+import axios from "axios";
+
+interface ActionServices {
+    name: string;
+    actions: Action[];
+}
 
 type ActionServicesProps = {
     setPage: (value: CreatePage) => void;
-    setSelectedActions: (value: Reaction[]) => void;
+    setSelectedActions: (value: Action[]) => void;
 };
 
 const ActionServices: React.FC<ActionServicesProps> = ({
@@ -13,28 +20,29 @@ const ActionServices: React.FC<ActionServicesProps> = ({
     setSelectedActions
 }) => {
 
-    const actions = [
-        {
-            name: "Date Time Services",
-            actions: [
-                {
-                    name: "At Time",
-                    id: 1,
-                    type: 0,
-                    arguments: [
-                        {
-                            name: "hour",
-                            type: "number"
-                        },
-                        {
-                            name: "minute",
-                            type: "number"
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
+    const [actions, setActions] = useState<ActionServices[]>([]);
+
+    const getActions = () => {
+
+        const url = "http://127.0.0.1:8080/actions";
+
+        axios.get(url).then((res) => {
+
+            const actions: ActionServices[] = res.data;
+
+            setActions(actions.slice(0, -1));
+
+            console.log(actions.slice(0, -1));
+
+        });
+
+    }
+
+    useEffect(() => {
+
+		getActions();
+
+	}, []);
 
     return (
 

@@ -39,9 +39,11 @@ const CreateElement: React.FC<CreateElementProps> = ({
             }]
         }];
 
+        console.log(data);
+
         axios.post(url, data).then(() => {
 
-            window.location.href = "/";
+            //window.location.href = "/";
 
         });
 

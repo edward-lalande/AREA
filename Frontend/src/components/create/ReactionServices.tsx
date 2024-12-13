@@ -1,7 +1,14 @@
+import { useEffect, useState } from "react";
 import { Reaction, CreatePage } from "../Create";
 import { AreaBox } from "../elements/AreaBox";
 import { ServiceButton } from "../elements/AreaButton";
 import { AreaTypography } from "../elements/AreaTypography";
+import axios from "axios";
+
+interface ReactionServices {
+    name: string;
+    reactions: Reaction[];
+}
 
 type ReactionServicesProps = {
     setPage: (value: CreatePage) => void;
@@ -13,28 +20,29 @@ const ReactionServices: React.FC<ReactionServicesProps> = ({
     setSelectedReactions
 }) => {
 
-    const reactions = [
-        {
-            name: "Discord Services",
-            reactions: [
-                {
-                    name: "Send message on channel",
-                    id: 2,
-                    type: 0,
-                    arguments: [
-                        {
-                            name: "channel_id",
-                            type: "string"
-                        },
-                        {
-                            name: "message",
-                            type: "string"
-                        }
-                    ]
-                }
-            ]
-        }
-    ];
+    const [reactions, setActions] = useState<ReactionServices[]>([]);
+
+    const getReaction = () => {
+
+        const url = "http://127.0.0.1:8080/reaction";
+
+        axios.get(url).then((res) => {
+
+            const actions: ReactionServices[] = res.data;
+
+            setActions(actions.slice(0, -1));
+
+            console.log(actions.slice(0, -1));
+
+        });
+
+    }
+
+    useEffect(() => {
+
+		getReaction();
+
+	}, []);
 
     return (
 
