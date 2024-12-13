@@ -20,19 +20,17 @@ const ReactionServices: React.FC<ReactionServicesProps> = ({
     setSelectedReactions
 }) => {
 
-    const [reactions, setActions] = useState<ReactionServices[]>([]);
+    const [reactions, setReactions] = useState<ReactionServices[]>([]);
 
     const getReaction = () => {
 
-        const url = "http://127.0.0.1:8080/reaction";
+        const url = "http://127.0.0.1:8080/reactions";
 
         axios.get(url).then((res) => {
 
-            const actions: ReactionServices[] = res.data;
+            const reactions: ReactionServices[] = res.data;
 
-            setActions(actions.slice(0, -1));
-
-            console.log(actions.slice(0, -1));
+            setReactions(reactions.filter(element => element !== null));
 
         });
 
