@@ -108,6 +108,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/areas": {
+            "get": {
+                "description": "Get area from a users in all servieces by sending an array of object of area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Area api-gateway"
+                ],
+                "summary": "Get area from a users in all servieces by sending an array of object of area",
+                "responses": {
+                    "200": {
+                        "description": "Reactions name with parameters of it as object",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Requests",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/discord": {
             "get": {
                 "description": "Get data from discord like ping, access-token...",
@@ -216,6 +260,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/login": {
+            "post": {
+                "description": "Login a user to the user services database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User api-gateway"
+                ],
+                "summary": "Login a user",
+                "parameters": [
+                    {
+                        "description": "user information to login",
+                        "name": "Object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad requests",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/reactions": {
             "get": {
                 "description": "Get reactions from all services",
@@ -283,9 +379,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user": {
-            "get": {
-                "description": "Routes get user services",
+        "/sign-up": {
+            "post": {
+                "description": "Sign up a user to the user services database",
                 "consumes": [
                     "application/json"
                 ],
@@ -295,21 +391,27 @@ const docTemplate = `{
                 "tags": [
                     "User api-gateway"
                 ],
-                "summary": "Get to the user services",
+                "summary": "Sign up a user",
                 "parameters": [
                     {
-                        "description": "routes wanted to the user services",
+                        "description": "user information to sign-up",
                         "name": "Object",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UsersGet"
+                            "$ref": "#/definitions/models.SignUp"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "User services responses",
+                        "description": "User Token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad requests",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -327,9 +429,11 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/update-user": {
             "post": {
-                "description": "Routes to add a new user to the database",
+                "description": "Update a user to the user services database",
                 "consumes": [
                     "application/json"
                 ],
@@ -339,15 +443,15 @@ const docTemplate = `{
                 "tags": [
                     "User api-gateway"
                 ],
-                "summary": "Post a new users to the user database without OAUTH2 or login",
+                "summary": "Update a user",
                 "parameters": [
                     {
-                        "description": "user information to login or sign-up",
+                        "description": "user information to update",
                         "name": "Object",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UserInformation"
+                            "$ref": "#/definitions/models.SignUp"
                         }
                     }
                 ],
@@ -356,6 +460,15 @@ const docTemplate = `{
                         "description": "User Token",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad requests",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
@@ -394,15 +507,23 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "mail": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "models.PayloadItem": {
             "type": "object"
         },
-        "models.UserInformation": {
+        "models.SignUp": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "integer"
-                },
                 "lastname": {
                     "type": "string"
                 },
@@ -413,17 +534,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
-                },
-                "routes": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.UsersGet": {
-            "type": "object",
-            "properties": {
-                "routes": {
                     "type": "string"
                 }
             }

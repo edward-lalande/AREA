@@ -14,8 +14,8 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/services", Services)
 
-	r.POST("/area", Area)
-
+	r.POST("/areas", Area)
+	r.GET("/areas", GetUserAreas)
 	r.GET("/actions", GetActions)
 	r.GET("/reactions", GetReactions)
 

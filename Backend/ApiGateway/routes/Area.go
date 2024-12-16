@@ -48,7 +48,7 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 // @Success 200 {object} map[string]string "Response of all Services with the details of the executions"
 // @Failure 400 {object} map[string]string "Invalid request"
 // @Failure 500 {object} map[string]string "Internal error"
-// @Router /area [post]
+// @Router /areas [post]
 func Area(c *gin.Context) {
 	var payload []models.PayloadItem
 	areaID := GenerateCryptoID()
