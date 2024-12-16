@@ -6,6 +6,7 @@ type ReactionReceiveData struct {
 	ReactionType int    `json:"reaction_type"`
 	ChannelID    string `json:"channel_id"`
 	Message      string `json:"message"`
+	GuildID		 string `json:"guild_id"`
 }
 
 type ReactionGet struct {
@@ -13,6 +14,7 @@ type ReactionGet struct {
 	ReactionType int    `json:"reaction_type"`
 	ChannelID    string `json:"channel_id"`
 	Message      string `json:"message"`
+	GuildID		 string `json:"guild_id"`
 }
 
 type ActiveReactionData struct {
@@ -23,4 +25,5 @@ type ActiveReactionData struct {
 type Reactions struct {
 	Message   string `json:"message"`
 	ChannelId string `json:"channel_id"`
+	GuildId string `json:"guild_id"`
 }

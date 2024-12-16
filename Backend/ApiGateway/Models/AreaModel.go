@@ -50,6 +50,10 @@ type TypeDiscordReaction struct {
 	// Message to send
 	// required: true
 	Message string `json:"message"`
+
+	// Guild to create a channel
+	// required: true
+	GuildID string `json:"guild_id"`
 }
 
 type PayloadItem struct {

@@ -30,7 +30,7 @@ func SendActionToService(c *gin.Context) {
 	services[13] = utils.GetEnvKey("UBER_API")
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	// à rendre générique
@@ -41,12 +41,14 @@ func SendActionToService(c *gin.Context) {
 		UserEmail          string `json:"user_email"`
 		Message            string `json:"message"`
 		ChannelId          string `json:"channel_id"`
+		GuildId			   string `json:"guild_id"`
 	}{
 		receivedData.ReactionIdentifyer,
 		receivedData.ReactionType,
 		receivedData.UserToken,
 		receivedData.Message,
 		receivedData.ChannelId,
+		receivedData.GuildId,
 	}
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(sendBody)
