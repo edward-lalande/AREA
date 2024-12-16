@@ -4,16 +4,16 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"spotify/models"
+	models "spotify/Models"
 	"spotify/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Discord OAUTH2
+// Gitlab OAUTH2
 // @Summary Get
-// @Description Send the code received by the frontend to get the discord access-token of the user
-// @Tags Discord OAUTH2
+// @Description Send the code received by the frontend to get the Gitlab access-token of the user
+// @Tags Gitlab OAUTH2
 // @Accept json
 // @Produce json
 // @Params object models.OauthInformation true "The code must be send as object and the token is not necessary, it can be null"

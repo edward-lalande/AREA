@@ -6,10 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Discord OAUTH2
-// @Summary Send the code received by discord to the frontend
-// @Description Send the code received by discord to the frontend
-// @Tags Discord OAUTH2
+// Gitlab OAUTH2
+// @Summary Send the code received by Gitlab to the frontend
+// @Description Send the code received by Gitlab to the frontend
+// @Tags Gitlab OAUTH2
 // @Accept json
 // @Produce json
 // @Success 200 {object} map[string]string "the code to redirect to"
