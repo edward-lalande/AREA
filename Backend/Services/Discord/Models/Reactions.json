@@ -15,6 +15,21 @@
                     "type": "string"
                 }
             ]
+        },
+        {
+            "name": "Create a channel",
+            "reaction_id": 2,
+            "reaction_type": 1,
+            "arguments": [
+                {
+                    "name": "guild_id",
+                    "type": "string"
+                },
+                {
+                    "name": "channel_id",
+                    "type": "string"
+                }
+            ]
         }
     ]
 }

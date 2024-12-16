@@ -18,12 +18,14 @@ func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context,
 		ReactionType int    `json:"reaction_type"`
 		ChannelID    string `json:"channel_id"`
 		Message      string `json:"message"`
+		GuildID      string `json:"guild_id"`
 	}{
 		AreaId:       areaId,
 		UserToken:    userToken,
 		ReactionType: receivedData.ReactionType,
 		ChannelID:    receivedData.ChannelID,
 		Message:      receivedData.Message,
+		GuildID:	  receivedData.GuildID,
 	}
 
 	jsonBody, err := json.Marshal(sendingData)

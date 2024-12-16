@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS "DiscordReactions" (
     reaction_type       INT,
     user_token          VARCHAR(255),
     channel_id          VARCHAR(255),
+    guild_id            VARCHAR(255),
     message             VARCHAR(255)
 );
 

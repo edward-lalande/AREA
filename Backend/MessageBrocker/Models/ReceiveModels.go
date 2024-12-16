@@ -9,4 +9,5 @@ type ReceivedActionToReactions struct {
 	ReactionType       int    `json:"reaction_type"`
 	Message            string `json:"message"`
 	ChannelId          string `json:"channel_id"`
+	GuildId			   string `json:"guild_id"`
 }

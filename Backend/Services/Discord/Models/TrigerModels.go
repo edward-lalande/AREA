@@ -9,4 +9,5 @@ type TriggerdUserModel struct {
 	Message      string
 	ReactionType int
 	Channel      string
+	Guild		 string
 }
