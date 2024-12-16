@@ -20,6 +20,6 @@ func CallBack(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing code"})
 		return
 	}
-	redirectURL := "http://localhost:8081/login?spotify_code=" + code
+	redirectURL := "http://localhost:8081/login?gitlab_code=" + code
 	c.Redirect(http.StatusFound, redirectURL)
 }

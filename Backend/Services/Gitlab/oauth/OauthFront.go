@@ -1,8 +1,8 @@
 package oauth
 
 import (
+	"gitlab/utils"
 	"net/http"
-	"spotify/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,9 +16,9 @@ import (
 // @Success 200 {string} string "the URL to redirect to for the OAUTH2 Gitlab"
 // @Router /oauth2 [get]
 func OAuthFront(c *gin.Context) {
-	authUrl := "https://accounts.spotify.com/authorize?&client_id=" + utils.GetEnvKey("CLIENT_ID") +
-		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI") +
-		"&response_type=code" +
-		"&scope=user-read-private%20user-read-email"
+	authUrl := "https://gitlab.com/oauth/authorize?client_id=" + utils.GetEnvKey("CLIENT_ID") +
+		"&client_secret=" + utils.GetEnvKey("CLIENT_SECRET") +
+		"&redirect_uri=http://127.0.0.1:8087/callback&response_type=code" +
+		"&scope=" + "api " + "read_api " + "read_user " + "create_runner " + "manage_runner " + "admin_mode " + ""
 	c.String(http.StatusOK, authUrl)
 }

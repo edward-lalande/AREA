@@ -1,11 +1,11 @@
 package oauth
 
 import (
+	models "gitlab/Models"
+	"gitlab/utils"
 	"io"
 	"net/http"
 	"net/url"
-	models "spotify/Models"
-	"spotify/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +26,7 @@ func GetAccessToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	accessTokenUrl := "https://accounts.spotify.com/api/token"
+	accessTokenUrl := "https://gitlab.com/oauth/token"
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
