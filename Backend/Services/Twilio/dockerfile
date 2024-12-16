@@ -1,0 +1,11 @@
+FROM golang:alpine
+
+WORKDIR /app
+
+COPY . /app
+
+RUN go build -o twilio .
+
+EXPOSE 8094
+
+CMD ["./twilio"]
