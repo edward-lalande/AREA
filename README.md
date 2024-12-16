@@ -38,7 +38,6 @@ We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Fl
 - Miro
 - Steam
 - Twilio
-- Bureau of Economic Analysis
 
 ## Usage
 
