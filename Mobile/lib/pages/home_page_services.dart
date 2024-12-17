@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_app/myWidgets/my_card.dart';
 
 import '../myWidgets/my_title.dart';
 
@@ -38,7 +39,7 @@ class _HomePageServicesState extends State<HomePageServices> {
                             Card(
                                 elevation: 7,
                                 color: Color(0XFF5865F2),
-                                child: SampleCard(
+                                child: MyCard(
                                     title: "Discord",
                                     icon: Icon(
                                         color: Colors.white,
@@ -51,7 +52,7 @@ class _HomePageServicesState extends State<HomePageServices> {
                             const SizedBox(width: 5,),
                             Card(
                                 elevation: 7,
-                                child: SampleCard(
+                                child: MyCard(
                                     title: "Time User",
                                     icon: Icon(
                                         Icons.av_timer,
@@ -69,46 +70,4 @@ class _HomePageServicesState extends State<HomePageServices> {
       ),
     );
   }
-}
-
-class SampleCard extends StatelessWidget {
-    const SampleCard({
-        super.key,
-        required this.icon,
-        required this.title,
-        this.padding = const EdgeInsets.all(0),
-    });
-
-    final Widget icon;
-    final String title;
-    final EdgeInsetsGeometry padding;
-
-    @override
-    Widget build(BuildContext context) {
-        return Padding(
-            padding: padding,
-            child: SizedBox(
-                width: 150,
-                height: 100,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                        icon,
-                        const SizedBox(
-                            height: 8
-                        ),
-                        Text(
-                            title,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontFamily: "Avenir"
-                            ),
-                        ),
-                    ],
-                ),
-            ),
-        );
-    }
 }
