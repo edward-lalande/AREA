@@ -29,7 +29,29 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
     }
 }
 
-Future<String> getOAuthUrl({required String url}) async
+Future<bool> classicPost({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
+{
+    try {
+        final response = await http.post(
+            Uri.parse(url),
+            headers: headers,
+            body: json.encode(body),
+        );
+        if (response.statusCode == 200) {
+            print(response.body);
+            return true;
+
+        } else {
+            print('ERRRORR : ${response.statusCode}, ${response.body}');
+            return false;
+        }
+    } catch (e) {
+        print('ERRORRRRR : $e');
+        return false;
+    }
+}
+
+Future<String> classicGet({required String url}) async
 {
 
     final apiUrl = url;
