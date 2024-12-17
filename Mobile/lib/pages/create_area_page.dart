@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import '../utils/post_request.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_title.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class CreateArea extends StatefulWidget {
   const CreateArea({super.key});
@@ -14,77 +12,6 @@ class CreateArea extends StatefulWidget {
 }
 
 class _CreateAreaState extends State<CreateArea> {
-    String action = "";
-    String reaction = "";
-    String page = "Create";
-
-    int hour = 0;
-    int minute = 0;
-
-    String channel = "";
-    String message = "";
-
-    final List<String> services = ["Time"];
-    final List<String> actions = ["Every day at"];
-    final List<String> reactions = ["Send a message on channel"];
-
-  void navigateToPage(String newPage) {
-        setState(() {
-        page = newPage;
-        });
-  }
-
-  Future<void> createArea() async {
-    String? accessToken = await storage.read(key: "accesToken");
-
-    if (accessToken == null) {
-        print("Access token not found.");
-        return;
-    }
-
-    const String url = "http://10.0.2.2:8080/area";
-
-    final data = [
-        {
-            "user_token": "AREA",
-            "action": {
-            "action_id": 1,
-            "action_type": 0,
-            "continent": "Europe",
-            "city": "Paris",
-            "hour": hour,
-            "minute": minute
-            },
-            "reactions": [
-            {
-                "reaction_id": 2,
-                "reaction_type": 0,
-                "channel_id": channel,
-                "message": message
-            }
-            ]
-        }
-    ];
-
-    try {
-        final response = await http.post(
-            Uri.parse(url),
-            headers: {
-            "Authorization": "Bearer $accessToken",
-            "Content-Type": "application/json",
-            },
-            body: jsonEncode(data),
-        );
-
-        if (response.statusCode == 200) {
-            print("Area created successfully!");
-        } else {
-            print("Error: ${response.statusCode}, ${response.body}");
-        }
-    } catch (e) {
-        print("Error: $e");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +42,10 @@ class _CreateAreaState extends State<CreateArea> {
                                 textColor: Colors.white,
                                 fontSize: 30,
                                 spaceBetweenIconAndText: 10,
-                                onPressed: (context) {
-
+                                onPressed: (context) async {
+                                    final String tmp = await classicGet(
+                                        url: "http://10.0.2.2:8080/services",
+                                    );
                                 },
                             ),
                             MyButton(

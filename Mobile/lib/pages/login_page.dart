@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Image.asset('assets/discord-logo.png'),
                     ),
                     onPressed: (context) async {
-                        String url = await getOAuthUrl(url: "http://10.0.2.2:8083/oauth2");
+                        String url = await classicGet(url: "http://10.0.2.2:8083/oauth2");
                         if (context.mounted) {
                             Navigator.push(
                                 context,
