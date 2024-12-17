@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"gitlab/oauth"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,10 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/actions", func(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
 	})
+
+	r.GET("/oauth", oauth.OAuthFront)
+	r.GET("/callback", oauth.CallBack)
+	r.POST("/access-token", oauth.GetAccessToken)
 
 	r.GET("/reactions", func(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
