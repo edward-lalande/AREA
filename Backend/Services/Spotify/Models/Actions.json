@@ -1,0 +1,9 @@
+{
+    "name": "Spotify",
+    "actions": [{
+        "name": "If Playing",
+        "action_id": 9,
+        "action_type": 0,
+        "arguments": []
+    }]
+}
