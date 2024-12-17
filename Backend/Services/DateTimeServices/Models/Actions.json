@@ -7,18 +7,22 @@
             "action_type": 0,
             "arguments": [
                 {
+                    "display": "Hour",
                     "name": "hour",
                     "type": "number"
                 },
                 {
+                    "display": "Minute",
                     "name": "minute",
                     "type": "number"
                 },
                 {
+                    "display": "City",
                     "name": "city",
                     "type": "string"
                 },
                 {
+                    "display": "Continent",
                     "name": "continent",
                     "type": "string"
                 }
