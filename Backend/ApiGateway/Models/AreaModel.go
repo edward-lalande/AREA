@@ -15,6 +15,14 @@ type GitlabAction struct {
 	AreaId     string `json:"area_id"`
 }
 
+type SpotifyActions struct {
+	AreaId      string `json:"area_id"`
+	ActionType  int    `json:"action_type"`
+	IsPlaying   int    `json:"is_playing"`
+	AccessToken string `json:"user_token"`
+	MusicName   string `json:"music_name"`
+}
+
 type TypeTimeAction struct {
 	BaseAction
 	// ActionType of dateTime
