@@ -39,10 +39,11 @@ CREATE TABLE IF NOT EXISTS "DiscordReactions" (
     message             VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS "DiscordActions" (
+CREATE TABLE IF NOT EXISTS "DiscordAction" (
     id                  SERIAL PRIMARY KEY,
-    action_id           INT,
     action_type         INT,
+    channel_id          VARCHAR(255),
+    message_id          VARCHAR(255),
     area_id             VARCHAR(255),
     user_token          VARCHAR(255)
 );
