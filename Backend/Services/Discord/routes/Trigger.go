@@ -4,7 +4,6 @@ import (
 	area "discord-service/Area"
 	models "discord-service/Models"
 	"discord-service/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -36,7 +35,6 @@ func Trigger(c *gin.Context) {
 	row := db.QueryRow(c, "SELECT user_token, reaction_type, message, channel_id, guild_id FROM \"DiscordReactions\" WHERE area_id = $1", receivedData.ReactionIdentifyer)
 
 	if err := row.Scan(&user.UserEmail, &user.ReactionType, &user.Message, &user.Channel, &user.Guild); err != nil {
-		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

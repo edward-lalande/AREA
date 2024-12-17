@@ -3,7 +3,6 @@ package routes
 import (
 	models "discord-service/Models"
 	"discord-service/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +31,6 @@ func ReceivedReactions(c *gin.Context) {
 	_, err := db.Exec(c, "INSERT INTO \"DiscordReactions\" (area_id, reaction_type, user_token, channel_id, message, guild_id)"+
 		" VALUES($1, $2, $3, $4, $5, $6)", receivedData.AreaId, receivedData.ReactionType, receivedData.UserToken, receivedData.ChannelID, receivedData.Message, receivedData.GuildID)
 	if err != nil {
-		fmt.Println("error:", err.Error())
 		c.JSON(http.StatusInsufficientStorage, gin.H{"error": err.Error()})
 		return
 	}
