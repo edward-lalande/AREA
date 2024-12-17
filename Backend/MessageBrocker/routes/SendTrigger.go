@@ -18,7 +18,6 @@ func findAreaInDatabase(AreaId string, c *gin.Context) int {
 
 	var serviceReactionId int
 	query := `SELECT service_reaction_id FROM "Area" WHERE area_id = $1`
-
 	err := db.QueryRow(c, query, AreaId).Scan(&serviceReactionId)
 	if err != nil {
 		if err.Error() == "no rows in result set" {
@@ -57,18 +56,12 @@ func Trigger(c *gin.Context) {
 	}
 
 	serviceReactionId := findAreaInDatabase(receivedData.AreaId, c)
-	if serviceReactionId == -1 || serviceReactionId > len(services) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "service Reactiond id is" + string(serviceReactionId)})
-		return
-	}
-
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(receivedData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	resp, err := http.Post(services[serviceReactionId]+"trigger", "application/json", &buf)
 
 	if err != nil {
