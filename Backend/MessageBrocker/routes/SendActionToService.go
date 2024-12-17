@@ -17,24 +17,23 @@ func SendActionToService(c *gin.Context) {
 	services[0] = utils.GetEnvKey("USER_API")
 	services[1] = utils.GetEnvKey("TIME_API")
 	services[2] = utils.GetEnvKey("DISCORD_API")
-	services[3] = utils.GetEnvKey("BLUESKY_API")
-	services[4] = utils.GetEnvKey("GITHUB_API")
-	services[5] = utils.GetEnvKey("GITLAB_API")
-	services[6] = utils.GetEnvKey("GOOGLE_API")
-	services[7] = utils.GetEnvKey("METEO_API")
-	services[8] = utils.GetEnvKey("MIRO_API")
-	services[9] = utils.GetEnvKey("SPOTIFY_API")
-	services[10] = utils.GetEnvKey("STEAM_API")
-	services[11] = utils.GetEnvKey("TICKET_MASTER_API")
-	services[12] = utils.GetEnvKey("TWILIO_API")
-	services[13] = utils.GetEnvKey("UBER_API")
+	//services[3] = utils.GetEnvKey("BLUESKY_API")
+	//services[4] = utils.GetEnvKey("GITHUB_API")
+	//services[5] = utils.GetEnvKey("GITLAB_API")
+	//services[6] = utils.GetEnvKey("GOOGLE_API")
+	//services[7] = utils.GetEnvKey("METEO_API")
+	//services[8] = utils.GetEnvKey("MIRO_API")
+	//services[9] = utils.GetEnvKey("SPOTIFY_API")
+	//services[10] = utils.GetEnvKey("STEAM_API")
+	//services[11] = utils.GetEnvKey("TICKET_MASTER_API")
+	//services[12] = utils.GetEnvKey("TWILIO_API")
+	//services[13] = utils.GetEnvKey("UBER_API")
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// à rendre générique
-	// pour handle tout les type de reactions
+
 	sendBody := struct {
 		ReactionIdentifyer string `json:"area_id"`
 		ReactionType       int    `json:"reaction_type"`
