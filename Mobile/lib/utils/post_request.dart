@@ -38,7 +38,6 @@ Future<bool> classicPost({Map<String, dynamic>? body, Map<String, String>? heade
             body: json.encode(body),
         );
         if (response.statusCode == 200) {
-            print(response.body);
             return true;
 
         } else {
