@@ -17,8 +17,8 @@ class MyCard extends StatelessWidget {
         return Padding(
             padding: padding,
             child: SizedBox(
-                width: 150,
-                height: 100,
+                width: 10,
+                height: 10,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
