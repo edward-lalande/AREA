@@ -47,3 +47,12 @@ CREATE TABLE IF NOT EXISTS "DiscordAction" (
     area_id             VARCHAR(255),
     user_token          VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS "TwilioReaction" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             VARCHAR(255),
+    reaction_type       INT,
+    user_token          VARCHAR(255),
+    phone_number        VARCHAR(255),
+    message             VARCHAR(255)
+);
