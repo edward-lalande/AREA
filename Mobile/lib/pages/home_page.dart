@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
         CreateArea(),
         MyArea(),
         AccountPage(),
-        //
     ];
     @override
     Widget build(BuildContext context) {
@@ -39,13 +38,15 @@ class _HomePageState extends State<HomePage> {
                     iconSize: 25,
                     selectedLabelStyle: TextStyle(
                         fontFamily: "Avenir",
+                        color: Colors.black,
                     ),
                     unselectedLabelStyle: TextStyle(
                         fontFamily: "Avenir",
+                        color: Colors.black,
                     ),
                     items: [
                         BottomNavigationBarItem(
-                            activeIcon: Icon(Icons.home_outlined),
+                            activeIcon: Icon(color: Colors.black,Icons.home_outlined),
                             icon: Icon(
                                 color: Colors.black,
                                 Icons.home,
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                             label: "Home",
                         ),
                         BottomNavigationBarItem(
-                            activeIcon: Icon(Icons.create_outlined),
+                            activeIcon: Icon(Icons.create_outlined, color: Colors.black,),
                             icon: Icon(
                                 color: Colors.black,
                                 Icons.create,
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                             label: "Create",
                         ),
                         BottomNavigationBarItem(
-                            activeIcon: Icon(Icons.my_library_add_outlined),
+                            activeIcon: Icon(Icons.my_library_add_outlined, color: Colors.black,),
                             icon: Icon(
                                 color: Colors.black,
                                 Icons.my_library_books,
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                             label: "MyArea's",
                         ),
                         BottomNavigationBarItem(
-                            activeIcon: Icon(Icons.account_box_outlined),
+                            activeIcon: Icon(Icons.account_box_outlined, color: Colors.black,),
                             icon: Icon(
                                 color: Colors.black,
                                 Icons.account_box,
