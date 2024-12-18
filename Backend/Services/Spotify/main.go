@@ -9,11 +9,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	area "spotify/Area"
 	models "spotify/Models"
 	"spotify/routes"
 	"spotify/utils"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 	"github.com/robfig/cron"
 )
 
@@ -35,7 +37,7 @@ func getDatabaseSlice() []models.Database {
 
 	for rows.Next() {
 		var database models.Database
-		err := rows.Scan(&database.Id, &database.AreaId, &database.ActionType, &database.AccessToken, &database.IsPlaying, &database.MusicName)
+		err := rows.Scan(&database.Id, &database.AreaId, &database.ActionType, &database.AccessToken, &database.UserId, &database.IsPlaying, &database.NbPlaylists)
 		if err != nil {
 			log.Fatal(err)
 			return nil
@@ -51,8 +53,101 @@ func getDatabaseSlice() []models.Database {
 	return databaseSlice
 }
 
-func CallMessageBrocker(AreaId string) {
+func listenActions(db *pgx.Conn, slice models.Database) int {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", utils.GetEnvKey("SPOTIFY_PLAYER_API")+"me/player", nil)
 
+	if err != nil {
+		return 1
+	}
+
+	req.Header.Set("Authorization", "Bearer "+slice.AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
+
+	if err != nil {
+		log.Fatal("Error while calling the API:", err)
+		return 1
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNoContent && slice.IsPlaying == 1 {
+		db.Exec(context.Background(),
+			`UPDATE "SpotifyActions" 
+		 SET is_playing = CASE WHEN is_playing = 1 THEN 0 ELSE 1 END
+		 WHERE area_id = $1 AND user_token = $2`, slice.AreaId, slice.AccessToken)
+		return 1
+	}
+
+	if resp.StatusCode == http.StatusNoContent {
+		return 1
+	}
+
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		log.Fatal("Error reading the response body:", err)
+		return 1
+	}
+
+	jsonBody := utils.BytesToJson(body)
+
+	if jsonBody != nil && slice.IsPlaying == 0 {
+		db.Exec(context.Background(),
+			`UPDATE "SpotifyActions" 
+		 SET is_playing = CASE WHEN is_playing = 1 THEN 0 ELSE 1 END
+		 WHERE area_id = $1 AND user_token = $2`, slice.AreaId, slice.AccessToken)
+		send := struct {
+			AreaId string `json:"area_id"`
+		}{slice.AreaId}
+		var buf bytes.Buffer
+		if err := json.NewEncoder(&buf).Encode(send); err != nil {
+			return -1
+		}
+		http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+	}
+
+	return 0
+}
+
+func addPlaylistAction(db *pgx.Conn, slice models.Database) int {
+	actualNbPlaylists := area.GetNbPlaylists(slice.AccessToken, slice.UserId)
+
+	if actualNbPlaylists > slice.NbPlaylists {
+		var send models.TriggerModelGateway
+		var buf bytes.Buffer
+		send.AreaId = slice.AreaId
+		if err := json.NewEncoder(&buf).Encode(send); err != nil {
+			return -1
+		}
+		db.Exec(context.Background(),
+			`UPDATE "SpotifyActions" 
+			SET nb_playlists = $1 WHERE area_id = $2 AND user_token = $3
+		`, slice.NbPlaylists+1, slice.AreaId, slice.AccessToken)
+		http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+	}
+
+	return 0
+}
+
+func removePlaylistAction(db *pgx.Conn, slice models.Database) int {
+	actualNbPlaylists := area.GetNbPlaylists(slice.AccessToken, slice.UserId)
+
+	if actualNbPlaylists < slice.NbPlaylists {
+		var send models.TriggerModelGateway
+		var buf bytes.Buffer
+		send.AreaId = slice.AreaId
+		if err := json.NewEncoder(&buf).Encode(send); err != nil {
+			return -1
+		}
+		db.Exec(context.Background(),
+			`UPDATE "SpotifyActions" 
+			SET nb_playlists = $1 WHERE area_id = $2 AND user_token = $3
+		`, slice.NbPlaylists-1, slice.AreaId, slice.AccessToken)
+		http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+	}
+
+	return 0
 }
 
 func BackUpLocalDataCall() {
@@ -65,50 +160,29 @@ func BackUpLocalDataCall() {
 	for _, slice := range databaseSlice {
 
 		if slice.ActionType == 0 {
-
-			client := &http.Client{}
-			req, err := http.NewRequest("GET", utils.GetEnvKey("SPOTIFY_PLAYER_API"), nil)
-			if err != nil {
-				return
-			}
-			req.Header.Set("Authorization", "Bearer "+slice.AccessToken)
-			req.Header.Set("Content-Type", "application/json")
-			resp, err := client.Do(req)
-			if err != nil {
-				log.Fatal("Error while calling the API:", err)
-				return
-			}
-			defer resp.Body.Close()
-			if resp.StatusCode == http.StatusNoContent && slice.IsPlaying == 1 {
-				db.Exec(context.Background(),
-					`UPDATE "SpotifyActions" 
-				 SET is_playing = CASE WHEN is_playing = 1 THEN 0 ELSE 1 END
-				 WHERE area_id = $1 AND user_token = $2`, slice.AreaId, slice.AccessToken)
+			switch listenActions(db, slice) {
+			case 1:
 				continue
-			}
-
-			if resp.StatusCode == http.StatusNoContent {
-				continue
-			}
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				log.Fatal("Error reading the response body:", err)
+			case -1:
 				return
 			}
-			jsonBody := utils.BytesToJson(body)
-			if jsonBody != nil && slice.IsPlaying == 0 {
-				db.Exec(context.Background(),
-					`UPDATE "SpotifyActions" 
-				 SET is_playing = CASE WHEN is_playing = 1 THEN 0 ELSE 1 END
-				 WHERE area_id = $1 AND user_token = $2`, slice.AreaId, slice.AccessToken)
-				send := struct {
-					AreaId string `json:"area_id"`
-				}{slice.AreaId}
-				var buf bytes.Buffer
-				if err := json.NewEncoder(&buf).Encode(send); err != nil {
-					return
-				}
-				http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+		}
+
+		if slice.ActionType == 1 {
+			switch addPlaylistAction(db, slice) {
+			case 1:
+				continue
+			case -1:
+				return
+			}
+		}
+
+		if slice.ActionType == 2 {
+			switch removePlaylistAction(db, slice) {
+			case 1:
+				continue
+			case -1:
+				return
 			}
 		}
 	}

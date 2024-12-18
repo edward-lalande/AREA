@@ -53,8 +53,9 @@ CREATE TABLE IF NOT EXISTS "SpotifyActions" (
     area_id             TEXT,
     action_type         INT,
     user_token          TEXT,
+    user_id             TEXT,    
     is_playing          INT,
-    music_name          TEXT
+    nb_playlists        INT
 );
 
 CREATE TABLE IF NOT EXISTS "GitlabActions" (

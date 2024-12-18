@@ -6,7 +6,8 @@ type Database struct {
 	ActionType  int    `json:"action_type"`
 	IsPlaying   int    `json:"is_playing"`
 	AccessToken string `json:"user_token"`
-	MusicName   string `json:"music_name"`
+	UserId      string `json:"user_id"`
+	NbPlaylists int    `json:"nb_playlists"`
 }
 
 type ActionsData struct {
@@ -14,5 +15,4 @@ type ActionsData struct {
 	ActionType  int    `json:"action_type"`
 	IsPlaying   int    `json:"is_playing"`
 	AccessToken string `json:"user_token"`
-	MusicName   string `json:"music_name"`
 }
