@@ -32,7 +32,7 @@ GoRouter appRouter(BuildContext context) {
     routes: [
        GoRoute(
         path: '/',
-        builder: (context, state) => const CreateArea(),
+        builder: (context, state) => LoginPage(),
       ),
       GoRoute(
         path: '/login',
