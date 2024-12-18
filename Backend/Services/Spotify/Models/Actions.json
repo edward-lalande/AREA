@@ -1,9 +1,24 @@
 {
     "name": "Spotify",
-    "actions": [{
-        "name": "If Playing",
-        "action_id": 9,
-        "action_type": 0,
-        "arguments": []
-    }]
+    "actions": [
+        {
+            "name": "Listen to music",
+            "action_id": 9,
+            "action_type": 0,
+            "arguments": []
+        },
+        {
+            "name": "Create new playlist",
+            "action_id": 9,
+            "action_type": 1,
+            "arguments": []
+        },
+        {
+            "name": "Remove a playlist",
+            "action_id": 9,
+            "action_type": 2,
+            "arguments": []
+        }
+
+    ]
 }
