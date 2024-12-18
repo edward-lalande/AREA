@@ -4,7 +4,6 @@ import (
 	area "discord-service/Area"
 	models "discord-service/Models"
 	"discord-service/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
