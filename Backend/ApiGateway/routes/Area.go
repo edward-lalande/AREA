@@ -79,7 +79,7 @@ func Area(c *gin.Context) {
 			case 9:
 				var actionData models.SpotifyActions
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
-					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type7 action data"})
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type9 action data"})
 					return
 				}
 				actionData.AreaId = areaID
@@ -103,6 +103,15 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 9:
+				var reactionDetail models.SpotifyReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				resp := SendSpotifyReactions(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
