@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,8 +43,13 @@ func GetAccessToken(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(rep.StatusCode, gin.H{
-		"body": utils.BytesToJson(respBody),
-	})
+	if rep.StatusCode < 400 {
+		arr := strings.Split(string(respBody), "&")
+		token := strings.Split(arr[0], "=")
+		c.JSON(rep.StatusCode, gin.H{
+			"body": token[1],
+		})
+		return
+	}
+	c.JSON(400, "Error")
 }
