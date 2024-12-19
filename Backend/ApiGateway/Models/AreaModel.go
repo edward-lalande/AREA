@@ -83,3 +83,7 @@ type AreaDatabase struct {
 	ServiceActionId   int    `json:"service_action_id"`
 	ServiceReactionId int    `json:"service_reaction_id"`
 }
+
+type OauthCode struct {
+	OauthCode string `json:"code"`
+}
