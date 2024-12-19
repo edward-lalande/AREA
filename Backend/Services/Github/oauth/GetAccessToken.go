@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"fmt"
 	models "github/Models"
 	"github/utils"
 	"io"
@@ -26,6 +27,7 @@ func GetAccessToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Println("code => " + receivedData.Code)
 	accessTokenUrl := "https://github.com/login/oauth/access_token"
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))

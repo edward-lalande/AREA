@@ -15,7 +15,7 @@ func ApplyRoutes(r *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{"ping": "pong"})
 	})
 
-	r.GET("/oauth2", oauth.OAuthFront)
+	r.GET("/oauth", oauth.OAuthFront)
 	r.GET("/callback", oauth.CallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
 	r.POST("/register", RegisterToken)

@@ -22,4 +22,14 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/login", UserLogin)
 	r.POST("/sign-up", UserSignUp)
 	r.POST("/update-user", UserUpdate)
+
+	r.GET("/discord/oauth", DiscordOauth2)
+	r.GET("/spotify/oauth", SpotifyOauth2)
+	r.GET("/github/oauth", GithubOauth2)
+	r.GET("/gitlab/oauth", GitlabOauth2)
+
+	r.POST("/discord/access-token", DiscordAccessToken)
+	r.POST("/spotify/access-token", SpotifyAccessToken)
+	r.POST("/github/access-token", GithubAccessToken)
+	r.POST("/gitlab/access-token", GitlabAccessToken)
 }
