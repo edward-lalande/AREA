@@ -3,8 +3,6 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"io"
 	models "message-brocker/Models"
 	"message-brocker/utils"
 	"net/http"
@@ -69,9 +67,6 @@ func Trigger(c *gin.Context) {
 		return
 	}
 	defer resp.Body.Close()
-	b, _ := io.ReadAll(resp.Body)
-	json, _ := utils.BytesToJson(b)
-	fmt.Println("status code: ", resp.StatusCode)
-	fmt.Println("json: ", json)
+
 	c.JSON(resp.StatusCode, gin.H{"body": resp.Body})
 }
