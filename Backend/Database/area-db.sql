@@ -42,8 +42,6 @@ CREATE TABLE IF NOT EXISTS "DiscordReactions" (
 CREATE TABLE IF NOT EXISTS "DiscordAction" (
     id                  SERIAL PRIMARY KEY,
     action_type         INT,
-    channel_id          VARCHAR(255),
-    message_id          VARCHAR(255),
     area_id             TEXT,
     user_token          TEXT
 );
@@ -56,6 +54,13 @@ CREATE TABLE IF NOT EXISTS "SpotifyActions" (
     user_id             TEXT,    
     is_playing          INT,
     nb_playlists        INT
+);
+
+CREATE TABLE IF NOT EXISTS "SpotifyReactions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    reaction_type       INT,
+    user_token          TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "GitlabActions" (
