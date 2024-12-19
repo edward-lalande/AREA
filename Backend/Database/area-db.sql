@@ -56,3 +56,10 @@ CREATE TABLE IF NOT EXISTS "SpotifyActions" (
     is_playing          INT,
     nb_playlists        INT
 );
+
+CREATE TABLE IF NOT EXISTS "SpotifyReactions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    reaction_type       INT,
+    user_token          TEXT
+);
