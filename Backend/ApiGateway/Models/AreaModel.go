@@ -5,8 +5,8 @@ import "encoding/json"
 type BaseAction struct {
 	// Action ID
 	// required: true
-	ActionID 	int 	`json:"action_id"`
-	UserToken 	string 	`json:"user_token"`
+	ActionID  int    `json:"action_id"`
+	UserToken string `json:"user_token"`
 }
 
 type TypeTimeAction struct {
@@ -64,6 +64,15 @@ type TypeDiscordReaction struct {
 	// Guild to create a channel
 	// required: true
 	GuildID string `json:"guild_id"`
+}
+
+type TypeTwilioReaction struct {
+	BaseReaction
+
+	ReactionType int `json:"reaction_type"`
+
+	PhoneNumber string `json:"phone_number"`
+	Message     string `json:"message"`
 }
 
 type PayloadItem struct {

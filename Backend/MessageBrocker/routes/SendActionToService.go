@@ -40,7 +40,8 @@ func SendActionToService(c *gin.Context) {
 		UserEmail          string `json:"user_email"`
 		Message            string `json:"message"`
 		ChannelId          string `json:"channel_id"`
-		GuildId			   string `json:"guild_id"`
+		GuildId            string `json:"guild_id"`
+		PhoneNumber        string `json:"phone_number"`
 	}{
 		receivedData.ReactionIdentifyer,
 		receivedData.ReactionType,
@@ -48,6 +49,7 @@ func SendActionToService(c *gin.Context) {
 		receivedData.Message,
 		receivedData.ChannelId,
 		receivedData.GuildId,
+		receivedData.PhoneNumber,
 	}
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(sendBody)

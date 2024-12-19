@@ -1,0 +1,23 @@
+{
+    "name": "Twilio Services",
+    "reacions": [
+        {
+            "name": "Send a message",
+            "action_id": 12,
+            "action_type": 0,
+            "arguments": [
+                {
+                    "display": "Phone Number",
+                    "name": "phone_number",
+                    "type": "string"
+                },
+                {
+                    "display": "Message",
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}
+    

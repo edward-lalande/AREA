@@ -103,6 +103,14 @@ func Area(c *gin.Context) {
 				}
 				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 12:
+				var reactionDetail models.TypeTwilioReaction
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				resp := sendTwilioReaction(item.UserToken, areaID, c, reactionDetail)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
