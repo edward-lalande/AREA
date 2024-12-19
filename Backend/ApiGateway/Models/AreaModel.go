@@ -43,6 +43,12 @@ type BaseReaction struct {
 	ReactionID int `json:"reaction_id"`
 }
 
+type SpotifyReactions struct {
+	AreaId       string `json:"area_id"`
+	ReactionType int    `json:"reaction_type"`
+	AccessToken  string `json:"user_token"`
+}
+
 type TypeDiscordReaction struct {
 	BaseReaction
 	// Type of reactions (here is for discord send_message reactions)
