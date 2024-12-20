@@ -45,9 +45,9 @@ class _WebViewPageState extends State<WebViewPage> {
                 if (code != null) {
 
                     bool tmp = await sendSignUp(
-                        url: "http://10.0.2.2:8080/discord",
+                        url: "http://10.0.2.2:8083/access-token",
                         body: {
-                            "routes": "access-token",
+                            //"routes": "access-token",
                             "code": code,
                         }
                     );
