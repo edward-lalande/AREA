@@ -11,7 +11,6 @@ import ActionParameters from "./create/ActionParameters";
 import ActionServices from "./create/ActionServices";
 import ReactionParameters from "./create/ReactionParameters";
 import ReactionServices from "./create/ReactionServices";
-import { BlobOptions } from "buffer";
 
 export enum CreatePage {
     CREATE,
@@ -24,6 +23,7 @@ export enum CreatePage {
 }
 
 export interface Argument {
+    display: string;
     name: string;
     type: string;
 }

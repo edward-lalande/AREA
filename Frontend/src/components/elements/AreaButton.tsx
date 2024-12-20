@@ -112,31 +112,6 @@ const AddButton: React.FC<ButtonProps> = (props) => {
     )
 };
 
-const GoogleButton: React.FC<ButtonProps> = (props) => {
-    return (
-        <Button
-            variant="outlined"
-            fullWidth
-            startIcon={<GoogleIcon />}
-            sx={{
-                borderColor: "#888",
-                color: "#000",
-                borderRadius: 5,
-                py: 1.5,
-                textTransform: "none",
-                fontWeight: "bold",
-                fontSize: "1rem",
-                mb: 1,
-                maxWidth: 400,
-                ...props.sx
-            }}
-            {...props}
-        >
-            Continue with Google
-        </Button>
-    );
-};
-
 const Logout: React.FC<ButtonProps> = (props) => {
     return (
         <Button
@@ -188,4 +163,82 @@ const DiscordButton: React.FC<ButtonProps> = (props) => {
     );
 };
 
-export { AreaButton, GoogleButton, DiscordButton, Logout, CreateButton, AddButton, ServiceButton };
+const SpotifyButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+                borderColor: "#1db954",
+                backgroundColor: "#1db954",
+                color: "#fff",
+                borderRadius: 5,
+                py: 1.5,
+                textTransform: "none",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                mb: 1,
+                maxWidth: 400,
+                ...props.sx
+            }}
+            {...props}
+        >
+            <img src="spotify-logo.png" alt="spotify logo" width={44} height={44}/>
+            <AreaTypography variant="h6" text="Continue with Spotify" sx={{ ml: 2 }}/>
+        </Button>
+    );
+};
+
+const GithubButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+                borderColor: "#fff",
+                backgroundColor: "#000",
+                color: "#fff",
+                borderRadius: 5,
+                py: 1.5,
+                textTransform: "none",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                mb: 1,
+                maxWidth: 400,
+                ...props.sx
+            }}
+            {...props}
+        >
+            <img src="logo-github.png" alt="github logo" width={44} height={44}/>
+            <AreaTypography variant="h6" text="Continue with Github" sx={{ ml: 2 }}/>
+        </Button>
+    );
+};
+
+const GitlabButton: React.FC<ButtonProps> = (props) => {
+    return (
+        <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+                backgroundColor: "#fff",
+                color: "#FC6D27",
+                borderRadius: 5,
+                border: "3px solid #FC6D27",
+                py: 1.5,
+                textTransform: "none",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                mb: 1,
+                maxWidth: 400,
+                ...props.sx
+            }}
+            {...props}
+        >
+            <img src="logo-gitlab.png" alt="gitlab logo" width={44} height={44}/>
+            <AreaTypography variant="h6" text="Continue with Gitlab" sx={{ ml: 3 }}/>
+        </Button>
+    );
+};
+
+export { AreaButton, DiscordButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton };
