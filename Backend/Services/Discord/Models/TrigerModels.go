@@ -1,13 +1,13 @@
 package models
 
 type TriggerdModels struct {
-	ReactionIdentifyer string `json:"area_id"`
+	AreaId string `json:"area_id"`
 }
 
 type TriggerdUserModel struct {
-	UserEmail    string
-	Message      string
-	ReactionType int
-	Channel      string
-	Guild		 string
+	UserEmail    string `json:"user_email"`
+	Message      string `json:"message"`
+	ReactionType int    `json:"reaction_type"`
+	Channel      string `json:"channel"`
+	Guild        string `json:"guild_id"`
 }
