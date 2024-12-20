@@ -33,8 +33,7 @@ func SendActionToService(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// à rendre générique
-	// pour handle tout les type de reactions
+
 	sendBody := struct {
 		ReactionIdentifyer string `json:"area_id"`
 		ReactionType       int    `json:"reaction_type"`

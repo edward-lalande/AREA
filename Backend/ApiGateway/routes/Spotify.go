@@ -5,34 +5,15 @@ import (
 	"api-gateway/utils"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SendGitlab(areaId string, data models.GitlabAction, c *gin.Context) *http.Response {
-	data.AreaId = areaId
+func SpotifyOauth2(c *gin.Context) {
 
-	jsonBody, err := json.Marshal(data)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return nil
-	}
-
-	resp, err := http.Post(utils.GetEnvKey("GITLAB_API")+"action", "application/jsons", bytes.NewBuffer(jsonBody))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return nil
-	}
-	defer resp.Body.Close()
-
-	return resp
-
-func GitlabOauth2(c *gin.Context) {
-
-	resp, err := http.Get(utils.GetEnvKey("GITLAB_API") + "oauth")
+	resp, err := http.Get(utils.GetEnvKey("SPOTIFY_API") + "oauth")
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -50,7 +31,7 @@ func GitlabOauth2(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
-func GitlabAccessToken(c *gin.Context) {
+func SpotifyAccessToken(c *gin.Context) {
 
 	var (
 		OauthCode models.OauthCode
@@ -68,7 +49,7 @@ func GitlabAccessToken(c *gin.Context) {
 		return
 	}
 
-	resp, err := http.Post(utils.GetEnvKey("GITLAB_API")+"access-token", "application/json", &buf)
+	resp, err := http.Post(utils.GetEnvKey("SPOTIFY_API")+"access-token", "application/json", &buf)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

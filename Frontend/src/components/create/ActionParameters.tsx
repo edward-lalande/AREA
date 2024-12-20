@@ -38,7 +38,7 @@ const ActionParameters: React.FC<ActionParametersProps> = ({
 
             { action.arguments && action.arguments.map<JSX.Element>((value: Argument) => {
                 
-                return (<AreaTextField label={value.name} onChange={(s) => addActionParameter(value.name, value.type, s.target.value) } sx={{ width: "20vw" }} />);
+                return (<AreaTextField label={value.display} onChange={(s) => addActionParameter(value.name, value.type, s.target.value) } sx={{ width: "20vw" }} />);
 
             })}
 
