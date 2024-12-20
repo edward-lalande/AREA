@@ -3,7 +3,6 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	models "gitlab/Models"
 	"gitlab/utils"
 	"net/http"

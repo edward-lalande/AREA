@@ -1,7 +1,6 @@
 package area
 
 import (
-	"fmt"
 	models "gitlab/Models"
 	"gitlab/utils"
 	"net/http"

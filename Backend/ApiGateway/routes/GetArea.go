@@ -71,8 +71,9 @@ func GetReactions(c *gin.Context) {
 	var servicesArray []reactionsList
 	var reactions []map[string]interface{}
 
-	servicesArray = append(servicesArray, reactionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
 	servicesArray = append(servicesArray, reactionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray = append(servicesArray, reactionsList{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")})
+	servicesArray = append(servicesArray, reactionsList{"Gitlab Services", utils.GetEnvKey("GITLAB_API")})
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "reactions")
