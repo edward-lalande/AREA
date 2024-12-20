@@ -46,3 +46,9 @@ CREATE TABLE IF NOT EXISTS "DiscordActions" (
     area_id             VARCHAR(255),
     user_token          VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS "GitlabActions" (
+    id                  SERIAL PRIMARY KEY,
+    action_type         INT,
+    area_id             TEXT
+);
