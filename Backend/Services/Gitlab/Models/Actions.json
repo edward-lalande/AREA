@@ -1,0 +1,24 @@
+{
+    "name": "Gitlab Services",
+    "actions": [
+            {
+                "name": "Push",
+                "action_id": 5,
+                "action_type": 0,
+                "arguments": []
+            },
+            {
+                "name": "Comments",
+                "action_id": 5,
+                "action_type": 1,
+                "arguments": []
+            },
+            {
+                "name": "Merge Requests",
+                "action_id": 5,
+                "action_type": 2,
+                "arguments": []
+            }
+        ]
+    }
+    

@@ -8,6 +8,12 @@ type BaseAction struct {
 	ActionID int `json:"action_id"`
 }
 
+type GitlabAction struct {
+	BaseAction
+	ActionType int    `json:"action_type"`
+	AreaId     string `json:"area_id"`
+}
+
 type TypeTimeAction struct {
 	BaseAction
 	// ActionType of dateTime
