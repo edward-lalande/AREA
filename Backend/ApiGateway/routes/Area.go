@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,6 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 	if db == nil {
 		return nil
 	}
-
 	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
 	if err != nil {
 		return err
@@ -76,6 +76,13 @@ func Area(c *gin.Context) {
 				}
 				resp := SendTime(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 5:
+				var actionData models.GitlabAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type5 action data"})
+					return
+				}
+				resp := SendGitlab(areaID, actionData, c)
 			case 9:
 				var actionData models.SpotifyActions
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {

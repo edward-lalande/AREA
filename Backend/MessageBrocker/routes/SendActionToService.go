@@ -11,23 +11,23 @@ import (
 )
 
 func SendActionToService(c *gin.Context) {
-	var receivedData models.ReceivedActionToReactions
-	var services map[int]string = make(map[int]string)
-
-	services[0] = utils.GetEnvKey("USER_API")
-	services[1] = utils.GetEnvKey("TIME_API")
-	services[2] = utils.GetEnvKey("DISCORD_API")
-	services[3] = utils.GetEnvKey("BLUESKY_API")
-	services[4] = utils.GetEnvKey("GITHUB_API")
-	services[5] = utils.GetEnvKey("GITLAB_API")
-	services[6] = utils.GetEnvKey("GOOGLE_API")
-	services[7] = utils.GetEnvKey("METEO_API")
-	services[8] = utils.GetEnvKey("MIRO_API")
-	services[9] = utils.GetEnvKey("SPOTIFY_API")
-	services[10] = utils.GetEnvKey("STEAM_API")
-	services[11] = utils.GetEnvKey("TICKET_MASTER_API")
-	services[12] = utils.GetEnvKey("TWILIO_API")
-	services[13] = utils.GetEnvKey("UBER_API")
+	receivedData := models.ReceivedActionToReactions{}
+	services := map[int]string{
+		0:  utils.GetEnvKey("USER_API"),
+		1:  utils.GetEnvKey("TIME_API"),
+		2:  utils.GetEnvKey("DISCORD_API"),
+		3:  utils.GetEnvKey("BLUESKY_API"),
+		4:  utils.GetEnvKey("GITHUB_API"),
+		5:  utils.GetEnvKey("GITLAB_API"),
+		6:  utils.GetEnvKey("GOOGLE_API"),
+		7:  utils.GetEnvKey("METEO_API"),
+		8:  utils.GetEnvKey("MIRO_API"),
+		9:  utils.GetEnvKey("SPOTIFY_API"),
+		10: utils.GetEnvKey("STEAM_API"),
+		11: utils.GetEnvKey("TICKET_MASTER_API"),
+		12: utils.GetEnvKey("TWILIO_API"),
+		13: utils.GetEnvKey("UBER_API"),
+	}
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -40,7 +40,7 @@ func SendActionToService(c *gin.Context) {
 		UserEmail          string `json:"user_email"`
 		Message            string `json:"message"`
 		ChannelId          string `json:"channel_id"`
-		GuildId			   string `json:"guild_id"`
+		GuildId            string `json:"guild_id"`
 	}{
 		receivedData.ReactionIdentifyer,
 		receivedData.ReactionType,

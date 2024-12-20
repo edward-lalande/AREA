@@ -62,3 +62,9 @@ CREATE TABLE IF NOT EXISTS "SpotifyReactions" (
     reaction_type       INT,
     user_token          TEXT
 );
+
+CREATE TABLE IF NOT EXISTS "GitlabActions" (
+    id                  SERIAL PRIMARY KEY,
+    action_type         INT,
+    area_id             TEXT
+);

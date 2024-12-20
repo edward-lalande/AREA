@@ -9,6 +9,12 @@ type BaseAction struct {
 	UserToken 	string 	`json:"user_token"`
 }
 
+type GitlabAction struct {
+	BaseAction
+	ActionType int    `json:"action_type"`
+	AreaId     string `json:"area_id"`
+}
+
 type SpotifyActions struct {
 	AreaId      string `json:"area_id"`
 	ActionType  int    `json:"action_type"`

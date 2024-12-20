@@ -34,6 +34,7 @@ func GetActions(c *gin.Context) {
 
 	servicesArray = append(servicesArray, actionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
 	servicesArray = append(servicesArray, actionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray = append(servicesArray, actionsList{"Gitlab Services", utils.GetEnvKey("GITLAB_API")})
 	servicesArray = append(servicesArray, actionsList{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")})
 
 	for _, service := range servicesArray {
