@@ -1,0 +1,11 @@
+{
+    "name": "Spotify Services",
+    "reactions": [
+        {
+            "name": "Pause the music",
+            "reaction_id": 9,
+            "reaction_type": 0,
+            "arguments": []
+        }
+    ]
+}

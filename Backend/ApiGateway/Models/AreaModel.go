@@ -9,6 +9,12 @@ type BaseAction struct {
 	UserToken 	string 	`json:"user_token"`
 }
 
+type SpotifyActions struct {
+	AreaId      string `json:"area_id"`
+	ActionType  int    `json:"action_type"`
+	AccessToken string `json:"user_token"`
+}
+
 type TypeTimeAction struct {
 	BaseAction
 	// ActionType of dateTime
@@ -45,6 +51,12 @@ type BaseReaction struct {
 	// Reactions ID
 	// required: true
 	ReactionID int `json:"reaction_id"`
+}
+
+type SpotifyReactions struct {
+	AreaId       string `json:"area_id"`
+	ReactionType int    `json:"reaction_type"`
+	AccessToken  string `json:"user_token"`
 }
 
 type TypeDiscordReaction struct {
