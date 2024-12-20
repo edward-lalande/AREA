@@ -46,3 +46,10 @@ CREATE TABLE IF NOT EXISTS "DiscordActions" (
     area_id             VARCHAR(255),
     user_token          VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS "GithubWebhook" (
+    id                  SERIAL PRIMARY KEY,
+    name                VARCHAR(255),
+    login               VARCHAR(255),
+    timestamp           VARCHAR(255),
+)
