@@ -5,7 +5,20 @@ import "encoding/json"
 type BaseAction struct {
 	// Action ID
 	// required: true
-	ActionID int `json:"action_id"`
+	ActionID 	int 	`json:"action_id"`
+	UserToken 	string 	`json:"user_token"`
+}
+
+type GitlabAction struct {
+	BaseAction
+	ActionType int    `json:"action_type"`
+	AreaId     string `json:"area_id"`
+}
+
+type SpotifyActions struct {
+	AreaId      string `json:"area_id"`
+	ActionType  int    `json:"action_type"`
+	AccessToken string `json:"user_token"`
 }
 
 type TypeTimeAction struct {
@@ -31,10 +44,25 @@ type TypeTimeAction struct {
 	Minute int `json:"minute"`
 }
 
+type TypeDiscordAction struct {
+	BaseAction
+
+	ActionType int `json:"action_type"`
+
+	ChannelId string `json:"channel_id"`
+	MessageId string `json:"message_id"`
+}
+
 type BaseReaction struct {
 	// Reactions ID
 	// required: true
 	ReactionID int `json:"reaction_id"`
+}
+
+type SpotifyReactions struct {
+	AreaId       string `json:"area_id"`
+	ReactionType int    `json:"reaction_type"`
+	AccessToken  string `json:"user_token"`
 }
 
 type TypeDiscordReaction struct {
@@ -50,6 +78,10 @@ type TypeDiscordReaction struct {
 	// Message to send
 	// required: true
 	Message string `json:"message"`
+
+	// Guild to create a channel
+	// required: true
+	GuildID string `json:"guild_id"`
 }
 
 type PayloadItem struct {
@@ -64,4 +96,16 @@ type PayloadItem struct {
 	// Reactions
 	// required: true
 	Reactions []*json.RawMessage `json:"reactions,omitempty"`
+}
+
+type AreaDatabase struct {
+	Id                int    `json:"id"`
+	UserToken         string `json:"user_token"`
+	AreaId            string `json:"area_id"`
+	ServiceActionId   int    `json:"service_action_id"`
+	ServiceReactionId int    `json:"service_reaction_id"`
+}
+
+type OauthCode struct {
+	OauthCode string `json:"code"`
 }

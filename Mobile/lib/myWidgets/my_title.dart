@@ -8,18 +8,21 @@ class MyTitle extends StatelessWidget {
     required this.fontSize,
     required this.padding,
     required this.color,
+    this.margin,
   });
 
   final String title;
   final double fontSize;
   final EdgeInsets padding;
   final Color color;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       width: MediaQuery.sizeOf(context).width,
+      margin: margin,
       child: Padding(
         padding: padding,
         child: Text(

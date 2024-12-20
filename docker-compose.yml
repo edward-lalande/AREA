@@ -43,6 +43,149 @@ services:
     depends_on:
       - area-db
 
+  blue-sky:
+    build: Backend/Services/BlueSky
+    container_name: blue-sky
+    environment:
+      PORT: 8096
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8096:8096
+    depends_on:
+      - area-db
+
+  github:
+    build: Backend/Services/Github
+    container_name: github
+    environment:
+      PORT: 8086
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8086:8086
+    depends_on:
+      - area-db
+
+  gitlab:
+    build: Backend/Services/Gitlab
+    container_name: gitlab
+    environment:
+      PORT: 8087
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8087:8087
+    depends_on:
+      - area-db
+
+  google:
+    build: Backend/Services/Google
+    container_name: google
+    environment:
+      PORT: 8088
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8088:8088
+    depends_on:
+      - area-db
+
+  meteo:
+    build: Backend/Services/Meteo
+    container_name: meteo
+    environment:
+      PORT: 8090
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8089:8089
+    depends_on:
+      - area-db
+
+  miro:
+    build: Backend/Services/Miro
+    container_name: miro
+    environment:
+      PORT: 8090
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8090:8090
+    depends_on:
+      - area-db
+
+  spotify:
+    build: Backend/Services/Spotify
+    container_name: spotify
+    environment:
+      PORT: 8091
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8091:8091
+    depends_on:
+      - area-db
+
+  steam:
+    build: Backend/Services/Steam
+    container_name: steam
+    environment: 
+      PORT: 8092
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8092:8092
+    depends_on:
+      - area-db
+
+  ticket-master:
+    build: Backend/Services/TicketMaster
+    container_name: ticket-master
+    environment: 
+      PORT: 8094
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8093:8093
+    depends_on:
+      - area-db
+
+  twilio:
+    build: Backend/Services/Twilio
+    container_name: twilio
+    environment: 
+      PORT: 8094
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8094:8094
+    depends_on:
+      - area-db
+
+  uber:
+    build: Backend/Services/Uber
+    container_name: uber
+    environment: 
+      PORT: 8095
+      API_GATEWAY: http://api-gateway:8080/
+      DB: postgresql://root:password@area-db:5432/area
+      SECRET_KEY: PET
+    ports:
+      - 8095:8095
+    depends_on:
+      - area-db
+
   area-db:
     build: Backend/Database
     container_name: area-db
@@ -53,19 +196,6 @@ services:
     ports:
       - 5432:5432
     restart: always
-
-  mobile:
-    build: Mobile
-    container_name: mobile
-    environment:
-      FLUTTER_HOME: /home/developer/flutter
-      PATH: /home/developer/flutter/bin:/home/developer/flutter/bin/cache/dart-sdk/bin:$PATH
-    volumes:
-      - ./Mobile:/home/developer/app
-    ports:
-      - 3001:3001
-    depends_on:
-      - api-gateway
 
   time-services:
     build: Backend/Services/DateTimeServices
@@ -80,11 +210,6 @@ services:
       - 8082:8082
     depends_on:
       - area-db
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./Backend/Services/DateTimeServices
-          target: /app
 
   discord:
     build: Backend/Services/Discord

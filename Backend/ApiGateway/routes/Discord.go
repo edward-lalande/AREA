@@ -11,10 +11,35 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DiscordWebHooks(c *gin.Context) {
-	var a any
-	c.ShouldBindJSON(&a)
-	c.JSON(http.StatusAccepted, a)
+func sendDiscordAction(userToken string, areaId string, c *gin.Context, receivedData models.TypeDiscordAction) *http.Response {
+
+	sendingData := struct {
+		AreaId       string `json:"area_id"`
+		UserToken    string `json:"user_token"`
+		ActionType int    `json:"action_type"`
+		ChannelID    string `json:"channel_id"`
+		MessageID      string `json:"message_id"`
+	}{
+		AreaId:       areaId,
+		UserToken:    userToken,
+		ActionType:   receivedData.ActionType,
+		ChannelID:    receivedData.ChannelId,
+		MessageID:    receivedData.MessageId,
+	}
+
+	jsonBody, err := json.Marshal(sendingData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+"action", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+	return resp
+
 }
 
 func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context, receivedData models.TypeDiscordReaction) *http.Response {
@@ -24,12 +49,14 @@ func SendMessageDiscordReaction(userToken string, areaId string, c *gin.Context,
 		ReactionType int    `json:"reaction_type"`
 		ChannelID    string `json:"channel_id"`
 		Message      string `json:"message"`
+		GuildID      string `json:"guild_id"`
 	}{
 		AreaId:       areaId,
 		UserToken:    userToken,
 		ReactionType: receivedData.ReactionType,
 		ChannelID:    receivedData.ChannelID,
 		Message:      receivedData.Message,
+		GuildID:      receivedData.GuildID,
 	}
 
 	jsonBody, err := json.Marshal(sendingData)
@@ -115,6 +142,61 @@ func DiscordPost(c *gin.Context) {
 	}
 
 	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+data.Routes, "application/json", &buf)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
+func DiscordOauth2(c *gin.Context) {
+
+	resp, err := http.Get(utils.GetEnvKey("DISCORD_API") + "oauth")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
+func DiscordAccessToken(c *gin.Context) {
+
+	var (
+		OauthCode models.OauthCode
+	)
+
+	if err := c.ShouldBindJSON(&OauthCode); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(OauthCode)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+"access-token", "application/json", &buf)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

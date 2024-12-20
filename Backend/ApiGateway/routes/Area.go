@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,6 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 	if db == nil {
 		return nil
 	}
-
 	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 // @Success 200 {object} map[string]string "Response of all Services with the details of the executions"
 // @Failure 400 {object} map[string]string "Invalid request"
 // @Failure 500 {object} map[string]string "Internal error"
-// @Router /area [post]
+// @Router /areas [post]
 func Area(c *gin.Context) {
 	var payload []models.PayloadItem
 	areaID := GenerateCryptoID()
@@ -76,6 +76,29 @@ func Area(c *gin.Context) {
 				}
 				resp := SendTime(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 5:
+				var actionData models.GitlabAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type5 action data"})
+					return
+				}
+				resp := SendGitlab(areaID, actionData, c)
+			case 9:
+				var actionData models.SpotifyActions
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type9 action data"})
+					return
+				}
+				actionData.AreaId = areaID
+				resp := SendSpotifyActions(actionData, c)
+			case 2:
+				var actionData models.TypeDiscordAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type action data"})
+					return
+				}
+				resp := sendDiscordAction(action.UserToken, areaID, c, actionData)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
@@ -94,6 +117,15 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 9:
+				var reactionDetail models.SpotifyReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				resp := SendSpotifyReactions(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}

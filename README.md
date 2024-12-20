@@ -23,6 +23,22 @@ This project is composed of three parts:
 
 We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Flutter*** for the Mobile.
 
+### Services implemented:
+
+- Date Time
+- Meteo
+- Discord
+- Google
+- Github
+- Gitlab
+- Spotify
+- BlueSky
+- Uber
+- TicketMaster
+- Miro
+- Steam
+- Twilio
+
 ## Usage
 
 To use the Application you only need to
@@ -37,6 +53,7 @@ And it will launch the application
 [Wiki](https://shorturl.at/1yxb8) Containing everything you need to know to be able to develop on this project
 
 ### Swagger Link in Local Host:
+
 - Api-Gateway
     - http://127.0.0.1:8080/swagger/index.html
 - Date Time Api

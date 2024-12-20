@@ -4,7 +4,6 @@ import (
 	area "discord-service/Area"
 	models "discord-service/Models"
 	"discord-service/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,16 +32,15 @@ func Trigger(c *gin.Context) {
 	}
 
 	db := utils.OpenDB(c)
-	row := db.QueryRow(c, "SELECT user_token, reaction_type, message, channel_id FROM \"DiscordReactions\" WHERE area_id = $1", receivedData.ReactionIdentifyer)
+	row := db.QueryRow(c, "SELECT message, channel_id, guild_id FROM \"DiscordReactions\" WHERE area_id = $1", receivedData.AreaId)
 
-	if err := row.Scan(&user.UserEmail, &user.ReactionType, &user.Message, &user.Channel); err != nil {
-		fmt.Println(err.Error())
+	if err := row.Scan(&user.Message, &user.Channel, &user.Guild); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	defer db.Close(c)
 
-	rep, _ := area.FindReactions(user.ReactionType, models.Reactions{user.Message, user.Channel})
+	rep, _ := area.FindReactions(user.ReactionType, models.Reactions{user.Message, user.Channel, user.Guild})
 	c.JSON(rep.StatusCode, gin.H{
 		"body": rep.Body,
 	})

@@ -34,6 +34,8 @@ func GetActions(c *gin.Context) {
 
 	servicesArray = append(servicesArray, actionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
 	servicesArray = append(servicesArray, actionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray = append(servicesArray, actionsList{"Gitlab Services", utils.GetEnvKey("GITLAB_API")})
+	servicesArray = append(servicesArray, actionsList{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")})
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "actions")
@@ -50,7 +52,7 @@ func GetActions(c *gin.Context) {
 		if err := json.Unmarshal(body, &jsonResponse); err != nil {
 			continue
 		}
-		actions = append(actions, gin.H{service.name: jsonResponse})
+		actions = append(actions, jsonResponse)
 	}
 
 	c.JSON(http.StatusOK, actions)
@@ -67,7 +69,7 @@ func GetActions(c *gin.Context) {
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
 	var servicesArray []reactionsList
-	var reactions []any
+	var reactions []map[string]interface{}
 
 	servicesArray = append(servicesArray, reactionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
 	servicesArray = append(servicesArray, reactionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
@@ -88,7 +90,7 @@ func GetReactions(c *gin.Context) {
 			continue
 		}
 
-		reactions = append(reactions, gin.H{service.name: jsonResponse})
+		reactions = append(reactions, jsonResponse)
 	}
 
 	c.JSON(http.StatusOK, reactions)

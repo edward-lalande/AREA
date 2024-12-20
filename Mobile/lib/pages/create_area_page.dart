@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import '../utils/post_request.dart';
-import 'package:http/http.dart' as http;
+
+import 'package:second_app/myWidgets/my_button.dart';
+import 'package:second_app/myWidgets/my_grid_view.dart';
+import 'package:second_app/myWidgets/my_title.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class CreateArea extends StatefulWidget {
   const CreateArea({super.key});
@@ -11,216 +13,88 @@ class CreateArea extends StatefulWidget {
 }
 
 class _CreateAreaState extends State<CreateArea> {
-    String action = "";
-    String reaction = "";
-    String page = "Create";
+    bool _isGridVisible = false;
 
-    int hour = 0;
-    int minute = 0;
-
-    String channel = "";
-    String message = "";
-
-    final List<String> services = ["Time"];
-    final List<String> actions = ["Every day at"];
-    final List<String> reactions = ["Send a message on channel"];
-
-  void navigateToPage(String newPage) {
-        setState(() {
-        page = newPage;
-        });
-  }
-
-  Future<void> createArea() async {
-    String? accessToken = await storage.read(key: "accesToken");
-
-    if (accessToken == null) {
-        print("Access token not found.");
-        return;
-    }
-
-    const String url = "http://10.0.2.2:8080/area";
-
-    final data = [
-        {
-            "user_token": "AREA",
-            "action": {
-            "action_id": 1,
-            "action_type": 0,
-            "continent": "Europe",
-            "city": "Paris",
-            "hour": hour,
-            "minute": minute
-            },
-            "reactions": [
-            {
-                "reaction_id": 2,
-                "reaction_type": 0,
-                "channel_id": channel,
-                "message": message
-            }
-            ]
-        }
-    ];
-
-    try {
-        final response = await http.post(
-            Uri.parse(url),
-            headers: {
-            "Authorization": "Bearer $accessToken",
-            "Content-Type": "application/json",
-            },
-            body: jsonEncode(data),
-        );
-
-        if (response.statusCode == 200) {
-            print("Area created successfully!");
-        } else {
-            print("Error: ${response.statusCode}, ${response.body}");
-        }
-    } catch (e) {
-        print("Error: $e");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-        return Scaffold(
-        appBar: AppBar(title: Text('Create Area')),
-        body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-            children: [
-                if (page == "Create") ...[
-                Text(
-                    "Create an area",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                GestureDetector(
-                    onTap: () => navigateToPage("Select service"),
-                    child: Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                        action.isNotEmpty
-                            ? "If: $action at $hour:$minute"
-                            : "If this",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+    @override
+    Widget build(BuildContext context) {
+        return SafeArea(
+            child: Scaffold(
+                backgroundColor: Colors.white,
+                resizeToAvoidBottomInset: false,
+                body: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                        children: [
+                            const MyTitle(
+                                title: "AREA",
+                                fontSize: 45,
+                                padding: EdgeInsets.only(top: 80),
+                                color: Colors.black,
+                            ),
+                            const MyTitle(
+                                title: "Create Area",
+                                fontSize: 30,
+                                padding: EdgeInsets.only(top: 30, bottom: 50),
+                                color: Colors.black,
+                            ),
+                            MyButton(
+                                padding: _isGridVisible ? const EdgeInsets.only(
+                                    left: 35,
+                                    right: 35,
+                                    top: 60,
+                                    bottom: 20
+                                )
+                                : const EdgeInsets.only(
+                                    left: 35,
+                                    right: 35,
+                                    top: 60
+                                ),
+                                title: "If  this     (add)",
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                                fontSize: 30,
+                                spaceBetweenIconAndText: 10,
+                                onPressed: (context) {
+                                setState(() {
+                                    _isGridVisible = !_isGridVisible;
+                                });
+                                },
+                            ),
+                            AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 1000),
+                                transitionBuilder: (child, animation) {
+                                    return SizeTransition(
+                                        sizeFactor: animation,
+                                        axis: Axis.vertical,
+                                        child: child,
+                                    );
+                                },
+                                child: _isGridVisible
+                                    ? SizedBox(
+                                        height: 400,
+                                        child: MyGridView(
+                                            needAnimation: false,
+                                            appbarVisible: false,
+                                            map: servicesMap,
+                                            typeKey: "services",
+                                        ),
+                                    )
+                                    : const SizedBox.shrink(),
+                            ),
+                            MyButton(
+                                padding: const EdgeInsets.only(left: 35, right: 35, top: 30),
+                                title: "Then that  (add)",
+                                backgroundColor: Colors.grey,
+                                textColor: Colors.white,
+                                fontSize: 30,
+                                spaceBetweenIconAndText: 10,
+                                onPressed: (context) {
+                                },
+                            ),
+                        ],
                     ),
                 ),
-                SizedBox(height: 10),
-                GestureDetector(
-                    onTap: action.isNotEmpty
-                        ? () => navigateToPage("Select reaction")
-                        : null,
-                    child: Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        color: action.isNotEmpty ? Colors.grey : Colors.grey[400],
-                        borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                        reaction.isNotEmpty
-                            ? "Then: $reaction"
-                            : "Then that",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    ),
-                ),
-                SizedBox(height: 20),
-                if (action.isNotEmpty && reaction.isNotEmpty)
-                    ElevatedButton(
-                    onPressed: createArea,
-                    child: Text("Create Area"),
-                    ),
-                ] else if (page == "Select service") ...[
-                Text(
-                    "Select a service",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                for (var service in services)
-                    ListTile(
-                    title: Text(service),
-                    onTap: () => navigateToPage("Select action"),
-                    ),
-                ] else if (page == "Select action") ...[
-                Text(
-                    "Select an action",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                for (var act in actions)
-                    ListTile(
-                    title: Text(act),
-                    onTap: () => setState(() {
-                        action = act;
-                        navigateToPage("Select hour");
-                    }),
-                    ),
-                ] else if (page == "Select hour") ...[
-                Text(
-                    "Every day at",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                    decoration: InputDecoration(labelText: "Hour"),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) => hour = int.tryParse(value) ?? 0,
-                ),
-                TextField(
-                    decoration: InputDecoration(labelText: "Minute"),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) => minute = int.tryParse(value) ?? 0,
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: () => navigateToPage("Create"),
-                    child: Text("Confirm"),
-                ),
-                ] else if (page == "Select reaction") ...[
-                Text(
-                    "Select a reaction",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                for (var react in reactions)
-                    ListTile(
-                    title: Text(react),
-                    onTap: () => navigateToPage("Select channel"),
-                    ),
-                ] else if (page == "Select channel") ...[
-                Text(
-                    "Enter channel and message",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                    decoration: InputDecoration(labelText: "Channel (id)"),
-                    onChanged: (value) => channel = value,
-                ),
-                TextField(
-                    decoration: InputDecoration(labelText: "Message"),
-                    onChanged: (value) => message = value,
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: () {
-                    reaction = "Send a message on channel";
-                    navigateToPage("Create");
-                    },
-                    child: Text("Confirm"),
-                ),
-                ]
-            ],
             ),
-        ),
         );
-  }
+    }
 }

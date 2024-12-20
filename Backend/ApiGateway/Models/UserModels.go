@@ -1,12 +1,11 @@
 package models
 
-type UsersGet struct {
-	RoutesWanted string `json:"routes"`
+type Login struct {
+	Mail     string `json:"mail"`
+	Password string `json:"password"`
 }
 
-type UserInformation struct {
-	RoutesWanted string `json:"routes"`
-	Id           int    `json:"id"`
+type SignUp struct {
 	Mail         string `json:"mail"`
 	Password     string `json:"password"`
 	Name         string `json:"name"`

@@ -1,0 +1,136 @@
+{
+    "name": "Discord Services",
+    "reactions": [
+        {
+            "name": "Send message on channel",
+            "reaction_id": 2,
+            "reaction_type": 0,
+            "arguments": [
+                {
+                    "display": "Channel ID",
+                    "name": "channel_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Message",
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Create a text channel",
+            "reaction_id": 2,
+            "reaction_type": 1,
+            "arguments": [
+                {
+                    "display": "Guild ID",
+                    "name": "guild_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Channel Name",
+                    "name": "channel_id",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Create a voice channel",
+            "reaction_id": 2,
+            "reaction_type": 2,
+            "arguments": [
+                {
+                    "display": "Guild ID",
+                    "name": "guild_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Channel Name",
+                    "name": "channel_id",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Delete a channel",
+            "reaction_id": 2,
+            "reaction_type": 3,
+            "arguments": [
+                {
+                    "display": "Channel ID",
+                    "name": "channel_id",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Pin a message",
+            "reaction_id": 2,
+            "reaction_type": 4,
+            "arguments": [
+                {
+                    "display": "Channel ID",
+                    "name": "channel_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Message ID",
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Unpin a message",
+            "reaction_id": 2,
+            "reaction_type": 5,
+            "arguments": [
+                {
+                    "display": "Channel ID",
+                    "name": "channel_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Message ID",
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Create a role",
+            "reaction_id": 2,
+            "reaction_type": 6,
+            "arguments": [
+                {
+                    "display": "Guild ID",
+                    "name": "guild_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Name",
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Delete a role",
+            "reaction_id": 2,
+            "reaction_type": 7,
+            "arguments": [
+                {
+                    "display": "Guild ID",
+                    "name": "guild_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Role ID",
+                    "name": "message",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

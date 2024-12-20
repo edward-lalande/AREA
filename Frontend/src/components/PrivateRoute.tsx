@@ -10,7 +10,6 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
-    //eslint-disable-next-line
 	const [cookie] = useCookies();
 
     if (cookie["token"]) {

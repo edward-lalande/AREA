@@ -15,20 +15,21 @@ func ApplyRoutes(r *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{"ping": "pong"})
 	})
 
-	r.GET("/oauth2", oauth.OAuthFront)
+	r.GET("/oauth", oauth.OAuthFront)
 	r.GET("/callback", oauth.CallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
 	r.POST("/register", RegisterToken)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.GET("/actions", func(c *gin.Context) {
-		c.JSON(http.StatusAccepted, nil)
-	})
+	r.GET("/action-name", GetActionsName)
+	r.GET("/reaction-name", GetReactionsName)
+
 	r.GET("/reactions", GetReactions)
+	r.GET("/actions", GetActions)
 
 	r.POST("/reaction", ReceivedReactions)
+	r.POST("/action", RegisterAction)
 
-	r.POST("/active-reactions", ActiveReactions)
 	r.POST("/trigger", Trigger)
 }

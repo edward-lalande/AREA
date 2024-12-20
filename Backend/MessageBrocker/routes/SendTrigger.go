@@ -3,6 +3,7 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	models "message-brocker/Models"
 	"message-brocker/utils"
 	"net/http"
@@ -15,10 +16,8 @@ func findAreaInDatabase(AreaId string, c *gin.Context) int {
 	if db == nil {
 		return -1
 	}
-
 	var serviceReactionId int
 	query := `SELECT service_reaction_id FROM "Area" WHERE area_id = $1`
-
 	err := db.QueryRow(c, query, AreaId).Scan(&serviceReactionId)
 	if err != nil {
 		if err.Error() == "no rows in result set" {
@@ -32,13 +31,23 @@ func findAreaInDatabase(AreaId string, c *gin.Context) int {
 }
 
 func Trigger(c *gin.Context) {
-	var (
-		receivedData models.TriggerModelGateway
-		services     map[int]string = make(map[int]string)
-	)
-	services[0] = utils.GetEnvKey("USER_API")
-	services[1] = utils.GetEnvKey("TIME_API")
-	services[2] = utils.GetEnvKey("DISCORD_API")
+	receivedData := models.TriggerModelGateway{}
+	services := map[int]string{
+		0:  utils.GetEnvKey("USER_API"),
+		1:  utils.GetEnvKey("TIME_API"),
+		2:  utils.GetEnvKey("DISCORD_API"),
+		3:  utils.GetEnvKey("BLUESKY_API"),
+		4:  utils.GetEnvKey("GITHUB_API"),
+		5:  utils.GetEnvKey("GITLAB_API"),
+		6:  utils.GetEnvKey("GOOGLE_API"),
+		7:  utils.GetEnvKey("METEO_API"),
+		8:  utils.GetEnvKey("MIRO_API"),
+		9:  utils.GetEnvKey("SPOTIFY_API"),
+		10: utils.GetEnvKey("STEAM_API"),
+		11: utils.GetEnvKey("TICKET_MASTER_API"),
+		12: utils.GetEnvKey("TWILIO_API"),
+		13: utils.GetEnvKey("UBER_API"),
+	}
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -46,18 +55,12 @@ func Trigger(c *gin.Context) {
 	}
 
 	serviceReactionId := findAreaInDatabase(receivedData.AreaId, c)
-	if serviceReactionId == -1 || serviceReactionId > len(services) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "service Reactiond id is" + string(serviceReactionId)})
-		return
-	}
-
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(receivedData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	resp, err := http.Post(services[serviceReactionId]+"trigger", "application/json", &buf)
 
 	if err != nil {
@@ -65,5 +68,6 @@ func Trigger(c *gin.Context) {
 		return
 	}
 	defer resp.Body.Close()
+
 	c.JSON(resp.StatusCode, gin.H{"body": resp.Body})
 }
