@@ -5,7 +5,6 @@ import (
 	"api-gateway/utils"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -29,6 +28,7 @@ func SendGitlab(areaId string, data models.GitlabAction, c *gin.Context) *http.R
 	defer resp.Body.Close()
 
 	return resp
+}
 
 func GitlabOauth2(c *gin.Context) {
 

@@ -6,7 +6,6 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -83,6 +82,7 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := SendGitlab(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 9:
 				var actionData models.SpotifyActions
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
@@ -91,6 +91,7 @@ func Area(c *gin.Context) {
 				}
 				actionData.AreaId = areaID
 				resp := SendSpotifyActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 2:
 				var actionData models.TypeDiscordAction
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
