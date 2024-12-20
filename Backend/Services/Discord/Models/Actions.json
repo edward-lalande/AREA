@@ -1,0 +1,40 @@
+{
+    "name": "Discord Services",
+    "actions": [
+            {
+                "name": "Reaction on message",
+                "action_id": 2,
+                "action_type": 0,
+                "arguments": [
+                    {
+                        "display": "Channel ID",
+                        "name": "channel_id",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Message ID",
+                        "name": "message_id",
+                        "type": "string"
+                    }
+                ]
+            },
+            {
+                "name": "Pin a message",
+                "action_id": 2,
+                "action_type": 1,
+                "arguments": [
+                    {
+                        "display": "Channel ID",
+                        "name": "channel_id",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Message ID",
+                        "name": "message_id",
+                        "type": "string"
+                    }
+                ]
+            }
+        ]
+    }
+    
