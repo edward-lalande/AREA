@@ -14,7 +14,6 @@ import (
 func SendGitlab(areaId string, data models.GitlabAction, c *gin.Context) *http.Response {
 	data.AreaId = areaId
 
-	fmt.Println("areaId:", data.AreaId)
 	jsonBody, err := json.Marshal(data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

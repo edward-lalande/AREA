@@ -34,7 +34,6 @@ func sendTrigger(areaId string) {
 	if err := json.NewEncoder(&buf).Encode(send); err != nil {
 		return
 	}
-	fmt.Println("areaId: ", send.AreaId)
 	http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 }
 
@@ -48,12 +47,9 @@ func Webhook(c *gin.Context) {
 	switch receivedData["object_kind"] {
 	case "push":
 		sendTrigger(areaIdFromActionType(c, 0))
-		fmt.Println("push")
 	case "note":
 		sendTrigger(areaIdFromActionType(c, 1))
-		fmt.Println("NOTE")
 	case "merge_request":
 		sendTrigger(areaIdFromActionType(c, 2))
-		fmt.Println("merge_request")
 	}
 }

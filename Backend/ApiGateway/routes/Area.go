@@ -30,7 +30,6 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 	if db == nil {
 		return nil
 	}
-	fmt.Println("write inBackend/ApiGateway/routes/ApplyRoutes.go db: ", serviceActionID, " reactions; ", serviceReactionID)
 	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
 	if err != nil {
 		return err
