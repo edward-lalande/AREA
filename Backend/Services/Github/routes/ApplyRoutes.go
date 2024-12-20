@@ -23,4 +23,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/reactions", func(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
 	})
+
+	r.POST("/webhook", CreateWebhook)
+	r.GET("/webhook", GetWebhooks)
 }
