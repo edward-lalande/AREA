@@ -17,7 +17,6 @@ func Actions(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
-	fmt.Println("areaId: ", receivedData.AreaId)
 	query := `INSERT INTO "GitlabActions" (action_type, area_id) VALUES ($1, $2)`
 	_, err := db.Exec(c, query, receivedData.ActionType, receivedData.AreaId)
 

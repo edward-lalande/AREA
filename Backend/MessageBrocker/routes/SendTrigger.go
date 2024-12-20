@@ -16,7 +16,6 @@ func findAreaInDatabase(AreaId string, c *gin.Context) int {
 	if db == nil {
 		return -1
 	}
-	fmt.Println("areaId:", AreaId)
 	var serviceReactionId int
 	query := `SELECT service_reaction_id FROM "Area" WHERE area_id = $1`
 
@@ -57,7 +56,6 @@ func Trigger(c *gin.Context) {
 	}
 
 	serviceReactionId := findAreaInDatabase(receivedData.AreaId, c)
-	fmt.Println("serivce reaction:", serviceReactionId)
 	var buf bytes.Buffer
 	err := json.NewEncoder(&buf).Encode(receivedData)
 	if err != nil {
