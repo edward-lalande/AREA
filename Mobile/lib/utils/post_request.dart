@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 final storage = const FlutterSecureStorage();
+Map<String, dynamic> servicesMap = {};
 
 Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
 {
@@ -16,7 +17,6 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
         if (response.statusCode == 200) {
 
             storage.write(key: "accesToken", value: response.body);
-            print(response.body);
             return true;
 
         } else {
