@@ -1,11 +1,13 @@
 package oauth
 
 import (
+	"fmt"
 	models "github/Models"
 	"github/utils"
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +28,7 @@ func GetAccessToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Println("code => " + receivedData.Code)
 	accessTokenUrl := "https://github.com/login/oauth/access_token"
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
@@ -40,8 +43,13 @@ func GetAccessToken(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(rep.StatusCode, gin.H{
-		"body": utils.BytesToJson(respBody),
-	})
+	if rep.StatusCode < 400 {
+		arr := strings.Split(string(respBody), "&")
+		token := strings.Split(arr[0], "=")
+		c.JSON(rep.StatusCode, gin.H{
+			"body": token[1],
+		})
+		return
+	}
+	c.JSON(400, "Error")
 }

@@ -197,19 +197,6 @@ services:
       - 5432:5432
     restart: always
 
-  mobile:
-    build: Mobile
-    container_name: mobile
-    environment:
-      FLUTTER_HOME: /home/developer/flutter
-      PATH: /home/developer/flutter/bin:/home/developer/flutter/bin/cache/dart-sdk/bin:$PATH
-    volumes:
-      - ./Mobile:/home/developer/app
-    ports:
-      - 3001:3001
-    depends_on:
-      - api-gateway
-
   time-services:
     build: Backend/Services/DateTimeServices
     container_name: time-services
@@ -223,11 +210,6 @@ services:
       - 8082:8082
     depends_on:
       - area-db
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./Backend/Services/DateTimeServices
-          target: /app
 
   discord:
     build: Backend/Services/Discord
