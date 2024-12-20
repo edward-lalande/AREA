@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:second_app/myWidgets/my_card.dart';
-
 import 'package:second_app/myWidgets/my_grid_view.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class HomePageServices extends StatefulWidget {
     const HomePageServices({super.key});
@@ -16,7 +15,12 @@ class _HomePageServicesState extends State<HomePageServices> {
         return SafeArea(
             child: Scaffold(
                 backgroundColor: Colors.white,
-                body: MyGridView(),
+                body: MyGridView(
+                    needAnimation: true,
+                    appbarVisible: true,
+                    map: servicesMap,
+                    typeKey: "services",
+                ),
             ),
         );
     }
