@@ -128,6 +128,16 @@ func Area(c *gin.Context) {
 				reactionDetail.AreaId = areaID
 				resp := SendSpotifyReactions(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 5:
+				var reactionDetail models.GitlabReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendGitlabReaction(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
