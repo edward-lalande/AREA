@@ -141,7 +141,11 @@ class _LoginPageState extends State<LoginPage> {
                             final String servString = await classicGet(
                                 url: "http://10.0.2.2:8080/services",
                             );
+                            //final String actionsString = await classicGet(
+                                //url: "http://10.0.2.2:8080/actions",
+                            //);
                             servicesMap = jsonDecode(servString);
+                            //actionsMap = jsonDecode(actionsString);
                             if (tmp) {
                               if (context.mounted) {
                                   context.go("/home");
@@ -155,9 +159,9 @@ class _LoginPageState extends State<LoginPage> {
                         }
                     ),
                     const MyDividerText(
-                    bgColor: Colors.white,
-                    padding: EdgeInsets.only(top: 35, right: 35, left: 35),
-                    textBetween: "Or",
+                      bgColor: Colors.white,
+                      padding: EdgeInsets.only(top: 35, right: 35, left: 35),
+                      textBetween: "Or",
                     ),
                     MyButton(
                     padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
@@ -169,12 +173,10 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: Container(
                         width: 30,
                         height: 30,
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white38,
+                        child: Icon(
+                          Icons.discord,
+                          size: 30,
                         ),
-                        child: Image.asset('assets/discord-logo.png'),
                     ),
                     onPressed: (context) async {
                         String url = await classicGet(url: "http://10.0.2.2:8083/oauth2");
