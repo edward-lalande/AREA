@@ -5,7 +5,8 @@ import "encoding/json"
 type BaseAction struct {
 	// Action ID
 	// required: true
-	ActionID int `json:"action_id"`
+	ActionID 	int 	`json:"action_id"`
+	UserToken 	string 	`json:"user_token"`
 }
 
 type GitlabAction struct {
@@ -35,6 +36,15 @@ type TypeTimeAction struct {
 	// Minute of the the actions (0-59)
 	// required: true
 	Minute int `json:"minute"`
+}
+
+type TypeDiscordAction struct {
+	BaseAction
+
+	ActionType int `json:"action_type"`
+
+	ChannelId string `json:"channel_id"`
+	MessageId string `json:"message_id"`
 }
 
 type BaseReaction struct {

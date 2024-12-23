@@ -3,7 +3,6 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	models "message-brocker/Models"
 	"message-brocker/utils"
 	"net/http"

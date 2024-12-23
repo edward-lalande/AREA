@@ -2,7 +2,6 @@ package routes
 
 import (
 	"api-gateway/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
