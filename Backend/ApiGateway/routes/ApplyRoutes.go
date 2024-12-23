@@ -55,9 +55,11 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/spotify/oauth", SpotifyOauth2)
 	r.GET("/github/oauth", GithubOauth2)
 	r.GET("/gitlab/oauth", GitlabOauth2)
+	r.GET("/google/oauth", GoogleOauth2)
 
 	r.POST("/discord/access-token", DiscordAccessToken)
 	r.POST("/spotify/access-token", SpotifyAccessToken)
 	r.POST("/github/access-token", GithubAccessToken)
 	r.POST("/gitlab/access-token", GitlabAccessToken)
+	r.POST("/google/access-token", GoogleAccessToken)
 }

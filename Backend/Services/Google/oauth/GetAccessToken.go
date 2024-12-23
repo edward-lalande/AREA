@@ -1,11 +1,13 @@
 package oauth
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
 	models "google/Models"
 	"google/utils"
 	"io"
 	"net/http"
-	"net/url"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,23 +25,34 @@ func GetAccessToken(c *gin.Context) {
 	var receivedData models.OauthInformation
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
+		fmt.Println("sheh")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	accessTokenUrl := "https://gitlab.com/oauth/token"
-	data := url.Values{}
-	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
-	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI"))
-	data.Set("code", receivedData.Code)
-	data.Set("grant_type", "authorization_code")
 
-	rep, _ := http.PostForm(accessTokenUrl, data)
+	data, _ := json.Marshal(map[string]string{
+		"grant_type":    "authorization_code",
+		"code":          receivedData.Code,
+		"client_id":     utils.GetEnvKey("CLIENT_ID"),
+		"client_secret": utils.GetEnvKey("CLIENT_SECRET"),
+		"redirect_uri":  utils.GetEnvKey("REDIRECT_URI"),
+	})
+
+	responseBody := bytes.NewBuffer(data)
+	rep, err := http.Post("https://oauth2.googleapis.com/token", "application/json", responseBody)
+	if err != nil {
+		fmt.Println("error:", err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	respBody, err := io.ReadAll(rep.Body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	fmt.Println("status code: ", rep.StatusCode)
 
 	c.JSON(rep.StatusCode, gin.H{
 		"body": utils.BytesToJson(respBody),

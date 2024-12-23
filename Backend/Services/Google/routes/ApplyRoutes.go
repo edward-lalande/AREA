@@ -13,6 +13,8 @@ func ApplyRoutes(r *gin.Engine) {
 	})
 
 	r.GET("/oauth", oauth.OAuthFront)
+	r.GET("/callback", oauth.CallBack)
+	r.POST("/access-token", oauth.GetAccessToken)
 
 	r.GET("/actions", func(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
