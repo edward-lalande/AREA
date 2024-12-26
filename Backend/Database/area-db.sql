@@ -68,3 +68,12 @@ CREATE TABLE IF NOT EXISTS "GitlabActions" (
     action_type         INT,
     area_id             TEXT
 );
+
+CREATE TABLE IF NOT EXISTS "GitlabReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    project_id          TEXT,
+    body                TEXT
+);

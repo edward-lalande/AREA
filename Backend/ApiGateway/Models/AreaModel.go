@@ -5,8 +5,8 @@ import "encoding/json"
 type BaseAction struct {
 	// Action ID
 	// required: true
-	ActionID 	int 	`json:"action_id"`
-	UserToken 	string 	`json:"user_token"`
+	ActionID  int    `json:"action_id"`
+	UserToken string `json:"user_token"`
 }
 
 type GitlabAction struct {
@@ -63,6 +63,14 @@ type SpotifyReactions struct {
 	AreaId       string `json:"area_id"`
 	ReactionType int    `json:"reaction_type"`
 	AccessToken  string `json:"user_token"`
+}
+
+type GitlabReactions struct {
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	AreaId       string `json:"area_id"`
+	ProjectId    string `json:"project_id"`
+	Body         string `json:"body"`
 }
 
 type TypeDiscordReaction struct {

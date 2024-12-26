@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
 	const [open, setOpen] = useState<boolean>(false);
 
 	//eslint-disable-next-line
-	const [cookie, setCookie] = useCookies();
+	const [_, setCookie] = useCookies();
 
 	const [searchParams] = useSearchParams();
 
