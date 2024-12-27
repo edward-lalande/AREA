@@ -53,7 +53,7 @@ func createVoiceChannel(information models.Reactions) (*http.Response, error) {
 	url := fmt.Sprintf("https://discord.com/api/v10/guilds/%s/channels", information.GuildId)
 	tempBody := struct {
 		ChannelId string `json:"name"`
-		Type string `json:"type"`
+		Type      string `json:"type"`
 	}{
 		information.ChannelId,
 		"2",
@@ -73,7 +73,7 @@ func createVoiceChannel(information models.Reactions) (*http.Response, error) {
 
 func deleteChannel(information models.Reactions) (*http.Response, error) {
 	url := fmt.Sprintf("https://discord.com/api/v10/channels/%s", information.ChannelId)
-	
+
 	client := &http.Client{}
 
 	req, err := http.NewRequest("DELETE", url, nil)

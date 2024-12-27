@@ -68,3 +68,12 @@ CREATE TABLE IF NOT EXISTS "GitlabActions" (
     action_type         INT,
     area_id             TEXT
 );
+
+
+CREATE TABLE IF NOT EXISTS "GoogleActions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    area_id             TEXT,
+    action_type         INT,
+    nb_events           INT
+);
