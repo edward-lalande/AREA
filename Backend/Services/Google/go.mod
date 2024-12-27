@@ -1,4 +1,4 @@
-Backend/Services/Google/go.modmodule google
+module google
 
 go 1.23.3
 
