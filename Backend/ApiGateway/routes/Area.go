@@ -83,6 +83,16 @@ func Area(c *gin.Context) {
 				}
 				resp := SendGitlab(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 6:
+				var actionData models.GoogleAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type5 action data"})
+					return
+				}
+				actionData.UserToken = item.UserToken
+				resp := SendGoogle(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+
 			case 9:
 				var actionData models.SpotifyActions
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
