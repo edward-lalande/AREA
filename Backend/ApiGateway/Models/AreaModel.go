@@ -5,8 +5,16 @@ import "encoding/json"
 type BaseAction struct {
 	// Action ID
 	// required: true
-	ActionID 	int 	`json:"action_id"`
-	UserToken 	string 	`json:"user_token"`
+	ActionID  int    `json:"action_id"`
+	UserToken string `json:"user_token"`
+}
+
+type GoogleAction struct {
+	BaseAction
+	UserToken  string `json:"user_token"`
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	NbEvents   int    `json:"nb_events"`
 }
 
 type GitlabAction struct {
