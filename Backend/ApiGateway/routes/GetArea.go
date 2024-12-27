@@ -36,6 +36,7 @@ func GetActions(c *gin.Context) {
 	servicesArray = append(servicesArray, actionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
 	servicesArray = append(servicesArray, actionsList{"Gitlab Services", utils.GetEnvKey("GITLAB_API")})
 	servicesArray = append(servicesArray, actionsList{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")})
+	servicesArray = append(servicesArray, actionsList{"Google Services", utils.GetEnvKey("GOOGLE_API")})
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "actions")
