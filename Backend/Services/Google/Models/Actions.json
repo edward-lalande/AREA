@@ -12,6 +12,12 @@
                 "action_id": 6,
                 "action_type": 1,
                 "arguments": []
+            },
+            {
+                "name": "Send/Receive new mail",
+                "action_id": 6,
+                "action_type": 2,
+                "arguments": []
             }
         ]
     }
