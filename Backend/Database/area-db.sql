@@ -47,9 +47,12 @@ CREATE TABLE IF NOT EXISTS "DiscordActions" (
     user_token          VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS "GithubWebhook" (
+CREATE TABLE IF NOT EXISTS "GithubActions" (
     id                  SERIAL PRIMARY KEY,
-    name                VARCHAR(255),
-    login               VARCHAR(255),
-    timestamp           VARCHAR(255),
-)
+    area_id             VARCHAR(255),
+    action_type         INT,
+    user_token          VARCHAR(255),
+    pusher              VARCHAR(255),
+    value               VARCHAR(255),
+    number              INT
+);
