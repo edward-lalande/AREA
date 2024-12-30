@@ -61,5 +61,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/spotify/access-token", SpotifyAccessToken)
 	r.POST("/github/access-token", GithubAccessToken)
 	r.POST("/gitlab/access-token", GitlabAccessToken)
+
+	r.POST("/github-webhook", GithubWebhook)
 	r.POST("/google/access-token", GoogleAccessToken)
 }

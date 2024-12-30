@@ -48,6 +48,16 @@ CREATE TABLE IF NOT EXISTS "DiscordAction" (
     user_token          TEXT
 );
 
+CREATE TABLE IF NOT EXISTS "GithubActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    user_token          TEXT,
+    pusher              TEXT,
+    value               TEXT,
+    number              INT
+);
+
 CREATE TABLE IF NOT EXISTS "SpotifyActions" (
     id                  SERIAL PRIMARY KEY,
     area_id             TEXT,

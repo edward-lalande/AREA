@@ -30,12 +30,14 @@ type reactionsList struct {
 // @Router /actions [get]
 func GetActions(c *gin.Context) {
 	var actions []map[string]interface{}
+
 	servicesArray := []actionsList{
 		{"Date Time Services", utils.GetEnvKey("TIME_API")},
 		{"Discord Services", utils.GetEnvKey("DISCORD_API")},
 		{"Gitlab Services", utils.GetEnvKey("GITLAB_API")},
 		{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")},
 		{"Google Services", utils.GetEnvKey("GOOGLE_API")},
+		{"Github Services", utils.GetEnvKey("GITHUB_API")},
 	}
 
 	for _, service := range servicesArray {
@@ -70,11 +72,13 @@ func GetActions(c *gin.Context) {
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
 	var reactions []map[string]interface{}
+
 	servicesArray := []reactionsList{
 		{"Discord Services", utils.GetEnvKey("DISCORD_API")},
 		{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")},
 		{"Gitlab Services", utils.GetEnvKey("GITLAB_API")},
 		{"Google Services", utils.GetEnvKey("GOOGLE_API")},
+		{"Github Services", utils.GetEnvKey("GITHUB_API")},
 	}
 
 	for _, service := range servicesArray {
