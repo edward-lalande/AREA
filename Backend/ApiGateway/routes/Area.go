@@ -86,7 +86,7 @@ func Area(c *gin.Context) {
 			case 6:
 				var actionData models.GoogleAction
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
-					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type5 action data"})
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
 					return
 				}
 				actionData.UserToken = item.UserToken
@@ -137,6 +137,15 @@ func Area(c *gin.Context) {
 				}
 				reactionDetail.AreaId = areaID
 				resp := SendSpotifyReactions(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 6:
+				var actionData models.GoogleCalendarReaction
+				if err := json.Unmarshal(*reactionData, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
+					return
+				}
+				actionData.UserToken = item.UserToken
+				resp := SendGoogleReactions(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
