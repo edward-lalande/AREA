@@ -34,6 +34,7 @@ func GetActions(c *gin.Context) {
 
 	servicesArray = append(servicesArray, actionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
 	servicesArray = append(servicesArray, actionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray = append(servicesArray, actionsList{"Github Services", utils.GetEnvKey("GITHUB_API")})
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "actions")
@@ -71,6 +72,7 @@ func GetReactions(c *gin.Context) {
 
 	servicesArray = append(servicesArray, reactionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
 	servicesArray = append(servicesArray, reactionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray = append(servicesArray, reactionsList{"Github Services", utils.GetEnvKey("GITHUB_API")})
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "reactions")
