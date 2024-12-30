@@ -76,6 +76,14 @@ func Area(c *gin.Context) {
 				}
 				resp := SendTime(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 4:
+				var actionData models.TypeGithubAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type1 action data"})
+					return
+				}
+				resp := sendGithub(areaID, item.UserToken, c, actionData)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
