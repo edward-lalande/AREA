@@ -29,7 +29,7 @@ const CreateElement: React.FC<CreateElementProps> = ({
 
     const createArea = (action: Action, reaction: Reaction) => {
 
-        const url: string = "http://127.0.0.1:8080/area";
+        const url: string = "http://127.0.0.1:8080/areas";
 
         const data = [{
             user_token: "AREA",
