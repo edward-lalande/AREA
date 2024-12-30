@@ -92,7 +92,7 @@ type TypeDiscordReaction struct {
 	GuildID string `json:"guild_id"`
 }
 
-type GoogleCalendarReaction struct {
+type GoogleReaction struct {
 	UserToken    string `json:"user_token"`
 	AreaId       string `json:"area_id"`
 	ReactionType int    `json:"reaction_type"`
@@ -101,6 +101,9 @@ type GoogleCalendarReaction struct {
 	StartTime    string `json:"start_time"`
 	EndTime      string `json:"end_time"`
 	Attendees    string `json:"attendees"`
+	Recipient    string `json:"recipient"`
+	Subject      string `json:"subject"`
+	Message      string `json:"message"`
 }
 
 type PayloadItem struct {

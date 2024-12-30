@@ -5,5 +5,6 @@ type DatabaseActions struct {
 	UserToken  string
 	AreaId     string
 	ActionType int
+	NbMessage  int
 	NbEvents   int
 }
