@@ -56,6 +56,41 @@ type TypeDiscordReaction struct {
 	GuildID string `json:"guild_id"`
 }
 
+type Pusher struct {
+	Name string `json:"name"`
+}
+
+type Commit struct {
+	Message  string   `json:"message"`
+	Added    []string `json:"added"`
+	Removed  []string `json:"removed"`
+	Modified []string `json:"modified"`
+}
+
+type User struct {
+	Login string `json:"login"`
+}
+
+type Reactions struct {
+	TotalCount int `json:"total_count"`
+}
+
+type Comment struct {
+	User      User      `json:"user"`
+	Body      string    `json:"body"`
+	Reactions Reactions `json:"reactions"`
+}
+
+type TypeGithubAction struct {
+	BaseAction
+
+	ActionType int    `json:"action_type"`
+	UserToken  int    `json:"user_token"`
+	Pusher     string `json:"pusher"`
+	Value      string `json:"value"`
+	Number     int    `json:"number"`
+}
+
 type PayloadItem struct {
 	// User token
 	// required: true
