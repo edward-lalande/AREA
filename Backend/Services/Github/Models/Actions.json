@@ -1,0 +1,113 @@
+{
+"name": "Github Services",
+"actions": [
+        {
+            "name": "On user push",
+            "action_id": 4,
+            "action_type": 0,
+            "arguments": [
+                {
+                    "display": "Pusher login",
+                    "name": "pusher",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "On files added count",
+            "action_id": 4,
+            "action_type": 1,
+            "arguments": [
+                {
+                    "display": "Files added count",
+                    "name": "number",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "name": "On files modified count",
+            "action_id": 4,
+            "action_type": 2,
+            "arguments": [
+                {
+                    "display": "Files modified count",
+                    "name": "number",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "name": "On files deleted count",
+            "action_id": 4,
+            "action_type": 3,
+            "arguments": [
+                {
+                    "display": "Files deleted count",
+                    "name": "number",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "name": "On files added",
+            "action_id": 4,
+            "action_type": 4,
+            "arguments": [
+                {
+                    "display": "File added name",
+                    "name": "value",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "On files modified",
+            "action_id": 4,
+            "action_type": 5,
+            "arguments": [
+                {
+                    "display": "File modified name",
+                    "name": "value",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "On files removed",
+            "action_id": 4,
+            "action_type": 6,
+            "arguments": [
+                {
+                    "display": "File removed name",
+                    "name": "value",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "On commits count",
+            "action_id": 4,
+            "action_type": 7,
+            "arguments": [
+                {
+                    "display": "Commits count",
+                    "name": "number",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "name": "On commit named",
+            "action_id": 4,
+            "action_type": 8,
+            "arguments": [
+                {
+                    "display": "Commit name",
+                    "name": "value",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}
