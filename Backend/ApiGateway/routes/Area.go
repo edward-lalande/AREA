@@ -90,6 +90,7 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := sendGithub(areaID, item.UserToken, c, actionData)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 5:
 				var actionData models.GitlabAction
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
