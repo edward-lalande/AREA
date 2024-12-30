@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SendGoogleReactions(areaId string, data models.GoogleCalendarReaction, c *gin.Context) *http.Response {
+func SendGoogleReactions(areaId string, data models.GoogleReaction, c *gin.Context) *http.Response {
 	data.AreaId = areaId
 
 	jsonBody, err := json.Marshal(data)

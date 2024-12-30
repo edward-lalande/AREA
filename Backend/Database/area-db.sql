@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS "GoogleActions" (
     user_token          TEXT,
     area_id             TEXT,
     action_type         INT,
+    nb_message          INT,
     nb_events           INT
 );
 
@@ -89,5 +90,8 @@ CREATE TABLE IF NOT EXISTS "GoogleReactions" (
     description         TEXT,
     start_time          TEXT,
     end_time            TEXT,
-    attendees           TEXT
+    attendees           TEXT,
+    recipient           TEXT,
+    subject             TEXT,
+    message             TEXT
 );

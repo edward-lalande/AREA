@@ -139,7 +139,7 @@ func Area(c *gin.Context) {
 				resp := SendSpotifyReactions(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 6:
-				var actionData models.GoogleCalendarReaction
+				var actionData models.GoogleReaction
 				if err := json.Unmarshal(*reactionData, &actionData); err != nil {
 					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
 					return
