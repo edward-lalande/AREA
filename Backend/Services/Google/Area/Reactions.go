@@ -3,12 +3,13 @@ package area
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	models "google/Models"
 	"google/utils"
-	"io"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,16 +19,16 @@ func StoreReactions(c *gin.Context) {
 
 	defer db.Close(c)
 
-	var receivedData models.GoogleCalendarReaction
+	var receivedData models.GoogleReaction
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input data", "details": err.Error()})
 		return
 	}
-	fmt.Println("stored: ", receivedData)
+
 	query := `
 		INSERT INTO "GoogleReactions" 
-		(user_token, area_id, reaction_type, summary, description, start_time, end_time, attendees)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		(user_token, area_id, reaction_type, summary, description, start_time, end_time, attendees, recipient, subject, message)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 	`
 
 	db.QueryRow(context.Background(), query,
@@ -39,12 +40,15 @@ func StoreReactions(c *gin.Context) {
 		receivedData.StartTime,
 		receivedData.EndTime,
 		receivedData.Attendees,
+		receivedData.Recipient,
+		receivedData.Subject,
+		receivedData.Message,
 	)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Reaction stored successfully"})
 }
 
-func CreateEvents(information models.GoogleCalendarReaction) (*http.Response, error) {
+func CreateEvents(information models.GoogleReaction) (*http.Response, error) {
 	body := &models.GoogleReactionSend{information.Summary, information.Description, models.DateTime{information.StartTime}, models.DateTime{information.EndTime}, []models.Attendee{{information.Attendees}}}
 	client := &http.Client{}
 	b, err := json.Marshal(body)
@@ -52,9 +56,6 @@ func CreateEvents(information models.GoogleCalendarReaction) (*http.Response, er
 	if err != nil {
 		return nil, err
 	}
-
-	json := utils.BytesToJson(b)
-	fmt.Println("req: ", json)
 
 	r := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", "https://www.googleapis.com/calendar/v3/calendars/primary/events", r)
@@ -67,9 +68,33 @@ func CreateEvents(information models.GoogleCalendarReaction) (*http.Response, er
 	return client.Do(req)
 }
 
-func FindReactions(id int, information models.GoogleCalendarReaction) (*http.Response, error) {
-	reactions := map[int]func(models.GoogleCalendarReaction) (*http.Response, error){
+func SendEmail(reactions models.GoogleReaction) (*http.Response, error) {
+	rawEmail := fmt.Sprintf(
+		"To: %s\r\nSubject: %s\r\nContent-Type: text/plain; charset=\"UTF-8\"\r\n\r\n%s",
+		reactions.Recipient, reactions.Subject, reactions.Message,
+	)
+
+	encodedEmail := base64.URLEncoding.EncodeToString([]byte(rawEmail))
+	requestBody, err := json.Marshal(models.SendMessageRequest{Raw: encodedEmail})
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request body: %v", err)
+	}
+
+	req, err := http.NewRequest("POST", "https://gmail.googleapis.com/gmail/v1/users/me/messages/send", strings.NewReader(string(requestBody)))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create HTTP request: %v", err)
+	}
+	req.Header.Set("Authorization", "Bearer "+reactions.UserToken)
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	return client.Do(req)
+}
+
+func FindReactions(id int, information models.GoogleReaction) (*http.Response, error) {
+	reactions := map[int]func(models.GoogleReaction) (*http.Response, error){
 		0: CreateEvents,
+		1: SendEmail,
 	}
 
 	return reactions[id](information)
@@ -77,25 +102,33 @@ func FindReactions(id int, information models.GoogleCalendarReaction) (*http.Res
 
 func Trigger(c *gin.Context) {
 	receivedData := models.MessageBrocker{}
-	information := models.GoogleCalendarReaction{}
+	information := models.GoogleReaction{}
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
-		fmt.Println("error: ", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("received: ", receivedData.AreaId)
-	db := utils.OpenDB(c)
-	row := db.QueryRow(c, "SELECT user_token, reaction_type, summary, description, start_time, end_time, attendees FROM \"GoogleReactions\" WHERE area_id = $1", receivedData.AreaId)
 
-	if err := row.Scan(&information.UserToken, &information.ReactionType, &information.Summary, &information.Description, &information.StartTime, &information.EndTime, &information.Attendees); err != nil {
-		fmt.Println("error on db : ", err.Error())
+	db := utils.OpenDB(c)
+	row := db.QueryRow(c, "SELECT user_token, reaction_type, summary, description, start_time, end_time, attendees, recipient, subject, message FROM \"GoogleReactions\" WHERE area_id = $1", receivedData.AreaId)
+
+	if err := row.Scan(
+		&information.UserToken,
+		&information.ReactionType,
+		&information.Summary,
+		&information.Description,
+		&information.StartTime,
+		&information.EndTime,
+		&information.Attendees,
+		&information.Recipient,
+		&information.Subject,
+		&information.Message,
+	); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	defer db.Close(c)
-	fmt.Println("reaction_type: ", information.ReactionType)
-	fmt.Println("information: ", information)
+
 	rep, err := FindReactions(information.ReactionType, information)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -103,7 +136,4 @@ func Trigger(c *gin.Context) {
 	c.JSON(rep.StatusCode, gin.H{
 		"body": rep.Body,
 	})
-	b, _ := io.ReadAll(rep.Body)
-	json := utils.BytesToJson(b)
-	fmt.Println("rep: ", json)
 }

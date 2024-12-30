@@ -32,6 +32,28 @@
                         "type": "string"
                     }
                 ]
+            },
+            {
+                "name": "Send mail",
+                "reaction_id": 6,
+                "reaction_type": 1,
+                "arguments": [
+                    {
+                        "display": "Recipient",
+                        "name": "recipient",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Subject",
+                        "name": "subject",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Message",
+                        "name": "message",
+                        "type": "string"
+                    }
+                ]
             }
         ]
     }

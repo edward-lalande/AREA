@@ -45,6 +45,26 @@ func callMsgBrocker(areaId string) {
 	http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 }
 
+func NewMessage(slice models.DatabaseActions) int {
+	db := utils.OpenDB(nil)
+
+	profile, err := area.GetGmailProfile(slice.UserToken)
+	if err != nil {
+		return -1
+	}
+	defer db.Close(context.Background())
+
+	if profile.MessagesTotal > slice.NbMessage {
+		db.Exec(context.Background(),
+			`UPDATE "GoogleActions" 
+		SET nb_message = $1 WHERE area_id = $2 AND user_token = $3`,
+			profile.MessagesTotal, slice.AreaId, slice.UserToken)
+		return 1
+	}
+
+	return 0
+}
+
 func BackUpLocalDataCall() {
 	db := utils.OpenDB(nil)
 
@@ -54,7 +74,7 @@ func BackUpLocalDataCall() {
 	defer db.Close(context.Background())
 	for rows.Next() {
 		dbSlice := models.DatabaseActions{}
-		err := rows.Scan(&dbSlice.Id, &dbSlice.UserToken, &dbSlice.AreaId, &dbSlice.ActionType, &dbSlice.NbEvents)
+		err := rows.Scan(&dbSlice.Id, &dbSlice.UserToken, &dbSlice.AreaId, &dbSlice.ActionType, &dbSlice.NbMessage, &dbSlice.NbEvents)
 		if err != nil {
 			log.Fatal(err)
 			continue
@@ -72,6 +92,15 @@ func BackUpLocalDataCall() {
 			}
 		case 1:
 			value := Events(dbSlice, func(a, b int) bool { return a < b })
+			if value == -1 {
+				continue
+			}
+			if value == 1 {
+				callMsgBrocker(dbSlice.AreaId)
+				return
+			}
+		case 2:
+			value := NewMessage(dbSlice)
 			if value == -1 {
 				continue
 			}
