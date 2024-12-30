@@ -17,14 +17,14 @@ import (
 	"github.com/robfig/cron"
 )
 
-func getDatabaseSlice() []models.Database {
+func getDatabaseSlice(actionType int) []models.Database {
 	var databaseSlice []models.Database = nil
 	db := utils.OpenDB(nil)
 
 	if db == nil {
 		return nil
 	}
-	rows, err := db.Query(context.Background(), "SELECT * FROM \"TimeAction\"")
+	rows, err := db.Query(context.Background(), "SELECT * FROM \"TimeAction\" WHERE action_type = $1", actionType)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error on reading response of the query", err)
@@ -35,7 +35,7 @@ func getDatabaseSlice() []models.Database {
 
 	for rows.Next() {
 		var database models.Database
-		err := rows.Scan(&database.Id, &database.AreaId, &database.Continent, &database.City, &database.Hour, &database.Minute)
+		err := rows.Scan(&database.Id, &database.AreaId, &database.ActionType, &database.Continent, &database.City, &database.Hour, &database.Minute)
 		if err != nil {
 			log.Fatal(err)
 			return nil
@@ -51,8 +51,8 @@ func getDatabaseSlice() []models.Database {
 	return databaseSlice
 }
 
-func BackUpLocalDataCall() {
-	databaseSlice := getDatabaseSlice()
+func GetEveryDayAt() {
+	databaseSlice := getDatabaseSlice(0)
 	if databaseSlice == nil {
 		return
 	}
@@ -86,10 +86,118 @@ func BackUpLocalDataCall() {
 	}
 }
 
+func GetEveryHourAt() {
+	databaseSlice := getDatabaseSlice(1)
+	if databaseSlice == nil {
+		return
+	}
+
+	for _, slice := range databaseSlice {
+
+		resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + slice.Continent + "/" + slice.City)
+		if err != nil {
+			log.Fatal("Error while calling the API:", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal("Error reading the response body:", err)
+			return
+		}
+
+		jsonBody := utils.BytesToJson(body)
+
+		if jsonBody["minute"].(float64) == float64(slice.Minute) {
+			send := models.TimeModelSendReaction{}
+			send.ReactionId = slice.AreaId
+			var buf bytes.Buffer
+			if err := json.NewEncoder(&buf).Encode(send); err != nil {
+				return
+			}
+			http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+		}
+	}
+}
+
+func GetHourIsEven() {
+	databaseSlice := getDatabaseSlice(2)
+	if databaseSlice == nil {
+		return
+	}
+
+	for _, slice := range databaseSlice {
+
+		resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + slice.Continent + "/" + slice.City)
+		if err != nil {
+			log.Fatal("Error while calling the API:", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal("Error reading the response body:", err)
+			return
+		}
+
+		jsonBody := utils.BytesToJson(body)
+
+		if int(jsonBody["hour"].(float64))%2 == 0 && jsonBody["minute"].(float64) == float64(slice.Minute) {
+			send := models.TimeModelSendReaction{}
+			send.ReactionId = slice.AreaId
+			var buf bytes.Buffer
+			if err := json.NewEncoder(&buf).Encode(send); err != nil {
+				return
+			}
+			http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+		}
+	}
+}
+
+func GetHourIsOdd() {
+	databaseSlice := getDatabaseSlice(3)
+	if databaseSlice == nil {
+		return
+	}
+
+	for _, slice := range databaseSlice {
+
+		resp, err := http.Get(utils.GetEnvKey("DATE_TIME_API") + slice.Continent + "/" + slice.City)
+		if err != nil {
+			log.Fatal("Error while calling the API:", err)
+			return
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal("Error reading the response body:", err)
+			return
+		}
+
+		jsonBody := utils.BytesToJson(body)
+
+		if int(jsonBody["hour"].(float64))%2 != 0 && jsonBody["minute"].(float64) == float64(slice.Minute) {
+			send := models.TimeModelSendReaction{}
+			send.ReactionId = slice.AreaId
+			var buf bytes.Buffer
+			if err := json.NewEncoder(&buf).Encode(send); err != nil {
+				return
+			}
+			http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
+		}
+	}
+}
+
 func InitCronScheduler() *cron.Cron {
 	c := cron.New()
 
-	c.AddFunc("@every 00h01m00s", BackUpLocalDataCall)
+	c.AddFunc("@every 00h01m00s", GetEveryDayAt)
+	c.AddFunc("@every 00h01m00s", GetEveryHourAt)
+	c.AddFunc("@every 00h01m00s", GetHourIsEven)
+	c.AddFunc("@every 00h01m00s", GetHourIsOdd)
 
 	c.Start()
 	return c

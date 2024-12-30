@@ -33,13 +33,9 @@ func RegisterAction(c *gin.Context) {
 		return
 	}
 
-	query := `
-		INSERT INTO "TimeAction" (area_id, continent, city, hour, minute)
-		VALUES ($1, $2, $3, $4, $5)
-		RETURNING id;
-	`
+	_, err := db.Exec(c, "INSERT INTO \"TimeAction\" (area_id, action_type, continent, city, hour, minute)"+
+		" VALUES($1, $2, $3, $4, $5, $6)", dataReceived.AreaId, dataReceived.ActionType, dataReceived.Continent, dataReceived.City, dataReceived.Hour, dataReceived.Minute)
 
-	_, err := db.Exec(c, query, dataReceived.AreaId, dataReceived.Continent, dataReceived.City, dataReceived.Hour, dataReceived.Minute)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert data into TimeAction: " + err.Error()})
 		return
