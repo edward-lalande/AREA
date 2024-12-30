@@ -73,6 +73,14 @@ type SpotifyReactions struct {
 	AccessToken  string `json:"user_token"`
 }
 
+type GitlabReactions struct {
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	AreaId       string `json:"area_id"`
+	ProjectId    string `json:"project_id"`
+	Body         string `json:"body"`
+}
+
 type TypeDiscordReaction struct {
 	BaseReaction
 	// Type of reactions (here is for discord send_message reactions)

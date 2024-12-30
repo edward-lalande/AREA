@@ -71,7 +71,6 @@ CREATE TABLE IF NOT EXISTS "GitlabActions" (
     area_id             TEXT
 );
 
-
 CREATE TABLE IF NOT EXISTS "GoogleActions" (
     id                  SERIAL PRIMARY KEY,
     user_token          TEXT,
@@ -94,4 +93,13 @@ CREATE TABLE IF NOT EXISTS "GoogleReactions" (
     recipient           TEXT,
     subject             TEXT,
     message             TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "GitlabReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    project_id          TEXT,
+    body                TEXT
 );

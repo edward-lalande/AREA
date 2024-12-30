@@ -147,6 +147,16 @@ func Area(c *gin.Context) {
 				actionData.UserToken = item.UserToken
 				resp := SendGoogleReactions(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 5:
+				var reactionDetail models.GitlabReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendGitlabReaction(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 

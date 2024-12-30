@@ -31,7 +31,7 @@ const CreateElement: React.FC<CreateElementProps> = ({
     const [open, setOpen] = useState<boolean>(false);
     const [nbActions, setNbActions] = useState<number>(0);
     const [nbReactions, setNbReactions] = useState<number>(0);
-    const [cookies, setCookie] = useCookies();
+  	const [cookies, setCookie] = useCookies();
 
     const createArea = (action: Action, reaction: Reaction) => {
 

@@ -1,0 +1,40 @@
+{
+    "name": "Gitlab Services",
+    "reactions": [
+            {
+                "name": "Comment last Merge Requets",
+                "reaction_id": 5,
+                "reaction_type": 0,
+                "arguments": [
+                    {
+                        "display": "Project ID",
+                        "name": "project_id",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Commentary",
+                        "name": "body",
+                        "type": "string"
+                    }
+                ]
+            },
+            {
+                "name": "labelise last Merge Requets",
+                "reaction_id": 5,
+                "reaction_type": 1,
+                "arguments": [
+                    {
+                        "display": "Project ID",
+                        "name": "project_id",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Label",
+                        "name": "body",
+                        "type": "string"
+                    }
+                ]
+            }
+        ]
+    }
+    
