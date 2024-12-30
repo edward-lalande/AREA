@@ -9,8 +9,9 @@ CREATE TABLE IF NOT EXISTS "User" (
 CREATE TABLE IF NOT EXISTS "TimeAction" (
     id                  SERIAL PRIMARY KEY,
     area_id             TEXT,
-    continent           TEXT,
+    action_type         INT,
     city                TEXT,
+    continent           TEXT,
     hour                INT,
     minute              INT
 );

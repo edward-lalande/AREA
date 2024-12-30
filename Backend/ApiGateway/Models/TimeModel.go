@@ -6,11 +6,12 @@ type DateTimeResponse struct {
 }
 
 type TimeActionSend struct {
-	AreaId    string `json:"area_id"`
-	City      string `json:"city"`
-	Continent string `json:"continent"`
-	Hour      int    `json:"hour"`
-	Minute    int    `json:"minute"`
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	City       string `json:"city"`
+	Continent  string `json:"continent"`
+	Hour       int    `json:"hour"`
+	Minute     int    `json:"minute"`
 }
 
 type TimeActionDatabase struct {

@@ -1,20 +1,22 @@
 package models
 
 type TimeActionReceive struct {
-	AreaId    string `json:"area_id"`
-	City      string `json:"city"`
-	Continent string `json:"continent"`
-	Hour      int    `json:"hour"`
-	Minute    int    `json:"minute"`
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	City       string `json:"city"`
+	Continent  string `json:"continent"`
+	Hour       int    `json:"hour"`
+	Minute     int    `json:"minute"`
 }
 
 type Database struct {
-	Id        int
-	AreaId    string `json:"area_id"`
-	City      string `json:"city"`
-	Continent string `json:"continent"`
-	Hour      int    `json:"hour"`
-	Minute    int    `json:"minute"`
+	Id         int
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	City       string `json:"city"`
+	Continent  string `json:"continent"`
+	Hour       int    `json:"hour"`
+	Minute     int    `json:"minute"`
 }
 
 type GetTimeAction struct {
@@ -29,6 +31,7 @@ type GetTimeAction struct {
 // LAST
 type DataReceive struct {
 	Token             string `json:"token"`
+	ActionType        string `json:"action_type"`
 	City              string `json:"city"`
 	Continent         string `json:"continent"`
 	Hour              int    `json:"hour"`

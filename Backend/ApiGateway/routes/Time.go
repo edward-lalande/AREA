@@ -14,6 +14,7 @@ import (
 func SendTime(areaId string, action models.TypeTimeAction, c *gin.Context) *http.Response {
 	var data models.TimeActionSend
 	data.AreaId = areaId
+	data.ActionType = action.ActionType
 	data.City = action.City
 	data.Continent = action.Continent
 	data.Hour = action.Hour
