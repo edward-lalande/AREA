@@ -112,9 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 spaceBetweenIconAndText: 10,
                 onPressed: (context) async {
                   bool tmp = await sendSignUp(
-                    url: "http://10.0.2.2:8080/user",
+                    url: "http://10.0.2.2:8080/sign-up",
                     body: {
-                      "routes": "sign-up",
                       "mail": emailController.text,
                       "password": passwordController.text,
                       "name": firstNameController.text,

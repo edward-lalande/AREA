@@ -9,7 +9,7 @@ import (
 
 func GetActionsName(c *gin.Context) {
 	var actions map[int]string = make(map[int]string)
-	actions[0] = "Receive Message"
+	actions[0] = "Reaction on message"
 	actionType := c.Query("type")
 
 	value, _ := strconv.Atoi(actionType)

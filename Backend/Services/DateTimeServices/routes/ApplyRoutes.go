@@ -30,5 +30,4 @@ func ApplyRoutes(r *gin.Engine) {
 	})
 
 	r.POST("/action", RegisterAction)
-	r.POST("/time", PostTime)
 }

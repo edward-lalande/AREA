@@ -2,6 +2,11 @@ package routes
 
 import (
 	_ "api-gateway/docs"
+	"api-gateway/utils"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -18,6 +23,29 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/areas", GetUserAreas)
 	r.GET("/actions", GetActions)
 	r.GET("/reactions", GetReactions)
+	r.POST("/gitlab-webhook", func(c *gin.Context) {
+		var a map[string]interface{}
+		if err := c.ShouldBindJSON(&a); err != nil {
+			fmt.Println("Error parsing JSON:", err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+			return
+		}
+
+		jsonData, err := json.Marshal(a)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal error"})
+			return
+		}
+
+		resp, err := http.Post(utils.GetEnvKey("GITLAB_API")+"webhook", "application/json", bytes.NewReader(jsonData))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, resp.Body)
+			return
+		}
+		defer resp.Body.Close()
+
+		c.JSON(http.StatusOK, gin.H{"message": "Webhook forwarded successfully"})
+	})
 
 	r.POST("/login", UserLogin)
 	r.POST("/sign-up", UserSignUp)
@@ -27,6 +55,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/spotify/oauth", SpotifyOauth2)
 	r.GET("/github/oauth", GithubOauth2)
 	r.GET("/gitlab/oauth", GitlabOauth2)
+	r.GET("/google/oauth", GoogleOauth2)
 
 	r.POST("/discord/access-token", DiscordAccessToken)
 	r.POST("/spotify/access-token", SpotifyAccessToken)
@@ -34,4 +63,5 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/gitlab/access-token", GitlabAccessToken)
 
 	r.POST("/github-webhook", GithubWebhook)
+	r.POST("/google/access-token", GoogleAccessToken)
 }

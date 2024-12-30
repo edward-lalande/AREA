@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -122,32 +124,35 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                     ),
                     MyButton(
-                    padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
-                    title: "Log in",
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 20,
-                    spaceBetweenIconAndText: 10,
-                    onPressed: (context) async {
-                        bool tmp = await sendSignUp(
-                        url: 'http://10.0.2.2:8080/user',
-                        body: {
-                            "routes": "login",
-                            "mail": usernameController.text,
-                            "password": passwordController.text
-                            }
-                        );
-                        if (tmp) {
-                        if (context.mounted) {
-                            context.go("/home");
-                        }
+                        padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
+                        title: "Log in",
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 20,
+                        spaceBetweenIconAndText: 10,
+                        onPressed: (context) async {
+                            bool tmp = await sendSignUp(
+                            url: 'http://10.0.2.2:8080/login',
+                            body: {
+                                "mail": usernameController.text,
+                                "password": passwordController.text
+                                }
+                            );
+                            final String servString = await classicGet(
+                                url: "http://10.0.2.2:8080/services",
+                            );
+                            servicesMap = jsonDecode(servString);
+                            if (tmp) {
+                              if (context.mounted) {
+                                  context.go("/home");
+                              }
 
-                        } else {
-                        if (context.mounted) {
-                            context.go("/login");
+                            } else {
+                                if (context.mounted) {
+                                    context.go("/login");
+                                }
+                            }
                         }
-                        }
-                    }
                     ),
                     const MyDividerText(
                     bgColor: Colors.white,
@@ -172,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Image.asset('assets/discord-logo.png'),
                     ),
                     onPressed: (context) async {
-                        String url = await getOAuthUrl(url: "http://10.0.2.2:8083/oauth2");
+                        String url = await classicGet(url: "http://10.0.2.2:8083/oauth2");
                         if (context.mounted) {
                             Navigator.push(
                                 context,

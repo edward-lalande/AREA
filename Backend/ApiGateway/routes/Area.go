@@ -29,7 +29,6 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 	if db == nil {
 		return nil
 	}
-
 	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
 	if err != nil {
 		return err
@@ -76,6 +75,14 @@ func Area(c *gin.Context) {
 				}
 				resp := SendTime(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 2:
+				var actionData models.TypeDiscordAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type action data"})
+					return
+				}
+				resp := sendDiscordAction(action.UserToken, areaID, c, actionData)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 4:
 				var actionData models.TypeGithubAction
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
@@ -83,6 +90,31 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := sendGithub(areaID, item.UserToken, c, actionData)
+			case 5:
+				var actionData models.GitlabAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type5 action data"})
+					return
+				}
+				resp := SendGitlab(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 6:
+				var actionData models.GoogleAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
+					return
+				}
+				actionData.UserToken = item.UserToken
+				resp := SendGoogle(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 9:
+				var actionData models.SpotifyActions
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type9 action data"})
+					return
+				}
+				actionData.AreaId = areaID
+				resp := SendSpotifyActions(actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
@@ -102,6 +134,34 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 9:
+				var reactionDetail models.SpotifyReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				resp := SendSpotifyReactions(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 6:
+				var actionData models.GoogleReaction
+				if err := json.Unmarshal(*reactionData, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
+					return
+				}
+				actionData.UserToken = item.UserToken
+				resp := SendGoogleReactions(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 5:
+				var reactionDetail models.GitlabReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendGitlabReaction(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}

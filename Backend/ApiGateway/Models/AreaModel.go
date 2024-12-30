@@ -5,7 +5,28 @@ import "encoding/json"
 type BaseAction struct {
 	// Action ID
 	// required: true
-	ActionID int `json:"action_id"`
+	ActionID  int    `json:"action_id"`
+	UserToken string `json:"user_token"`
+}
+
+type GoogleAction struct {
+	BaseAction
+	UserToken  string `json:"user_token"`
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	NbEvents   int    `json:"nb_events"`
+}
+
+type GitlabAction struct {
+	BaseAction
+	ActionType int    `json:"action_type"`
+	AreaId     string `json:"area_id"`
+}
+
+type SpotifyActions struct {
+	AreaId      string `json:"area_id"`
+	ActionType  int    `json:"action_type"`
+	AccessToken string `json:"user_token"`
 }
 
 type TypeTimeAction struct {
@@ -31,10 +52,33 @@ type TypeTimeAction struct {
 	Minute int `json:"minute"`
 }
 
+type TypeDiscordAction struct {
+	BaseAction
+
+	ActionType int `json:"action_type"`
+
+	ChannelId string `json:"channel_id"`
+	MessageId string `json:"message_id"`
+}
+
 type BaseReaction struct {
 	// Reactions ID
 	// required: true
 	ReactionID int `json:"reaction_id"`
+}
+
+type SpotifyReactions struct {
+	AreaId       string `json:"area_id"`
+	ReactionType int    `json:"reaction_type"`
+	AccessToken  string `json:"user_token"`
+}
+
+type GitlabReactions struct {
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	AreaId       string `json:"area_id"`
+	ProjectId    string `json:"project_id"`
+	Body         string `json:"body"`
 }
 
 type TypeDiscordReaction struct {
@@ -89,6 +133,20 @@ type TypeGithubAction struct {
 	Pusher     string `json:"pusher"`
 	Value      string `json:"value"`
 	Number     int    `json:"number"`
+}
+
+type GoogleReaction struct {
+	UserToken    string `json:"user_token"`
+	AreaId       string `json:"area_id"`
+	ReactionType int    `json:"reaction_type"`
+	Summary      string `json:"summary"`
+	Description  string `json:"description"`
+	StartTime    string `json:"start_time"`
+	EndTime      string `json:"end_time"`
+	Attendees    string `json:"attendees"`
+	Recipient    string `json:"recipient"`
+	Subject      string `json:"subject"`
+	Message      string `json:"message"`
 }
 
 type PayloadItem struct {

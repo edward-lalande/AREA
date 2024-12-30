@@ -11,6 +11,42 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func SendGitlabReaction(data models.GitlabReactions, c *gin.Context) *http.Response {
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("GITLAB_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+
+	return resp
+}
+
+func SendGitlab(areaId string, data models.GitlabAction, c *gin.Context) *http.Response {
+	data.AreaId = areaId
+
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("GITLAB_API")+"action", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+
+	return resp
+}
+
 func GitlabOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("GITLAB_API") + "oauth")
