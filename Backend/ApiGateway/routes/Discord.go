@@ -14,17 +14,17 @@ import (
 func sendDiscordAction(userToken string, areaId string, c *gin.Context, receivedData models.TypeDiscordAction) *http.Response {
 
 	sendingData := struct {
-		AreaId       string `json:"area_id"`
-		UserToken    string `json:"user_token"`
+		AreaId     string `json:"area_id"`
+		UserToken  string `json:"user_token"`
 		ActionType int    `json:"action_type"`
-		ChannelID    string `json:"channel_id"`
-		MessageID      string `json:"message_id"`
+		ChannelID  string `json:"channel_id"`
+		MessageID  string `json:"message_id"`
 	}{
-		AreaId:       areaId,
-		UserToken:    userToken,
-		ActionType:   receivedData.ActionType,
-		ChannelID:    receivedData.ChannelId,
-		MessageID:    receivedData.MessageId,
+		AreaId:     areaId,
+		UserToken:  userToken,
+		ActionType: receivedData.ActionType,
+		ChannelID:  receivedData.ChannelId,
+		MessageID:  receivedData.MessageId,
 	}
 
 	jsonBody, err := json.Marshal(sendingData)

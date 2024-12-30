@@ -11,6 +11,44 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func SendGoogleReactions(areaId string, data models.GoogleReaction, c *gin.Context) *http.Response {
+	data.AreaId = areaId
+
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("GOOGLE_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+
+	return resp
+}
+
+func SendGoogle(areaId string, data models.GoogleAction, c *gin.Context) *http.Response {
+	data.AreaId = areaId
+
+	jsonBody, err := json.Marshal(data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("GOOGLE_API")+"action", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+
+	return resp
+}
+
 func GoogleOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("GOOGLE_API") + "oauth")

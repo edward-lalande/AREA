@@ -1,7 +1,6 @@
 package area
 
 import (
-	"fmt"
 	"net/http"
 	models "spotify/Models"
 	"spotify/utils"
@@ -45,7 +44,6 @@ func pauseSound(information models.Reactions) (*http.Response, error) {
 // }
 
 func FindReactions(id int, information models.Reactions) (*http.Response, error) {
-	fmt.Println("id: ", id)
 	reactions := map[int]func(models.Reactions) (*http.Response, error){
 		0: pauseSound,
 	}
@@ -61,7 +59,6 @@ func ReceivedReactions(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("received type: ", receivedData.ReactionType)
 	_, err := db.Exec(c, "INSERT INTO \"SpotifyReactions\" (area_id, reaction_type, user_token)"+
 		" VALUES($1, $2, $3)", receivedData.AreaId, receivedData.ReactionType, receivedData.UserToken)
 	if err != nil {

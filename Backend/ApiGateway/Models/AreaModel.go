@@ -9,6 +9,14 @@ type BaseAction struct {
 	UserToken string `json:"user_token"`
 }
 
+type GoogleAction struct {
+	BaseAction
+	UserToken  string `json:"user_token"`
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	NbEvents   int    `json:"nb_events"`
+}
+
 type GitlabAction struct {
 	BaseAction
 	ActionType int    `json:"action_type"`
@@ -90,6 +98,20 @@ type TypeDiscordReaction struct {
 	// Guild to create a channel
 	// required: true
 	GuildID string `json:"guild_id"`
+}
+
+type GoogleReaction struct {
+	UserToken    string `json:"user_token"`
+	AreaId       string `json:"area_id"`
+	ReactionType int    `json:"reaction_type"`
+	Summary      string `json:"summary"`
+	Description  string `json:"description"`
+	StartTime    string `json:"start_time"`
+	EndTime      string `json:"end_time"`
+	Attendees    string `json:"attendees"`
+	Recipient    string `json:"recipient"`
+	Subject      string `json:"subject"`
+	Message      string `json:"message"`
 }
 
 type PayloadItem struct {

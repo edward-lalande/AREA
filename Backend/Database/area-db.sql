@@ -42,6 +42,8 @@ CREATE TABLE IF NOT EXISTS "DiscordReactions" (
 CREATE TABLE IF NOT EXISTS "DiscordAction" (
     id                  SERIAL PRIMARY KEY,
     action_type         INT,
+    channel_id          TEXT,
+    message_id          TEXT,
     area_id             TEXT,
     user_token          TEXT
 );
@@ -67,6 +69,30 @@ CREATE TABLE IF NOT EXISTS "GitlabActions" (
     id                  SERIAL PRIMARY KEY,
     action_type         INT,
     area_id             TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "GoogleActions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    area_id             TEXT,
+    action_type         INT,
+    nb_message          INT,
+    nb_events           INT
+);
+
+CREATE TABLE IF NOT EXISTS "GoogleReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    area_id             TEXT,
+    reaction_type       INT,
+    summary             TEXT,
+    description         TEXT,
+    start_time          TEXT,
+    end_time            TEXT,
+    attendees           TEXT,
+    recipient           TEXT,
+    subject             TEXT,
+    message             TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "GitlabReactions" (

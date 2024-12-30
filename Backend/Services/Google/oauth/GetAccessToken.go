@@ -25,7 +25,6 @@ func GetAccessToken(c *gin.Context) {
 	var receivedData models.OauthInformation
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
-		fmt.Println("sheh")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -41,7 +40,6 @@ func GetAccessToken(c *gin.Context) {
 	responseBody := bytes.NewBuffer(data)
 	rep, err := http.Post("https://oauth2.googleapis.com/token", "application/json", responseBody)
 	if err != nil {
-		fmt.Println("error:", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
