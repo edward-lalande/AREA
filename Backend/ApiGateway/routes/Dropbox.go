@@ -11,6 +11,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func SendMessageDropbox(c *gin.Context, receivedData models.DropBoxReactions) *http.Response {
+
+	jsonBody, err := json.Marshal(receivedData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("DROPBOX_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+	return resp
+}
+
 func DropBoxOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("DROPBOX_API") + "oauth")

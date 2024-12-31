@@ -136,6 +136,16 @@ func Area(c *gin.Context) {
 				}
 				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 3:
+				var reactionDetail models.DropBoxReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendMessageDropbox(c, reactionDetail)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 9:
 				var reactionDetail models.SpotifyReactions
 				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
