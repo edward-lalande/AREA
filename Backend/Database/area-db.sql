@@ -114,3 +114,13 @@ CREATE TABLE IF NOT EXISTS "GitlabReactions" (
     project_id          TEXT,
     body                TEXT
 );
+
+CREATE TABLE IF NOT EXISTS "DropboxReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    from_path           TEXT,
+    to_path             TEXT,
+    filepath_share      TEXT
+);
