@@ -2,7 +2,6 @@ package routes
 
 import (
 	"api-gateway/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +43,6 @@ func Services(c *gin.Context) {
 
 	for _, service := range servicesArray {
 		_, err := http.Get(service.Url + "ping")
-		fmt.Println("call: ", service.Url+"ping")
 		if err != nil {
 			continue
 		}

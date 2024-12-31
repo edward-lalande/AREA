@@ -16,11 +16,14 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/callback", oauth.CallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
 
-	r.GET("/actions", func(c *gin.Context) {
-		c.JSON(http.StatusOK, nil)
-	})
+	r.POST("/action", createAction)
+
+	r.GET("/actions", getActions)
 
 	r.GET("/reactions", func(c *gin.Context) {
 		c.JSON(http.StatusOK, nil)
 	})
+
+	r.POST("/webhook/push", GetWebhooksPush)
+	r.POST("/webhook/commit_comment", GetWebhooksCommitComment)
 }

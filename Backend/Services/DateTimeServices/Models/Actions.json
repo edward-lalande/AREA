@@ -2,23 +2,93 @@
 "name": "Date Time Services",
 "actions": [
         {
-            "name": "At time",
+            "name": "Every day at",
             "action_id": 1,
             "action_type": 0,
             "arguments": [
                 {
+                    "display": "Hour",
                     "name": "hour",
                     "type": "number"
                 },
                 {
+                    "display": "Minute",
                     "name": "minute",
                     "type": "number"
                 },
                 {
+                    "display": "City",
                     "name": "city",
                     "type": "string"
                 },
                 {
+                    "display": "Continent",
+                    "name": "continent",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Every hour at",
+            "action_id": 1,
+            "action_type": 1,
+            "arguments": [
+                {
+                    "display": "Minute",
+                    "name": "minute",
+                    "type": "number"
+                },
+                {
+                    "display": "City",
+                    "name": "city",
+                    "type": "string"
+                },
+                {
+                    "display": "Continent",
+                    "name": "continent",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Hour is even",
+            "action_id": 1,
+            "action_type": 2,
+            "arguments": [
+                {
+                    "display": "Minute",
+                    "name": "minute",
+                    "type": "number"
+                },
+                {
+                    "display": "City",
+                    "name": "city",
+                    "type": "string"
+                },
+                {
+                    "display": "Continent",
+                    "name": "continent",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Hour is odd",
+            "action_id": 1,
+            "action_type": 3,
+            "arguments": [
+                {
+                    "display": "Minute",
+                    "name": "minute",
+                    "type": "number"
+                },
+                {
+                    "display": "City",
+                    "name": "city",
+                    "type": "string"
+                },
+                {
+                    "display": "Continent",
                     "name": "continent",
                     "type": "string"
                 }

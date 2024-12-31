@@ -29,11 +29,16 @@ type reactionsList struct {
 // @Failure 500 {object} map[string]string "Internal error"
 // @Router /actions [get]
 func GetActions(c *gin.Context) {
-	var servicesArray []actionsList
 	var actions []map[string]interface{}
 
-	servicesArray = append(servicesArray, actionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
-	servicesArray = append(servicesArray, actionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray := []actionsList{
+		{"Date Time Services", utils.GetEnvKey("TIME_API")},
+		{"Discord Services", utils.GetEnvKey("DISCORD_API")},
+		{"Gitlab Services", utils.GetEnvKey("GITLAB_API")},
+		{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")},
+		{"Google Services", utils.GetEnvKey("GOOGLE_API")},
+		{"Github Services", utils.GetEnvKey("GITHUB_API")},
+	}
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "actions")
@@ -66,11 +71,15 @@ func GetActions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	var servicesArray []reactionsList
 	var reactions []map[string]interface{}
 
-	servicesArray = append(servicesArray, reactionsList{"Date Time Services", utils.GetEnvKey("TIME_API")})
-	servicesArray = append(servicesArray, reactionsList{"Discord Services", utils.GetEnvKey("DISCORD_API")})
+	servicesArray := []reactionsList{
+		{"Discord Services", utils.GetEnvKey("DISCORD_API")},
+		{"Spotify Services", utils.GetEnvKey("SPOTIFY_API")},
+		{"Gitlab Services", utils.GetEnvKey("GITLAB_API")},
+		{"Google Services", utils.GetEnvKey("GOOGLE_API")},
+		{"Github Services", utils.GetEnvKey("GITHUB_API")},
+	}
 
 	for _, service := range servicesArray {
 		resp, err := http.Get(service.url + "reactions")
