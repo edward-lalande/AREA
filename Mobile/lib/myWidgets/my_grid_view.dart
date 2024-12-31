@@ -8,13 +8,15 @@ class MyGridView extends StatefulWidget {
         required this.map,
         required this.typeKey,
         required this.appbarVisible,
-        required this.needAnimation,
+        required this.homeAnimation,
+        this.gridClick,
     });
 
     final Map<String, dynamic> map;
     final String typeKey;
     final bool appbarVisible;
-    final bool needAnimation;
+    final bool homeAnimation;
+    final Function(int idx)? gridClick;
 
     @override
     State<MyGridView> createState() => _MyGridViewState();
@@ -29,6 +31,7 @@ class _MyGridViewState extends State<MyGridView> {
             selectedIndex = selectedIndex == index ? -1 : index;
             isBig = !isBig;
         });
+        widget.gridClick!(index);
 
         Future.delayed(Duration(milliseconds: 200), () {
             setState(() {
@@ -85,7 +88,7 @@ class _MyGridViewState extends State<MyGridView> {
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
                         ),
-                        delegate: widget.needAnimation ? SliverChildBuilderDelegate(
+                        delegate: widget.homeAnimation ? SliverChildBuilderDelegate(
                             childCount: services.length,
                             (context, index) {
                                 final tmp = services[index];
@@ -114,7 +117,9 @@ class _MyGridViewState extends State<MyGridView> {
                             childCount: services.length,
                             (context, index) {
                                 final tmp = services[index];
-                                return Card(
+                                return InkWell(
+                                    onTap: () => _onCardTap(index, tmp),
+                                    child: Card(
                                             elevation: 7,
                                             color: Color(0XFF5865F2),
                                             child: MyCard(
@@ -126,6 +131,7 @@ class _MyGridViewState extends State<MyGridView> {
                                                     size: 60,
                                                 ),
                                     ),
+                                )
                                 );
                             },
                         ),

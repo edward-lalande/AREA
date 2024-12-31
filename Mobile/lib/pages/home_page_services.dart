@@ -16,7 +16,7 @@ class _HomePageServicesState extends State<HomePageServices> {
             child: Scaffold(
                 backgroundColor: Colors.white,
                 body: MyGridView(
-                    needAnimation: true,
+                    homeAnimation: true,
                     appbarVisible: true,
                     map: servicesMap,
                     typeKey: "services",

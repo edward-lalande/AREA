@@ -141,11 +141,22 @@ class _LoginPageState extends State<LoginPage> {
                             final String servString = await classicGet(
                                 url: "http://10.0.2.2:8080/services",
                             );
-                            //final String actionsString = await classicGet(
-                                //url: "http://10.0.2.2:8080/actions",
-                            //);
+                            final String actionsString = await classicGet(
+                                url: "http://10.0.2.2:8080/actions",
+                            );
+                            List<dynamic> data = jsonDecode(actionsString);
+                            actionsMap = {
+                              for (var service in data.where((element) => element != null))
+                                service['name']: {
+                                  'actions': service['actions'].map((action) {
+                                    return {
+                                      'name': action['name'],
+                                      'arguments': action['arguments'],
+                                    };
+                                  }).toList(),
+                                }
+                            };
                             servicesMap = jsonDecode(servString);
-                            //actionsMap = jsonDecode(actionsString);
                             if (tmp) {
                               if (context.mounted) {
                                   context.go("/home");
