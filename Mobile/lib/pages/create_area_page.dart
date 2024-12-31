@@ -14,46 +14,56 @@ class CreateArea extends StatefulWidget {
 class _CreateAreaState extends State<CreateArea> {
     bool _isGridVisible = false;
     bool _selected = false;
+    int which = 0;
 
     void _handleItemTap(int index) {
         setState(() {
-        _isGridVisible = false;
-        _selected = true;
-
+            _isGridVisible = false;
+            _selected = true;
+            which = index;
         });
   }
 
-Widget _buildActionsGrid() {
-
+Widget _buildActionsGrid(int serviceIndex) {
     List<Map<String, String>> actionsList = [];
+
+
+    String selectedServiceName = actionsMap.keys.elementAt(serviceIndex);
+
     actionsMap.forEach((serviceName, serviceData) {
-        for (var action in serviceData['actions']) {
-            actionsList.add({'name': action['name']});
+        if (serviceName == selectedServiceName) {
+            for (var action in serviceData['actions']) {
+                actionsList.add({'name': action['name']});
+            }
         }
     });
 
-    return GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-        ),
-        itemCount: actionsList.length,
-        itemBuilder: (context, index) {
-            return Card(
-                color: Colors.blueAccent,
-                child: Center(
-                    child: Text(
+    return SingleChildScrollView(
+        padding: EdgeInsets.all(50),
+        child: GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+            ),
+            itemCount: actionsList.length,
+            itemBuilder: (context, index) {
+                return Card(
+                    color: Colors.blueAccent,
+                    child: Center(
+                        child: Text(
                         actionsList[index]['name']!,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 18)),
                     ),
-                ),
-            );
-        },
+                );
+            },
+        ),
     );
 }
+
+
 
 @override
 Widget build(BuildContext context) {
@@ -125,8 +135,8 @@ Widget build(BuildContext context) {
                     },
                     child: _selected
                         ? SizedBox(
-                            height: 400,
-                            child: _buildActionsGrid(),
+                            height: 600,
+                            child: _buildActionsGrid(which),
                             )
                         : const SizedBox.shrink(),
                 ),
