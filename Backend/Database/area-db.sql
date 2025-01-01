@@ -114,3 +114,12 @@ CREATE TABLE IF NOT EXISTS "GitlabReactions" (
     project_id          TEXT,
     body                TEXT
 );
+
+CREATE TABLE IF NOT EXISTS "MeteoActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    latitude            TEXT,
+    longitude           TEXT,
+    value               INT
+);

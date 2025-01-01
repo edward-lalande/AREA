@@ -88,7 +88,6 @@ func BackUpLocalDataCall() {
 			}
 			if value == 1 {
 				callMsgBrocker(dbSlice.AreaId)
-				return
 			}
 		case 1:
 			value := Events(dbSlice, func(a, b int) bool { return a < b })
@@ -97,7 +96,6 @@ func BackUpLocalDataCall() {
 			}
 			if value == 1 {
 				callMsgBrocker(dbSlice.AreaId)
-				return
 			}
 		case 2:
 			value := NewMessage(dbSlice)
@@ -106,7 +104,6 @@ func BackUpLocalDataCall() {
 			}
 			if value == 1 {
 				callMsgBrocker(dbSlice.AreaId)
-				return
 			}
 		}
 	}

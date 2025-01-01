@@ -17,6 +17,15 @@ type GoogleAction struct {
 	NbEvents   int    `json:"nb_events"`
 }
 
+type MeteoActions struct {
+	BaseAction
+	ActionType int    `json:"action_type"`
+	AreaId     string `json:"area_id"`
+	Latitude   string `json:"latitude"`
+	Longitude  string `json:"longitude"`
+	Value      int    `json:"value"`
+}
+
 type GitlabAction struct {
 	BaseAction
 	ActionType int    `json:"action_type"`
