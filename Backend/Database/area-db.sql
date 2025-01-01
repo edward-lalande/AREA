@@ -124,3 +124,12 @@ CREATE TABLE IF NOT EXISTS "DropboxReactions" (
     to_path             TEXT,
     filepath_share      TEXT
 );
+
+CREATE TABLE IF NOT EXISTS "MeteoActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    latitude            TEXT,
+    longitude           TEXT,
+    value               INT
+);
