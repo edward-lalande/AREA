@@ -24,22 +24,22 @@ type serviceList struct {
 // @Failure 500 {object} map[string]string "Internal error"
 // @Router /services [get]
 func Services(c *gin.Context) {
-	var servicesArray []serviceList
+	servicesArray := []serviceList{
+		{"Date Time Services", "time", utils.GetEnvKey("TIME_API"), "#b3b3b3"},
+		{"Discord Services", "discord", utils.GetEnvKey("DISCORD_API"), "#7289da"},
+		{"Dropbox", "dropbox", utils.GetEnvKey("DROPBOX_API"), "#7289da"},
+		{"Github", "github", utils.GetEnvKey("GITHUB_API"), "#7289da"},
+		{"Gitlab", "gitlab", utils.GetEnvKey("GITLAB_API"), "#7289da"},
+		{"Google", "google", utils.GetEnvKey("GOOGLE_API"), "#7289da"},
+		{"Meteo", "meteo", utils.GetEnvKey("METEO_API"), "#7289da"},
+		{"Miro", "miro", utils.GetEnvKey("MIRO_API"), "#7289da"},
+		{"Spotify", "spotify", utils.GetEnvKey("SPOTIFY_API"), "#7289da"},
+		{"Steam", "steam", utils.GetEnvKey("STEAM_API"), "#7289da"},
+		{"Ticket Master", "ticket-master", utils.GetEnvKey("TICKET_MASTER_API"), "#7289da"},
+		{"Twilio", "twilio", utils.GetEnvKey("TWILIO_API"), "#7289da"},
+		{"Uber", "uber", utils.GetEnvKey("UBER_API"), "#7289da"},
+	}
 	var uppedServices []serviceList
-
-	servicesArray = append(servicesArray, serviceList{"Date Time Services", "time", utils.GetEnvKey("TIME_API"), "#b3b3b3"})
-	servicesArray = append(servicesArray, serviceList{"Discord Services", "discord", utils.GetEnvKey("DISCORD_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Blue Sky", "blue-sky", utils.GetEnvKey("BLUESKY_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Github", "github", utils.GetEnvKey("GITHUB_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Gitlab", "gitlab", utils.GetEnvKey("GITLAB_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Google", "google", utils.GetEnvKey("GOOGLE_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Meteo", "meteo", utils.GetEnvKey("METEO_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Miro", "miro", utils.GetEnvKey("MIRO_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Spotify", "spotify", utils.GetEnvKey("SPOTIFY_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Steam", "steam", utils.GetEnvKey("STEAM_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Ticket Master", "ticket-master", utils.GetEnvKey("TICKET_MASTER_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Twilio", "twilio", utils.GetEnvKey("TWILIO_API"), "#7289da"})
-	servicesArray = append(servicesArray, serviceList{"Uber", "uber", utils.GetEnvKey("UBER_API"), "#7289da"})
 
 	for _, service := range servicesArray {
 		_, err := http.Get(service.Url + "ping")

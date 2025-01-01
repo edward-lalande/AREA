@@ -115,6 +115,16 @@ CREATE TABLE IF NOT EXISTS "GitlabReactions" (
     body                TEXT
 );
 
+CREATE TABLE IF NOT EXISTS "DropboxReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    from_path           TEXT,
+    to_path             TEXT,
+    filepath_share      TEXT
+);
+
 CREATE TABLE IF NOT EXISTS "MeteoActions" (
     id                  SERIAL PRIMARY KEY,
     area_id             TEXT,

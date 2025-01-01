@@ -43,9 +43,9 @@ services:
     depends_on:
       - area-db
 
-  blue-sky:
-    build: Backend/Services/BlueSky
-    container_name: blue-sky
+  dropbox:
+    build: Backend/Services/Dropbox
+    container_name: dropbox
     environment:
       PORT: 8096
       API_GATEWAY: http://api-gateway:8080/

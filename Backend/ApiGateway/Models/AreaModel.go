@@ -38,6 +38,15 @@ type SpotifyActions struct {
 	AccessToken string `json:"user_token"`
 }
 
+type DropBoxReactions struct {
+	AreaId        string `json:"area_id"`
+	UserToken     string `json:"user_token"`
+	ReactionType  int    `json:"reaction_type"`
+	FromPath      string `json:"from_path"`
+	ToPath        string `json:"to_path"`
+	FilepathShare string `json:"filepath_share"`
+}
+
 type TypeTimeAction struct {
 	BaseAction
 	// ActionType of dateTime
