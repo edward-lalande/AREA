@@ -10,28 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/*
-    Commentaire automatique:
-        curl --request POST \
-  --header "Authorization: Bearer d8ebd73da344e0ed67766099114f97df9bf9a22e80e0cb08aabfa91449456048" \
-  --header "Content-Type: application/json" \
-  --data '{"body": "Merci pour cette MR ! Nous allons la vérifier rapidement."}' \
-  "https://gitlab.com/api/v4/projects/65448666/merge_requests/2/notes"
-                                                ID-PROJ       ID MR
-
-    Labeliser une MR:
-curl --request PUT \
-  --header "Authorization: Bearer d8ebd73da344e0ed67766099114f97df9bf9a22e80e0cb08aabfa91449456048" \
-  --header "Content-Type: application/json" \
-  --data '{"labels": "To Review"}' \
-  "https://gitlab.com/api/v4/projects/65448666/merge_requests/2"
-                                      ID-PROJ                 ID MR
-  nb de MR:
-    curl --head --header "Authorization: Bearer d8ebd73da344e0ed67766099114f97df9bf9a22e80e0cb08aabfa91449456048" \
-"https://gitlab.com/api/v4/projects/65448666/merge_requests?state=all&per_page=1"
-                                    ID-PROJ
-*/
-
 func findNumberOfMr(data models.Database) int {
 	client := &http.Client{}
 	url := "https://gitlab.com/api/v4/projects/" + data.ProjectId + "/merge_requests?state=all&per_page=1"
@@ -116,7 +94,7 @@ func FindReaction(data models.Database) (*http.Response, error) {
 // @Tags Gitlab Area
 // @Accept json
 // @Produce json
-// @Param routes body models.ReactionReceiveData true "It must contains the AreaId and the reactions type"
+// @Param routes body models.ReceivedReactions true "It must contains the AreaId and the reactions type"
 // @Success 200 {object} map[string]string "Response is the received data"
 // @Failure 400 {object} map[string]string "Invalid request it contains the error"
 // @Failure 500 {object} map[string]string "Internal error it contains the error"

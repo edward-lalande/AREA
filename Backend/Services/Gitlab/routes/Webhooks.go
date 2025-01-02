@@ -40,7 +40,7 @@ func sendTrigger(areaId string) {
 // @Tags Gitlab Webhook
 // @Summary Processes Gitlab events
 // @Description Handles incoming webhook events and triggers actions
-// @Param data body models.Webhoo true "Webhook data"
+// @Param data body map[string]interface{} true "Webhook data"
 // @Success 200 {object} string "Webhook processed successfully"
 // @Failure 400 {object} string "Invalid JSON payload"
 // @Router /webhook [post]
