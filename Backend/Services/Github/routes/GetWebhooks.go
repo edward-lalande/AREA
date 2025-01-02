@@ -15,6 +15,7 @@ import (
 )
 
 // SendTrigger sends a trigger to the message broker
+// @Tags Github Trigger
 // @Summary Sends a trigger to the message broker
 // @Description Sends a trigger based on the provided Area ID
 // @Param areaId path string true "Area ID"
@@ -34,6 +35,7 @@ func SendTrigger(areaId string) {
 }
 
 // CheckWebhooksPush checks webhook push data against user-defined actions
+// @Tags Github Webhook
 // @Summary Checks webhook push data
 // @Description Matches the incoming webhook push data with user-defined GitHub actions
 // @Param user body models.GithubAction true "User GitHub Action"
@@ -92,6 +94,7 @@ func CheckWebhooksPush(user models.GithubAction, data models.WebhookPush) {
 }
 
 // GetWebhooksPush processes GitHub push events
+// @Tags Github Webhook
 // @Summary Processes GitHub push events
 // @Description Handles incoming webhook push events and triggers actions
 // @Param data body models.WebhookPush true "Webhook push data"
@@ -135,6 +138,7 @@ func GetWebhooksPush(c *gin.Context) {
 }
 
 // GetWebhooksCommitComment processes commit comment events
+// @Tags Github Webhook
 // @Summary Processes GitHub commit comment events
 // @Description Handles incoming webhook commit comment events
 // @Param data body models.WebhooksCommitComment true "Webhook commit comment data"

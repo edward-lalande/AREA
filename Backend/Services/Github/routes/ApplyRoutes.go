@@ -1,6 +1,7 @@
 package routes
 
 import (
+	_ "github/docs"
 	"github/oauth"
 	"net/http"
 

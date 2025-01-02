@@ -1,0 +1,278 @@
+definitions:
+  models.Comment:
+    properties:
+      body:
+        type: string
+      reactions:
+        $ref: '#/definitions/models.Reactions'
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
+  models.Commit:
+    properties:
+      added:
+        items:
+          type: string
+        type: array
+      message:
+        type: string
+      modified:
+        items:
+          type: string
+        type: array
+      removed:
+        items:
+          type: string
+        type: array
+    type: object
+  models.GithubAction:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+      number:
+        type: integer
+      pusher:
+        type: string
+      user_token:
+        type: string
+      value:
+        type: string
+    type: object
+  models.Pusher:
+    properties:
+      name:
+        type: string
+    type: object
+  models.Reactions:
+    properties:
+      total_count:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      login:
+        type: string
+    type: object
+  models.WebhookPush:
+    properties:
+      commits:
+        items:
+          $ref: '#/definitions/models.Commit'
+        type: array
+      pusher:
+        $ref: '#/definitions/models.Pusher'
+    type: object
+  models.WebhooksCommitComment:
+    properties:
+      comment:
+        $ref: '#/definitions/models.Comment'
+    type: object
+info:
+  contact: {}
+paths:
+  /access-token:
+    post:
+      consumes:
+      - application/json
+      description: Send the code received by the frontend to get the Github access-token
+        of the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get
+      tags:
+      - Github OAUTH2
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Actions available on the Github services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Actions
+      tags:
+      - Github Area
+  /callback:
+    get:
+      consumes:
+      - application/json
+      description: Send the code received by Github to the frontend
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by Github to the frontend
+      tags:
+      - Github OAUTH2
+  /oauth2:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 Github
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 Github
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 Github
+      tags:
+      - Github OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the Actions received by the message brocker with all informations
+        nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.GithubAction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Actions
+      tags:
+      - Github Area
+  /trigger:
+    post:
+      description: Sends a trigger based on the provided Area ID
+      parameters:
+      - description: Area ID
+        in: path
+        name: areaId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Trigger sent successfully
+          schema:
+            type: string
+        "400":
+          description: Failed to encode the payload
+          schema:
+            type: string
+      summary: Sends a trigger to the message broker
+  /webhook/commit_comment:
+    post:
+      description: Handles incoming webhook commit comment events
+      parameters:
+      - description: Webhook commit comment data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.WebhooksCommitComment'
+      responses:
+        "200":
+          description: Commit comment processed successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JSON payload
+          schema:
+            type: string
+      summary: Processes GitHub commit comment events
+  /webhook/push:
+    post:
+      description: Handles incoming webhook push events and triggers actions
+      parameters:
+      - description: Webhook push data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.WebhookPush'
+      responses:
+        "200":
+          description: Webhook processed successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JSON payload
+          schema:
+            type: string
+      summary: Processes GitHub push events
+  /webhook/push/check:
+    post:
+      description: Matches the incoming webhook push data with user-defined GitHub
+        actions
+      parameters:
+      - description: User GitHub Action
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.GithubAction'
+      - description: Webhook push data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.WebhookPush'
+      responses:
+        "200":
+          description: Trigger processed successfully
+          schema:
+            type: string
+        "400":
+          description: Failed to process the trigger
+          schema:
+            type: string
+      summary: Checks webhook push data
+swagger: "2.0"

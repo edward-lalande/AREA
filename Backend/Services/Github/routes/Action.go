@@ -39,7 +39,7 @@ func getActions(c *gin.Context) {
 // @Success 200 {object} map[string]string "Response is the received data"
 // @Failure 400 {object} map[string]string "Invalid request it contains the error"
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
-// @Router /reaction [post]
+// @Router /action [post]
 func createAction(c *gin.Context) {
 
 	var dataReceived models.GithubAction
