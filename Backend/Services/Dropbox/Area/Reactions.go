@@ -71,6 +71,17 @@ func findReactions(info models.DropBoxReactions) (*http.Response, error) {
 	return Reactions[info.ReactionType](info)
 }
 
+// Dropbox Services
+// @Summary Trigger an Area
+// @Description Actions triggerd the reactions and call the trigger route
+// @Tags Dropbox trigger
+// @Accept json
+// @Produce json
+// @Param routes body models.TriggerdModels true "It contains the Area Id to the reactions"
+// @Success 200 {object} map[string]string "Response of the reactions"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /trigger [post]
 func Trigger(c *gin.Context) {
 	var (
 		receivedData models.TriggerdModels
@@ -103,6 +114,17 @@ func Trigger(c *gin.Context) {
 	})
 }
 
+// Dropbox Services
+// @Summary Register an received Reactions
+// @Description Register the reactions received by the message brocker with all informations nedded
+// @Tags Dropbox Area
+// @Accept json
+// @Produce json
+// @Param routes body models.DropBoxReactions true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
 	receivedData := models.DropBoxReactions{}
 	db := utils.OpenDB(c)
@@ -123,4 +145,24 @@ func StoreReactions(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Reaction stored successfully"})
+}
+
+// Dropbox Reactions
+// @Summary send all the reactions
+// @Description send all the reactions available on the Dropbox services as an object arrays with the names and the object needed
+// @Tags Dropbox Area
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reactions [get]
+func GetReactions(c *gin.Context) {
+	b, err := utils.OpenFile("Models/Reactions.json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	json := utils.BytesToJson(b)
+	c.JSON(http.StatusOK, json)
 }
