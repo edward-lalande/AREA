@@ -81,6 +81,7 @@ func GetReactions(c *gin.Context) {
 		{"Google Services", utils.GetEnvKey("GOOGLE_API")},
 		{"Github Services", utils.GetEnvKey("GITHUB_API")},
 		{"DropBox Services", utils.GetEnvKey("DROPBOX_API")},
+		{"Asana Services", utils.GetEnvKey("ASANA_API")},
 	}
 
 	for _, service := range servicesArray {

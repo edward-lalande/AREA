@@ -5,16 +5,33 @@ import (
 	"api-gateway/utils"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
+func SendAsanaReaction(sendingData models.AsanaReactions, c *gin.Context) *http.Response {
+
+	jsonBody, err := json.Marshal(sendingData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("ASANA_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+	return resp
+}
+
 func AsanaOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("ASANA_API") + "oauth")
-
+	fmt.Println("url: ", utils.GetEnvKey("ASANA_API")+"oauth")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
