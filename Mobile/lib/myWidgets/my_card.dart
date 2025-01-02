@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class MyCard extends StatelessWidget {
     const MyCard({
         super.key,
-        required this.icon,
+        this.icon,
         required this.title,
         this.padding = const EdgeInsets.all(0),
     });
 
-    final Widget icon;
+    final Widget? icon;
     final String title;
     final EdgeInsetsGeometry padding;
 
@@ -22,7 +22,7 @@ class MyCard extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        icon,
+                        icon ?? SizedBox(),
                         const SizedBox(
                             height: 8
                         ),
