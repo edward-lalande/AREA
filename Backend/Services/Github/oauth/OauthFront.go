@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {string} string "the URL to redirect to for the OAUTH2 Github"
-// @Router /oauth2 [get]
+// @Router /oauth [get]
 func OAuthFront(c *gin.Context) {
 	authUrl := "https://github.com/login/oauth/authorize?client_id=" + utils.GetEnvKey("CLIENT_ID")
 

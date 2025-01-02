@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {string} string "the URL to redirect to for the OAUTH2 Gitlab"
-// @Router /oauth2 [get]
+// @Router /oauth [get]
 func OAuthFront(c *gin.Context) {
 	authUrl := "https://accounts.spotify.com/authorize?&client_id=" + utils.GetEnvKey("CLIENT_ID") +
 		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI") +

@@ -109,6 +109,18 @@ func FindReaction(data models.Database) (*http.Response, error) {
 
 	return reactions[data.ReactionType](data)
 }
+
+// Gitlab Services
+// @Summary Register an received Reactions
+// @Description Register the reactions received by the message brocker with all informations nedded
+// @Tags Gitlab Area
+// @Accept json
+// @Produce json
+// @Param routes body models.ReactionReceiveData true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
 	receivedData := models.ReceivedReactions{}
 	db := utils.OpenDB(c)
@@ -127,4 +139,24 @@ func StoreReactions(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Reaction stored successfully"})
+}
+
+// Gitlab Reactions
+// @Summary send all the Reactions
+// @Description send all the Reactions available on the Gitlab services as an object arrays with the names and the object needed
+// @Tags Gitlab Area
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reactions [get]
+func GetReactions(c *gin.Context) {
+	b, err := utils.OpenFile("Models/Reactions.json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	json := utils.BytesToJson(b)
+	c.JSON(http.StatusOK, json)
 }
