@@ -178,11 +178,23 @@ class _LoginPageState extends State<LoginPage> {
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                    OauthButton(iconPath: "assets/google.png", resize: false,),
+                                    OauthButton(iconPath: "assets/google.png", resize: false,
+                                        onPressed: () {
+                                            print("googlePressed");
+                                        },
+                                    ),
                                     SizedBox(width: 20,),
-                                    OauthButton(iconPath: "assets/discord.png", resize: false,),
+                                    OauthButton(iconPath: "assets/discord.png", resize: false,
+                                        onPressed: () {
+                                            print("discordPressed");
+                                        },
+                                    ),
                                     SizedBox(width: 20),
-                                    OauthButton(iconPath: "assets/spotify.png", resize: false,),
+                                    OauthButton(iconPath: "assets/spotify.png", resize: false,
+                                        onPressed: () {
+                                            print("spotifyPressed");
+                                        },
+                                    ),
                                 ],
                             ),
                             SizedBox(height: 20,),
@@ -190,11 +202,23 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                     OauthButton(iconPath: "assets/github.png", resize: true,
-                                        resizePadding: EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),),
+                                        resizePadding: EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
+                                        onPressed: () {
+                                            print("gitubPressed");
+                                        },
+                                    ),
                                     SizedBox(width: 20,),
-                                    OauthButton(iconPath: "assets/gitlab.png", resize: false,),
+                                    OauthButton(iconPath: "assets/gitlab.png", resize: false,
+                                        onPressed: () {
+                                                print("gitlabPressed");
+                                            },
+                                    ),
                                     SizedBox(width: 20),
-                                    OauthButton(iconPath: "assets/dropbox.png", resize: false,),
+                                    OauthButton(iconPath: "assets/dropbox.png", resize: false,
+                                        onPressed: () {
+                                                print("dropboxPressed");
+                                        },
+                                    ),
                                 ],
                             ),
                             Container(
