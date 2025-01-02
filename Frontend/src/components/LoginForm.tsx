@@ -6,7 +6,7 @@ import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { AreaButton, DiscordButton, GithubButton, GitlabButton, SpotifyButton, GoogleButton, DropboxButton } from "./elements/AreaButton";
+import { AreaButton, DiscordButton, GithubButton, GitlabButton, SpotifyButton, GoogleButton, DropboxButton, AsanaButton } from "./elements/AreaButton";
 
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -18,7 +18,8 @@ enum OauthServices {
 	GITHUB = "github",
 	GITLAB = "gitlab",
 	GOOGLE = "google",
-	DROPBOX = "dropbox"
+	DROPBOX = "dropbox",
+	ASANA = "asana"
 }
 
 type Code = {
@@ -91,6 +92,7 @@ const LoginForm: React.FC = () => {
 		codes.push({ name: "gitlab_code", service: OauthServices.GITLAB });
 		codes.push({ name: "google_code", service: OauthServices.GOOGLE });
 		codes.push({ name: "dropbox_code", service: OauthServices.DROPBOX });
+		codes.push({ name: "asana_code", service: OauthServices.ASANA });
 
 		for (let i = 0; i < codes.length; i++) {
 
@@ -128,6 +130,7 @@ const LoginForm: React.FC = () => {
 				<GitlabButton onClick={() => oauth(OauthServices.GITLAB)} />
 				<GoogleButton onClick={() => oauth(OauthServices.GOOGLE)} />
 				<DropboxButton onClick={() => oauth(OauthServices.DROPBOX)} />
+				<AsanaButton onClick={() => oauth(OauthServices.ASANA)} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />
