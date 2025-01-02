@@ -32,7 +32,7 @@ We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Fl
 - Github
 - Gitlab
 - Spotify
-- BlueSky
+- DropBox
 - Uber
 - TicketMaster
 - Miro

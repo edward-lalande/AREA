@@ -1,7 +1,9 @@
 package routes
 
 import (
-	"meteo/utils"
+	area "dropbox/Area"
+	"dropbox/oauth"
+	"dropbox/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +15,12 @@ func ApplyRoutes(r *gin.Engine) {
 	})
 
 	r.GET("/actions", func(c *gin.Context) {
-		b, err := utils.OpenFile("Models/Actions.json")
+		c.JSON(http.StatusOK, nil)
+	})
+
+	r.POST("/reaction", area.StoreReactions)
+	r.GET("/reactions", func(c *gin.Context) {
+		b, err := utils.OpenFile("Models/Reactions.json")
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -21,6 +28,10 @@ func ApplyRoutes(r *gin.Engine) {
 		json := utils.BytesToJson(b)
 		c.JSON(http.StatusOK, json)
 	})
-	r.POST("/action", StoreActions)
 
+	r.POST("/trigger", area.Trigger)
+
+	r.GET("/oauth", oauth.OAuthFront)
+	r.GET("/callback", oauth.CallBack)
+	r.POST("/access-token", oauth.GetAccessToken)
 }

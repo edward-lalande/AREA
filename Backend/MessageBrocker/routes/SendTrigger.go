@@ -35,7 +35,7 @@ func Trigger(c *gin.Context) {
 		0:  utils.GetEnvKey("USER_API"),
 		1:  utils.GetEnvKey("TIME_API"),
 		2:  utils.GetEnvKey("DISCORD_API"),
-		3:  utils.GetEnvKey("BLUESKY_API"),
+		3:  utils.GetEnvKey("DROPBOX_API"),
 		4:  utils.GetEnvKey("GITHUB_API"),
 		5:  utils.GetEnvKey("GITLAB_API"),
 		6:  utils.GetEnvKey("GOOGLE_API"),

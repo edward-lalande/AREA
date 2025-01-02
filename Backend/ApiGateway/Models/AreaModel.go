@@ -17,6 +17,15 @@ type GoogleAction struct {
 	NbEvents   int    `json:"nb_events"`
 }
 
+type MeteoActions struct {
+	BaseAction
+	ActionType int    `json:"action_type"`
+	AreaId     string `json:"area_id"`
+	Latitude   string `json:"latitude"`
+	Longitude  string `json:"longitude"`
+	Value      int    `json:"value"`
+}
+
 type GitlabAction struct {
 	BaseAction
 	ActionType int    `json:"action_type"`
@@ -27,6 +36,15 @@ type SpotifyActions struct {
 	AreaId      string `json:"area_id"`
 	ActionType  int    `json:"action_type"`
 	AccessToken string `json:"user_token"`
+}
+
+type DropBoxReactions struct {
+	AreaId        string `json:"area_id"`
+	UserToken     string `json:"user_token"`
+	ReactionType  int    `json:"reaction_type"`
+	FromPath      string `json:"from_path"`
+	ToPath        string `json:"to_path"`
+	FilepathShare string `json:"filepath_share"`
 }
 
 type TypeTimeAction struct {

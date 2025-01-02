@@ -1,0 +1,34 @@
+{
+    "name": "Dropbox Services",
+    "reactions": [
+        {
+            "name": "Rename File",
+            "reaction_id": 3,
+            "reaction_type": 0,
+            "arguments": [
+                {
+                    "display": "From file",
+                    "name": "from_path",
+                    "type": "string"
+                },
+                {
+                    "display": "To file",
+                    "name": "to_path",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Share File",
+            "reaction_id": 3,
+            "reaction_type": 1,
+            "arguments": [
+                {
+                    "display": "File to share",
+                    "name": "filepath_share",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

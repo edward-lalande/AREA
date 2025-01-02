@@ -1,7 +1,7 @@
 package main
 
 import (
-	"blue-sky/routes"
+	"dropbox/routes"
 
 	"github.com/gin-gonic/gin"
 )
