@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func ApplyRoutes(r *gin.Engine) {
@@ -26,4 +28,5 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.POST("/webhook/push", GetWebhooksPush)
 	r.POST("/webhook/commit_comment", GetWebhooksCommitComment)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

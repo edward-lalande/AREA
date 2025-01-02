@@ -8,6 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Github Actions
+// @Summary send all the Actions
+// @Description send all the Actions available on the Github services as an object arrays with the names and the object needed
+// @Tags Github Area
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /actions [get]
 func getActions(c *gin.Context) {
 	b, err := utils.OpenFile("Models/Actions.json")
 	if err != nil {
@@ -19,6 +29,17 @@ func getActions(c *gin.Context) {
 	c.JSON(http.StatusOK, json)
 }
 
+// Github Services
+// @Summary Register an received Actions
+// @Description Register the Actions received by the message brocker with all informations nedded
+// @Tags Github Area
+// @Accept json
+// @Produce json
+// @Param routes body models.GithubAction true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reaction [post]
 func createAction(c *gin.Context) {
 
 	var dataReceived models.GithubAction

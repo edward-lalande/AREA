@@ -14,6 +14,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SendTrigger sends a trigger to the message broker
+// @Summary Sends a trigger to the message broker
+// @Description Sends a trigger based on the provided Area ID
+// @Param areaId path string true "Area ID"
+// @Success 200 {object} string "Trigger sent successfully"
+// @Failure 400 {object} string "Failed to encode the payload"
+// @Router /trigger [post]
 func SendTrigger(areaId string) {
 	var buf bytes.Buffer
 
@@ -26,6 +33,14 @@ func SendTrigger(areaId string) {
 	http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 }
 
+// CheckWebhooksPush checks webhook push data against user-defined actions
+// @Summary Checks webhook push data
+// @Description Matches the incoming webhook push data with user-defined GitHub actions
+// @Param user body models.GithubAction true "User GitHub Action"
+// @Param data body models.WebhookPush true "Webhook push data"
+// @Success 200 {object} string "Trigger processed successfully"
+// @Failure 400 {object} string "Failed to process the trigger"
+// @Router /webhook/push/check [post]
 func CheckWebhooksPush(user models.GithubAction, data models.WebhookPush) {
 
 	if user.ActionType == 0 && user.Pusher == data.Pusher.Name {
@@ -76,6 +91,13 @@ func CheckWebhooksPush(user models.GithubAction, data models.WebhookPush) {
 
 }
 
+// GetWebhooksPush processes GitHub push events
+// @Summary Processes GitHub push events
+// @Description Handles incoming webhook push events and triggers actions
+// @Param data body models.WebhookPush true "Webhook push data"
+// @Success 200 {object} string "Webhook processed successfully"
+// @Failure 400 {object} string "Invalid JSON payload"
+// @Router /webhook/push [post]
 func GetWebhooksPush(c *gin.Context) {
 
 	var (
@@ -112,6 +134,13 @@ func GetWebhooksPush(c *gin.Context) {
 	defer db.Close(c)
 }
 
+// GetWebhooksCommitComment processes commit comment events
+// @Summary Processes GitHub commit comment events
+// @Description Handles incoming webhook commit comment events
+// @Param data body models.WebhooksCommitComment true "Webhook commit comment data"
+// @Success 200 {object} string "Commit comment processed successfully"
+// @Failure 400 {object} string "Invalid JSON payload"
+// @Router /webhook/commit_comment [post]
 func GetWebhooksCommitComment(c *gin.Context) {
 
 	var (
