@@ -7,8 +7,8 @@ import (
 	"discord-service/routes"
 	"discord-service/utils"
 	"encoding/json"
-	"io"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -53,7 +53,7 @@ func getDatabaseSlice() []models.Database {
 
 func BackUpLocalDataCall() {
 	databaseSlice := getDatabaseSlice()
-	
+
 	if databaseSlice == nil {
 		return
 	}
@@ -73,7 +73,7 @@ func BackUpLocalDataCall() {
 			req, err := http.NewRequest("GET", url, nil)
 
 			if err != nil {
-				return
+				continue
 			}
 
 			req.Header.Set("Authorization", "Bot "+utils.GetEnvKey("BOT_TOKEN"))
@@ -82,13 +82,13 @@ func BackUpLocalDataCall() {
 			response, err := client.Do(req)
 
 			if err != nil {
-				return
+				continue
 			}
 
 			responseData, err := io.ReadAll(response.Body)
 
-			if (err != nil) {
-				return
+			if err != nil {
+				continue
 			}
 
 			var messages []any
@@ -96,7 +96,7 @@ func BackUpLocalDataCall() {
 			err = json.Unmarshal(responseData, &messages)
 
 			if err != nil {
-				return
+				continue
 			}
 
 			if len(messages) > 0 {
@@ -104,7 +104,7 @@ func BackUpLocalDataCall() {
 				send.ReactionId = slice.AreaId
 				var buf bytes.Buffer
 				if err := json.NewEncoder(&buf).Encode(send); err != nil {
-					return
+					continue
 				}
 				http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 
@@ -119,7 +119,7 @@ func BackUpLocalDataCall() {
 				req, err := http.NewRequest("DELETE", url, nil)
 
 				if err != nil {
-					return
+					continue
 				}
 
 				req.Header.Set("Authorization", "Bot "+utils.GetEnvKey("BOT_TOKEN"))
@@ -142,7 +142,7 @@ func BackUpLocalDataCall() {
 			req, err := http.NewRequest("GET", url, nil)
 
 			if err != nil {
-				return
+				continue
 			}
 
 			req.Header.Set("Authorization", "Bot "+utils.GetEnvKey("BOT_TOKEN"))
@@ -151,13 +151,13 @@ func BackUpLocalDataCall() {
 			response, err := client.Do(req)
 
 			if err != nil {
-				return
+				continue
 			}
 
 			responseData, err := io.ReadAll(response.Body)
 
-			if (err != nil) {
-				return
+			if err != nil {
+				continue
 			}
 
 			var message models.Message
@@ -165,7 +165,7 @@ func BackUpLocalDataCall() {
 			err = json.Unmarshal(responseData, &message)
 
 			if err != nil {
-				return
+				continue
 			}
 
 			if message.Pinned {
@@ -173,7 +173,7 @@ func BackUpLocalDataCall() {
 				send.ReactionId = slice.AreaId
 				var buf bytes.Buffer
 				if err := json.NewEncoder(&buf).Encode(send); err != nil {
-					return
+					continue
 				}
 				http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 
@@ -187,7 +187,7 @@ func BackUpLocalDataCall() {
 				req, err := http.NewRequest("DELETE", url, nil)
 
 				if err != nil {
-					return
+					continue
 				}
 
 				req.Header.Set("Authorization", "Bot "+utils.GetEnvKey("BOT_TOKEN"))
