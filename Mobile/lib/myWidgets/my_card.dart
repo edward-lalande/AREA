@@ -4,12 +4,12 @@ class MyCard extends StatelessWidget {
     const MyCard({
         super.key,
         this.icon,
-        required this.title,
+        this.title,
         this.padding = const EdgeInsets.all(0),
     });
 
     final Widget? icon;
-    final String title;
+    final String? title;
     final EdgeInsetsGeometry padding;
 
     @override
@@ -27,7 +27,7 @@ class MyCard extends StatelessWidget {
                             height: 8
                         ),
                         Text(
-                            title,
+                            title ?? "",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
