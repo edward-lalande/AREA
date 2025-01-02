@@ -133,3 +133,15 @@ CREATE TABLE IF NOT EXISTS "MeteoActions" (
     longitude           TEXT,
     value               INT
 );
+
+CREATE TABLE IF NOT EXISTS "AsanaReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    project_name        TEXT,
+    workspace_id        TEXT,
+    note                TEXT,
+    project_id          TEXT,
+    task_id             TEXT
+);
