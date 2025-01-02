@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                                 url: "http://10.0.2.2:8080/services",
                             );
                             final String actionsString = await classicGet(
-                                url: "http://10.0.2.2:8080/actions",
+                              url: "http://10.0.2.2:8080/actions",
                             );
                             List<dynamic> data = jsonDecode(actionsString);
                             actionsMap = {
