@@ -90,6 +90,43 @@ paths:
       summary: Get
       tags:
       - Github OAUTH2
+  /action:
+    post:
+      consumes:
+      - application/json
+      description: Register the Actions received by the message brocker with all informations
+        nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.GithubAction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Actions
+      tags:
+      - Github Area
   /actions:
     get:
       consumes:
@@ -137,7 +174,7 @@ paths:
       summary: Send the code received by Github to the frontend
       tags:
       - Github OAUTH2
-  /oauth2:
+  /oauth:
     get:
       consumes:
       - application/json
@@ -152,43 +189,6 @@ paths:
       summary: Send the url to redirect to for the OAUTH2 Github
       tags:
       - Github OAUTH2
-  /reaction:
-    post:
-      consumes:
-      - application/json
-      description: Register the Actions received by the message brocker with all informations
-        nedded
-      parameters:
-      - description: It must contains the AreaId and the reactions type
-        in: body
-        name: routes
-        required: true
-        schema:
-          $ref: '#/definitions/models.GithubAction'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Response is the received data
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Invalid request it contains the error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal error it contains the error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Register an received Actions
-      tags:
-      - Github Area
   /trigger:
     post:
       description: Sends a trigger based on the provided Area ID
@@ -208,6 +208,8 @@ paths:
           schema:
             type: string
       summary: Sends a trigger to the message broker
+      tags:
+      - Github Trigger
   /webhook/commit_comment:
     post:
       description: Handles incoming webhook commit comment events
@@ -228,6 +230,8 @@ paths:
           schema:
             type: string
       summary: Processes GitHub commit comment events
+      tags:
+      - Github Webhook
   /webhook/push:
     post:
       description: Handles incoming webhook push events and triggers actions
@@ -248,6 +252,8 @@ paths:
           schema:
             type: string
       summary: Processes GitHub push events
+      tags:
+      - Github Webhook
   /webhook/push/check:
     post:
       description: Matches the incoming webhook push data with user-defined GitHub
@@ -275,4 +281,6 @@ paths:
           schema:
             type: string
       summary: Checks webhook push data
+      tags:
+      - Github Webhook
 swagger: "2.0"

@@ -1,60 +1,43 @@
 definitions:
-  models.DiscordActionReceive:
+  models.GoogleReaction:
+    properties:
+      area_id:
+        type: string
+      attendees:
+        type: string
+      description:
+        type: string
+      end_time:
+        type: string
+      message:
+        type: string
+      reaction_type:
+        type: integer
+      recipient:
+        type: string
+      start_time:
+        type: string
+      subject:
+        type: string
+      summary:
+        type: string
+      user_token:
+        type: string
+    type: object
+  models.MessageBrocker:
+    properties:
+      area_id:
+        type: string
+    type: object
+  models.ReceivedActions:
     properties:
       action_type:
         type: integer
       area_id:
         type: string
-      channel_id:
-        type: string
-      id:
-        type: integer
-      message_id:
-        type: string
-      user_token:
-        type: string
-    type: object
-  models.OauthInformationSignUp:
-    properties:
-      access_token:
-        type: string
-      user_token:
-        type: string
-    required:
-    - access_token
-    - user_token
-    type: object
-  models.ReactionGet:
-    properties:
-      channel_id:
-        type: string
-      guild_id:
-        type: string
-      message:
-        type: string
-      reaction_id:
-        type: integer
-      reaction_type:
-        type: integer
-    type: object
-  models.ReactionReceiveData:
-    properties:
-      area_id:
-        type: string
-      channel_id:
-        type: string
-      guild_id:
-        type: string
-      message:
-        type: string
-      reaction_type:
+      nb_events:
         type: integer
       user_token:
-        type: string
-    type: object
-  models.TriggerdModels:
-    properties:
-      area_id:
         type: string
     type: object
 info:
@@ -64,7 +47,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Send the code received by the frontend to get the discord access-token
+      description: Send the code received by the frontend to get the Google access-token
         of the user
       produces:
       - application/json
@@ -77,68 +60,8 @@ paths:
             type: object
       summary: Get
       tags:
-      - Discord OAUTH2
-  /actions:
-    get:
-      consumes:
-      - application/json
-      description: send all the actions available on the discord services as an object
-        arrays with the names and the object needed
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Response is the received data
-          schema:
-            $ref: '#/definitions/models.ReactionGet'
-        "400":
-          description: Invalid request it contains the error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal error it contains the error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: send all the actions
-      tags:
-      - Discord Area
-  /callback:
-    get:
-      consumes:
-      - application/json
-      description: Send the code received by discord to the frontend
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: the code to redirect to
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Send the code received by discord to the frontend
-      tags:
-      - Discord OAUTH2
-  /oauth:
-    get:
-      consumes:
-      - application/json
-      description: Send the url to redirect to for the OAUTH2 discord
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: the URL to redirect to for the OAUTH2 discord
-          schema:
-            type: string
-      summary: Send the url to redirect to for the OAUTH2 discord
-      tags:
-      - Discord OAUTH2
-  /reaction:
+      - Google OAUTH2
+  /action:
     post:
       consumes:
       - application/json
@@ -150,7 +73,7 @@ paths:
         name: routes
         required: true
         schema:
-          $ref: '#/definitions/models.DiscordActionReceive'
+          $ref: '#/definitions/models.ReceivedActions'
       produces:
       - application/json
       responses:
@@ -174,20 +97,22 @@ paths:
             type: object
       summary: Register an received Actions
       tags:
-      - Discord Area
-  /reactions:
+      - Google Area
+  /actions:
     get:
       consumes:
       - application/json
-      description: send all the reactions available on the discord services as an
-        object arrays with the names and the object needed
+      description: send all the Actions available on the Google services as an object
+        arrays with the names and the object needed
       produces:
       - application/json
       responses:
         "200":
           description: Response is the received data
           schema:
-            $ref: '#/definitions/models.ReactionGet'
+            additionalProperties:
+              type: string
+            type: object
         "400":
           description: Invalid request it contains the error
           schema:
@@ -200,28 +125,59 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: send all the reactions
+      summary: send all the Actions
       tags:
-      - Discord Area
-  /register:
-    post:
+      - Google Area
+  /callback:
+    get:
       consumes:
       - application/json
-      description: Register the token of the user to an associated token if exists
-        in the user database
-      parameters:
-      - description: It must contains the access token of discord and the user token
-          if exists
-        in: body
-        name: routes
-        required: true
-        schema:
-          $ref: '#/definitions/models.OauthInformationSignUp'
+      description: Send the code received by Google to the frontend
       produces:
       - application/json
       responses:
         "200":
-          description: Response of the reactions
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by Google to the frontend
+      tags:
+      - Google OAUTH2
+  /oauth:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 Google
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 Google
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 Google
+      tags:
+      - Google OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the reactions received by the message brocker with all
+        informations nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.GoogleReaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
           schema:
             additionalProperties:
               type: string
@@ -238,9 +194,39 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Register a token
+      summary: Register an received Reactions
       tags:
-      - Discord OAUTH2
+      - Google Area
+  /reactions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Reactions available on the Google services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Reactions
+      tags:
+      - Google Area
   /trigger:
     post:
       consumes:
@@ -252,7 +238,7 @@ paths:
         name: routes
         required: true
         schema:
-          $ref: '#/definitions/models.TriggerdModels'
+          $ref: '#/definitions/models.MessageBrocker'
       produces:
       - application/json
       responses:
@@ -276,5 +262,5 @@ paths:
             type: object
       summary: Trigger an Area
       tags:
-      - Discord trigger
+      - Google trigger
 swagger: "2.0"

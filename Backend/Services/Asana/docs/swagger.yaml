@@ -61,7 +61,7 @@ paths:
       summary: Send the code received by Asana to the frontend
       tags:
       - Asana OAUTH2
-  /oauth2:
+  /oauth:
     get:
       consumes:
       - application/json

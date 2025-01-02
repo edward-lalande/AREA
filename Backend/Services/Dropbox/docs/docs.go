@@ -67,7 +67,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/oauth2": {
+        "/oauth": {
             "get": {
                 "description": "Send the url to redirect to for the OAUTH2 Dropbox",
                 "consumes": [

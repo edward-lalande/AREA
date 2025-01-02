@@ -57,7 +57,7 @@ paths:
       summary: Send the code received by Dropbox to the frontend
       tags:
       - Dropbox OAUTH2
-  /oauth2:
+  /oauth:
     get:
       consumes:
       - application/json

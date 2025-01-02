@@ -41,6 +41,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/action": {
+            "post": {
+                "description": "Register the Actions received by the message brocker with all informations nedded",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github Area"
+                ],
+                "summary": "Register an received Actions",
+                "parameters": [
+                    {
+                        "description": "It must contains the AreaId and the reactions type",
+                        "name": "routes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.GithubAction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response is the received data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/actions": {
             "get": {
                 "description": "send all the Actions available on the Github services as an object arrays with the names and the object needed",
@@ -111,7 +166,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/oauth2": {
+        "/oauth": {
             "get": {
                 "description": "Send the url to redirect to for the OAUTH2 Github",
                 "consumes": [
@@ -134,64 +189,12 @@ const docTemplate = `{
                 }
             }
         },
-        "/reaction": {
-            "post": {
-                "description": "Register the Actions received by the message brocker with all informations nedded",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Github Area"
-                ],
-                "summary": "Register an received Actions",
-                "parameters": [
-                    {
-                        "description": "It must contains the AreaId and the reactions type",
-                        "name": "routes",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.GithubAction"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Response is the received data",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request it contains the error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal error it contains the error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/trigger": {
             "post": {
                 "description": "Sends a trigger based on the provided Area ID",
+                "tags": [
+                    "Github Trigger"
+                ],
                 "summary": "Sends a trigger to the message broker",
                 "parameters": [
                     {
@@ -221,6 +224,9 @@ const docTemplate = `{
         "/webhook/commit_comment": {
             "post": {
                 "description": "Handles incoming webhook commit comment events",
+                "tags": [
+                    "Github Webhook"
+                ],
                 "summary": "Processes GitHub commit comment events",
                 "parameters": [
                     {
@@ -252,6 +258,9 @@ const docTemplate = `{
         "/webhook/push": {
             "post": {
                 "description": "Handles incoming webhook push events and triggers actions",
+                "tags": [
+                    "Github Webhook"
+                ],
                 "summary": "Processes GitHub push events",
                 "parameters": [
                     {
@@ -283,6 +292,9 @@ const docTemplate = `{
         "/webhook/push/check": {
             "post": {
                 "description": "Matches the incoming webhook push data with user-defined GitHub actions",
+                "tags": [
+                    "Github Webhook"
+                ],
                 "summary": "Checks webhook push data",
                 "parameters": [
                     {
