@@ -40,12 +40,10 @@ func Trigger(c *gin.Context) {
 		5:  utils.GetEnvKey("GITLAB_API"),
 		6:  utils.GetEnvKey("GOOGLE_API"),
 		7:  utils.GetEnvKey("METEO_API"),
-		8:  utils.GetEnvKey("MIRO_API"),
 		9:  utils.GetEnvKey("SPOTIFY_API"),
-		10: utils.GetEnvKey("STEAM_API"),
+		10: utils.GetEnvKey("ASANA_API"),
 		11: utils.GetEnvKey("TICKET_MASTER_API"),
 		12: utils.GetEnvKey("TWILIO_API"),
-		13: utils.GetEnvKey("UBER_API"),
 	}
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {

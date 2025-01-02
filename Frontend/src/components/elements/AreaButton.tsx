@@ -286,9 +286,33 @@ const DropboxButton: React.FC<ButtonProps> = (props) => (
             }}
             {...props}
         >
-            <img src="dropbox-logo.png" alt="google logo" width={44} height={44}/>
+            <img src="dropbox-logo.png" alt="dropbox logo" width={44} height={44}/>
             <AreaTypography variant="h6" text="Continue with Dropbox" sx={{ ml: 3 }}/>
         </Button>
 )
 
-export { DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton };
+const AsanaButton: React.FC<ButtonProps> = (props) => (
+    <Button
+        variant="outlined"
+        fullWidth
+        sx={{
+            backgroundColor: "#fff",
+            color: "black",
+            borderRadius: 5,
+            border: "3px solid pink",
+            py: 1.5,
+            textTransform: "none",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            mb: 1,
+            maxWidth: 400,
+            ...props.sx
+        }}
+        {...props}
+    >
+        <img src="asana-logo.png" alt="asana logo" width={70} height={44}/>
+        <AreaTypography variant="h6" text="Continue with Asana" sx={{ ml: 3 }}/>
+    </Button>
+)
+
+export { AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton };

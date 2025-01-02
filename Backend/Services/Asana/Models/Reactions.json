@@ -1,0 +1,66 @@
+{
+    "name": "Asana Services",
+    "reactions": [
+        {
+            "name": "Create a new Project",
+            "reaction_id": 10,
+            "reaction_type": 0,
+            "arguments": [
+                {
+                    "display": "Project name",
+                    "name": "project_name",
+                    "type": "string"
+                },
+                {
+                    "display": "Workspace id",
+                    "name": "workspace_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Project note",
+                    "name": "note",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Create a new Task",
+            "reaction_id": 10,
+            "reaction_type": 1,
+            "arguments": [
+                {
+                    "display": "Task name",
+                    "name": "note",
+                    "type": "string"
+                },
+                {
+                    "display": "Workspace id",
+                    "name": "workspace_id",
+                    "type": "string"
+                },
+                {
+                    "display": "Project id",
+                    "name": "project_name",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Add member to project",
+            "reaction_id": 10,
+            "reaction_type": 2,
+            "arguments": [
+                {
+                    "display": "Project id",
+                    "name": "project_name",
+                    "type": "string"
+                },
+                {
+                    "display": "Mail of the member",
+                    "name": "note",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}
