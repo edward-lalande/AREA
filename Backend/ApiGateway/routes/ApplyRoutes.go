@@ -65,7 +65,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/gitlab/access-token", GitlabAccessToken)
 	r.POST("/google/access-token", GoogleAccessToken)
 	r.POST("/dropbox/access-token", DropboxAccessToken)
-	r.GET("/asana/access-token", AsanaAccessToken)
+	r.POST("/asana/access-token", AsanaAccessToken)
 
 	r.POST("/github-webhook", GithubWebhook)
 }
