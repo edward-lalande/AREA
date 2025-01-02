@@ -62,6 +62,8 @@ And it will launch the application
     - http://127.0.0.1:8092/swagger/index.html
 - Dropbox Api
     - http://127.0.0.1:8096/swagger/index.html
+- Github Api
+    - http://127.0.0.1:8086/swagger/index.html
 - User Services
     - http://127.0.0.1:8085/swagger/index.html
 
