@@ -75,6 +75,22 @@ func Area(c *gin.Context) {
 				}
 				resp := SendTime(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 2:
+				var actionData models.TypeDiscordAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type action data"})
+					return
+				}
+				resp := sendDiscordAction(action.UserToken, areaID, c, actionData)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 4:
+				var actionData models.TypeGithubAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type1 action data"})
+					return
+				}
+				resp := sendGithub(areaID, item.UserToken, c, actionData)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 5:
 				var actionData models.GitlabAction
 				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
@@ -82,6 +98,23 @@ func Area(c *gin.Context) {
 					return
 				}
 				resp := SendGitlab(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 6:
+				var actionData models.GoogleAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
+					return
+				}
+				actionData.UserToken = item.UserToken
+				resp := SendGoogle(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 7:
+				var actionData models.MeteoActions
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type7 action data"})
+					return
+				}
+				resp := SendMeteo(areaID, actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 9:
 				var actionData models.SpotifyActions
@@ -91,14 +124,6 @@ func Area(c *gin.Context) {
 				}
 				actionData.AreaId = areaID
 				resp := SendSpotifyActions(actionData, c)
-				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
-			case 2:
-				var actionData models.TypeDiscordAction
-				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
-					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type action data"})
-					return
-				}
-				resp := sendDiscordAction(action.UserToken, areaID, c, actionData)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
@@ -119,6 +144,16 @@ func Area(c *gin.Context) {
 				}
 				resp := SendMessageDiscordReaction(item.UserToken, areaID, c, reactionDetail)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 3:
+				var reactionDetail models.DropBoxReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendMessageDropbox(c, reactionDetail)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 9:
 				var reactionDetail models.SpotifyReactions
 				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
@@ -127,6 +162,35 @@ func Area(c *gin.Context) {
 				}
 				reactionDetail.AreaId = areaID
 				resp := SendSpotifyReactions(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 6:
+				var actionData models.GoogleReaction
+				if err := json.Unmarshal(*reactionData, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type6 action data"})
+					return
+				}
+				actionData.UserToken = item.UserToken
+				resp := SendGoogleReactions(areaID, actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 5:
+				var reactionDetail models.GitlabReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendGitlabReaction(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 10:
+				var reactionDetail models.AsanaReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendAsanaReaction(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}

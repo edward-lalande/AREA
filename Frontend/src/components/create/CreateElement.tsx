@@ -8,6 +8,7 @@ import axios from "axios";
 import { Alert, Snackbar } from "@mui/material";
 import ActionServices from "./ActionServices";
 import ReactionServices from "./ReactionServices";
+import { useCookies } from "react-cookie";
 
 type CreateElementProps = {
     action: Action | undefined;
@@ -30,13 +31,14 @@ const CreateElement: React.FC<CreateElementProps> = ({
     const [open, setOpen] = useState<boolean>(false);
     const [nbActions, setNbActions] = useState<number>(0);
     const [nbReactions, setNbReactions] = useState<number>(0);
+  	const [cookies, setCookie] = useCookies();
 
     const createArea = (action: Action, reaction: Reaction) => {
 
         const url: string = "http://127.0.0.1:8080/areas";
 
         const data = [{
-            user_token: "AREA",
+            user_token: cookies["token"],
             action: {
                 action_id: action.action_id,
                 action_type: action.action_type,

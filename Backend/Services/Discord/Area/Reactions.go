@@ -53,7 +53,7 @@ func createVoiceChannel(information models.Reactions) (*http.Response, error) {
 	url := fmt.Sprintf("https://discord.com/api/v10/guilds/%s/channels", information.GuildId)
 	tempBody := struct {
 		ChannelId string `json:"name"`
-		Type string `json:"type"`
+		Type      string `json:"type"`
 	}{
 		information.ChannelId,
 		"2",
@@ -73,7 +73,7 @@ func createVoiceChannel(information models.Reactions) (*http.Response, error) {
 
 func deleteChannel(information models.Reactions) (*http.Response, error) {
 	url := fmt.Sprintf("https://discord.com/api/v10/channels/%s", information.ChannelId)
-	
+
 	client := &http.Client{}
 
 	req, err := http.NewRequest("DELETE", url, nil)
@@ -152,15 +152,16 @@ func deleteRole(information models.Reactions) (*http.Response, error) {
 }
 
 func FindReactions(id int, information models.Reactions) (*http.Response, error) {
-	var Reactions map[int]func(models.Reactions) (*http.Response, error) = make(map[int]func(models.Reactions) (*http.Response, error))
-	Reactions[0] = sendMessage
-	Reactions[1] = createTextChannel
-	Reactions[2] = createVoiceChannel
-	Reactions[3] = deleteChannel
-	Reactions[4] = pinMessage
-	Reactions[5] = unpinMessage
-	Reactions[6] = createRole
-	Reactions[7] = deleteRole
+	Reactions := map[int]func(models.Reactions) (*http.Response, error){
+		0: sendMessage,
+		1: createTextChannel,
+		2: createVoiceChannel,
+		3: deleteChannel,
+		4: pinMessage,
+		5: unpinMessage,
+		6: createRole,
+		7: deleteRole,
+	}
 
 	return Reactions[id](information)
 }

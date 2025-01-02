@@ -47,7 +47,7 @@ const Home: React.FC = () => {
 
 					<AreaTypography variant="h2" text="Services" />
 
-					<AreaBox sx={{ height: "30vh", width: "98vw", flexDirection: "row", gap: 5 }}>
+					<AreaBox sx={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", height: "50vh", width: "90vw", gap: 3, ml: 18, mt: 5 }}>
 
 						{services && services.map<JSX.Element>((service: Service) => {
 							return (<ServiceButton key={service.id} text={service.name} backgroundColor={service.color} />);

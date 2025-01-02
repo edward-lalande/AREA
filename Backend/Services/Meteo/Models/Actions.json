@@ -1,0 +1,72 @@
+{
+    "name": "Météo Services",
+    "actions": [
+            {
+                "name": "At temperature in the day",
+                "action_id": 7,
+                "action_type": 0,
+                "arguments": [
+                    {
+                        "display": "Temperature in degrees celsius",
+                        "name": "value_",
+                        "type": "number"
+                    },
+                    {
+                        "display": "Latitude localisation",
+                        "name": "latitude",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Longitude localisation",
+                        "name": "longitude",
+                        "type": "string"
+                    }
+                ]
+            },
+            {
+                "name": "At wind speed in the day",
+                "action_id": 7,
+                "action_type": 1,
+                "arguments": [
+                    {
+                        "display": "Wind speed in km/h",
+                        "name": "value",
+                        "type": "number"
+                    },
+                    {
+                        "display": "Latitude localisation",
+                        "name": "latitude",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Longitude localisation",
+                        "name": "longitude",
+                        "type": "string"
+                    }
+                ]
+            },
+            {
+                "name": "At humidity in the day",
+                "action_id": 7,
+                "action_type": 2,
+                "arguments": [
+                    {
+                        "display": "Humidity in %",
+                        "name": "value",
+                        "type": "number"
+                    },
+                    {
+                        "display": "Latitude localisation",
+                        "name": "latitude",
+                        "type": "string"
+                    },
+                    {
+                        "display": "Longitude localisation",
+                        "name": "longitude",
+                        "type": "string"
+                    }
+                ]
+            }
+        ]
+    }
+    

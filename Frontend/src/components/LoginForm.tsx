@@ -6,7 +6,7 @@ import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { AreaButton, DiscordButton, GithubButton, GitlabButton, SpotifyButton } from "./elements/AreaButton";
+import { AreaButton, DiscordButton, GithubButton, GitlabButton, SpotifyButton, GoogleButton, DropboxButton, AsanaButton } from "./elements/AreaButton";
 
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -16,7 +16,10 @@ enum OauthServices {
 	DISCORD = "discord",
 	SPOTIFY = "spotify",
 	GITHUB = "github",
-	GITLAB = "gitlab"
+	GITLAB = "gitlab",
+	GOOGLE = "google",
+	DROPBOX = "dropbox",
+	ASANA = "asana"
 }
 
 type Code = {
@@ -32,7 +35,7 @@ const LoginForm: React.FC = () => {
 	const [open, setOpen] = useState<boolean>(false);
 
 	//eslint-disable-next-line
-	const [cookie, setCookie] = useCookies();
+	const [_, setCookie] = useCookies();
 
 	const [searchParams] = useSearchParams();
 
@@ -87,6 +90,9 @@ const LoginForm: React.FC = () => {
 		codes.push({ name: "spotify_code", service: OauthServices.SPOTIFY });
 		codes.push({ name: "github_code", service: OauthServices.GITHUB });
 		codes.push({ name: "gitlab_code", service: OauthServices.GITLAB });
+		codes.push({ name: "google_code", service: OauthServices.GOOGLE });
+		codes.push({ name: "dropbox_code", service: OauthServices.DROPBOX });
+		codes.push({ name: "asana_code", service: OauthServices.ASANA });
 
 		for (let i = 0; i < codes.length; i++) {
 
@@ -122,6 +128,9 @@ const LoginForm: React.FC = () => {
 				<SpotifyButton onClick={() => oauth(OauthServices.SPOTIFY)} />
 				<GithubButton onClick={() => oauth(OauthServices.GITHUB)} />
 				<GitlabButton onClick={() => oauth(OauthServices.GITLAB)} />
+				<GoogleButton onClick={() => oauth(OauthServices.GOOGLE)} />
+				<DropboxButton onClick={() => oauth(OauthServices.DROPBOX)} />
+				<AsanaButton onClick={() => oauth(OauthServices.ASANA)} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />

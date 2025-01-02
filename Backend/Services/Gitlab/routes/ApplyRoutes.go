@@ -32,7 +32,17 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/callback", oauth.CallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
 
+	r.POST("/trigger", Trigger)
+
 	r.GET("/reactions", func(c *gin.Context) {
-		c.JSON(http.StatusOK, nil)
+		b, err := utils.OpenFile("Models/Reactions.json")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		json := utils.BytesToJson(b)
+		c.JSON(http.StatusOK, json)
 	})
+
+	r.POST("/reaction", area.StoreReactions)
 }

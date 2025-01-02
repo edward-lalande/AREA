@@ -43,9 +43,9 @@ services:
     depends_on:
       - area-db
 
-  blue-sky:
-    build: Backend/Services/BlueSky
-    container_name: blue-sky
+  dropbox:
+    build: Backend/Services/Dropbox
+    container_name: dropbox
     environment:
       PORT: 8096
       API_GATEWAY: http://api-gateway:8080/
@@ -108,19 +108,6 @@ services:
     depends_on:
       - area-db
 
-  miro:
-    build: Backend/Services/Miro
-    container_name: miro
-    environment:
-      PORT: 8090
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
-    ports:
-      - 8090:8090
-    depends_on:
-      - area-db
-
   spotify:
     build: Backend/Services/Spotify
     container_name: spotify
@@ -134,9 +121,9 @@ services:
     depends_on:
       - area-db
 
-  steam:
-    build: Backend/Services/Steam
-    container_name: steam
+  asana:
+    build: Backend/Services/Asana
+    container_name: asana
     environment: 
       PORT: 8092
       API_GATEWAY: http://api-gateway:8080/
@@ -170,19 +157,6 @@ services:
       SECRET_KEY: PET
     ports:
       - 8094:8094
-    depends_on:
-      - area-db
-
-  uber:
-    build: Backend/Services/Uber
-    container_name: uber
-    environment: 
-      PORT: 8095
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
-    ports:
-      - 8095:8095
     depends_on:
       - area-db
 
