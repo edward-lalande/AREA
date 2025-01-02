@@ -12,14 +12,16 @@ class OauthButton extends StatelessWidget {
     final String iconPath;
     final bool resize;
     final EdgeInsetsGeometry? resizePadding;
-    final VoidCallback? onPressed;
+    final void Function(BuildContext)? onPressed;
 
     @override
     Widget build(BuildContext context) {
         return GestureDetector(
-            onTap: onPressed,
+            onTap: () {
+                onPressed!(context);
+            },
             child: Card(
-                elevation:5, // Définit l'élévation
+                elevation:5,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                 ),
