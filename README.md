@@ -33,10 +33,8 @@ We use ***GoLang*** for the Server, ***React Typescript*** for the Web and ***Fl
 - Gitlab
 - Spotify
 - DropBox
-- Uber
 - TicketMaster
-- Miro
-- Steam
+- Asana
 - Twilio
 
 ## Usage

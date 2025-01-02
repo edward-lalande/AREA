@@ -1,7 +1,7 @@
 package main
 
 import (
-	"miro/routes"
+	"asana/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,5 +25,5 @@ func main() {
 
 	routes.ApplyRoutes(r)
 
-	r.Run(":8090")
+	r.Run(":8092")
 }
