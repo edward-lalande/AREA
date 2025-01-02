@@ -204,7 +204,7 @@ func BackUpLocalDataCall() {
 func InitCronScheduler() *cron.Cron {
 	c := cron.New()
 
-	c.AddFunc("@every 00h00m01s", BackUpLocalDataCall)
+	c.AddFunc("@every 00h00m10s", BackUpLocalDataCall)
 
 	c.Start()
 	return c
