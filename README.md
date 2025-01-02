@@ -60,6 +60,8 @@ And it will launch the application
     - http://127.0.0.1:8083/swagger/index.html
 - Asana Api
     - http://127.0.0.1:8092/swagger/index.html
+- Dropbox Api
+    - http://127.0.0.1:8096/swagger/index.html
 - User Services
     - http://127.0.0.1:8085/swagger/index.html
 
@@ -68,5 +70,3 @@ And it will launch the application
 [<img src="https://avatars.githubusercontent.com/u/114899301?v=4" width=85><br><sub>Paul Bardeur</sub><br />](https://github.com/paulbardeur)
 [<img src="https://avatars.githubusercontent.com/u/114470214?v=4" width=85><br><sub>Edward Lalande</sub><br />](https://github.com/edward-lalande)
 [<img src="https://avatars.githubusercontent.com/u/91876984?v=4" width=85><br><sub>Timothee Plisson</sub><br />](https://github.com/timotheeplisson)
-[<img src="https://avatars.githubusercontent.com/u/72039683?v=4" width=85><br><sub>Keliane Katary</sub><br />](https://github.com/Keliane002)
-
