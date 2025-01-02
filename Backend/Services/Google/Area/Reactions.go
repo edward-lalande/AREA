@@ -14,6 +14,37 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Google Reactions
+// @Summary send all the Reactions
+// @Description send all the Reactions available on the Google services as an object arrays with the names and the object needed
+// @Tags Google Area
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reactions [get]
+func GetReactions(c *gin.Context) {
+	b, err := utils.OpenFile("Models/Reactions.json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	json := utils.BytesToJson(b)
+	c.JSON(http.StatusOK, json)
+}
+
+// Google Services
+// @Summary Register an received Reactions
+// @Description Register the reactions received by the message brocker with all informations nedded
+// @Tags Google Area
+// @Accept json
+// @Produce json
+// @Param routes body models.GoogleReaction true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
 	db := utils.OpenDB(c)
 
@@ -100,6 +131,17 @@ func FindReactions(id int, information models.GoogleReaction) (*http.Response, e
 	return reactions[id](information)
 }
 
+// Google Services
+// @Summary Trigger an Area
+// @Description Actions triggerd the reactions and call the trigger route
+// @Tags Google trigger
+// @Accept json
+// @Produce json
+// @Param routes body models.MessageBrocker true "It contains the Area Id to the reactions"
+// @Success 200 {object} map[string]string "Response of the reactions"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /trigger [post]
 func Trigger(c *gin.Context) {
 	receivedData := models.MessageBrocker{}
 	information := models.GoogleReaction{}
