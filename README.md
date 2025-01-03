@@ -68,6 +68,8 @@ And it will launch the application
     - http://127.0.0.1:8087/swagger/index.html
 - Google Api
     - http://127.0.0.1:8088/swagger/index.html
+- Meteo Api
+    - http://127.0.0.1:8089/swagger/index.html
 - User Services
     - http://127.0.0.1:8085/swagger/index.html
 
