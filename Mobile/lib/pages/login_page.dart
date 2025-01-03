@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_app/myWidgets/my_web_view.dart';
 import 'package:second_app/myWidgets/oauth2_button.dart';
 
 import '../utils/post_request.dart';
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
+    String tmp = '';
 
     @override
     Widget build(BuildContext context) {
@@ -132,29 +134,29 @@ class _LoginPageState extends State<LoginPage> {
                                 spaceBetweenIconAndText: 10,
                                 onPressed: (context) async {
                                     bool tmp = await sendSignUp(
-                                    url: 'http://10.0.2.2:8080/login',
-                                    body: {
-                                        "mail": usernameController.text,
-                                        "password": passwordController.text
+                                        url: 'http://10.0.2.2:8080/login',
+                                        body: {
+                                            "mail": usernameController.text,
+                                            "password": passwordController.text
                                         }
                                     );
                                     final String servString = await classicGet(
                                         url: "http://10.0.2.2:8080/services",
                                     );
                                     final String actionsString = await classicGet(
-                                    url: "http://10.0.2.2:8080/actions",
+                                        url: "http://10.0.2.2:8080/actions",
                                     );
                                     List<dynamic> data = jsonDecode(actionsString);
                                     actionsMap = {
-                                    for (var service in data.where((element) => element != null))
-                                        service['name']: {
-                                        'actions': service['actions'].map((action) {
-                                            return {
-                                            'name': action['name'],
-                                            'arguments': action['arguments'],
-                                            };
-                                        }).toList(),
-                                        }
+                                        for (var service in data.where((element) => element != null))
+                                            service['name']: {
+                                                'actions': service['actions'].map((action) {
+                                                    return {
+                                                        'name': action['name'],
+                                                        'arguments': action['arguments'],
+                                                    };
+                                                }).toList(),
+                                            }
                                     };
                                     servicesMap = jsonDecode(servString);
                                     if (tmp) {
@@ -179,20 +181,45 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                     OauthButton(iconPath: "assets/google.png", resize: false,
-                                        onPressed: () {
-                                            print("googlePressed");
+                                        onPressed: (context) async{
+                                            String url = await classicGet(url: "http://10.0.2.2:8080/google/oauth");
+                                            if (context.mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => WebViewPage(url: url, serv: "google"),
+                                                    ),
+                                                );
+                                            }
                                         },
                                     ),
                                     SizedBox(width: 20,),
                                     OauthButton(iconPath: "assets/discord.png", resize: false,
-                                        onPressed: () {
-                                            print("discordPressed");
+                                       onPressed: (context) async {
+                                           
+                                            String url = await classicGet(url: "http://10.0.2.2:8080/discord/oauth");
+                                            if (context.mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => WebViewPage(url: url, serv: "discord",),
+                                                    ),
+                                                );
+                                            }
                                         },
                                     ),
                                     SizedBox(width: 20),
                                     OauthButton(iconPath: "assets/spotify.png", resize: false,
-                                        onPressed: () {
-                                            print("spotifyPressed");
+                                        onPressed: (context) async {
+                                            String url = await classicGet(url: "http://10.0.2.2:8080/spotify/oauth");
+                                            if (context.mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => WebViewPage(url: url, serv: "spotify",),
+                                                    ),
+                                                );
+                                            }
                                         },
                                     ),
                                 ],
@@ -203,20 +230,45 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                     OauthButton(iconPath: "assets/github.png", resize: true,
                                         resizePadding: EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
-                                        onPressed: () {
-                                            print("gitubPressed");
+                                        onPressed: (context) async {
+
+                                           String url = await classicGet(url: "http://10.0.2.2:8080/github/oauth");
+                                            if (context.mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => WebViewPage(url: url, serv: "github",),
+                                                    ),
+                                                );
+                                            }
                                         },
                                     ),
                                     SizedBox(width: 20,),
                                     OauthButton(iconPath: "assets/gitlab.png", resize: false,
-                                        onPressed: () {
-                                                print("gitlabPressed");
+                                        onPressed: (context) async {
+                                            String url = await classicGet(url: "http://10.0.2.2:8080/gitlab/oauth");
+                                            if (context.mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => WebViewPage(url: url, serv: "gitlab",),
+                                                    ),
+                                                );
+                                            }
                                             },
                                     ),
                                     SizedBox(width: 20),
                                     OauthButton(iconPath: "assets/dropbox.png", resize: false,
-                                        onPressed: () {
-                                                print("dropboxPressed");
+                                        onPressed: (context) async {
+                                               String url = await classicGet(url: "http://10.0.2.2:8080/dropbox/oauth");
+                                            if (context.mounted) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => WebViewPage(url: url, serv: "dropbox",),
+                                                    ),
+                                                );
+                                            }
                                         },
                                     ),
                                 ],
