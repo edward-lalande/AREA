@@ -57,12 +57,12 @@ class PasswordPage extends StatelessWidget {
               if (emailController.text.isNotEmpty) {
                // idée on lui fait la reaction
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('A reset link has been sent to your email.')),
+                  const SnackBar(content: Text('A reset link has been sent to your email.', style: TextStyle(fontFamily: "avenir"))),
                 );
                 context.go('/login');
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Please enter your email address')),
+                  const SnackBar(content: Text('Please enter your email address', style: TextStyle(fontFamily: "avenir"))),
                 );
               }
             },
@@ -71,27 +71,6 @@ class PasswordPage extends StatelessWidget {
             bgColor: Colors.white,
             padding: EdgeInsets.only(top: 35, right: 35, left: 35),
             textBetween: "Or",
-          ),
-          MyButton(
-            padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
-            title: "Continue with Google",
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 17,
-            spaceBetweenIconAndText: 10,
-            prefixIcon: Container(
-              width: 30,
-              height: 30,
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white38,
-              ),
-              child: Image.asset('assets/google.png'),
-            ),
-            onPressed: (context) {
-              context.go('/home');
-            },
           ),
           Container(
             height: 130,
