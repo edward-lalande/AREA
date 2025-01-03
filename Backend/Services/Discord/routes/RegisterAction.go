@@ -8,6 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Discord Services
+// @Summary Register an received Actions
+// @Description Register the Actions received by the message brocker with all informations nedded
+// @Tags Discord Area
+// @Accept json
+// @Produce json
+// @Param routes body models.DiscordActionReceive true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reaction [post]
 func RegisterAction(c *gin.Context) {
 
 	var dataReceived models.DiscordActionReceive

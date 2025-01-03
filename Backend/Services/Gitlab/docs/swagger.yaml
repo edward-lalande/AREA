@@ -1,0 +1,232 @@
+definitions:
+  models.Actions:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+    type: object
+  models.ReceivedReactions:
+    properties:
+      area_id:
+        type: string
+      body:
+        type: string
+      project_id:
+        type: string
+      reaction_type:
+        type: integer
+      user_token:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /access-token:
+    post:
+      consumes:
+      - application/json
+      description: Send the code received by the frontend to get the Gitlab access-token
+        of the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get
+      tags:
+      - Gitlab OAUTH2
+  /action:
+    post:
+      consumes:
+      - application/json
+      description: Register the Actions received by the message brocker with all informations
+        nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.Actions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Actions
+      tags:
+      - Gitlab Area
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Actions available on the Gitlab services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Actions
+      tags:
+      - Gitlab Area
+  /callback:
+    get:
+      consumes:
+      - application/json
+      description: Send the code received by Gitlab to the frontend
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by Gitlab to the frontend
+      tags:
+      - Gitlab OAUTH2
+  /oauth:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 Gitlab
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 Gitlab
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 Gitlab
+      tags:
+      - Gitlab OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the reactions received by the message brocker with all
+        informations nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReceivedReactions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Reactions
+      tags:
+      - Gitlab Area
+  /reactions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Reactions available on the Gitlab services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Reactions
+      tags:
+      - Gitlab Area
+  /webhook:
+    post:
+      description: Handles incoming webhook events and triggers actions
+      parameters:
+      - description: Webhook data
+        in: body
+        name: data
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      responses:
+        "200":
+          description: Webhook processed successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JSON payload
+          schema:
+            type: string
+      summary: Processes Gitlab events
+      tags:
+      - Gitlab Webhook
+swagger: "2.0"

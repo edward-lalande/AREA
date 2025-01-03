@@ -9,10 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Discord Services
+// Spotify Services
 // @Summary Trigger an Area
 // @Description Actions triggerd the reactions and call the trigger route
-// @Tags Discord trigger
+// @Tags Spotify trigger
 // @Accept json
 // @Produce json
 // @Param routes body models.TriggerdModels true "It contains the Area Id to the reactions"

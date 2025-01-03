@@ -12,6 +12,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GithubOauth2
+// @Summary Redirect to Github OAuth2 authorization endpoint
+// @Description Initiates the OAuth2 process by redirecting the user to the Github authorization endpoint.
+// @Tags Github
+// @Produce json
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} map[string]string "Error message"
+// @Router /github/oauth [get]
 func GithubOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("GITHUB_API") + "oauth")
@@ -32,6 +40,17 @@ func GithubOauth2(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// GithubAccessToken
+// @Summary Exchange Github OAuth2 authorization code for an access token
+// @Description Receives an OAuth2 authorization code and exchanges it for an access token with Github.
+// @Tags Github
+// @Accept json
+// @Produce json
+// @Param body body models.OauthCode true "OAuth2 Authorization Code"
+// @Success 200 {string} string "Access token response"
+// @Failure 400 {object} map[string]string "Error message"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /github/access-token [post]
 func GithubAccessToken(c *gin.Context) {
 
 	var (
@@ -67,6 +86,17 @@ func GithubAccessToken(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// GithubWebhook
+// @Summary Handle Github webhook events
+// @Description Receives JSON payloads from Github webhook and forwards them to the specified internal service.
+// @Tags Github
+// @Accept json
+// @Produce json
+// @Param body body map[string]interface{} true "Github Webhook Payload"
+// @Success 200 {object} map[string]string "Webhook forwarded successfully"
+// @Failure 400 {object} map[string]string "Invalid JSON"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /github-webhook [post]
 func GithubWebhook(c *gin.Context) {
 
 	var data map[string]interface{}

@@ -1,12 +1,14 @@
 package routes
 
 import (
+	_ "asana/docs"
 	area "asana/Area"
 	"asana/oauth"
-	"asana/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func ApplyRoutes(r *gin.Engine) {
@@ -22,16 +24,10 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/callback", oauth.CallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
 
-	r.GET("/reactions", func(c *gin.Context) {
-		b, err := utils.OpenFile("Models/Reactions.json")
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		json := utils.BytesToJson(b)
-		c.JSON(http.StatusOK, json)
-	})
+	r.GET("/reactions", area.GetReactions)
 
 	r.POST("/reaction", area.StoreReactions)
 	r.POST("/trigger", area.Trigger)
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

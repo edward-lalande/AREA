@@ -10,10 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Gitlab OAUTH2
+// Spotify OAUTH2
 // @Summary Get
-// @Description Send the code received by the frontend to get the Gitlab access-token of the user
-// @Tags Gitlab OAUTH2
+// @Description Send the code received by the frontend to get the Spotify access-token of the user
+// @Tags Spotify OAUTH2
 // @Accept json
 // @Produce json
 // @Params object models.OauthInformation true "The code must be send as object and the token is not necessary, it can be null"

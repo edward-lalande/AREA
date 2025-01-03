@@ -1,0 +1,266 @@
+definitions:
+  models.GoogleReaction:
+    properties:
+      area_id:
+        type: string
+      attendees:
+        type: string
+      description:
+        type: string
+      end_time:
+        type: string
+      message:
+        type: string
+      reaction_type:
+        type: integer
+      recipient:
+        type: string
+      start_time:
+        type: string
+      subject:
+        type: string
+      summary:
+        type: string
+      user_token:
+        type: string
+    type: object
+  models.MessageBrocker:
+    properties:
+      area_id:
+        type: string
+    type: object
+  models.ReceivedActions:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+      nb_events:
+        type: integer
+      user_token:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /access-token:
+    post:
+      consumes:
+      - application/json
+      description: Send the code received by the frontend to get the Google access-token
+        of the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get
+      tags:
+      - Google OAUTH2
+  /action:
+    post:
+      consumes:
+      - application/json
+      description: Register the Actions received by the message brocker with all informations
+        nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReceivedActions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Actions
+      tags:
+      - Google Area
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Actions available on the Google services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Actions
+      tags:
+      - Google Area
+  /callback:
+    get:
+      consumes:
+      - application/json
+      description: Send the code received by Google to the frontend
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by Google to the frontend
+      tags:
+      - Google OAUTH2
+  /oauth:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 Google
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 Google
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 Google
+      tags:
+      - Google OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the reactions received by the message brocker with all
+        informations nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.GoogleReaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Reactions
+      tags:
+      - Google Area
+  /reactions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Reactions available on the Google services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Reactions
+      tags:
+      - Google Area
+  /trigger:
+    post:
+      consumes:
+      - application/json
+      description: Actions triggerd the reactions and call the trigger route
+      parameters:
+      - description: It contains the Area Id to the reactions
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.MessageBrocker'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response of the reactions
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Trigger an Area
+      tags:
+      - Google trigger
+swagger: "2.0"

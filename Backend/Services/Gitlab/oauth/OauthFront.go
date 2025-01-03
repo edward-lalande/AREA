@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {string} string "the URL to redirect to for the OAUTH2 Gitlab"
-// @Router /oauth2 [get]
+// @Router /oauth [get]
 func OAuthFront(c *gin.Context) {
 	authUrl := "https://gitlab.com/oauth/authorize?client_id=" + utils.GetEnvKey("CLIENT_ID") +
 		"&redirect_uri=http://127.0.0.1:8087/callback&response_type=code" +
