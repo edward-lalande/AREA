@@ -5,6 +5,8 @@ import (
 	"gitlab/oauth"
 	"net/http"
 
+	_ "gitlab/docs"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

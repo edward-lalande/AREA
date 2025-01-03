@@ -12,7 +12,7 @@ import (
 // Post Meteo Actions
 // @Summary Post an Actions
 // @Description Post an Meteo actions, receive by the Message Brocker (handler of communication between services) and register it to him database
-// @Tags Actions Date Meteo services
+// @Tags Actions Meteo services
 // @Accept json
 // @Produce json
 // @Param routes body models.MeteoActions true "It contains the Area Id, the location and the Meteo of the Area"

@@ -44,7 +44,7 @@ func GetNbPlaylists(spotifyToken, id string) int {
 // Post Spotify Actions
 // @Summary Post an Actions
 // @Description Post an Spotify actions, receive by the Message Brocker (handler of communication between services) and register it to him database
-// @Tags Actions Date Spotify services
+// @Tags Actions Spotify services
 // @Accept json
 // @Produce json
 // @Param routes body models.ActionsData true "It contains the Area Id, the location and the Spotify of the Area"
