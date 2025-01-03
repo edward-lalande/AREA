@@ -75,6 +75,25 @@ And it will launch the application
 
 ## Co-Contributors
 
-[<img src="https://avatars.githubusercontent.com/u/114899301?v=4" width=85><br><sub>Paul Bardeur</sub><br />](https://github.com/paulbardeur)
-[<img src="https://avatars.githubusercontent.com/u/114470214?v=4" width=85><br><sub>Edward Lalande</sub><br />](https://github.com/edward-lalande)
-[<img src="https://avatars.githubusercontent.com/u/91876984?v=4" width=85><br><sub>Timothee Plisson</sub><br />](https://github.com/timotheeplisson)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/paulbardeur">
+        <img src="https://avatars.githubusercontent.com/u/114899301?v=4" width=85><br>
+        <sub>Paul Bardeur</sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/edward-lalande">
+        <img src="https://avatars.githubusercontent.com/u/114470214?v=4" width=85><br>
+        <sub>Edward Lalande</sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/timotheeplisson">
+        <img src="https://avatars.githubusercontent.com/u/91876984?v=4" width=85><br>
+        <sub>Timothee Plisson</sub>
+      </a>
+    </td>
+  </tr>
+</table>
