@@ -1,4 +1,3 @@
-	swaggerFiles "github.com/swaggo/files"
 module meteo
 
 go 1.23.3
