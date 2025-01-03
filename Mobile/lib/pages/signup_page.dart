@@ -127,6 +127,20 @@ class _SignUpPageState extends State<SignUpPage> {
                             spaceBetweenIconAndText: 10,
 
                             onPressed: (context) async {
+                                if (firstNameController.text.isEmpty || lastNameController.text.isEmpty ||
+                                emailController.text.isEmpty || passwordController.text.isEmpty) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                                backgroundColor: Colors.grey,
+                                                duration: Duration(seconds: 3),
+                                                content: Text(
+                                                    'Please enter your Firstname, Lastname, email and your password',
+                                                    style: TextStyle(color: Colors.white, fontFamily: "avenir"),
+                                                ),
+                                            ),
+                                        );
+                                        return;
+                                }
                                 userData['name'] = firstNameController.text;
                                 userData['lastname'] = lastNameController.text;
                                 userData['mail'] = emailController.text;
@@ -159,31 +173,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 right: 35,
                                 left: 35
                             ),
-                        ),
-                        MyButton(
-                            padding: const EdgeInsets.only(
-                                left: 35,
-                                right: 35,
-                                top: 35
-                            ),
-                            title: "Continue with Google",
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white,
-                            fontSize: 17,
-                            spaceBetweenIconAndText: 10,
-                            prefixIcon: Container(
-                                width: 30,
-                                height: 30,
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white38,
-                                ),
-                                child: Image.asset('assets/google.png'),
-                            ),
-                            onPressed: (context) {
-                            context.go('/home');
-                            },
                         ),
                         Container(
                             height: 130,

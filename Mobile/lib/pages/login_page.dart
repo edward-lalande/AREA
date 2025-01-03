@@ -133,6 +133,20 @@ class _LoginPageState extends State<LoginPage> {
                                 fontSize: 20,
                                 spaceBetweenIconAndText: 10,
                                 onPressed: (context) async {
+                                    if (usernameController.text.isEmpty ||
+                                        passwordController.text.isEmpty) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                                backgroundColor: Colors.grey,
+                                                duration: Duration(seconds: 3),
+                                                content: Text(
+                                                    'Please enter your email and password',
+                                                    style: TextStyle(color: Colors.white, fontFamily: "avenir"),
+                                                ),
+                                            ),
+                                        );
+                                        return;
+                                    }
                                     bool tmp = await sendSignUp(
                                         url: 'http://10.0.2.2:8080/login',
                                         body: {
@@ -160,10 +174,9 @@ class _LoginPageState extends State<LoginPage> {
                                     };
                                     servicesMap = jsonDecode(servString);
                                     if (tmp) {
-                                    if (context.mounted) {
-                                        context.go("/home");
+                                        if (context.mounted) {
+                                            context.go("/home");
                                     }
-
                                     } else {
                                         if (context.mounted) {
                                             context.go("/login");
