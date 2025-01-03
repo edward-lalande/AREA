@@ -40,7 +40,7 @@ GoRouter appRouter(BuildContext context) {
       ),
       GoRoute(
         path: '/host',
-        builder: (context, state) => const HostPage(),
+        builder: (context, state) => HostPage(),
       ),
       GoRoute(
         path: '/home',
