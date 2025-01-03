@@ -42,3 +42,21 @@ func StoreActions(c *gin.Context) {
 		return
 	}
 }
+
+// Get Actions of Meteo Services
+// @Summary Get Actions from Meteo Services
+// @Description Get Actions from Meteo Services
+// @Tags Actions Meteo Services
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Reactions name with parameters of it as object"
+// @Router /actions [get]
+func GetActions(c *gin.Context) {
+	b, err := utils.OpenFile("Models/Actions.json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	json := utils.BytesToJson(b)
+	c.JSON(http.StatusOK, json)
+}
