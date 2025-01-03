@@ -36,6 +36,14 @@ func sendTrigger(areaId string) {
 	http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 }
 
+// GetWebhooks processes Gitlab events
+// @Tags Gitlab Webhook
+// @Summary Processes Gitlab events
+// @Description Handles incoming webhook events and triggers actions
+// @Param data body map[string]interface{} true "Webhook data"
+// @Success 200 {object} string "Webhook processed successfully"
+// @Failure 400 {object} string "Invalid JSON payload"
+// @Router /webhook [post]
 func Webhook(c *gin.Context) {
 	var receivedData map[string]interface{} = make(map[string]interface{})
 

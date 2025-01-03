@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {string} string "the URL to redirect to for the OAUTH2 Google"
-// @Router /oauth2 [get]
+// @Router /oauth [get]
 func OAuthFront(c *gin.Context) {
 	authUrl := "https://accounts.google.com/o/oauth2/auth?client_id=" + utils.GetEnvKey("CLIENT_ID") +
 		"&redirect_uri=http://127.0.0.1:8088/callback&response_type=code" +

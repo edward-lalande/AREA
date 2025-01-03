@@ -1,0 +1,71 @@
+definitions:
+  models.MeteoActions:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+      latitude:
+        type: string
+      longitude:
+        type: string
+      value:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: Get Actions from Meteo Services
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reactions name with parameters of it as object
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Actions from Meteo Services
+      tags:
+      - Actions Meteo Services
+    post:
+      consumes:
+      - application/json
+      description: Post an Meteo actions, receive by the Message Brocker (handler
+        of communication between services) and register it to him database
+      parameters:
+      - description: It contains the Area Id, the location and the Meteo of the Area
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeteoActions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the Id of the Area
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Post an Actions
+      tags:
+      - Actions Date Meteo services
+swagger: "2.0"

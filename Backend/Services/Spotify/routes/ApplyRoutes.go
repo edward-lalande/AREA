@@ -4,9 +4,10 @@ import (
 	"net/http"
 	area "spotify/Area"
 	"spotify/oauth"
-	"spotify/utils"
-
+	_ "spotify/docs"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func ApplyRoutes(r *gin.Engine) {
@@ -20,24 +21,9 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.POST("/action", area.Actions)
 	r.POST("/reaction", area.ReceivedReactions)
-	r.GET("/actions", func(c *gin.Context) {
-		b, err := utils.OpenFile("Models/Actions.json")
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		json := utils.BytesToJson(b)
-		c.JSON(http.StatusOK, json)
-	})
+	r.GET("/actions", area.GetActions)
 
-	r.GET("/reactions", func(c *gin.Context) {
-		b, err := utils.OpenFile("Models/Reactions.json")
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		json := utils.BytesToJson(b)
-		c.JSON(http.StatusOK, json)
-	})
+	r.GET("/reactions", area.GetReactions)
 	r.POST("/trigger", Trigger)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

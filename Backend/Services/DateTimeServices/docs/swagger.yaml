@@ -1,21 +1,8 @@
 definitions:
-  models.GetTimeAction:
-    properties:
-      action_id:
-        type: string
-      action_type:
-        type: string
-      city:
-        type: string
-      continent:
-        type: string
-      hour:
-        type: integer
-      minute:
-        type: integer
-    type: object
   models.TimeActionReceive:
     properties:
+      action_type:
+        type: integer
       area_id:
         type: string
       city:
@@ -41,7 +28,9 @@ paths:
         "200":
           description: Reactions name with parameters of it as object
           schema:
-            $ref: '#/definitions/models.GetTimeAction'
+            additionalProperties:
+              type: string
+            type: object
       summary: Get Actions from Date Time services
       tags:
       - Actions Date Time services
@@ -61,7 +50,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: Response of Discord
+          description: Response is the Id of the Area
           schema:
             additionalProperties:
               type: string

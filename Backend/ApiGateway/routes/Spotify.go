@@ -45,6 +45,14 @@ func SendSpotifyActions(data models.SpotifyActions, c *gin.Context) *http.Respon
 	return resp
 }
 
+// SpotifyOauth2
+// @Summary Redirect to Spotify OAuth2 authorization endpoint
+// @Description Initiates the OAuth2 process by redirecting the user to the Spotify authorization endpoint.
+// @Tags Spotify
+// @Produce json
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} map[string]string "Error message"
+// @Router /spotify/oauth [get]
 func SpotifyOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("SPOTIFY_API") + "oauth")
@@ -65,6 +73,17 @@ func SpotifyOauth2(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// SpotifyAccessToken
+// @Summary Exchange Spotify OAuth2 authorization code for an access token
+// @Description Receives an OAuth2 authorization code and exchanges it for an access token with Spotify.
+// @Tags Spotify
+// @Accept json
+// @Produce json
+// @Param body body models.OauthCode true "OAuth2 Authorization Code"
+// @Success 200 {string} string "Access token response"
+// @Failure 400 {object} map[string]string "Error message"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /spotify/access-token [post]
 func SpotifyAccessToken(c *gin.Context) {
 
 	var (

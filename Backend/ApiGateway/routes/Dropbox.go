@@ -27,6 +27,14 @@ func SendMessageDropbox(c *gin.Context, receivedData models.DropBoxReactions) *h
 	return resp
 }
 
+// DropboxOauth2
+// @Summary Redirect to Dropbox OAuth2 authorization endpoint
+// @Description Initiates the OAuth2 process by redirecting the user to the Dropbox authorization endpoint.
+// @Tags Dropbox
+// @Produce json
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} map[string]string "Error message"
+// @Router /dropbox/oauth [get]
 func DropBoxOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("DROPBOX_API") + "oauth")
@@ -48,6 +56,17 @@ func DropBoxOauth2(c *gin.Context) {
 
 }
 
+// DropboxAccessToken
+// @Summary Exchange Dropbox OAuth2 authorization code for an access token
+// @Description Receives an OAuth2 authorization code and exchanges it for an access token with Dropbox.
+// @Tags Dropbox
+// @Accept json
+// @Produce json
+// @Param body body models.OauthCode true "OAuth2 Authorization Code"
+// @Success 200 {string} string "Access token response"
+// @Failure 400 {object} map[string]string "Error message"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /dropbox/access-token [post]
 func DropboxAccessToken(c *gin.Context) {
 
 	var (

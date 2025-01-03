@@ -32,7 +32,10 @@ const docTemplate = `{
                     "200": {
                         "description": "Reactions name with parameters of it as object",
                         "schema": {
-                            "$ref": "#/definitions/models.GetTimeAction"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -62,7 +65,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Response of Discord",
+                        "description": "Response is the Id of the Area",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -93,32 +96,12 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.GetTimeAction": {
-            "type": "object",
-            "properties": {
-                "action_id": {
-                    "type": "string"
-                },
-                "action_type": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string"
-                },
-                "continent": {
-                    "type": "string"
-                },
-                "hour": {
-                    "type": "integer"
-                },
-                "minute": {
-                    "type": "integer"
-                }
-            }
-        },
         "models.TimeActionReceive": {
             "type": "object",
             "properties": {
+                "action_type": {
+                    "type": "integer"
+                },
                 "area_id": {
                     "type": "string"
                 },

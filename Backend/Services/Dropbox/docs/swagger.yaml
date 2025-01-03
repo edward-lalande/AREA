@@ -1,0 +1,178 @@
+definitions:
+  models.DropBoxReactions:
+    properties:
+      area_id:
+        type: string
+      filepath_share:
+        type: string
+      from_path:
+        type: string
+      reaction_type:
+        type: integer
+      to_path:
+        type: string
+      user_token:
+        type: string
+    type: object
+  models.TriggerdModels:
+    properties:
+      area_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /access-token:
+    post:
+      consumes:
+      - application/json
+      description: Send the code received by the frontend to get the Dropbox access-token
+        of the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get
+      tags:
+      - Dropbox OAUTH2
+  /callback:
+    get:
+      consumes:
+      - application/json
+      description: Send the code received by Dropbox to the frontend
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by Dropbox to the frontend
+      tags:
+      - Dropbox OAUTH2
+  /oauth:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 Dropbox
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 Dropbox
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 Dropbox
+      tags:
+      - Dropbox OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the reactions received by the message brocker with all
+        informations nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.DropBoxReactions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Reactions
+      tags:
+      - Dropbox Area
+  /reactions:
+    get:
+      consumes:
+      - application/json
+      description: send all the reactions available on the Dropbox services as an
+        object arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the reactions
+      tags:
+      - Dropbox Area
+  /trigger:
+    post:
+      consumes:
+      - application/json
+      description: Actions triggerd the reactions and call the trigger route
+      parameters:
+      - description: It contains the Area Id to the reactions
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.TriggerdModels'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response of the reactions
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Trigger an Area
+      tags:
+      - Dropbox trigger
+swagger: "2.0"

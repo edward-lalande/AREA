@@ -50,7 +50,49 @@ const docTemplate = `{
                 }
             }
         },
-        "/area": {
+        "/areas": {
+            "get": {
+                "description": "Get area from a users in all servieces by sending an array of object of area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Area api-gateway"
+                ],
+                "summary": "Get area from a users in all servieces by sending an array of object of area",
+                "responses": {
+                    "200": {
+                        "description": "Reactions name with parameters of it as object",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Requests",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create a new combination of action and reaction (Area) for a users",
                 "consumes": [
@@ -108,9 +150,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/areas": {
-            "get": {
-                "description": "Get area from a users in all servieces by sending an array of object of area",
+        "/asana/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Asana.",
                 "consumes": [
                     "application/json"
                 ],
@@ -118,21 +160,29 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Area api-gateway"
+                    "Asana"
                 ],
-                "summary": "Get area from a users in all servieces by sending an array of object of area",
+                "summary": "Exchange Asana OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Reactions name with parameters of it as object",
+                        "description": "Access token response",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "type": "string"
                         }
                     },
                     "400": {
-                        "description": "Bad Requests",
+                        "description": "Error message",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -141,7 +191,36 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "Internal error",
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/asana/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Asana authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Asana"
+                ],
+                "summary": "Redirect to Asana OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -250,6 +329,523 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/discord/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Discord.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discord"
+                ],
+                "summary": "Exchange Discord OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/discord/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Discord authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discord"
+                ],
+                "summary": "Redirect to Discord OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/dropbox/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Dropbox.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dropbox"
+                ],
+                "summary": "Exchange Dropbox OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/dropbox/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Dropbox authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dropbox"
+                ],
+                "summary": "Redirect to Dropbox OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/github-webhook": {
+            "post": {
+                "description": "Receives JSON payloads from Github webhook and forwards them to the specified internal service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "Handle Github webhook events",
+                "parameters": [
+                    {
+                        "description": "Github Webhook Payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Webhook forwarded successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid JSON",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/github/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Github.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "Exchange Github OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/github/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Github authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Github"
+                ],
+                "summary": "Redirect to Github OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/gitlab-webhook": {
+            "post": {
+                "description": "Receives JSON payloads from GitLab webhook and forwards them to the specified internal service.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GitLab"
+                ],
+                "summary": "Handle GitLab webhook events",
+                "parameters": [
+                    {
+                        "description": "GitLab Webhook Payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Webhook forwarded successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid JSON",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/gitlab/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Gitlab.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gitlab"
+                ],
+                "summary": "Exchange Gitlab OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/gitlab/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Gitlab authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Gitlab"
+                ],
+                "summary": "Redirect to Gitlab OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/google/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Google.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Google"
+                ],
+                "summary": "Exchange Google OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/google/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Google authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Google"
+                ],
+                "summary": "Redirect to Google OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -431,6 +1027,87 @@ const docTemplate = `{
                 }
             }
         },
+        "/spotify/access-token": {
+            "post": {
+                "description": "Receives an OAuth2 authorization code and exchanges it for an access token with Spotify.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Spotify"
+                ],
+                "summary": "Exchange Spotify OAuth2 authorization code for an access token",
+                "parameters": [
+                    {
+                        "description": "OAuth2 Authorization Code",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OauthCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Access token response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/spotify/oauth": {
+            "get": {
+                "description": "Initiates the OAuth2 process by redirecting the user to the Spotify authorization endpoint.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Spotify"
+                ],
+                "summary": "Redirect to Spotify OAuth2 authorization endpoint",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/update-user": {
             "post": {
                 "description": "Update a user to the user services database",
@@ -514,6 +1191,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OauthCode": {
+            "type": "object",
+            "properties": {
+                "code": {
                     "type": "string"
                 }
             }

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'pages/password_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/host_page.dart';
-import 'pages/create_area_page.dart';
 
 void main() {
   runApp(const MyApp());

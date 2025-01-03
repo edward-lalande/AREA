@@ -28,6 +28,14 @@ func SendAsanaReaction(sendingData models.AsanaReactions, c *gin.Context) *http.
 	return resp
 }
 
+// AsanaOauth2
+// @Summary Redirect to Asana OAuth2 authorization endpoint
+// @Description Initiates the OAuth2 process by redirecting the user to the Asana authorization endpoint.
+// @Tags Asana
+// @Produce json
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} map[string]string "Error message"
+// @Router /asana/oauth [get]
 func AsanaOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("ASANA_API") + "oauth")
@@ -49,6 +57,17 @@ func AsanaOauth2(c *gin.Context) {
 
 }
 
+// AsanaAccessToken
+// @Summary Exchange Asana OAuth2 authorization code for an access token
+// @Description Receives an OAuth2 authorization code and exchanges it for an access token with Asana.
+// @Tags Asana
+// @Accept json
+// @Produce json
+// @Param body body models.OauthCode true "OAuth2 Authorization Code"
+// @Success 200 {string} string "Access token response"
+// @Failure 400 {object} map[string]string "Error message"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /asana/access-token [post]
 func AsanaAccessToken(c *gin.Context) {
 
 	var (

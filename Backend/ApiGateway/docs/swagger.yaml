@@ -20,6 +20,11 @@ definitions:
       password:
         type: string
     type: object
+  models.OauthCode:
+    properties:
+      code:
+        type: string
+    type: object
   models.PayloadItem:
     type: object
   models.SignUp:
@@ -70,7 +75,37 @@ paths:
       summary: Get actions from all services
       tags:
       - Area api-gateway
-  /area:
+  /areas:
+    get:
+      consumes:
+      - application/json
+      description: Get area from a users in all servieces by sending an array of object
+        of area
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reactions name with parameters of it as object
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Requests
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get area from a users in all servieces by sending an array of object
+        of area
+      tags:
+      - Area api-gateway
     post:
       consumes:
       - application/json
@@ -108,37 +143,61 @@ paths:
       summary: Create a new actions-reactions or actions-multiple reactions
       tags:
       - Area api-gateway
-  /areas:
-    get:
+  /asana/access-token:
+    post:
       consumes:
       - application/json
-      description: Get area from a users in all servieces by sending an array of object
-        of area
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Asana.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
       produces:
       - application/json
       responses:
         "200":
-          description: Reactions name with parameters of it as object
+          description: Access token response
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            type: string
         "400":
-          description: Bad Requests
+          description: Error message
           schema:
             additionalProperties:
               type: string
             type: object
         "500":
-          description: Internal error
+          description: Internal server error
           schema:
             additionalProperties:
               type: string
             type: object
-      summary: Get area from a users in all servieces by sending an array of object
-        of area
+      summary: Exchange Asana OAuth2 authorization code for an access token
       tags:
-      - Area api-gateway
+      - Asana
+  /asana/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Asana
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Asana OAuth2 authorization endpoint
+      tags:
+      - Asana
   /discord:
     get:
       consumes:
@@ -211,6 +270,357 @@ paths:
       summary: Post Data to discord services
       tags:
       - Discord api-gateway
+  /discord/access-token:
+    post:
+      consumes:
+      - application/json
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Discord.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Access token response
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Exchange Discord OAuth2 authorization code for an access token
+      tags:
+      - Discord
+  /discord/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Discord
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Discord OAuth2 authorization endpoint
+      tags:
+      - Discord
+  /dropbox/access-token:
+    post:
+      consumes:
+      - application/json
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Dropbox.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Access token response
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Exchange Dropbox OAuth2 authorization code for an access token
+      tags:
+      - Dropbox
+  /dropbox/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Dropbox
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Dropbox OAuth2 authorization endpoint
+      tags:
+      - Dropbox
+  /github-webhook:
+    post:
+      consumes:
+      - application/json
+      description: Receives JSON payloads from Github webhook and forwards them to
+        the specified internal service.
+      parameters:
+      - description: Github Webhook Payload
+        in: body
+        name: body
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Webhook forwarded successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid JSON
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Handle Github webhook events
+      tags:
+      - Github
+  /github/access-token:
+    post:
+      consumes:
+      - application/json
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Github.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Access token response
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Exchange Github OAuth2 authorization code for an access token
+      tags:
+      - Github
+  /github/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Github
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Github OAuth2 authorization endpoint
+      tags:
+      - Github
+  /gitlab-webhook:
+    post:
+      consumes:
+      - application/json
+      description: Receives JSON payloads from GitLab webhook and forwards them to
+        the specified internal service.
+      parameters:
+      - description: GitLab Webhook Payload
+        in: body
+        name: body
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Webhook forwarded successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid JSON
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Handle GitLab webhook events
+      tags:
+      - GitLab
+  /gitlab/access-token:
+    post:
+      consumes:
+      - application/json
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Gitlab.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Access token response
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Exchange Gitlab OAuth2 authorization code for an access token
+      tags:
+      - Gitlab
+  /gitlab/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Gitlab
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Gitlab OAuth2 authorization endpoint
+      tags:
+      - Gitlab
+  /google/access-token:
+    post:
+      consumes:
+      - application/json
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Google.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Access token response
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Exchange Google OAuth2 authorization code for an access token
+      tags:
+      - Google
+  /google/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Google
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Google OAuth2 authorization endpoint
+      tags:
+      - Google
   /login:
     post:
       consumes:
@@ -325,6 +735,61 @@ paths:
       summary: Sign up a user
       tags:
       - User api-gateway
+  /spotify/access-token:
+    post:
+      consumes:
+      - application/json
+      description: Receives an OAuth2 authorization code and exchanges it for an access
+        token with Spotify.
+      parameters:
+      - description: OAuth2 Authorization Code
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.OauthCode'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Access token response
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Exchange Spotify OAuth2 authorization code for an access token
+      tags:
+      - Spotify
+  /spotify/oauth:
+    get:
+      description: Initiates the OAuth2 process by redirecting the user to the Spotify
+        authorization endpoint.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Error message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to Spotify OAuth2 authorization endpoint
+      tags:
+      - Spotify
   /update-user:
     post:
       consumes:

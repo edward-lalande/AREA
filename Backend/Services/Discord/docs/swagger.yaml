@@ -1,4 +1,19 @@
 definitions:
+  models.DiscordActionReceive:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+      channel_id:
+        type: string
+      id:
+        type: integer
+      message_id:
+        type: string
+      user_token:
+        type: string
+    type: object
   models.OauthInformationSignUp:
     properties:
       access_token:
@@ -13,6 +28,8 @@ definitions:
     properties:
       channel_id:
         type: string
+      guild_id:
+        type: string
       message:
         type: string
       reaction_id:
@@ -25,6 +42,8 @@ definitions:
       area_id:
         type: string
       channel_id:
+        type: string
+      guild_id:
         type: string
       message:
         type: string
@@ -59,6 +78,34 @@ paths:
       summary: Get
       tags:
       - Discord OAUTH2
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: send all the actions available on the discord services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            $ref: '#/definitions/models.ReactionGet'
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the actions
+      tags:
+      - Discord Area
   /callback:
     get:
       consumes:
@@ -76,7 +123,7 @@ paths:
       summary: Send the code received by discord to the frontend
       tags:
       - Discord OAUTH2
-  /oauth2:
+  /oauth:
     get:
       consumes:
       - application/json
@@ -95,15 +142,15 @@ paths:
     post:
       consumes:
       - application/json
-      description: Register the reactions received by the message brocker with all
-        informations nedded
+      description: Register the Actions received by the message brocker with all informations
+        nedded
       parameters:
       - description: It must contains the AreaId and the reactions type
         in: body
         name: routes
         required: true
         schema:
-          $ref: '#/definitions/models.ReactionReceiveData'
+          $ref: '#/definitions/models.DiscordActionReceive'
       produces:
       - application/json
       responses:
@@ -125,7 +172,7 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Register an received Reactions
+      summary: Register an received Actions
       tags:
       - Discord Area
   /reactions:

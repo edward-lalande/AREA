@@ -7,14 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Gitlab OAUTH2
-// @Summary Send the url to redirect to for the OAUTH2 Gitlab
-// @Description Send the url to redirect to for the OAUTH2 Gitlab
-// @Tags Gitlab OAUTH2
+// Spotify OAUTH2
+// @Summary Send the url to redirect to for the OAUTH2 Spotify
+// @Description Send the url to redirect to for the OAUTH2 Spotify
+// @Tags Spotify OAUTH2
 // @Accept json
 // @Produce json
-// @Success 200 {string} string "the URL to redirect to for the OAUTH2 Gitlab"
-// @Router /oauth2 [get]
+// @Success 200 {string} string "the URL to redirect to for the OAUTH2 Spotify"
+// @Router /oauth [get]
 func OAuthFront(c *gin.Context) {
 	authUrl := "https://accounts.spotify.com/authorize?&client_id=" + utils.GetEnvKey("CLIENT_ID") +
 		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI") +
