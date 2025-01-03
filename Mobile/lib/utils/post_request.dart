@@ -5,6 +5,8 @@ import 'dart:convert';
 
 final storage = const FlutterSecureStorage();
 Map<String, dynamic> servicesMap = {};
+Map<String, dynamic> actionsMap = {};
+Map<String, String> userData = {};
 
 Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
 {
@@ -57,18 +59,16 @@ Future<String> classicGet({required String url}) async
 
     try {
 
-      final response = await http.get(Uri.parse(apiUrl));
+        final response = await http.get(Uri.parse(apiUrl));
 
-      if (response.statusCode == 200) {
-        return response.body;
-      }
-      else {
-        throw Exception('ERRORRR: ${response.statusCode}');
-      }
+        if (response.statusCode == 200) {
+            return response.body;
+        }
+        else {
+            throw Exception('ERRORRR: ${response.statusCode}');
+        }
 
     } catch (e) {
-
-      throw Exception('ERRORRR: $e');
-
+        throw Exception('ERRORRR: $e');
     }
 }

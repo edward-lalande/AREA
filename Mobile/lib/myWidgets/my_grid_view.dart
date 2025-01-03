@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:second_app/myWidgets/my_card.dart';
 import 'package:second_app/myWidgets/my_title.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class MyGridView extends StatefulWidget {
     const MyGridView({
@@ -8,13 +9,15 @@ class MyGridView extends StatefulWidget {
         required this.map,
         required this.typeKey,
         required this.appbarVisible,
-        required this.needAnimation,
+        required this.homeAnimation,
+        this.gridClick,
     });
 
     final Map<String, dynamic> map;
     final String typeKey;
     final bool appbarVisible;
-    final bool needAnimation;
+    final bool homeAnimation;
+    final Function(int idx)? gridClick;
 
     @override
     State<MyGridView> createState() => _MyGridViewState();
@@ -29,6 +32,7 @@ class _MyGridViewState extends State<MyGridView> {
             selectedIndex = selectedIndex == index ? -1 : index;
             isBig = !isBig;
         });
+        widget.gridClick!(index);
 
         Future.delayed(Duration(milliseconds: 200), () {
             setState(() {
@@ -85,7 +89,7 @@ class _MyGridViewState extends State<MyGridView> {
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
                         ),
-                        delegate: widget.needAnimation ? SliverChildBuilderDelegate(
+                        delegate: widget.homeAnimation ? SliverChildBuilderDelegate(
                             childCount: services.length,
                             (context, index) {
                                 final tmp = services[index];
@@ -96,7 +100,7 @@ class _MyGridViewState extends State<MyGridView> {
                                         duration: Duration(milliseconds: 200),
                                         child: Card(
                                             elevation: 7,
-                                            color: Color(0XFF5865F2),
+                                            color: Colors.grey,
                                             child: MyCard(
                                                 title: tmp["name"],
                                                 padding: const EdgeInsets.all(8),
@@ -114,18 +118,16 @@ class _MyGridViewState extends State<MyGridView> {
                             childCount: services.length,
                             (context, index) {
                                 final tmp = services[index];
-                                return Card(
+                                return InkWell(
+                                    onTap: () => _onCardTap(index, tmp),
+                                    child: Card(
                                             elevation: 7,
                                             color: Color(0XFF5865F2),
                                             child: MyCard(
                                                 title: tmp["name"],
                                                 padding: const EdgeInsets.all(8),
-                                                icon: Icon(
-                                                    color: Colors.white,
-                                                    Icons.discord,
-                                                    size: 60,
-                                                ),
                                     ),
+                                )
                                 );
                             },
                         ),
@@ -144,3 +146,60 @@ class _MyGridViewState extends State<MyGridView> {
     }
 }
 
+    class MyGridViewActionsName extends StatefulWidget {
+
+    const MyGridViewActionsName({
+        super.key,
+        this.gridClick,
+    });
+
+    final Function(int idx)? gridClick;
+
+    @override
+    State<MyGridViewActionsName> createState() => _MyGridViewActionsNameState();
+}
+
+class _MyGridViewActionsNameState extends State<MyGridViewActionsName> {
+    int selectedIndex = -1;
+
+    void _onCardTap(int index, dynamic service) {
+        setState(() {
+        selectedIndex = selectedIndex == index ? -1 : index;
+        });
+        widget.gridClick!(index);
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        List<String> keysList = actionsMap.keys.toList();
+
+        return SingleChildScrollView(
+            padding: EdgeInsets.all(50),
+            child: GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                ),
+                itemCount: keysList.length,
+                itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+                            _onCardTap(index, actionsMap[keysList[index]]);
+                        },
+                        child: Card(
+                            color: Colors.grey,
+                            elevation: 7,
+                            child: MyCard(
+                                title: keysList[index],
+                                padding: const EdgeInsets.all(8),
+                            ),
+                        ),
+                    );
+                },
+            ),
+        );
+    }
+}

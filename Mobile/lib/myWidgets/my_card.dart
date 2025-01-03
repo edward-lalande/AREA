@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class MyCard extends StatelessWidget {
     const MyCard({
         super.key,
-        required this.icon,
-        required this.title,
+        this.icon,
+        this.title,
         this.padding = const EdgeInsets.all(0),
     });
 
-    final Widget icon;
-    final String title;
+    final Widget? icon;
+    final String? title;
     final EdgeInsetsGeometry padding;
 
     @override
@@ -22,12 +22,12 @@ class MyCard extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        icon,
+                        icon ?? SizedBox(),
                         const SizedBox(
                             height: 8
                         ),
                         Text(
-                            title,
+                            title ?? "",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
