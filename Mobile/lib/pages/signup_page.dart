@@ -125,14 +125,19 @@ class _SignUpPageState extends State<SignUpPage> {
                             textColor: Colors.white,
                             fontSize: 20,
                             spaceBetweenIconAndText: 10,
+
                             onPressed: (context) async {
+                                userData['name'] = firstNameController.text;
+                                userData['lastname'] = lastNameController.text;
+                                userData['mail'] = emailController.text;
+                                userData['password'] = passwordController.text;
                                 bool tmp = await sendSignUp(
                                     url: "http://10.0.2.2:8080/sign-up",
                                     body: {
-                                    "mail": emailController.text,
-                                    "password": passwordController.text,
-                                    "name": firstNameController.text,
-                                    "lastname": lastNameController.text
+                                      "mail": emailController.text,
+                                      "password": passwordController.text,
+                                      "name": firstNameController.text,
+                                      "lastname": lastNameController.text
                                     }
                                 );
                                 if (tmp) {
