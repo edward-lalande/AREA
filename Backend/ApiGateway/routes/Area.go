@@ -134,6 +134,15 @@ func Area(c *gin.Context) {
 				actionData.AreaID = areaID
 				resp := SendTicketMasterActions(actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 13:
+				var actionData models.CryptoMoneyActions
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type11 action data"})
+					return
+				}
+				actionData.AreaId = areaID
+				resp := SendCryptoMoneyActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
