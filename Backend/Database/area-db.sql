@@ -145,3 +145,14 @@ CREATE TABLE IF NOT EXISTS "AsanaReactions" (
     project_id          TEXT,
     task_id             TEXT
 );
+
+CREATE TABLE IF NOT EXISTS "TicketMasterActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    name                TEXT,
+    venue               TEXT,
+    city                TEXT,
+    nb_events           INT
+);
+
