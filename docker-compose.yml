@@ -202,3 +202,16 @@ services:
       - 8083:8083
     depends_on:
       - area-db
+
+  mobile:
+      build: Mobile
+      container_name: mobile
+      environment:
+        FLUTTER_HOME: /home/developer/flutter
+        PATH: /home/developer/flutter/bin:/home/developer/flutter/bin/cache/dart-sdk/bin:$PATH
+      volumes:
+        - ./Mobile:/home/developer/app
+      ports:
+        - 3001:3001
+      depends_on:
+        - api-gateway
