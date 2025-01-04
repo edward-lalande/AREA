@@ -1,0 +1,87 @@
+definitions:
+  models.Action:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+      city:
+        type: string
+      name:
+        type: string
+      nb_events:
+        type: integer
+      venue:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /action:
+    post:
+      consumes:
+      - application/json
+      description: Register the Actions received by the message brocker with all informations
+        nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.Action'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Actions
+      tags:
+      - TIcketMaster Area
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: send all the Actions available on the Ticket Master services as
+        an object arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the Actions
+      tags:
+      - Ticket Master Area
+swagger: "2.0"
