@@ -8,6 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Ticket Master Actions
+// @Summary send all the Actions
+// @Description send all the Actions available on the Ticket Master services as an object arrays with the names and the object needed
+// @Tags Ticket Master Area
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /actions [get]
 func GetActions(c *gin.Context) {
 	b, err := utils.OpenFile("Models/Actions.json")
 	if err != nil {
@@ -18,6 +28,17 @@ func GetActions(c *gin.Context) {
 	c.JSON(http.StatusOK, json)
 }
 
+// TIcketMaster Services
+// @Summary Register an received Actions
+// @Description Register the Actions received by the message brocker with all informations nedded
+// @Tags TIcketMaster Area
+// @Accept json
+// @Produce json
+// @Param routes body models.Action true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /action [post]
 func StoreActions(c *gin.Context) {
 	receivedData := models.Action{}
 
