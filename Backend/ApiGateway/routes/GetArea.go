@@ -40,6 +40,7 @@ func GetActions(c *gin.Context) {
 		{"Github Services", utils.GetEnvKey("GITHUB_API")},
 		{"Meteo Services", utils.GetEnvKey("METEO_API")},
 		{"Ticket Master Services", utils.GetEnvKey("TICKET_MASTER_API")},
+		{"Cryptomoney Services", utils.GetEnvKey("CRYPTOMONEY_API")},
 	}
 
 	for _, service := range servicesArray {
