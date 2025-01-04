@@ -15,7 +15,7 @@ import (
 // @Tags CryptoMoney Services Area
 // @Accept json
 // @Produce json
-// @Param routes body models.ReceivedActions true "It must contains the AreaId and the reactions type"
+// @Param routes body models.Actions true "It must contains the AreaId and the reactions type"
 // @Success 200 {object} map[string]string "Response is the received data"
 // @Failure 400 {object} map[string]string "Invalid request it contains the error"
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
