@@ -125,6 +125,15 @@ func Area(c *gin.Context) {
 				actionData.AreaId = areaID
 				resp := SendSpotifyActions(actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 11:
+				var actionData models.TicketMasterAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type11 action data"})
+					return
+				}
+				actionData.AreaID = areaID
+				resp := SendTicketMasterActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
