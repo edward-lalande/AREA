@@ -30,6 +30,12 @@ services:
     ports:
       - 8084:8084
 
+  cryptomoney:
+    build: Backend/Services/CryptoMoney
+    container_name: cryptomoney
+    ports:
+      - 8095:8095
+
   user-services:
     build: Backend/Services/UserServices
     container_name: user-services
