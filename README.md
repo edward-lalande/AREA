@@ -72,6 +72,8 @@ And it will launch the application
     - http://127.0.0.1:8089/swagger/index.html
 - Spotify Api
     - http://127.0.0.1:8091/swagger/index.html
+- Ticket Master Api
+    - http://127.0.0.1:8093/swagger/index.html
 - User Services
     - http://127.0.0.1:8085/swagger/index.html
 
