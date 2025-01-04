@@ -1,0 +1,23 @@
+{
+    "name": "Ticket Master Services",
+    "actions": [
+        {
+            "name": "New events in this city",
+            "action_id": 11,
+            "action_type": 0,
+            "arguments": [
+                {
+                    "display": "City",
+                    "name": "city",
+                    "type": "string"
+                },
+                {
+                    "display": "Kind of event",
+                    "name": "name",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}
+    

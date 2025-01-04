@@ -38,7 +38,6 @@ type SpotifyActions struct {
 	AccessToken string `json:"user_token"`
 }
 
-
 type DropBoxReactions struct {
 	AreaId        string `json:"area_id"`
 	UserToken     string `json:"user_token"`
@@ -73,22 +72,29 @@ type TypeTimeAction struct {
 
 type TypeDiscordAction struct {
 	BaseAction
+	ActionType int    `json:"action_type"`
+	ChannelId  string `json:"channel_id"`
+	MessageId  string `json:"message_id"`
+}
 
-	ActionType int `json:"action_type"`
-
-	ChannelId string `json:"channel_id"`
-	MessageId string `json:"message_id"`
+type TicketMasterAction struct {
+	AreaID     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	Name       string `json:"name"`
+	Venue      string `json:"venue"`
+	City       string `json:"city"`
+	NbEvents   int    `json:"nb_events"`
 }
 
 type AsanaReactions struct {
-    UserToken    string `json:"user_token"`
-    ReactionType int    `json:"reaction_type"`
-    AreaId       string `json:"area_id"`
-    ProjectName  string `json:"project_name"`
-    WorkSpaceId  string `json:"workspace_id"`
-    Note         string `json:"note"`
-    ProjectId    string `json:"project_id"`
-    TaskId       string `json:"task_id"`
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	AreaId       string `json:"area_id"`
+	ProjectName  string `json:"project_name"`
+	WorkSpaceId  string `json:"workspace_id"`
+	Note         string `json:"note"`
+	ProjectId    string `json:"project_id"`
+	TaskId       string `json:"task_id"`
 }
 
 type BaseReaction struct {
