@@ -156,3 +156,11 @@ CREATE TABLE IF NOT EXISTS "TicketMasterActions" (
     nb_events           INT
 );
 
+CREATE TABLE IF NOT EXISTS "CryptoMoneyActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    symbole             TEXT,
+    devise              TEXT,
+    value               INT
+);
