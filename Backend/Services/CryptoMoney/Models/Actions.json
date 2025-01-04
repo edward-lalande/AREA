@@ -1,0 +1,72 @@
+{
+    "name": "CryptoMoney Services",
+    "actions": [
+            {
+                "name": "CryptoMoney value is under your value",
+                "action_id": 13,
+                "action_type": 0,
+                "arguments": [
+                    {
+                        "display": "CryptoMoney symbole",
+                        "name": "symbole",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney Devise",
+                        "name": "devise",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney value",
+                        "name": "value",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "name": "CryptoMoney value is up to your value",
+                "action_id": 13,
+                "action_type": 1,
+                "arguments": [
+                    {
+                        "display": "CryptoMoney symbole",
+                        "name": "symbole",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney Devise",
+                        "name": "devise",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney value",
+                        "name": "value",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "name": "CryptoMoney value is equal to your value",
+                "action_id": 13,
+                "action_type": 2,
+                "arguments": [
+                    {
+                        "display": "CryptoMoney symbole",
+                        "name": "symbole",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney Devise",
+                        "name": "devise",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney value",
+                        "name": "value",
+                        "type": "number"
+                    }
+                ]
+            }
+        ]
+    }
+    
