@@ -16,13 +16,21 @@ class CreateArea extends StatefulWidget {
 class _CreateAreaState extends State<CreateArea> {
     bool _isGridVisible = false;
     bool _selected = false;
+    bool _actionChosen = false;
     int which = 0;
 
-    void _handleItemTap(int index) {
+    void handleServiceChose(int index) {
         setState(() {
             _isGridVisible = false;
             _selected = true;
             which = index;
+        });
+    }
+    void handleActionChose(Map<String, String> formData) {
+        setState(() {
+            _selected = false;
+            _isGridVisible = false;
+            _actionChosen = true;
         });
     }
 
@@ -78,6 +86,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 4,
                                 fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -89,6 +98,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 3,
                                 fieldLabels: ['City', 'Country', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -104,6 +114,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 2,
                                 fieldLabels: ['Chanel ID', 'Message ID'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -115,6 +126,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 2,
                                 fieldLabels: ['Chanel ID', 'Message ID'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -130,6 +142,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 4,
                                 fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -141,6 +154,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 3,
                                 fieldLabels: ['City', 'Country', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -156,6 +170,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 4,
                                 fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -167,6 +182,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 3,
                                 fieldLabels: ['City', 'Country', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -182,6 +198,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 4,
                                 fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -193,6 +210,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 3,
                                 fieldLabels: ['City', 'Country', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -208,6 +226,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 4,
                                 fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -219,6 +238,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 3,
                                 fieldLabels: ['City', 'Country', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -234,6 +254,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 4,
                                 fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -245,6 +266,7 @@ class _CreateAreaState extends State<CreateArea> {
                             return CustomFormDialog(
                                 numberOfFields: 3,
                                 fieldLabels: ['City', 'Country', 'Continent'],
+                                onSubmit: handleActionChose
                             );
                         },
                     );
@@ -256,84 +278,84 @@ class _CreateAreaState extends State<CreateArea> {
     Widget build(BuildContext context) {
         return SafeArea(
             child: Scaffold(
-            backgroundColor: Colors.white,
-            resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                children: [
-                    const MyTitle(
-                        title: "AREA",
-                        fontSize: 45,
-                        padding: EdgeInsets.only(top: 80),
-                        color: Colors.black,
+                backgroundColor: Colors.white,
+                resizeToAvoidBottomInset: false,
+                body: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                        children: [
+                            const MyTitle(
+                                title: "AREA",
+                                fontSize: 45,
+                                padding: EdgeInsets.only(top: 80),
+                                color: Colors.black,
+                            ),
+                            const MyTitle(
+                                title: "Create Area",
+                                fontSize: 30,
+                                padding: EdgeInsets.only(top: 30, bottom: 50),
+                                color: Colors.black,
+                            ),
+                            MyButton(
+                                padding: _isGridVisible
+                                    ? const EdgeInsets.only(left: 35, right: 35, top: 60, bottom: 20)
+                                    : const EdgeInsets.only(left: 35, right: 35, top: 60),
+                                title: _actionChosen ? "if this Discord services": "If this (add)",
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                                fontSize: 30,
+                                spaceBetweenIconAndText: 10,
+                                onPressed: (context) {
+                                    setState(() {
+                                        _isGridVisible = !_isGridVisible;
+                                    });
+                                },
+                            ),
+                            AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 500),
+                                transitionBuilder: (child, animation) {
+                                    return SizeTransition(
+                                        sizeFactor: animation,
+                                        axis: Axis.vertical,
+                                        child: child,
+                                    );
+                                },
+                                child: _isGridVisible && !_selected
+                                    ? SizedBox(
+                                        height: 400,
+                                        child: MyGridViewActionsName(gridClick: handleServiceChose),
+                                    )
+                                    : const SizedBox.shrink(),
+                            ),
+                            AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 500),
+                                transitionBuilder: (child, animation) {
+                                    return SizeTransition(
+                                        sizeFactor: animation,
+                                        axis: Axis.vertical,
+                                        child: child,
+                                    );
+                                },
+                                child: _selected
+                                    ? SizedBox(
+                                        height: 600,
+                                        child: showServicesActionsGrid(which),
+                                    )
+                                    : const SizedBox.shrink(),
+                            ),
+                            MyButton(
+                                padding: const EdgeInsets.only(left: 35, right: 35, top: 30),
+                                title: "Then that (add)",
+                                backgroundColor: Colors.grey,
+                                textColor: Colors.white,
+                                fontSize: 30,
+                                spaceBetweenIconAndText: 10,
+                                onPressed: (context) {},
+                            ),
+                        ],
                     ),
-                    const MyTitle(
-                        title: "Create Area",
-                        fontSize: 30,
-                        padding: EdgeInsets.only(top: 30, bottom: 50),
-                        color: Colors.black,
-                    ),
-                    MyButton(
-                        padding: _isGridVisible
-                            ? const EdgeInsets.only(left: 35, right: 35, top: 60, bottom: 20)
-                            : const EdgeInsets.only(left: 35, right: 35, top: 60),
-                        title: "If this (add)",
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        fontSize: 30,
-                        spaceBetweenIconAndText: 10,
-                        onPressed: (context) {
-                            setState(() {
-                            _isGridVisible = !_isGridVisible;
-                            });
-                        },
-                    ),
-                    AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
-                        transitionBuilder: (child, animation) {
-                            return SizeTransition(
-                                sizeFactor: animation,
-                                axis: Axis.vertical,
-                                child: child,
-                            );
-                        },
-                        child: _isGridVisible && !_selected
-                            ? SizedBox(
-                                height: 400,
-                                child: MyGridViewActionsName(gridClick: _handleItemTap),
-                            )
-                            : const SizedBox.shrink(),
-                    ),
-                    AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
-                        transitionBuilder: (child, animation) {
-                            return SizeTransition(
-                                sizeFactor: animation,
-                                axis: Axis.vertical,
-                                child: child,
-                            );
-                        },
-                        child: _selected
-                            ? SizedBox(
-                                height: 600,
-                                child: showServicesActionsGrid(which),
-                                )
-                            : const SizedBox.shrink(),
-                    ),
-                    MyButton(
-                        padding: const EdgeInsets.only(left: 35, right: 35, top: 30),
-                        title: "Then that (add)",
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 30,
-                        spaceBetweenIconAndText: 10,
-                        onPressed: (context) {},
-                    ),
-                ],
                 ),
             ),
-            ),
         );
-        }
+    }
 }
