@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_card.dart';
+import 'package:second_app/myWidgets/my_dialog.dart';
 import 'package:second_app/myWidgets/my_grid_view.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
@@ -28,7 +29,6 @@ class _CreateAreaState extends State<CreateArea> {
     Widget showServicesActionsGrid(int serviceIndex) {
         List<Map<String, String>> actionsList = [];
 
-
         String selectedServiceName = actionsMap.keys.elementAt(serviceIndex);
 
         actionsMap.forEach((serviceName, serviceData) {
@@ -51,21 +51,207 @@ class _CreateAreaState extends State<CreateArea> {
                 ),
                 itemCount: actionsList.length,
                 itemBuilder: (context, index) {
-                    return Card(
-                        color: Colors.grey,
-                        elevation: 7,
-                        child: MyCard(
-                            title: actionsList[index]['name']!,
-                            padding: const EdgeInsets.all(8),
-                        )
+                    return GestureDetector(
+                        onTap: () => handleCardTap(context, index, serviceIndex),
+                        child: Card(
+                            color: Colors.grey,
+                            elevation: 7,
+                            child: MyCard(
+                                title: actionsList[index]['name']!,
+                                padding: const EdgeInsets.all(8),
+                            ),
+                        ),
                     );
                 },
             ),
         );
     }
 
+    void handleCardTap(BuildContext context, int index, int serviceIndex) {
 
-
+        if (serviceIndex == 0) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 4,
+                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 3,
+                                fieldLabels: ['City', 'Country', 'Continent'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+        if (serviceIndex == 1) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 2,
+                                fieldLabels: ['Chanel ID', 'Message ID'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 2,
+                                fieldLabels: ['Chanel ID', 'Message ID'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+        if (serviceIndex == 2) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 4,
+                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 3,
+                                fieldLabels: ['City', 'Country', 'Continent'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+        if (serviceIndex == 3) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 4,
+                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 3,
+                                fieldLabels: ['City', 'Country', 'Continent'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+        if (serviceIndex == 4) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 4,
+                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 3,
+                                fieldLabels: ['City', 'Country', 'Continent'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+        if (serviceIndex == 5) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 4,
+                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 3,
+                                fieldLabels: ['City', 'Country', 'Continent'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+        if (serviceIndex == 6) {
+            switch (index) {
+                case 0:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 4,
+                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                            );
+                        },
+                    );
+                    break;
+                default:
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                            return CustomFormDialog(
+                                numberOfFields: 3,
+                                fieldLabels: ['City', 'Country', 'Continent'],
+                            );
+                        },
+                    );
+                break;
+            }
+        }
+    }
     @override
     Widget build(BuildContext context) {
         return SafeArea(
