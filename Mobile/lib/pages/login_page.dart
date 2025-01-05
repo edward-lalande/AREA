@@ -179,15 +179,25 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                     } else {
                                         if (context.mounted) {
-                                            context.go("/login");
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                    backgroundColor: Colors.grey,
+                                                    duration: Duration(seconds: 3),
+                                                    content: Text(
+                                                        'Wrong email or password',
+                                                        style: TextStyle(color: Colors.white, fontFamily: "avenir"),
+                                                ),
+                                            ),
+                                        );
+                                         context.go("/login");
                                         }
                                     }
                                 }
                             ),
                             const MyDividerText(
-                            bgColor: Colors.white,
-                            padding: EdgeInsets.only(top: 35, right: 35, left: 35, bottom: 35),
-                            textBetween: "Or continue with",
+                                bgColor: Colors.white,
+                                padding: EdgeInsets.only(top: 35, right: 35, left: 35, bottom: 35),
+                                textBetween: "Or continue with",
                             ),
 
                             Row(
