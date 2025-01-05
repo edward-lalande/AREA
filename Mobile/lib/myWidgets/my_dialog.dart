@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class CustomFormDialog extends StatefulWidget {
     final int numberOfFields;
     final List<String> fieldLabels;
+    final Function(Map<String, String>) onSubmit;
 
     const CustomFormDialog({
         super.key,
         required this.numberOfFields,
         required this.fieldLabels,
+        required this.onSubmit,
     });
 
     @override
@@ -111,6 +113,7 @@ class _CustomFormDialogState extends State<CustomFormDialog> {
                                     for (int i = 0; i < widget.numberOfFields; i++) {
                                         formData[widget.fieldLabels[i]] = controllers[i].text;
                                     }
+                                    widget.onSubmit(formData);
                                     Navigator.of(context).pop();
                                 },
                                 child: const Text(
