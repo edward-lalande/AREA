@@ -15,10 +15,13 @@ class CreateArea extends StatefulWidget {
 
 class _CreateAreaState extends State<CreateArea> {
     bool _isServicesVisible = false;
-    //bool _isActionsVisible = false;
-    bool _isReactionsVisible = false;
     bool _selectedService = false;
     bool _actionChosen = false;
+    bool _reactionChosen = false;
+
+    bool _isReactionsVisible = false;
+    bool _selectedReactions = false;
+
     int which = 0;
     final _scrollController = ScrollController();
 
@@ -34,22 +37,45 @@ class _CreateAreaState extends State<CreateArea> {
             _selectedService = false;
             _isServicesVisible = false;
             _actionChosen = true;
+
+            _isReactionsVisible = false;
+            _selectedReactions = false;
+            _reactionChosen = true;
+
+        });
+    }
+    void handleServiceReactionsChose(int index) {
+        setState(() {
+            _isReactionsVisible = false;
+            _selectedReactions = true;
+            which = index;
         });
     }
 
-    Widget showServicesActionsGrid(int serviceIndex) {
+    Widget showServicesActionsGrid(int serviceIndex, Map<String, dynamic> map, int type) {
         List<Map<String, String>> actionsList = [];
 
-        String selectedServiceName = actionsMap.keys.elementAt(serviceIndex);
+        String selectedServiceName = map.keys.elementAt(serviceIndex);
 
-        actionsMap.forEach((serviceName, serviceData) {
-            if (serviceName == selectedServiceName) {
-                for (var action in serviceData['actions']) {
-                    actionsList.add({'name': action['name']});
+        if (type == 1) {
+
+            map.forEach((serviceName, serviceData) {
+                if (serviceName == selectedServiceName) {
+                    for (var action in serviceData['actions']) {
+                        actionsList.add({'name': action['name']});
+                    }
                 }
-            }
-        });
-
+            });
+        }
+        else {
+            map.forEach((serviceName, serviceData) {
+                if (serviceName == selectedServiceName) {
+                    for (var action in serviceData['reactions']) {
+                        actionsList.add({'name': action['name']});
+                    }
+                }
+            });
+        }
         return SingleChildScrollView(
             padding: EdgeInsets.all(50),
             child: GridView.builder(
@@ -349,10 +375,13 @@ class _CreateAreaState extends State<CreateArea> {
                                         child: _selectedService
                                             ? SizedBox(
                                                 height: 600,
-                                                child: showServicesActionsGrid(which),
+                                                child: showServicesActionsGrid(which, actionsMap, 1),
                                             )
                                             : const SizedBox.shrink(),
                                     ),
+
+                                    //reaction
+
                                     MyButton(
                                         padding: _isReactionsVisible
                                             ? const EdgeInsets.only(left: 35, right: 35, top: 60, bottom: 20)
@@ -377,10 +406,26 @@ class _CreateAreaState extends State<CreateArea> {
                                                 child: child,
                                             );
                                         },
-                                        child: _isReactionsVisible
+                                        child: _isReactionsVisible && !_selectedReactions
                                             ? SizedBox(
                                                 height: 400,
-                                                child: MyGridViewActionsName(gridClick: handleServiceChose, dataMap: reactionsMap,),
+                                                child: MyGridViewActionsName(gridClick: handleServiceReactionsChose, dataMap: reactionsMap,),
+                                            )
+                                            : const SizedBox.shrink(),
+                                    ),
+                                    AnimatedSwitcher(
+                                        duration: const Duration(milliseconds: 500),
+                                        transitionBuilder: (child, animation) {
+                                            return SizeTransition(
+                                                sizeFactor: animation,
+                                                axis: Axis.vertical,
+                                                child: child,
+                                            );
+                                        },
+                                        child: _selectedReactions
+                                            ? SizedBox(
+                                                height: 400,
+                                                child: showServicesActionsGrid(which, reactionsMap, 2),
                                             )
                                             : const SizedBox.shrink(),
                                     ),
