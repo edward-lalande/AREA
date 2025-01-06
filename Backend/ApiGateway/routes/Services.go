@@ -41,6 +41,7 @@ func Services(c *gin.Context) {
 		{"Asana Service", "asana", utils.GetEnvKey("ASANA_API"), "#7289da"},
 		{"Ticket Master Service", "ticket-master", utils.GetEnvKey("TICKET_MASTER_API"), "#7289da"},
 		{"Twilio Service", "twilio", utils.GetEnvKey("TWILIO_API"), "#7289da"},
+		{"Cryptomoney Service", "Cryptomoney", utils.GetEnvKey("CRYPTOMONEY_API"), "#7289da"},
 	}
 	var uppedServices []serviceSendList
 
