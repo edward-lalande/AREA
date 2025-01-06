@@ -30,6 +30,21 @@ class _SignUpPageState extends State<SignUpPage> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                     children: [
+                      MyButton(
+                            title: "",
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black,
+                            padding: const EdgeInsets.only(top: 30, left: 25),
+                            fontSize: 0,
+                            spaceBetweenIconAndText: 0,
+                            onPressed: (context) {
+                                context.go("/login");
+                            },
+                            prefixIcon: const Icon(
+                                size: 30,
+                                Icons.arrow_back,
+                            ),
+                        ),
                         const MyTitle(
                             title: "AREA",
                             fontSize: 45,

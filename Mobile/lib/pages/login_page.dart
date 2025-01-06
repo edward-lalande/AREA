@@ -37,20 +37,19 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                         children: [
                             MyButton(title: "",
-                            backgroundColor: Colors.white,
-                            textColor: Colors.black,
-                            padding: const EdgeInsets.only(top: 30, left: 25),
-                            fontSize: 0,
-                            spaceBetweenIconAndText: 0,
-                            prefixIcon: const Icon(
-                                size: 30,
-                                Icons.settings,
-
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black,
+                                padding: const EdgeInsets.only(top: 30, left: 25),
+                                fontSize: 0,
+                                spaceBetweenIconAndText: 0,
+                                prefixIcon: const Icon(
+                                    size: 30,
+                                    Icons.settings,
+                                ),
+                                onPressed: (context) {
+                                    context.go("/host");
+                                }
                             ),
-                            onPressed: (context) {
-                            context.go("/host");
-                            })
-                            ,
                             const MyTitle(
                                 title: "AREA",
                                 fontSize: 45,
@@ -219,7 +218,6 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(width: 20,),
                                     OauthButton(iconPath: "assets/discord.png", resize: false,
                                        onPressed: (context) async {
-                                           
                                             String url = await classicGet(url: "http://10.0.2.2:8080/discord/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
