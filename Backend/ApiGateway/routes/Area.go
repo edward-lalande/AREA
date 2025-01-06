@@ -12,7 +12,7 @@ import (
 )
 
 func GenerateCryptoID() string {
-	bytes := make([]byte, 16)
+	bytes := make([]byte, 128)
 	if _, err := rand.Read(bytes); err != nil {
 		panic(err)
 	}
@@ -209,6 +209,16 @@ func Area(c *gin.Context) {
 				reactionDetail.AreaId = areaID
 				reactionDetail.UserToken = item.UserToken
 				resp := SendAsanaReaction(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 14:
+				var reactionDetail models.MiroReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendMiroReaction(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
