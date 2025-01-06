@@ -6,22 +6,6 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func CreateToken(id string) (string, error) {
-	var secretKey string = GetEnvKey("SECRET_KEY")
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		jwt.MapClaims{
-			"id": id,
-		})
-
-	tokenString, err := token.SignedString([]byte(secretKey))
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
-}
-
 func ParseToken(tokenString string) string {
 	var secretKey string = GetEnvKey("SECRET_KEY")
 

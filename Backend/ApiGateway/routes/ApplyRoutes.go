@@ -16,6 +16,7 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.POST("/areas", Area)
 	r.GET("/areas", GetUserAreas)
+	r.DELETE("/areas", DeleteArea)
 	r.GET("/actions", GetActions)
 	r.GET("/reactions", GetReactions)
 	r.POST("/gitlab-webhook", GitlabWebhook)

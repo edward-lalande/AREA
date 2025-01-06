@@ -19,17 +19,23 @@ func GenerateCryptoID() string {
 	return hex.EncodeToString(bytes)
 }
 
-func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceActionID int, serviceReactionID int) error {
+func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceActionID int, serviceReactionID int, actionName string, reactionName string) error {
+	id := utils.ParseToken(userToken)
+
+	if id == "" {
+		return nil
+	}
+
 	query := `
-		INSERT INTO "Area" (user_token, area_id, service_action_id, service_reaction_id)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO "Area" (user_token, area_id, service_action_id, service_reaction_id, action_name, reaction_name)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id;
 	`
 	db := utils.OpenDB(c)
 	if db == nil {
 		return nil
 	}
-	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
+	_, err := db.Exec(c, query, id, areaID, serviceActionID, serviceReactionID, actionName, reactionName)
 	if err != nil {
 		return err
 	}
@@ -227,7 +233,7 @@ func Area(c *gin.Context) {
 			var reaction models.BaseReaction
 			_ = json.Unmarshal(*reactionData, &reaction)
 
-			err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID)
+			err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID, action.Name, reaction.Name)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write area"})
 				return

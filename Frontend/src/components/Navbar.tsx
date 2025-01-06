@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
             <AreaBox sx={{ height: "100%", width: "80vw", flexDirection: "row", gap: 4, justifyContent: "end", pr: 3 }}>
 
                 <AreaLink href="/" text="Services" sx={{ fontSize: "1.5em", textDecoration: "none" }} />
-                <AreaLink href="/" text="Areas" sx={{ fontSize: "1.5em", textDecoration: "none" }} /> 
+                <AreaLink href="/areas" text="Areas" sx={{ fontSize: "1.5em", textDecoration: "none" }} /> 
                 <CreateButton text="Create" />
 
                 <IconButton href="/account">

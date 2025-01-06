@@ -21,7 +21,9 @@ CREATE TABLE IF NOT EXISTS "Area" (
     user_token          TEXT,
     area_id             TEXT,
     service_action_id   INT,
-    service_reaction_id INT
+    service_reaction_id INT,
+    action_name TEXT,
+    reaction_name TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "DiscordUser" (
