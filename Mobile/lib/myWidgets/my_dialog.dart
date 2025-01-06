@@ -5,7 +5,7 @@ class CustomFormDialog extends StatefulWidget {
     final int actionId;
     final int actionType;
     final List<String> fieldLabels;
-    final Function(Map<String, String>) onSubmit;
+    final Function(Map<String, dynamic>) onSubmit;
     final bool isActionChose;
 
     const CustomFormDialog({
@@ -24,8 +24,8 @@ class CustomFormDialog extends StatefulWidget {
 
 class _CustomFormDialogState extends State<CustomFormDialog> {
 
-    final Map<String, String> actionForm = {};
-    final Map<String, String> reactionForm = {};
+    Map<String, dynamic> actionForm = {};
+    Map<String, dynamic> reactionForm = {};
     final List<TextEditingController> controllers = [];
 
     @override
@@ -119,16 +119,24 @@ class _CustomFormDialogState extends State<CustomFormDialog> {
                                 ),
                                 onPressed: () {
                                     if (widget.isActionChose) {
-                                        reactionForm["reaction_id"] = widget.actionId.toString();
-                                        reactionForm["reaction_type"] = widget.actionType.toString();
+                                        reactionForm = {
+                                            "reaction_id": widget.actionId,
+                                            "reaction_type": widget.actionType,
+                                        };
+                                        //reactionForm["reaction_id"] = widget.actionId.toString();
+                                        //reactionForm["reaction_type"] = widget.actionType.toString();
                                         for (int i = 0; i < widget.numberOfFields; i++) {
                                             reactionForm[widget.fieldLabels[i].toLowerCase()] = controllers[i].text;
                                         }
                                         widget.onSubmit(reactionForm);
                                     }
                                     else {
-                                        actionForm["action_id"] = widget.actionId.toString();
-                                        actionForm["action_type"] = widget.actionType.toString();
+                                        //actionForm["action_id"] = widget.actionId.toString();
+                                        //actionForm["action_type"] = widget.actionType.toString();
+                                        actionForm = {
+                                            "action_id": widget.actionId,
+                                            "action_type": widget.actionType,
+                                        };
                                         for (int i = 0; i < widget.numberOfFields; i++) {
                                             actionForm[widget.fieldLabels[i].toLowerCase()] = controllers[i].text;
                                         }
