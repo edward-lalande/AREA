@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 
 import 'dart:convert';
 
+import 'package:second_app/utils/my_secure_storage.dart';
+
 final storage = const FlutterSecureStorage();
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
@@ -11,6 +13,8 @@ Map<String, String> userData = {};
 
 Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
 {
+    final store_token = SecureStorageService();
+
     try {
         final response = await http.post(
             Uri.parse(url),
@@ -18,8 +22,9 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
             body: json.encode(body),
         );
         if (response.statusCode == 200) {
-
+            //store_token()
             storage.write(key: "accesToken", value: response.body);
+
             return true;
 
         } else {
@@ -48,6 +53,28 @@ Future<bool> classicPost({Map<String, dynamic>? body, Map<String, String>? heade
             return false;
         }
     } catch (e) {
+        print('ERRORRRRR : $e');
+        return false;
+    }
+}
+
+Future<bool> postArea({Map<String, String>? body, Map<String, String>? headers, required String url }) async
+{
+    try {
+
+        final response = await http.post(
+            Uri.parse(url),
+            headers: headers,
+            body: body,
+        );
+
+        if (response.statusCode == 200) {
+            return true;
+        } else {
+            print('ERROR: ${response.statusCode}, ${response.body}');
+            return false;
+        }
+  } catch (e) {
         print('ERRORRRRR : $e');
         return false;
     }
