@@ -32,12 +32,9 @@ func Services(c *gin.Context) {
 		{"Gitlab", "gitlab", utils.GetEnvKey("GITLAB_API"), "#7289da"},
 		{"Google", "google", utils.GetEnvKey("GOOGLE_API"), "#7289da"},
 		{"Meteo", "meteo", utils.GetEnvKey("METEO_API"), "#7289da"},
-		{"Miro", "miro", utils.GetEnvKey("MIRO_API"), "#7289da"},
 		{"Spotify", "spotify", utils.GetEnvKey("SPOTIFY_API"), "#7289da"},
-		{"Steam", "steam", utils.GetEnvKey("STEAM_API"), "#7289da"},
 		{"Ticket Master", "ticket-master", utils.GetEnvKey("TICKET_MASTER_API"), "#7289da"},
 		{"Twilio", "twilio", utils.GetEnvKey("TWILIO_API"), "#7289da"},
-		{"Uber", "uber", utils.GetEnvKey("UBER_API"), "#7289da"},
 	}
 	var uppedServices []serviceList
 
