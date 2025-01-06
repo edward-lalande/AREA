@@ -43,6 +43,8 @@ class _CreateAreaState extends State<CreateArea> {
 
     bool _isReactionsVisible = false;
     bool _selectedReactions = false;
+    Map<String, dynamic> actionData = {};
+    Map<String, dynamic> reactionData = {};
 
     int which = 0;
     final _scrollController = ScrollController();
@@ -54,29 +56,21 @@ class _CreateAreaState extends State<CreateArea> {
             which = index;
         });
     }
-    void handleActionChose(Map<String, String> formData) {
+    void handleActionChose(Map<String, dynamic> formData) {
         setState(() {
             _selectedService = false;
             _isServicesVisible = false;
             _actionChosen = true;
-
-            //_isReactionsVisible = false;
-            //_selectedReactions = false;
-            //_reactionChosen = true;
-
+            actionData = formData;
         });
         print(formData);
     }
-    void handleReactionChose(Map<String, String> formData) {
+    void handleReactionChose(Map<String, dynamic> formData) {
         setState(() {
-            //_selectedService = false;
-            //_isServicesVisible = false;
-            //_actionChosen = true;
-
             _isReactionsVisible = false;
             _selectedReactions = false;
             _reactionChosen = true;
-
+            reactionData = formData;
         });
         print(formData);
     }
@@ -804,7 +798,19 @@ class _CreateAreaState extends State<CreateArea> {
                                         padding: EdgeInsets.only(left: 35, right: 35, top: 60),
                                         fontSize: 30,
                                         spaceBetweenIconAndText: 0,
-                                        onPressed: (context) {
+                                        onPressed: (context) async {
+                                            bool tmp = await classicPost(
+                                                url: "http://10.0.2.2:8080/areas",
+                                                body: {
+                                                    "user_token": "AREA",
+                                                    "action": {
+                                                        actionsMap
+                                                    },
+                                                    "reactions": [{
+                                                        reactionData,
+                                                    }]
+                                                },
+                                            );
                                             ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                     backgroundColor: Colors.lightGreen,
