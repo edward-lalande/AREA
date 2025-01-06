@@ -25,5 +25,5 @@ func main() {
 
 	routes.ApplyRoutes(r)
 
-	r.Run(":8090")
+	r.Run(":8097")
 }

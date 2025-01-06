@@ -36,6 +36,12 @@ services:
     ports:
       - 8095:8095
 
+  miro:
+    build: Backend/Services/Miro
+    container_name: miro
+    ports:
+      - 8097:8097
+
   user-services:
     build: Backend/Services/UserServices
     container_name: user-services

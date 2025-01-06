@@ -32,6 +32,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/google/oauth", GoogleOauth2)
 	r.GET("/dropbox/oauth", DropBoxOauth2)
 	r.GET("/asana/oauth", AsanaOauth2)
+	r.GET("/miro/oauth", MiroOauth2)
 
 	r.POST("/discord/access-token", DiscordAccessToken)
 	r.POST("/spotify/access-token", SpotifyAccessToken)
@@ -40,6 +41,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/google/access-token", GoogleAccessToken)
 	r.POST("/dropbox/access-token", DropboxAccessToken)
 	r.POST("/asana/access-token", AsanaAccessToken)
+	r.POST("/miro/access-token", MiroAccessToken)
 
 	r.POST("/github-webhook", GithubWebhook)
 }

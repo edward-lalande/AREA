@@ -1,0 +1,17 @@
+{
+    "name": "Miro Services",
+    "reactions": [
+        {
+            "name": "Create a board",
+            "reaction_id": 14,
+            "reaction_type": 0,
+            "arguments": [
+                {
+                    "display": "Name",
+                    "name": "name",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

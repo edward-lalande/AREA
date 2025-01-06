@@ -151,6 +151,14 @@ type TypeDiscordReaction struct {
 	GuildID string `json:"guild_id"`
 }
 
+type MiroReactions struct {
+	BaseReaction
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	AreaId       string `json:"area_id"`
+	Name         string `json:"name"`
+}
+
 type Pusher struct {
 	Name string `json:"name"`
 }

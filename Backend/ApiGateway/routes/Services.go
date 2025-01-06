@@ -32,16 +32,17 @@ func Services(c *gin.Context) {
 	servicesArray := []serviceList{
 		{"Date Time Service", "time", utils.GetEnvKey("TIME_API"), "#b3b3b3"},
 		{"Discord Service", "discord", utils.GetEnvKey("DISCORD_API"), "#7289da"},
-		{"Dropbox Service", "dropbox", utils.GetEnvKey("DROPBOX_API"), "#7289da"},
-		{"Github Service", "github", utils.GetEnvKey("GITHUB_API"), "#7289da"},
-		{"Gitlab Service", "gitlab", utils.GetEnvKey("GITLAB_API"), "#7289da"},
-		{"Google Service", "google", utils.GetEnvKey("GOOGLE_API"), "#7289da"},
-		{"Meteo Service", "meteo", utils.GetEnvKey("METEO_API"), "#7289da"},
-		{"Spotify Service", "spotify", utils.GetEnvKey("SPOTIFY_API"), "#7289da"},
-		{"Asana Service", "asana", utils.GetEnvKey("ASANA_API"), "#7289da"},
-		{"Ticket Master Service", "ticket-master", utils.GetEnvKey("TICKET_MASTER_API"), "#7289da"},
-		{"Twilio Service", "twilio", utils.GetEnvKey("TWILIO_API"), "#7289da"},
-		{"Cryptomoney Service", "Cryptomoney", utils.GetEnvKey("CRYPTOMONEY_API"), "#7289da"},
+		{"Dropbox Service", "dropbox", utils.GetEnvKey("DROPBOX_API"), "#0061FE"},
+		{"Github Service", "github", utils.GetEnvKey("GITHUB_API"), "black"},
+		{"Gitlab Service", "gitlab", utils.GetEnvKey("GITLAB_API"), "#fc6d26"},
+		{"Google Service", "google", utils.GetEnvKey("GOOGLE_API"), "#0F9D58"},
+		{"Meteo Service", "meteo", utils.GetEnvKey("METEO_API"), "#4285F4"},
+		{"Spotify Service", "spotify", utils.GetEnvKey("SPOTIFY_API"), "#1db954"},
+		{"Asana Service", "asana", utils.GetEnvKey("ASANA_API"), "#ff80e1"},
+		{"Ticket Master Service", "ticket-master", utils.GetEnvKey("TICKET_MASTER_API"), "#1c24ff"},
+		{"Twilio Service", "twilio", utils.GetEnvKey("TWILIO_API"), "#c72e61"},
+		{"Cryptomoney Service", "Cryptomoney", utils.GetEnvKey("CRYPTOMONEY_API"), "#f7931a"},
+		{"Miro Service", "Miro", utils.GetEnvKey("MIRO_API"), "#faca00"},
 	}
 	var uppedServices []serviceSendList
 

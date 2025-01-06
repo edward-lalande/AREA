@@ -166,3 +166,11 @@ CREATE TABLE IF NOT EXISTS "CryptoMoneyActions" (
     devise              TEXT,
     value               INT
 );
+
+CREATE TABLE IF NOT EXISTS "MiroReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    name                TEXT
+);
