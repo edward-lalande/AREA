@@ -6,6 +6,7 @@ import 'dart:convert';
 final storage = const FlutterSecureStorage();
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
+Map<String, dynamic> reactionsMap = {};
 Map<String, String> userData = {};
 
 Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async

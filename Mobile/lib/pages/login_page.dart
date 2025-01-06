@@ -159,6 +159,21 @@ class _LoginPageState extends State<LoginPage> {
                                     final String actionsString = await classicGet(
                                         url: "http://10.0.2.2:8080/actions",
                                     );
+                                    final String reactionsString = await classicGet(
+                                      url: "http://10.0.2.2:8080/reactions"
+                                    );
+                                    List<dynamic> dataReact = jsonDecode(reactionsString);
+                                    reactionsMap = {
+                                        for (var service in dataReact.where((element) => element != null))
+                                            service['name']: {
+                                                'reactions': service['reactions'].map((action) {
+                                                    return {
+                                                        'name': action['name'],
+                                                        'arguments': action['arguments'],
+                                                    };
+                                                }).toList(),
+                                            }
+                                    };
                                     List<dynamic> data = jsonDecode(actionsString);
                                     actionsMap = {
                                         for (var service in data.where((element) => element != null))
@@ -175,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                                     if (tmp) {
                                         if (context.mounted) {
                                             context.go("/home");
-                                    }
+                                        }
                                     } else {
                                         if (context.mounted) {
                                             ScaffoldMessenger.of(context).showSnackBar(
