@@ -7,8 +7,8 @@ import (
 	"discord-service/routes"
 	"discord-service/utils"
 	"encoding/json"
-	"io"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -53,7 +53,7 @@ func getDatabaseSlice() []models.Database {
 
 func BackUpLocalDataCall() {
 	databaseSlice := getDatabaseSlice()
-	
+
 	if databaseSlice == nil {
 		return
 	}
@@ -87,7 +87,7 @@ func BackUpLocalDataCall() {
 
 			responseData, err := io.ReadAll(response.Body)
 
-			if (err != nil) {
+			if err != nil {
 				return
 			}
 
@@ -156,7 +156,7 @@ func BackUpLocalDataCall() {
 
 			responseData, err := io.ReadAll(response.Body)
 
-			if (err != nil) {
+			if err != nil {
 				return
 			}
 
@@ -216,7 +216,7 @@ func main() {
 
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, token")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
