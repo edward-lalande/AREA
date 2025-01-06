@@ -5,6 +5,7 @@ import (
 	"api-gateway/utils"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -80,7 +81,23 @@ func MiroAccessToken(c *gin.Context) {
 			c.Header(key, value)
 		}
 	}
-
+	fmt.Println("okay okay")
 	c.Status(resp.StatusCode)
 	io.Copy(c.Writer, resp.Body)
+}
+
+func SendMiroReaction(sendingData models.MiroReactions, c *gin.Context) *http.Response {
+
+	jsonBody, err := json.Marshal(sendingData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return nil
+	}
+	resp, err := http.Post(utils.GetEnvKey("MIRO_API")+"reaction", "application/jsons", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil
+	}
+	defer resp.Body.Close()
+	return resp
 }
