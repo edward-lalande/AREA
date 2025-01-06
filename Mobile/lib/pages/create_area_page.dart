@@ -5,6 +5,28 @@ import 'package:second_app/myWidgets/my_dialog.dart';
 import 'package:second_app/myWidgets/my_grid_view.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
+/*
+    url : "http://127.0.0.1:8080/areas",
+    body: {
+        "user_token": "AREA",
+        
+        "action": {
+            "actionId": 0,
+            "actionType": 0,
+            "hour": 17,
+            "minute": 34,
+            "city": "Paris",
+            "continent": "Europe"
+        }
+        "reactions" [{
+            "reactionId": 0,
+            "reactionType": 0,
+            "channel_id": "3452345234532",
+            "message": "Pause café ?"
+        }]
+    }
+ */
+
 
 class CreateArea extends StatefulWidget {
     const CreateArea({super.key});
@@ -38,11 +60,25 @@ class _CreateAreaState extends State<CreateArea> {
             _isServicesVisible = false;
             _actionChosen = true;
 
+            //_isReactionsVisible = false;
+            //_selectedReactions = false;
+            //_reactionChosen = true;
+
+        });
+        print(formData);
+    }
+    void handleReactionChose(Map<String, String> formData) {
+        setState(() {
+            //_selectedService = false;
+            //_isServicesVisible = false;
+            //_actionChosen = true;
+
             _isReactionsVisible = false;
             _selectedReactions = false;
             _reactionChosen = true;
 
         });
+        print(formData);
     }
     void handleServiceReactionsChose(int index) {
         setState(() {
@@ -106,200 +142,530 @@ class _CreateAreaState extends State<CreateArea> {
 
     void handleCardTap(BuildContext context, int index, int serviceIndex) {
 
-        if (serviceIndex == 0) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 4,
-                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+        if (!_actionChosen) {
+            if (serviceIndex == 0) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 3,
-                                fieldLabels: ['City', 'Country', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
             }
-        }
-        if (serviceIndex == 1) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 2,
-                                fieldLabels: ['Chanel ID', 'Message ID'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+            if (serviceIndex == 1) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ['Chanel ID', 'Message ID'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ['Chanel ID', 'Message ID'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 2,
-                                fieldLabels: ['Chanel ID', 'Message ID'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
             }
-        }
-        if (serviceIndex == 2) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 4,
-                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+            if (serviceIndex == 2) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 3,
-                                fieldLabels: ['City', 'Country', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
             }
-        }
-        if (serviceIndex == 3) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 4,
-                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+            if (serviceIndex == 3) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 3,
-                                fieldLabels: ['City', 'Country', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
             }
-        }
-        if (serviceIndex == 4) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 4,
-                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+            if (serviceIndex == 4) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 3,
-                                fieldLabels: ['City', 'Country', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
             }
-        }
-        if (serviceIndex == 5) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 4,
-                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+            if (serviceIndex == 5) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 3,
-                                fieldLabels: ['City', 'Country', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
             }
-        }
-        if (serviceIndex == 6) {
-            switch (index) {
-                case 0:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 4,
-                                fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
+            if (serviceIndex == 6) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: false,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleActionChose
+                                );
+                            },
+                        );
                     break;
-                default:
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                            return CustomFormDialog(
-                                numberOfFields: 3,
-                                fieldLabels: ['City', 'Country', 'Continent'],
-                                onSubmit: handleActionChose
-                            );
-                        },
-                    );
-                break;
+                }
+            }
+
+        }
+        else {
+            if (serviceIndex == 0) {
+                switch (index) {
+                    case 1 && 2:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ["Guild_ID", "Channel_Name"],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    case 3:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 1,
+                                    fieldLabels: ["Channel_ID"],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    case 4 && 5:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ["Channel_ID", "Message_ID"],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    case 6 && 7:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ["Guild_ID", "Role_ID"],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ["Channel_ID", "Message"],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
+            }
+            if (serviceIndex == 1) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ['Chanel ID', 'Message ID'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 2,
+                                    fieldLabels: ['Chanel ID', 'Message ID'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
+            }
+            if (serviceIndex == 2) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
+            }
+            if (serviceIndex == 3) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
+            }
+            if (serviceIndex == 4) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
+            }
+            if (serviceIndex == 5) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
+            }
+            if (serviceIndex == 6) {
+                switch (index) {
+                    case 0:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 4,
+                                    fieldLabels: ['Hour', 'Minute', 'City', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                        break;
+                    default:
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                                return CustomFormDialog(
+                                    isActionChose: true,
+                                    actionId: serviceIndex,
+                                    actionType: index,
+                                    numberOfFields: 3,
+                                    fieldLabels: ['City', 'Country', 'Continent'],
+                                    onSubmit: handleReactionChose
+                                );
+                            },
+                        );
+                    break;
+                }
             }
         }
     }
@@ -310,8 +676,10 @@ class _CreateAreaState extends State<CreateArea> {
                 backgroundColor: Colors.white,
                 resizeToAvoidBottomInset: false,
                 body: Padding(
-                    padding: EdgeInsets.only(left: 8, right: 8),
-                    child: Scrollbar(
+                    padding: EdgeInsets.only(left: 8, right: 14),
+                    child: RawScrollbar(
+                        radius: Radius.circular(10),
+                        thumbColor: Colors.black,
                         thickness: 5,
                         controller: _scrollController,
                         thumbVisibility: true,
@@ -336,7 +704,7 @@ class _CreateAreaState extends State<CreateArea> {
                                         padding: _isServicesVisible
                                             ? const EdgeInsets.only(left: 35, right: 35, top: 60, bottom: 20)
                                             : const EdgeInsets.only(left: 35, right: 35, top: 60),
-                                        title: _actionChosen ? "if this Discord services": "If this (add)",
+                                        title: "If this (add)",
                                         backgroundColor: Colors.black,
                                         textColor: Colors.white,
                                         fontSize: 30,
@@ -429,6 +797,25 @@ class _CreateAreaState extends State<CreateArea> {
                                             )
                                             : const SizedBox.shrink(),
                                     ),
+                                    _reactionChosen && _actionChosen ? MyButton(
+                                        title: "Create Area !",
+                                        backgroundColor: Colors.black,
+                                        textColor: Colors.white,
+                                        padding: EdgeInsets.only(left: 35, right: 35, top: 60),
+                                        fontSize: 30,
+                                        spaceBetweenIconAndText: 0,
+                                        onPressed: (context) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                    backgroundColor: Colors.lightGreen,
+                                                    duration: Duration(seconds: 3),
+                                                    content: Text(
+                                                        'Area Created !',
+                                                        style: TextStyle(color: Colors.white, fontFamily: "avenir"),
+                                                    ),
+                                                ));
+                                        }
+                                    ): const SizedBox.shrink(),
                                 ],
                             ),
                         ),
