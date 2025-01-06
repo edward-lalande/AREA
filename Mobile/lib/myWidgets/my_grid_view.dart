@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:second_app/myWidgets/my_card.dart';
 import 'package:second_app/myWidgets/my_title.dart';
-import 'package:second_app/utils/post_request.dart';
 
 class MyGridView extends StatefulWidget {
     const MyGridView({
@@ -146,14 +145,16 @@ class _MyGridViewState extends State<MyGridView> {
     }
 }
 
-    class MyGridViewActionsName extends StatefulWidget {
+class MyGridViewActionsName extends StatefulWidget {
 
     const MyGridViewActionsName({
         super.key,
         this.gridClick,
+        required this.dataMap,
     });
 
     final Function(int idx)? gridClick;
+    final Map<String, dynamic> dataMap;
 
     @override
     State<MyGridViewActionsName> createState() => _MyGridViewActionsNameState();
@@ -164,17 +165,17 @@ class _MyGridViewActionsNameState extends State<MyGridViewActionsName> {
 
     void _onCardTap(int index, dynamic service) {
         setState(() {
-        selectedIndex = selectedIndex == index ? -1 : index;
+            selectedIndex = selectedIndex == index ? -1 : index;
         });
         widget.gridClick!(index);
     }
 
     @override
     Widget build(BuildContext context) {
-        List<String> keysList = actionsMap.keys.toList();
+        List<String> keysList = widget.dataMap.keys.toList();
 
         return SingleChildScrollView(
-            padding: EdgeInsets.all(50),
+            padding: EdgeInsets.only(bottom: 50, left: 50, right: 50),
             child: GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -187,7 +188,7 @@ class _MyGridViewActionsNameState extends State<MyGridViewActionsName> {
                 itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-                            _onCardTap(index, actionsMap[keysList[index]]);
+                            _onCardTap(index, widget.dataMap[keysList[index]]);
                         },
                         child: Card(
                             color: Colors.grey,
