@@ -51,6 +51,17 @@ func FindReactions(id int, information models.Reactions) (*http.Response, error)
 	return reactions[id](information)
 }
 
+// Spotify Services
+// @Summary Register an received Reactions
+// @Description Register the reactions received by the message brocker with all informations nedded
+// @Tags Spotify Area
+// @Accept json
+// @Produce json
+// @Param routes body models.ReactionsReceived true "It must contains the AreaId and the reactions type"
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reaction [post]
 func ReceivedReactions(c *gin.Context) {
 	var receivedData models.ReactionsReceived
 
@@ -67,5 +78,25 @@ func ReceivedReactions(c *gin.Context) {
 	}
 
 	defer db.Close(c)
-	c.JSON(http.StatusAccepted, gin.H{"Discord received": receivedData})
+	c.JSON(http.StatusAccepted, gin.H{"Spotify received": receivedData})
+}
+
+// Spotify Reactions
+// @Summary send all the reactions
+// @Description send all the reactions available on the Spotify services as an object arrays with the names and the object needed
+// @Tags Spotify Area
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Response is the received data"
+// @Failure 400 {object} map[string]string "Invalid request it contains the error"
+// @Failure 500 {object} map[string]string "Internal error it contains the error"
+// @Router /reactions [get]
+func GetReactions(c *gin.Context) {
+	b, err := utils.OpenFile("Models/Reactions.json")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	json := utils.BytesToJson(b)
+	c.JSON(http.StatusOK, json)
 }

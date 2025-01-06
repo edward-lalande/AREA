@@ -1,0 +1,182 @@
+definitions:
+  models.Reactions:
+    properties:
+      area_id:
+        type: string
+      note:
+        type: string
+      project_id:
+        type: string
+      project_name:
+        type: string
+      reaction_type:
+        type: integer
+      task_id:
+        type: string
+      user_token:
+        type: string
+      workspace_id:
+        type: string
+    type: object
+  models.TriggerModelGateway:
+    properties:
+      area_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /access-token:
+    post:
+      consumes:
+      - application/json
+      description: Send the code received by the frontend to get the Asana access-token
+        of the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get
+      tags:
+      - Asana OAUTH2
+  /callback:
+    get:
+      consumes:
+      - application/json
+      description: Send the code received by Asana to the frontend
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the code to redirect to
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send the code received by Asana to the frontend
+      tags:
+      - Asana OAUTH2
+  /oauth:
+    get:
+      consumes:
+      - application/json
+      description: Send the url to redirect to for the OAUTH2 Asana
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the URL to redirect to for the OAUTH2 Asana
+          schema:
+            type: string
+      summary: Send the url to redirect to for the OAUTH2 Asana
+      tags:
+      - Asana OAUTH2
+  /reaction:
+    post:
+      consumes:
+      - application/json
+      description: Register the reactions received by the message brocker with all
+        informations nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.Reactions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Reactions
+      tags:
+      - Asana Area
+  /reactions:
+    get:
+      consumes:
+      - application/json
+      description: send all the reactions available on the Asana services as an object
+        arrays with the names and the object needed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: send all the reactions
+      tags:
+      - Asana Area
+  /trigger:
+    post:
+      consumes:
+      - application/json
+      description: Actions triggerd the reactions and call the trigger route
+      parameters:
+      - description: It contains the Area Id to the reactions
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.TriggerModelGateway'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response of the reactions
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Trigger an Area
+      tags:
+      - Asana trigger
+swagger: "2.0"

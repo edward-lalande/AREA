@@ -158,6 +158,14 @@ func DiscordPost(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// DiscordOauth2
+// @Summary Redirect to Discord OAuth2 authorization endpoint
+// @Description Initiates the OAuth2 process by redirecting the user to the Discord authorization endpoint.
+// @Tags Discord
+// @Produce json
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} map[string]string "Error message"
+// @Router /discord/oauth [get]
 func DiscordOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("DISCORD_API") + "oauth")
@@ -178,6 +186,17 @@ func DiscordOauth2(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+// DiscordAccessToken
+// @Summary Exchange Discord OAuth2 authorization code for an access token
+// @Description Receives an OAuth2 authorization code and exchanges it for an access token with Discord.
+// @Tags Discord
+// @Accept json
+// @Produce json
+// @Param body body models.OauthCode true "OAuth2 Authorization Code"
+// @Success 200 {string} string "Access token response"
+// @Failure 400 {object} map[string]string "Error message"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /discord/access-token [post]
 func DiscordAccessToken(c *gin.Context) {
 
 	var (

@@ -1,0 +1,72 @@
+definitions:
+  models.Actions:
+    properties:
+      action_type:
+        type: integer
+      area_id:
+        type: string
+      devise:
+        type: string
+      symbole:
+        type: string
+      value:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /action:
+    post:
+      consumes:
+      - application/json
+      description: Register the Actions received by the message brocker with all informations
+        nedded
+      parameters:
+      - description: It must contains the AreaId and the reactions type
+        in: body
+        name: routes
+        required: true
+        schema:
+          $ref: '#/definitions/models.Actions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response is the received data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error it contains the error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register an received Actions
+      tags:
+      - CryptoMoney Services Area
+  /actions:
+    get:
+      consumes:
+      - application/json
+      description: Get Actions from CryptoMoney Services
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reactions name with parameters of it as object
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Actions from CryptoMoney Services
+      tags:
+      - Actions CryptoMoney Services
+swagger: "2.0"

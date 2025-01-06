@@ -1,0 +1,109 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/actions": {
+            "get": {
+                "description": "Get Actions from Meteo Services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Actions Meteo Services"
+                ],
+                "summary": "Get Actions from Meteo Services",
+                "responses": {
+                    "200": {
+                        "description": "Reactions name with parameters of it as object",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Post an Meteo actions, receive by the Message Brocker (handler of communication between services) and register it to him database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Actions Date Meteo services"
+                ],
+                "summary": "Post an Actions",
+                "parameters": [
+                    {
+                        "description": "It contains the Area Id, the location and the Meteo of the Area",
+                        "name": "routes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MeteoActions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response is the Id of the Area",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.MeteoActions": {
+            "type": "object",
+            "properties": {
+                "action_type": {
+                    "type": "integer"
+                },
+                "area_id": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

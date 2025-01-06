@@ -131,6 +131,24 @@ func Area(c *gin.Context) {
 				actionData.AreaId = areaID
 				resp := SendSpotifyActions(actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 11:
+				var actionData models.TicketMasterAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type11 action data"})
+					return
+				}
+				actionData.AreaID = areaID
+				resp := SendTicketMasterActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 13:
+				var actionData models.CryptoMoneyActions
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type11 action data"})
+					return
+				}
+				actionData.AreaId = areaID
+				resp := SendCryptoMoneyActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
@@ -187,6 +205,16 @@ func Area(c *gin.Context) {
 				reactionDetail.AreaId = areaID
 				reactionDetail.UserToken = item.UserToken
 				resp := SendGitlabReaction(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 10:
+				var reactionDetail models.AsanaReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendAsanaReaction(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}

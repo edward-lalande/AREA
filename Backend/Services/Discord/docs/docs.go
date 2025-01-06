@@ -41,6 +41,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/actions": {
+            "get": {
+                "description": "send all the actions available on the discord services as an object arrays with the names and the object needed",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discord Area"
+                ],
+                "summary": "send all the actions",
+                "responses": {
+                    "200": {
+                        "description": "Response is the received data",
+                        "schema": {
+                            "$ref": "#/definitions/models.ReactionGet"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/callback": {
             "get": {
                 "description": "Send the code received by discord to the frontend",
@@ -67,7 +108,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/oauth2": {
+        "/oauth": {
             "get": {
                 "description": "Send the url to redirect to for the OAUTH2 discord",
                 "consumes": [
@@ -92,7 +133,7 @@ const docTemplate = `{
         },
         "/reaction": {
             "post": {
-                "description": "Register the reactions received by the message brocker with all informations nedded",
+                "description": "Register the Actions received by the message brocker with all informations nedded",
                 "consumes": [
                     "application/json"
                 ],
@@ -102,7 +143,7 @@ const docTemplate = `{
                 "tags": [
                     "Discord Area"
                 ],
-                "summary": "Register an received Reactions",
+                "summary": "Register an received Actions",
                 "parameters": [
                     {
                         "description": "It must contains the AreaId and the reactions type",
@@ -110,7 +151,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ReactionReceiveData"
+                            "$ref": "#/definitions/models.DiscordActionReceive"
                         }
                     }
                 ],
@@ -298,6 +339,29 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.DiscordActionReceive": {
+            "type": "object",
+            "properties": {
+                "action_type": {
+                    "type": "integer"
+                },
+                "area_id": {
+                    "type": "string"
+                },
+                "channel_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "message_id": {
+                    "type": "string"
+                },
+                "user_token": {
+                    "type": "string"
+                }
+            }
+        },
         "models.OauthInformationSignUp": {
             "type": "object",
             "required": [
@@ -319,6 +383,9 @@ const docTemplate = `{
                 "channel_id": {
                     "type": "string"
                 },
+                "guild_id": {
+                    "type": "string"
+                },
                 "message": {
                     "type": "string"
                 },
@@ -337,6 +404,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "channel_id": {
+                    "type": "string"
+                },
+                "guild_id": {
                     "type": "string"
                 },
                 "message": {

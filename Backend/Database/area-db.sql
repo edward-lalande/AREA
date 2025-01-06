@@ -135,3 +135,34 @@ CREATE TABLE IF NOT EXISTS "MeteoActions" (
     longitude           TEXT,
     value               INT
 );
+
+CREATE TABLE IF NOT EXISTS "AsanaReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    project_name        TEXT,
+    workspace_id        TEXT,
+    note                TEXT,
+    project_id          TEXT,
+    task_id             TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "TicketMasterActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    name                TEXT,
+    venue               TEXT,
+    city                TEXT,
+    nb_events           INT
+);
+
+CREATE TABLE IF NOT EXISTS "CryptoMoneyActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    symbole             TEXT,
+    devise              TEXT,
+    value               INT
+);

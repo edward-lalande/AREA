@@ -73,11 +73,40 @@ type TypeTimeAction struct {
 
 type TypeDiscordAction struct {
 	BaseAction
+	ActionType int    `json:"action_type"`
+	ChannelId  string `json:"channel_id"`
+	MessageId  string `json:"message_id"`
+}
 
-	ActionType int `json:"action_type"`
+type CryptoMoneyActions struct {
+	BaseAction
+	AreaId     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	Symbole    string `json:"symbole"`
+	Devise     string `json:"devise"`
+	Value      int    `json:"value"`
+}
 
-	ChannelId string `json:"channel_id"`
-	MessageId string `json:"message_id"`
+type TicketMasterAction struct {
+	BaseAction
+	AreaID     string `json:"area_id"`
+	ActionType int    `json:"action_type"`
+	Name       string `json:"name"`
+	Venue      string `json:"venue"`
+	City       string `json:"city"`
+	NbEvents   int    `json:"nb_events"`
+}
+
+type AsanaReactions struct {
+	BaseAction
+	UserToken    string `json:"user_token"`
+	ReactionType int    `json:"reaction_type"`
+	AreaId       string `json:"area_id"`
+	ProjectName  string `json:"project_name"`
+	WorkSpaceId  string `json:"workspace_id"`
+	Note         string `json:"note"`
+	ProjectId    string `json:"project_id"`
+	TaskId       string `json:"task_id"`
 }
 
 type BaseReaction struct {
@@ -88,12 +117,14 @@ type BaseReaction struct {
 }
 
 type SpotifyReactions struct {
+	BaseReaction
 	AreaId       string `json:"area_id"`
 	ReactionType int    `json:"reaction_type"`
 	AccessToken  string `json:"user_token"`
 }
 
 type GitlabReactions struct {
+	BaseReaction
 	UserToken    string `json:"user_token"`
 	ReactionType int    `json:"reaction_type"`
 	AreaId       string `json:"area_id"`
@@ -156,6 +187,7 @@ type TypeGithubAction struct {
 }
 
 type GoogleReaction struct {
+	BaseReaction
 	UserToken    string `json:"user_token"`
 	AreaId       string `json:"area_id"`
 	ReactionType int    `json:"reaction_type"`

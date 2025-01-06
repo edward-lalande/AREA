@@ -6,10 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Gitlab OAUTH2
-// @Summary Send the code received by Gitlab to the frontend
-// @Description Send the code received by Gitlab to the frontend
-// @Tags Gitlab OAUTH2
+// Spotify OAUTH2
+// @Summary Send the code received by Spotify to the frontend
+// @Description Send the code received by Spotify to the frontend
+// @Tags Spotify OAUTH2
 // @Accept json
 // @Produce json
 // @Success 200 {object} map[string]string "the code to redirect to"

@@ -1,0 +1,132 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/action": {
+            "post": {
+                "description": "Register the Actions received by the message brocker with all informations nedded",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TIcketMaster Area"
+                ],
+                "summary": "Register an received Actions",
+                "parameters": [
+                    {
+                        "description": "It must contains the AreaId and the reactions type",
+                        "name": "routes",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Action"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response is the received data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/actions": {
+            "get": {
+                "description": "send all the Actions available on the Ticket Master services as an object arrays with the names and the object needed",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ticket Master Area"
+                ],
+                "summary": "send all the Actions",
+                "responses": {
+                    "200": {
+                        "description": "Response is the received data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error it contains the error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Action": {
+            "type": "object",
+            "properties": {
+                "action_type": {
+                    "type": "integer"
+                },
+                "area_id": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nb_events": {
+                    "type": "integer"
+                },
+                "venue": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
