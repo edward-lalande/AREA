@@ -7,6 +7,7 @@ type BaseAction struct {
 	// required: true
 	ActionID  int    `json:"action_id"`
 	UserToken string `json:"user_token"`
+	Name      string `json:"name"`
 }
 
 type GoogleAction struct {
@@ -111,7 +112,8 @@ type AsanaReactions struct {
 type BaseReaction struct {
 	// Reactions ID
 	// required: true
-	ReactionID int `json:"reaction_id"`
+	ReactionID int    `json:"reaction_id"`
+	Name       string `json:"name"`
 }
 
 type SpotifyReactions struct {
@@ -217,6 +219,8 @@ type AreaDatabase struct {
 	Id                int    `json:"id"`
 	UserToken         string `json:"user_token"`
 	AreaId            string `json:"area_id"`
+	ActionName        string `json:"action_name"`
+	ReactionName      string `json:"reaction_name"`
 	ServiceActionId   int    `json:"service_action_id"`
 	ServiceReactionId int    `json:"service_reaction_id"`
 }

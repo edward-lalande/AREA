@@ -1,7 +1,7 @@
 package main
 
 import (
-	"poc-crud-users/routes"
+	"miro/routes"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,6 +25,5 @@ func main() {
 
 	routes.ApplyRoutes(r)
 
-	r.Run(":8080")
-
+	r.Run(":8090")
 }

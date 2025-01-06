@@ -19,4 +19,18 @@ const AreaTypography: React.FC<AreaTypographyProps> = ({ text, ...props }) => {
     );
 };
 
-export { AreaTypography };
+const AreasTypography: React.FC<AreaTypographyProps> = ({ text, ...props }) => {
+    return (
+        <Typography
+            variant="h6"
+            {...props}
+            sx={{
+                ...props.sx
+            }}
+        >
+            {text}
+        </Typography>
+    );
+};
+
+export { AreaTypography, AreasTypography };

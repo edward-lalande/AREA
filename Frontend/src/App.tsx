@@ -1,4 +1,6 @@
 import Home from "./components/Home";
+import Areas from "./components/Areas";
+import Create from "./components/Create";
 import Account from "./components/Account";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
@@ -8,7 +10,6 @@ import ThemeProvider from "./components/ThemeProvider";
 import "./App.css"
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/PrivateRoute";
-import Create from "./components/Create";
 
 const App: React.FC = () => {
 
@@ -28,6 +29,10 @@ const App: React.FC = () => {
         {
             path: "/account",
             element: <ProtectedRoute children={<Account/>} />
+        },
+        {
+            path: "/areas",
+            element: <ProtectedRoute children={<Areas/>} />
         },
         {
             path: "/create",
