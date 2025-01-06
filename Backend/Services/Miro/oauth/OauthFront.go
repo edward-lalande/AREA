@@ -18,6 +18,6 @@ import (
 func OAuthFront(c *gin.Context) {
 	authUrl := "https://miro.com/oauth/authorize?response_type=code" +
 		"&client_id=" + utils.GetEnvKey("CLIENT_ID") +
-		"&redirect_uri=" + utils.GetEnvKey("CLIENT_SECRET")
+		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI")
 	c.String(http.StatusOK, authUrl)
 }

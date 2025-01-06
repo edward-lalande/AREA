@@ -303,7 +303,7 @@ const MiroButton: React.FC<ButtonProps> = (props) => (
             backgroundColor: "#faca00",
             color: "black",
             borderRadius: 5,
-            border: "3px solid #faca00Frontend/public/miro-logo.png",
+            border: "3px solid #faca00",
             py: 1.5,
             textTransform: "none",
             fontWeight: "bold",
@@ -314,7 +314,7 @@ const MiroButton: React.FC<ButtonProps> = (props) => (
         }}
         {...props}
     >
-        <img src="miro-logo.png" alt="asana logo" width={44} height={44}/>
+        <img src="miro-logo.png" alt="miro logo" width={44} height={44}/>
         <AreaTypography variant="h6" text="Continue with Miro" sx={{ ml: 3 }}/>
     </Button>
 )

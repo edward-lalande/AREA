@@ -61,8 +61,8 @@ const LoginForm: React.FC = () => {
 	}
 
 	const oauth = (service: OauthServices) => {
-
 		const url: string = `http://127.0.0.1:8080/${service}/oauth`;
+		console.log("calling: ", url)
 
 		axios.get(url).then((res) => {
 
@@ -133,7 +133,7 @@ const LoginForm: React.FC = () => {
 				<GoogleButton onClick={() => oauth(OauthServices.GOOGLE)} />
 				<DropboxButton onClick={() => oauth(OauthServices.DROPBOX)} />
 				<AsanaButton onClick={() => oauth(OauthServices.ASANA)} />
-				<MiroButton onClick={() => oauth(OauthServices.MIRO)} />
+				<MiroButton onClick={() => oauth(OauthServices.MIRO)} />Frontend/src/components/elements/AreaButton.tsx
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />

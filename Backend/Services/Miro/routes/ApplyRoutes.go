@@ -1,6 +1,7 @@
 package routes
 
 import (
+	area "miro/Area"
 	"miro/oauth"
 	"net/http"
 
@@ -19,4 +20,8 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/access-token", oauth.GetAccessToken)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	r.POST("/reaction", area.StoreReactions)
+	r.GET("/reactions", area.GetReactions)
+	r.POST("/trigger", area.Trigger)
 }
