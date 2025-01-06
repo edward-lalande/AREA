@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 
 class CustomFormDialog extends StatefulWidget {
     final int numberOfFields;
+    final int actionId;
+    final int actionType;
     final List<String> fieldLabels;
     final Function(Map<String, String>) onSubmit;
+    final bool isActionChose;
 
     const CustomFormDialog({
         super.key,
         required this.numberOfFields,
         required this.fieldLabels,
         required this.onSubmit,
+        required this.actionId,
+        required this.actionType,
+        required this.isActionChose
     });
 
     @override
@@ -17,7 +23,9 @@ class CustomFormDialog extends StatefulWidget {
 }
 
 class _CustomFormDialogState extends State<CustomFormDialog> {
-    final Map<String, String> formData = {};
+
+    final Map<String, String> actionForm = {};
+    final Map<String, String> reactionForm = {};
     final List<TextEditingController> controllers = [];
 
     @override
@@ -110,11 +118,32 @@ class _CustomFormDialogState extends State<CustomFormDialog> {
                                     ),
                                 ),
                                 onPressed: () {
-                                    for (int i = 0; i < widget.numberOfFields; i++) {
-                                        formData[widget.fieldLabels[i]] = controllers[i].text;
+                                    if (widget.isActionChose) {
+                                        reactionForm["reaction_id"] = widget.actionId.toString();
+                                        reactionForm["reaction_type"] = widget.actionType.toString();
+                                        for (int i = 0; i < widget.numberOfFields; i++) {
+                                            reactionForm[widget.fieldLabels[i].toLowerCase()] = controllers[i].text;
+                                        }
+                                        widget.onSubmit(reactionForm);
                                     }
-                                    widget.onSubmit(formData);
+                                    else {
+                                        actionForm["action_id"] = widget.actionId.toString();
+                                        actionForm["action_type"] = widget.actionType.toString();
+                                        for (int i = 0; i < widget.numberOfFields; i++) {
+                                            actionForm[widget.fieldLabels[i].toLowerCase()] = controllers[i].text;
+                                        }
+                                        widget.onSubmit(actionForm);
+                                    }
                                     Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                    backgroundColor: Colors.lightGreen,
+                                                    duration: Duration(seconds: 3),
+                                                    content: Text(
+                                                        'Options Saved !',
+                                                        style: TextStyle(color: Colors.white, fontFamily: "avenir"),
+                                                    ),
+                                                ));
                                 },
                                 child: const Text(
                                     'Submit',
