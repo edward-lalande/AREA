@@ -21,6 +21,8 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/reactions", GetReactions)
 	r.POST("/gitlab-webhook", GitlabWebhook)
 
+	r.GET("/about.json", About)
+
 	r.POST("/login", UserLogin)
 	r.POST("/sign-up", UserSignUp)
 	r.POST("/update-user", UserUpdate)

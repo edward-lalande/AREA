@@ -1,8 +1,9 @@
 {
-    "name": "Discord Services",
+    "name": "Discord",
     "reactions": [
         {
             "name": "Send message on channel",
+            "description": "Send a message on the channel indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 0,
             "arguments": [
@@ -20,6 +21,7 @@
         },
         {
             "name": "Create a text channel",
+            "description": "Create a channel on the Guild indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 1,
             "arguments": [
@@ -37,6 +39,7 @@
         },
         {
             "name": "Create a voice channel",
+            "description": "Create a voice channel on the Guild indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 2,
             "arguments": [
@@ -54,6 +57,7 @@
         },
         {
             "name": "Delete a channel",
+            "description": "Delete a channel on the Guild indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 3,
             "arguments": [
@@ -66,6 +70,7 @@
         },
         {
             "name": "Pin a message",
+            "description": "Pin a message a channel indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 4,
             "arguments": [
@@ -83,6 +88,7 @@
         },
         {
             "name": "Unpin a message",
+            "description": "Unpin a message a channel indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 5,
             "arguments": [
@@ -100,6 +106,7 @@
         },
         {
             "name": "Create a role",
+            "description": "Create a role on the Guild indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 6,
             "arguments": [
@@ -117,6 +124,7 @@
         },
         {
             "name": "Delete a role",
+            "description": "Delete a role on the Guild indicated as an ID",
             "reaction_id": 2,
             "reaction_type": 7,
             "arguments": [
