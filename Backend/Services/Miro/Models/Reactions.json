@@ -1,8 +1,9 @@
 {
-    "name": "Miro Services",
+    "name": "Miro",
     "reactions": [
         {
             "name": "Create a board",
+            "description": "Creating a board in your team at the name indicated",
             "reaction_id": 14,
             "reaction_type": 0,
             "arguments": [
