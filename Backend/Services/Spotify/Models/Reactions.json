@@ -1,8 +1,9 @@
 {
-    "name": "Spotify Services",
+    "name": "Spotify",
     "reactions": [
         {
             "name": "Pause the music",
+            "description": "It's pause your music on all your devices",
             "reaction_id": 9,
             "reaction_type": 0,
             "arguments": []
