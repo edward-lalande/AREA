@@ -43,8 +43,17 @@ class _MyGridViewState extends State<MyGridView> {
     @override
     Widget build(BuildContext context) {
         final List<dynamic> services = widget.map[widget.typeKey];
-
-        return CustomScrollView(
+        final scrollController = ScrollController();
+  
+        return Padding(
+                    padding: EdgeInsets.only(left: 8, right: 14),
+                    child: RawScrollbar(
+                        radius: Radius.circular(10),
+                        thumbColor: Colors.black,
+                        thickness: 5,
+                        controller: scrollController,
+                        thumbVisibility: true,
+                        child: CustomScrollView(
             slivers: [
                 if (widget.appbarVisible)
                     SliverPadding(
@@ -141,6 +150,8 @@ class _MyGridViewState extends State<MyGridView> {
                     ),
                 ),
             ],
+                        )
+                    )
         );
     }
 }

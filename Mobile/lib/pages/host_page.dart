@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_text_fields.dart';
 import 'package:second_app/myWidgets/my_title.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class HostPage extends StatefulWidget {
   const HostPage({super.key});
@@ -20,9 +21,7 @@ class _HostPageState extends State<HostPage> {
         child: Scaffold(
             backgroundColor: Colors.white,
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
+            body: Column(
                     children: [
                         MyButton(
                             title: "",
@@ -61,8 +60,8 @@ class _HostPageState extends State<HostPage> {
                             padding: const EdgeInsets.only(top: 50, bottom: 0, left: 35, right: 35),
                             inputColor: Colors.black,
                             prefixIcon: const Icon(
-                            Icons.email,
-                            color: Colors.black,
+                                Icons.email,
+                                color: Colors.black,
                             ),
                         ),
                         MyButton(
@@ -77,12 +76,13 @@ class _HostPageState extends State<HostPage> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text('Network location has been changed !', style: TextStyle(fontFamily: "avenir"))),
                                     );
-                                context.go('/login');
+                                    stockData.write("host", emailController.text);
+                                    context.go('/login');
                                 } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text('No changes', style: TextStyle(fontFamily: "avenir"),)),
                                     );
-                                context.go('/login');
+                                    context.go('/login');
                                 }
                             },
                         ),
@@ -128,7 +128,6 @@ class _HostPageState extends State<HostPage> {
                         )
                     ],
                 ),
-            )
         ),
     );
   }

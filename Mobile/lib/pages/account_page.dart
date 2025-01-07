@@ -44,9 +44,7 @@ class _AccountPageState extends State<AccountPage> {
         return SafeArea(
             child: Scaffold(
                 backgroundColor: Colors.white,
-                body: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
+                body: Column(
                         children: [
                             MyButton(
                                 title: "",
@@ -173,7 +171,6 @@ class _AccountPageState extends State<AccountPage> {
                         ],
                     ),
                 ),
-            ),
-        );
+            );
     }
 }
