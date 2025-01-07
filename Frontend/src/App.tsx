@@ -8,8 +8,9 @@ import defaultTheme from "./themes/defaultTheme";
 import ThemeProvider from "./components/ThemeProvider";
 
 import "./App.css"
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate, Link } from "react-router-dom";
 import { ProtectedRoute } from "./components/PrivateRoute";
+import Download from "./components/Download";
 
 const App: React.FC = () => {
 
@@ -25,6 +26,10 @@ const App: React.FC = () => {
         {
             path: "/signup",
             element: <SignupForm />
+        },
+        {
+            path: "/client.apk",
+            element: <Download />
         },
         {
             path: "/account",
