@@ -1,20 +1,23 @@
 {
-    "name": "Gitlab Services",
+    "name": "Gitlab",
     "actions": [
             {
                 "name": "Push",
+                "description": "If you push, it's trigger",
                 "action_id": 5,
                 "action_type": 0,
                 "arguments": []
             },
             {
                 "name": "Comments",
+                "description": "If you comment a Merge Requests, it's trigger",
                 "action_id": 5,
                 "action_type": 1,
                 "arguments": []
             },
             {
                 "name": "Merge Requests",
+                "description": "If you create a Merge Requests, it's trigger",
                 "action_id": 5,
                 "action_type": 2,
                 "arguments": []
