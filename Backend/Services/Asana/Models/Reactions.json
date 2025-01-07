@@ -1,8 +1,9 @@
 {
-    "name": "Asana Services",
+    "name": "Asana",
     "reactions": [
         {
             "name": "Create a new Project",
+            "description": "Creation of a new project on your Asana account",
             "reaction_id": 10,
             "reaction_type": 0,
             "arguments": [
@@ -25,6 +26,7 @@
         },
         {
             "name": "Create a new Task",
+            "description": "Creation of a new Task on your Asana project",
             "reaction_id": 10,
             "reaction_type": 1,
             "arguments": [
@@ -47,6 +49,7 @@
         },
         {
             "name": "Add member to project",
+            "description": "Add a new member to your Asana project",
             "reaction_id": 10,
             "reaction_type": 2,
             "arguments": [

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	_ "asana/docs"
 	area "asana/Area"
+	_ "asana/docs"
 	"asana/oauth"
 	"net/http"
 
