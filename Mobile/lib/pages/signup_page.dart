@@ -20,13 +20,23 @@ class _SignUpPageState extends State<SignUpPage> {
     final lastNameController = TextEditingController();
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final _scrollController = ScrollController();
 
     @override
     Widget build(BuildContext context) {
         return SafeArea(
             child: Scaffold(
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
+            backgroundColor: Colors.white,
+            body: Padding(
+                    padding: EdgeInsets.only(left: 8, right: 14),
+                    child: RawScrollbar(
+                        radius: Radius.circular(10),
+                        thumbColor: Colors.black,
+                        thickness: 5,
+                        controller: _scrollController,
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                     children: [
@@ -229,6 +239,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                 ),
             ),
+            )
+            )
         );
     }
 }

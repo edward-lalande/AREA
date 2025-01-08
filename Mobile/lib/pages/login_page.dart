@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
-    String tmp = '';
+    final _scrollController = ScrollController();
 
     @override
     Widget build(BuildContext context) {
@@ -32,7 +32,15 @@ class _LoginPageState extends State<LoginPage> {
             child: Scaffold(
                 backgroundColor: Colors.white,
                 resizeToAvoidBottomInset: false,
-                body: SingleChildScrollView(
+                body: Padding(
+                    padding: EdgeInsets.only(left: 8, right: 14),
+                    child: RawScrollbar(
+                        radius: Radius.circular(10),
+                        thumbColor: Colors.black,
+                        thickness: 5,
+                        controller: _scrollController,
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                         children: [
@@ -147,20 +155,20 @@ class _LoginPageState extends State<LoginPage> {
                                         return;
                                     }
                                     bool tmp = await sendSignUp(
-                                        url: 'http://10.0.2.2:8080/login',
+                                        url: 'http://$host:8080/login',
                                         body: {
                                             "mail": usernameController.text,
                                             "password": passwordController.text
                                         }
                                     );
                                     final String servString = await classicGet(
-                                        url: "http://10.0.2.2:8080/services",
+                                        url: "http://$host:8080/services",
                                     );
                                     final String actionsString = await classicGet(
-                                        url: "http://10.0.2.2:8080/actions",
+                                        url: "http://$host:8080/actions",
                                     );
                                     final String reactionsString = await classicGet(
-                                      url: "http://10.0.2.2:8080/reactions"
+                                      url: "http://$host:8080/reactions"
                                     );
                                     List<dynamic> dataReact = jsonDecode(reactionsString);
                                     reactionsMap = {
@@ -219,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                     OauthButton(iconPath: "assets/google.png", resize: false,
                                         onPressed: (context) async{
-                                            String url = await classicGet(url: "http://10.0.2.2:8080/google/oauth");
+                                            String url = await classicGet(url: "http://$host:8080/google/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
                                                     context,
@@ -233,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(width: 20,),
                                     OauthButton(iconPath: "assets/discord.png", resize: false,
                                        onPressed: (context) async {
-                                            String url = await classicGet(url: "http://10.0.2.2:8080/discord/oauth");
+                                            String url = await classicGet(url: "http://$host:8080/discord/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
                                                     context,
@@ -247,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(width: 20),
                                     OauthButton(iconPath: "assets/spotify.png", resize: false,
                                         onPressed: (context) async {
-                                            String url = await classicGet(url: "http://10.0.2.2:8080/spotify/oauth");
+                                            String url = await classicGet(url: "http://$host:8080/spotify/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
                                                     context,
@@ -268,7 +276,7 @@ class _LoginPageState extends State<LoginPage> {
                                         resizePadding: EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
                                         onPressed: (context) async {
 
-                                           String url = await classicGet(url: "http://10.0.2.2:8080/github/oauth");
+                                           String url = await classicGet(url: "http://$host:8080/github/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
                                                     context,
@@ -282,7 +290,7 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(width: 20,),
                                     OauthButton(iconPath: "assets/gitlab.png", resize: false,
                                         onPressed: (context) async {
-                                            String url = await classicGet(url: "http://10.0.2.2:8080/gitlab/oauth");
+                                            String url = await classicGet(url: "http://$host:8080/gitlab/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
                                                     context,
@@ -296,7 +304,7 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(width: 20),
                                     OauthButton(iconPath: "assets/dropbox.png", resize: false,
                                         onPressed: (context) async {
-                                               String url = await classicGet(url: "http://10.0.2.2:8080/dropbox/oauth");
+                                               String url = await classicGet(url: "http://$host:8080/dropbox/oauth");
                                             if (context.mounted) {
                                                 Navigator.push(
                                                     context,
@@ -333,7 +341,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     decoration: TextDecoration.underline,
                                                     color: Colors.blue,
                                                     fontFamily: "Avenir",
-                                                    fontSize: 15,
+                                                    fontSize: 16,
                                                     decorationColor: Colors.blue,
                                                     decorationThickness: 2,
                                                 ),
@@ -345,6 +353,8 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                     ),
                 ),
+                ),
+                )
             )
         );
     }
