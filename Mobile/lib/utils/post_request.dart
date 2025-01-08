@@ -1,19 +1,32 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
 
 import 'package:second_app/utils/my_secure_storage.dart';
 
-final storage = const FlutterSecureStorage();
+final SecureStorageService stockData = SecureStorageService();
+final host = StringBuffer("10.0.2.2");
+bool isChanged = false;
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
 Map<String, dynamic> reactionsMap = {};
 Map<String, String> userData = {};
 
+String parseGetToken(String body)
+{
+    StringBuffer result = StringBuffer();
+
+    for (var i = 25; i <= body.length; i++) {
+        if (body[i] == '"') {
+            break;
+        }
+        result.write(body[i]);
+    }
+    return result.toString();
+}
+
 Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
 {
-    final store_token = SecureStorageService();
 
     try {
         final response = await http.post(
@@ -22,8 +35,13 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
             body: json.encode(body),
         );
         if (response.statusCode == 200) {
-            //store_token()
-            storage.write(key: "accesToken", value: response.body);
+            print(response.body);
+            stockData.write("token", parseGetToken(response.body));
+
+            //final token = await stockData.read('token');
+                //if (token != null) {
+                //  print('Token: $token');
+                //}
 
             return true;
 

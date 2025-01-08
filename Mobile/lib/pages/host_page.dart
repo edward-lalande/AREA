@@ -53,7 +53,7 @@ class _HostPageState extends State<HostPage> {
                         MyTextField(
                             controller: emailController,
                             obscureText: false,
-                            hintText: "10.0.2.2  (default)",
+                            hintText: isChanged ? host.toString() : "10.0.2.2  (default)",
                             hintTextColor: Colors.black,
                             bgColor: Colors.white,
                             fieldBgColor: Colors.white,
@@ -74,13 +74,16 @@ class _HostPageState extends State<HostPage> {
                             onPressed: (context) {
                                 if (emailController.text.isNotEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Network location has been changed !', style: TextStyle(fontFamily: "avenir"))),
+                                        const SnackBar(duration: Duration(seconds:3), backgroundColor: Colors.lightGreen, content: Text('Network location has been changed !', style: TextStyle(fontFamily: "avenir"))),
                                     );
-                                    stockData.write("host", emailController.text);
+                                    host.clear();
+                                    String tmp = emailController.text;
+                                    host.write(tmp);
+                                    isChanged = true;
                                     context.go('/login');
                                 } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('No changes', style: TextStyle(fontFamily: "avenir"),)),
+                                        const SnackBar(duration: Duration(seconds:3),content: Text('No changes', style: TextStyle(fontFamily: "avenir"),)),
                                     );
                                     context.go('/login');
                                 }
