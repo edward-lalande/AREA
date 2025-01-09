@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:second_app/myWidgets/my_card.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 
+extension HexColor on Color {
+
+    static Color fromHex(String hexString) {
+        final buffer = StringBuffer();
+        if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+            buffer.write(hexString.replaceFirst('#', ''));
+        return Color(int.parse(buffer.toString(), radix: 16));
+    }
+
+}
+
 class MyGridView extends StatefulWidget {
     const MyGridView({
         super.key,
@@ -101,6 +112,11 @@ class _MyGridViewState extends State<MyGridView> {
                             childCount: services.length,
                             (context, index) {
                                 final tmp = services[index];
+                                final serviceName = tmp["name"];
+                                String serviceColor = tmp["color"];
+                                if (serviceColor == "black") {
+                                    serviceColor = "000000";
+                                }
                                 return InkWell(
                                     onTap: () => _onCardTap(index, tmp),
                                     child: AnimatedScale(
@@ -108,9 +124,9 @@ class _MyGridViewState extends State<MyGridView> {
                                         duration: Duration(milliseconds: 200),
                                         child: Card(
                                             elevation: 7,
-                                            color: Colors.grey,
+                                            color: HexColor.fromHex(serviceColor),
                                             child: MyCard(
-                                                title: tmp["name"],
+                                                title: serviceName,
                                                 padding: const EdgeInsets.all(8),
                                                 icon: Icon(
                                                     color: Colors.white,

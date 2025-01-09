@@ -31,7 +31,7 @@ class MyCard extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontFamily: "Avenir"
                             ),
                         ),
