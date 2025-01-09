@@ -5,26 +5,25 @@ import 'package:second_app/myWidgets/my_dialog.dart';
 import 'package:second_app/myWidgets/my_grid_view.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
-/*
-    url : "http://127.0.0.1:8080/areas",
-    body: {
-        "user_token": "AREA",
-        
-        "action": {
-            "actionId": 0,
-            "actionType": 0,
-            "hour": 17,
-            "minute": 34,
-            "city": "Paris",
-            "continent": "Europe"
-        }
-        "reactions" [{
-            "reactionId": 0,
-            "reactionType": 0,
-            "channel_id": "3452345234532",
-            "message": "Pause café ?"
+import 'package:http/http.dart' as http;
+
+
+    /*[{
+        "user_token":"dsfsf",
+        "action":{
+            "action_id": 0,
+            "action_type": "0",
+            "hour":"17",
+            "minute":"45",
+            "city":"Paris",
+            "continent":"Europe"},
+        "reactions":[{
+            "reaction_id":"0",
+            "reaction_type":"0",
+            "channel_id":"452345432",
+            "message":"Hello"
         }]
-    }
+    }]
  */
 
 
@@ -63,7 +62,7 @@ class _CreateAreaState extends State<CreateArea> {
             _actionChosen = true;
             actionData = formData;
         });
-        print(formData);
+        //print(formData);
     }
     void handleReactionChose(Map<String, dynamic> formData) {
         setState(() {
@@ -72,7 +71,7 @@ class _CreateAreaState extends State<CreateArea> {
             _reactionChosen = true;
             reactionData = formData;
         });
-        print(formData);
+        //print(formData);
     }
     void handleServiceReactionsChose(int index) {
         setState(() {
@@ -799,18 +798,10 @@ class _CreateAreaState extends State<CreateArea> {
                                         fontSize: 30,
                                         spaceBetweenIconAndText: 0,
                                         onPressed: (context) async {
-                                            bool tmp = await classicPost(
-                                                url: "http://10.0.2.2:8080/areas",
-                                                body: {
-                                                    "user_token": "AREA",
-                                                    "action": {
-                                                        actionsMap
-                                                    },
-                                                    "reactions": [{
-                                                        reactionData,
-                                                    }]
-                                                },
-                                            );
+                                            final token = await stockData.read('token');
+                                            //final tmp = await postArea(
+                                            //    url: ""
+                                            //);
                                             ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                     backgroundColor: Colors.lightGreen,
