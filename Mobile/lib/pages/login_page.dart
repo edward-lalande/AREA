@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_app/myWidgets/my_switch_button.dart';
 import 'package:second_app/myWidgets/my_web_view.dart';
 import 'package:second_app/myWidgets/oauth2_button.dart';
 
@@ -44,19 +45,37 @@ class _LoginPageState extends State<LoginPage> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                         children: [
-                            MyButton(title: "",
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black,
-                                padding: const EdgeInsets.only(top: 30, left: 25),
-                                fontSize: 0,
-                                spaceBetweenIconAndText: 0,
-                                prefixIcon: const Icon(
-                                    size: 30,
-                                    Icons.settings,
+                            SizedBox(
+                                //width: 200,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children : [
+                                        MyButton(title: "",
+                                            backgroundColor: Colors.white,
+                                            textColor: Colors.black,
+                                            padding: const EdgeInsets.only(
+                                                top: 30,
+                                                left: 25
+                                            ),
+                                            fontSize: 0,
+                                            spaceBetweenIconAndText: 0,
+                                            prefixIcon: const Icon(
+                                                size: 30,
+                                                Icons.settings,
+                                            ),
+                                            onPressed: (context) {
+                                                context.go("/host");
+                                            }
+                                        ),
+                                        MySwitchButton(
+                                            padding: EdgeInsets.only(
+                                                top: 30,
+                                                right: 35,
+                                            ),
+                                        ),
+
+                                    ]
                                 ),
-                                onPressed: (context) {
-                                    context.go("/host");
-                                }
                             ),
                             const MyTitle(
                                 title: "AREA",

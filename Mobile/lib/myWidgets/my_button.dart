@@ -26,7 +26,6 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      width: double.infinity,
       child: Padding(
         padding: padding,
         child: TextButton(
