@@ -30,6 +30,18 @@ services:
     ports:
       - 8084:8084
 
+  cryptomoney:
+    build: Backend/Services/CryptoMoney
+    container_name: cryptomoney
+    ports:
+      - 8095:8095
+
+  miro:
+    build: Backend/Services/Miro
+    container_name: miro
+    ports:
+      - 8097:8097
+
   user-services:
     build: Backend/Services/UserServices
     container_name: user-services
@@ -202,3 +214,16 @@ services:
       - 8083:8083
     depends_on:
       - area-db
+
+  mobile:
+      build: Mobile
+      container_name: mobile
+      environment:
+        FLUTTER_HOME: /home/developer/flutter
+        PATH: /home/developer/flutter/bin:/home/developer/flutter/bin/cache/dart-sdk/bin:$PATH
+      volumes:
+        - ./Mobile:/home/developer/app
+      ports:
+        - 3001:3001
+      depends_on:
+        - api-gateway

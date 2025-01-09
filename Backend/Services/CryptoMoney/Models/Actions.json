@@ -1,0 +1,75 @@
+{
+    "name": "CryptoMoney",
+    "actions": [
+            {
+                "name": "CryptoMoney value is under your value",
+                "description": "If the CryptoMoney symbole is under the value indicate, it's trigger",
+                "action_id": 13,
+                "action_type": 0,
+                "arguments": [
+                    {
+                        "display": "CryptoMoney symbole",
+                        "name": "symbole",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney Devise",
+                        "name": "devise",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney value",
+                        "name": "value",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "name": "CryptoMoney value is up to your value",
+                "description": "If the CryptoMoney symbole is up to the value indicate, it's trigger",
+                "action_id": 13,
+                "action_type": 1,
+                "arguments": [
+                    {
+                        "display": "CryptoMoney symbole",
+                        "name": "symbole",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney Devise",
+                        "name": "devise",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney value",
+                        "name": "value",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "name": "CryptoMoney value is equal to your value",
+                "description": "If the CryptoMoney symbole is equal to the value indicate, it's trigger",
+                "action_id": 13,
+                "action_type": 2,
+                "arguments": [
+                    {
+                        "display": "CryptoMoney symbole",
+                        "name": "symbole",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney Devise",
+                        "name": "devise",
+                        "type": "string"
+                    },
+                    {
+                        "display": "CryptoMoney value",
+                        "name": "value",
+                        "type": "number"
+                    }
+                ]
+            }
+        ]
+    }
+    

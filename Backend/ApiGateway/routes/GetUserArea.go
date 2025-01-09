@@ -9,145 +9,154 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ActionHandler func(c *gin.Context, areaId string, actionId int) map[string]interface{}
-
-type ReactionHandler func(c *gin.Context, areaId string, reactionId int) []map[string]interface{}
-
-var actionHandlers = map[int]map[int]ActionHandler{
-	1: {0: func(c *gin.Context, areaId string, actionId int) map[string]interface{} {
-		db := utils.OpenDB(c)
-		if db == nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
-			return nil
-		}
-		defer db.Close(c)
-
-		var timeAction models.TimeActionDatabase
-		row := db.QueryRow(c, "SELECT * FROM \"TimeAction\" WHERE area_id = $1", areaId)
-		if err := row.Scan(&timeAction.Id, &timeAction.AreaId, &timeAction.Continent, &timeAction.City, &timeAction.Hour, &timeAction.Minute); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch action"})
-			return nil
-		}
-		return map[string]interface{}{
-			"action_name": "At time",
-			"action_id":   actionId,
-			"continent":   timeAction.Continent,
-			"city":        timeAction.City,
-			"hour":        timeAction.Hour,
-			"minute":      timeAction.Minute,
-		}
-	},
-	}}
-
-var reactionHandlers = map[int]map[int]ReactionHandler{
-	2: {0: func(c *gin.Context, areaId string, reactionId int) []map[string]interface{} {
-		db := utils.OpenDB(c)
-		if db == nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
-			return nil
-		}
-		defer db.Close(c)
-
-		var discordReaction models.DiscordReactionDatabase
-		reactions := []map[string]interface{}{}
-
-		rows, err := db.Query(c, "SELECT * FROM \"DiscordReactions\" WHERE area_id = $1", areaId)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch reactions"})
-			return nil
-		}
-		defer rows.Close()
-
-		for rows.Next() {
-			if err := rows.Scan(&discordReaction.Id, &discordReaction.AreaId, &discordReaction.ReactionType, &discordReaction.UserToken, &discordReaction.ChannelId, &discordReaction.Message); err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse reaction"})
-				return nil
-			}
-			reactions = append(reactions, map[string]interface{}{
-				"reaction_name": "Send message",
-				"reaction_id":   reactionId,
-				"reaction_type": discordReaction.ReactionType,
-				"channel_id":    discordReaction.ChannelId,
-				"message":       discordReaction.Message,
-			})
-		}
-		return reactions
-	},
-	}}
-
-func getActionsTypeFromAreaId(c *gin.Context, actionId int, areaId string) int {
-	if actionId == 1 {
-		return 0
-	}
-	db := utils.OpenDB(c)
-	actionType := 0
-	var actions = map[int]string{
-		1: "\"TimeAction\"",
-		2: "\"DiscordActions\"",
-	}
-	if db == nil {
-		return -1
+func GetActionName(actionId int) string {
+	actionsArray := []string{
+		"__User",
+		"TimeAction",
+		"DiscordAction",
+		"__Dropbox",
+		"GithubActions",
+		"GitlabActions",
+		"GoogleActions",
+		"MeteoActions",
+		"SpotifyActions",
+		"__TicketMaster",
+		"__Twilio",
 	}
 
-	defer db.Close(c)
-	row := db.QueryRow(c, "SELECT action_type FROM "+actions[actionId]+" WHERE area_id = $1", areaId)
-	row.Scan(&actionType)
+	if actionsArray[actionId][0] == '_' {
+		return ""
+	}
 
-	return actionType
+	return actionsArray[actionId]
 }
 
-func getReactionsTypeFromAreaId(c *gin.Context, reactionId int, areaId string) int {
-	db := utils.OpenDB(c)
-	reactionType := 0
-	var reactions = map[int]string{
-		2: "\"DiscordReactions\"",
+func GetReactionName(reactionId int) string {
+	reactionsArray := []string{
+		"__User",
+		"__Time",
+		"DiscordReactions",
+		"DropboxReactions",
+		"__Github",
+		"GitlabReactions",
+		"GoogleReactions",
+		"__Meteo",
+		"SpotifyReactions",
+		"__TicketMaster",
+		"__Twilio",
 	}
+
+	if reactionsArray[reactionId][0] == '_' {
+		return ""
+	}
+
+	return reactionsArray[reactionId]
+}
+
+func GetAction(c *gin.Context, actionId int, areaId string) map[string]interface{} {
+	db := utils.OpenDB(c)
 	if db == nil {
-		return -1
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return nil
 	}
 	defer db.Close(c)
-	row := db.QueryRow(c, "SELECT reaction_type FROM "+reactions[reactionId]+" WHERE area_id = $1", areaId)
-	row.Scan(&reactionType)
 
-	return reactionType
+	actionName := GetActionName(actionId)
+	if actionName == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid action name"})
+		return nil
+	}
+
+	query := fmt.Sprintf("SELECT * FROM \"%s\" WHERE area_id = $1", actionName)
+
+	rows, err := db.Query(c, query, areaId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to execute query"})
+		return nil
+	}
+	defer rows.Close()
+
+	if !rows.Next() {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No action found"})
+		return nil
+	}
+
+	columns := rows.FieldDescriptions()
+	columnNames := make([]string, len(columns))
+	for i, col := range columns {
+		columnNames[i] = string(col.Name)
+	}
+
+	values := make([]interface{}, len(columns))
+	valuePtrs := make([]interface{}, len(columns))
+	for i := range values {
+		valuePtrs[i] = &values[i]
+	}
+
+	if err := rows.Scan(valuePtrs...); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to scan row"})
+		return nil
+	}
+
+	action := make(map[string]interface{})
+	for i, colName := range columnNames {
+		action[colName] = values[i]
+	}
+
+	return action
 }
 
-func safeReactionHandler(c *gin.Context, reactionId int, areaId string) ([]map[string]interface{}, error) {
-	reactionHandler, exists := reactionHandlers[reactionId]
-	if !exists {
-		return nil, fmt.Errorf("reaction handler not found for id %d", reactionId)
+func GetReaction(c *gin.Context, reactionId int, areaId string) map[string]interface{} {
+	db := utils.OpenDB(c)
+	if db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return nil
+	}
+	defer db.Close(c)
+
+	reactionName := GetReactionName(reactionId)
+	if reactionName == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reaction name"})
+		return nil
 	}
 
-	reactionType := getReactionsTypeFromAreaId(c, reactionId, areaId)
-	if reactionType == -1 {
-		return nil, fmt.Errorf("invalid reaction type for area id %s", areaId)
+	query := fmt.Sprintf("SELECT * FROM \"%s\" WHERE area_id = $1", reactionName)
+
+	rows, err := db.Query(c, query, areaId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to execute query"})
+		return nil
+	}
+	defer rows.Close()
+
+	if !rows.Next() {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No reaction found"})
+		return nil
 	}
 
-	handler, typeExists := reactionHandler[reactionType]
-	if !typeExists {
-		return nil, fmt.Errorf("reaction type not found for type %d", reactionType)
+	columns := rows.FieldDescriptions()
+	columnNames := make([]string, len(columns))
+	for i, col := range columns {
+		columnNames[i] = string(col.Name)
 	}
 
-	return handler(c, areaId, reactionType), nil
-}
-
-func safeActionHandler(c *gin.Context, actionId int, areaId string) (map[string]interface{}, error) {
-	actionHandler, exists := actionHandlers[actionId]
-	if !exists {
-		return nil, fmt.Errorf("action handler not found for id %d", actionId)
+	values := make([]interface{}, len(columns))
+	valuePtrs := make([]interface{}, len(columns))
+	for i := range values {
+		valuePtrs[i] = &values[i]
 	}
 
-	actionType := getActionsTypeFromAreaId(c, actionId, areaId)
-	if actionType == -1 {
-		return nil, fmt.Errorf("invalid action type for area id %s", areaId)
+	if err := rows.Scan(valuePtrs...); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to scan row"})
+		return nil
 	}
 
-	handler, typeExists := actionHandler[actionType]
-	if !typeExists {
-		return nil, fmt.Errorf("action type not found for type %d", actionType)
+	reaction := make(map[string]interface{})
+	for i, colName := range columnNames {
+		reaction[colName] = values[i]
 	}
 
-	return handler(c, areaId, actionType), nil
+	return reaction
 }
 
 // Get Area of a user
@@ -167,6 +176,12 @@ func GetUserAreas(c *gin.Context) {
 		return
 	}
 
+	id := utils.ParseToken(token)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
 	db := utils.OpenDB(c)
 	if db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
@@ -174,7 +189,7 @@ func GetUserAreas(c *gin.Context) {
 	}
 	defer db.Close(c)
 
-	rows, err := db.Query(c, "SELECT * FROM \"Area\" WHERE user_token = $1", token)
+	rows, err := db.Query(c, "SELECT * FROM \"Area\" WHERE user_token = $1", id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch areas"})
 		return
@@ -182,31 +197,49 @@ func GetUserAreas(c *gin.Context) {
 	defer rows.Close()
 
 	var areas []map[string]interface{}
+
 	for rows.Next() {
 		var area models.AreaDatabase
-		if err := rows.Scan(&area.Id, &area.UserToken, &area.AreaId, &area.ServiceActionId, &area.ServiceReactionId); err != nil {
+
+		if err := rows.Scan(&area.Id, &area.UserToken, &area.AreaId, &area.ServiceActionId, &area.ServiceReactionId, &area.ActionName, &area.ReactionName); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse area"})
 			return
 		}
 
-		action, err := safeActionHandler(c, area.ServiceActionId, area.AreaId)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
-		reactions, err := safeReactionHandler(c, area.ServiceReactionId, area.AreaId)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
 		areas = append(areas, map[string]interface{}{
-			"area_id":   area.AreaId,
-			"action":    action,
-			"reactions": reactions,
+			"id":            area.Id,
+			"area_id":       area.AreaId,
+			"action_name":   area.ActionName,
+			"reaction_name": area.ReactionName,
+			"action":        GetAction(c, area.ServiceActionId, area.AreaId),
+			"reaction":      GetReaction(c, area.ServiceReactionId, area.AreaId),
 		})
 	}
 
 	c.JSON(http.StatusOK, gin.H{"areas": areas})
+}
+
+func DeleteArea(c *gin.Context) {
+	var area models.AreaDatabase
+
+	if err := c.ShouldBindJSON(&area); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid payload"})
+		return
+	}
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return
+	}
+	defer db.Close(c)
+
+	_, err := db.Query(c, "DELETE FROM \"Area\" WHERE area_id = $1", area.AreaId)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Area not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, "Area deleted.")
 }

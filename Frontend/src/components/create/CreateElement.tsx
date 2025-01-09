@@ -40,11 +40,13 @@ const CreateElement: React.FC<CreateElementProps> = ({
         const data = [{
             user_token: cookies["token"],
             action: {
+                name: action.name,
                 action_id: action.action_id,
                 action_type: action.action_type,
                 ...actionParameters
             },
             reactions: [{
+                name: reaction.name,
                 reaction_id: reaction.reaction_id,
                 reaction_type: reaction.reaction_type,
                 ...reactionParameters

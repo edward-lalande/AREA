@@ -12,24 +12,30 @@ import (
 )
 
 func GenerateCryptoID() string {
-	bytes := make([]byte, 16)
+	bytes := make([]byte, 128)
 	if _, err := rand.Read(bytes); err != nil {
 		panic(err)
 	}
 	return hex.EncodeToString(bytes)
 }
 
-func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceActionID int, serviceReactionID int) error {
+func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceActionID int, serviceReactionID int, actionName string, reactionName string) error {
+	id := utils.ParseToken(userToken)
+
+	if id == "" {
+		return nil
+	}
+
 	query := `
-		INSERT INTO "Area" (user_token, area_id, service_action_id, service_reaction_id)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO "Area" (user_token, area_id, service_action_id, service_reaction_id, action_name, reaction_name)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id;
 	`
 	db := utils.OpenDB(c)
 	if db == nil {
 		return nil
 	}
-	_, err := db.Exec(c, query, userToken, areaID, serviceActionID, serviceReactionID)
+	_, err := db.Exec(c, query, id, areaID, serviceActionID, serviceReactionID, actionName, reactionName)
 	if err != nil {
 		return err
 	}
@@ -125,6 +131,24 @@ func Area(c *gin.Context) {
 				actionData.AreaId = areaID
 				resp := SendSpotifyActions(actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 11:
+				var actionData models.TicketMasterAction
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type11 action data"})
+					return
+				}
+				actionData.AreaID = areaID
+				resp := SendTicketMasterActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 13:
+				var actionData models.CryptoMoneyActions
+				if err := json.Unmarshal(*item.Action, &actionData); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Type11 action data"})
+					return
+				}
+				actionData.AreaId = areaID
+				resp := SendCryptoMoneyActions(actionData, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
@@ -192,6 +216,16 @@ func Area(c *gin.Context) {
 				reactionDetail.UserToken = item.UserToken
 				resp := SendAsanaReaction(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
+			case 14:
+				var reactionDetail models.MiroReactions
+				if err := json.Unmarshal(*reactionData, &reactionDetail); err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+					return
+				}
+				reactionDetail.AreaId = areaID
+				reactionDetail.UserToken = item.UserToken
+				resp := SendMiroReaction(reactionDetail, c)
+				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			}
 		}
 
@@ -199,7 +233,7 @@ func Area(c *gin.Context) {
 			var reaction models.BaseReaction
 			_ = json.Unmarshal(*reactionData, &reaction)
 
-			err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID)
+			err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID, action.Name, reaction.Name)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write area"})
 				return

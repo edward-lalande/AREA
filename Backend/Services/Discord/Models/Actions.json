@@ -1,8 +1,9 @@
 {
-    "name": "Discord Services",
+    "name": "Discord",
     "actions": [
             {
                 "name": "Reaction on message",
+                "description": "If there is a reaction on a message in the channel, it's trigger",
                 "action_id": 2,
                 "action_type": 0,
                 "arguments": [
@@ -20,6 +21,7 @@
             },
             {
                 "name": "Pin a message",
+                "description": "If there is a message pin in a the channel, it's trigger",
                 "action_id": 2,
                 "action_type": 1,
                 "arguments": [
