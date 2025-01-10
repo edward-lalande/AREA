@@ -42,11 +42,11 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _scrollController,
                         thumbVisibility: true,
                         child: SingleChildScrollView(
+                    controller: _scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                         children: [
                             SizedBox(
-                                //width: 200,
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children : [
