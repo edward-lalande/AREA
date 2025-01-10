@@ -108,7 +108,7 @@ class _MyGridViewState extends State<MyGridView> {
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
                         ),
-                        delegate: widget.homeAnimation ? SliverChildBuilderDelegate(
+                        delegate: SliverChildBuilderDelegate(
                             childCount: services.length,
                             (context, index) {
                                 final tmp = services[index];
@@ -138,23 +138,7 @@ class _MyGridViewState extends State<MyGridView> {
                                     ),
                                 );
                             },
-                        ) : SliverChildBuilderDelegate(
-                            childCount: services.length,
-                            (context, index) {
-                                final tmp = services[index];
-                                return InkWell(
-                                    onTap: () => _onCardTap(index, tmp),
-                                    child: Card(
-                                            elevation: 7,
-                                            color: Color(0XFF5865F2),
-                                            child: MyCard(
-                                                title: tmp["name"],
-                                                padding: const EdgeInsets.all(8),
-                                    ),
-                                )
-                                );
-                            },
-                        ),
+                        )
                     ),
                 ),
                 SliverPadding(

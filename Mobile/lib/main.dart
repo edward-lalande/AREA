@@ -16,8 +16,6 @@ void main() {
   runApp(const MyApp());
 }
 
-final storage = const FlutterSecureStorage();
-
 class MyApp extends StatelessWidget {
     const MyApp({super.key});
 

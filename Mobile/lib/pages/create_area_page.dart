@@ -5,27 +5,6 @@ import 'package:second_app/myWidgets/my_dialog.dart';
 import 'package:second_app/myWidgets/my_grid_view.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
-import 'package:http/http.dart' as http;
-
-
-    /*[{
-        "user_token":"dsfsf",
-        "action":{
-            "action_id": 0,
-            "action_type": "0",
-            "hour":"17",
-            "minute":"45",
-            "city":"Paris",
-            "continent":"Europe"},
-        "reactions":[{
-            "reaction_id":"0",
-            "reaction_type":"0",
-            "channel_id":"452345432",
-            "message":"Hello"
-        }]
-    }]
- */
-
 
 class CreateArea extends StatefulWidget {
     const CreateArea({super.key});
