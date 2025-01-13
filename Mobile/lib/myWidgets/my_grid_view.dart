@@ -30,8 +30,8 @@ class OauthButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
             ),
             child: Container(
-                width: 100,
-                height: 120,
+                width: 80,
+                height: 100,
                 padding: const EdgeInsets.all(12),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

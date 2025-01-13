@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_grid_view.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
@@ -19,22 +18,6 @@ class _HomePageServicesState extends State<HomePageServices> {
 
         return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: AppBar(
-                shadowColor: Theme.of(context).scaffoldBackgroundColor,
-                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-                elevation: 0,
-                leading: Padding(
-                    padding: const EdgeInsets.only(left: 35.0),
-                    child: IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () {
-                            context.go("/login");
-                        },
-                    ),
-                ),
-            ),
             body: Padding(
                 padding: EdgeInsets.only(left: 8, right: 14),
                 child: RawScrollbar(
@@ -48,6 +31,7 @@ class _HomePageServicesState extends State<HomePageServices> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         child: Column(
                             children: [
+                                SizedBox(height: 100,),
                                 const MyTitle2(
                                     title: "AREA",
                                     fontSize: 45,

@@ -32,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0,
                 leading: Padding(
-                    padding: const EdgeInsets.only(left: 35.0),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: () {

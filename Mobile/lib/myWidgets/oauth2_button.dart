@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:second_app/myWidgets/my_web_view.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class OauthButton extends StatefulWidget {
     const OauthButton({
@@ -128,9 +130,9 @@ class OAuthButtonsRow extends StatelessWidget {
             runSpacing: 20,
             alignment: WrapAlignment.center,
             children: oauthButtonsData.map((buttonData) {
-                //final service = buttonData['service'] as OauthService;
+                final service = buttonData['service'] as OauthService;
                 final iconPath = buttonData['iconPath'] as String;
-                //final url = buttonData['url'] as String;
+                final url = buttonData['url'] as String;
                 final resize = buttonData['resize'] as bool;
                 final resizePadding = buttonData['resizePadding'] as EdgeInsets?;
 
@@ -139,15 +141,15 @@ class OAuthButtonsRow extends StatelessWidget {
                     resize: resize,
                     resizePadding: resizePadding,
                     onPressed: (context) async {
-                        //String oauthUrl = await classicGet(url: 'http://$host:8080/$url');
-                        //if (context.mounted) {
-                        //  Navigator.push(
-                        //    context,
-                        //    MaterialPageRoute(
-                        //      builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
-                        //    ),
-                        //  );
-                        //}
+                        String oauthUrl = await classicGet(url: 'http://$host:8080/$url');
+                        if (context.mounted) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
+                            ),
+                          );
+                        }
                     },
                 );
             }).toList(),

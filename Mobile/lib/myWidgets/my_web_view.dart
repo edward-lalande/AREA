@@ -31,6 +31,7 @@ class _WebViewPageState extends State<WebViewPage> {
         String servRoot = widget.serv;
         _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent("random")
         ..setNavigationDelegate(
             NavigationDelegate(
                 onPageStarted: (String url) {
@@ -42,36 +43,36 @@ class _WebViewPageState extends State<WebViewPage> {
                     final String servString = await classicGet(
                         url: "http://10.0.2.2:8080/services",
                     );
-                    final String actionsString = await classicGet(
-                        url: "http://10.0.2.2:8080/actions",
-                    );
-                    final String reactionsString = await classicGet(
-                        url: "http://10.0.2.2:8080/reactions"
-                    );
-                    List<dynamic> dataReact = jsonDecode(reactionsString);
-                    reactionsMap = {
-                        for (var service in dataReact.where((element) => element != null))
-                            service['name']: {
-                                'reactions': service['reactions'].map((action) {
-                                    return {
-                                        'name': action['name'],
-                                        'arguments': action['arguments'],
-                                    };
-                                }).toList(),
-                            }
-                    };
-                    List<dynamic> data = jsonDecode(actionsString);
-                    actionsMap = {
-                        for (var service in data.where((element) => element != null))
-                            service['name']: {
-                                'actions': service['actions'].map((action) {
-                                    return {
-                                        'name': action['name'],
-                                        'arguments': action['arguments'],
-                                    };
-                                }).toList(),
-                            }
-                    };
+                    //final String actionsString = await classicGet(
+                    //    url: "http://10.0.2.2:8080/actions",
+                    //);
+                    //final String reactionsString = await classicGet(
+                    //    url: "http://10.0.2.2:8080/reactions"
+                    //);
+                    //List<dynamic> dataReact = jsonDecode(reactionsString);
+                    //reactionsMap = {
+                    //    for (var service in dataReact.where((element) => element != null))
+                    //        service['name']: {
+                    //            'reactions': service['reactions'].map((action) {
+                    //                return {
+                    //                    'name': action['name'],
+                    //                    'arguments': action['arguments'],
+                    //                };
+                    //            }).toList(),
+                    //        }
+                    //};
+                    //List<dynamic> data = jsonDecode(actionsString);
+                    //actionsMap = {
+                    //    for (var service in data.where((element) => element != null))
+                    //        service['name']: {
+                    //            'actions': service['actions'].map((action) {
+                    //                return {
+                    //                    'name': action['name'],
+                    //                    'arguments': action['arguments'],
+                    //                };
+                    //            }).toList(),
+                    //        }
+                    //};
                     servicesMap = jsonDecode(servString);
                     setState(() {
                         _isLoading = false;
@@ -121,6 +122,7 @@ class _WebViewPageState extends State<WebViewPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: const Text('Authentification'),
                 leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -130,6 +132,7 @@ class _WebViewPageState extends State<WebViewPage> {
             body: Stack(
                 children: [
                     WebViewWidget(
+                      
                         controller: _controller
                     ),
                     if (_isLoading)
