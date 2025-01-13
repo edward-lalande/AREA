@@ -66,3 +66,91 @@ class _OauthButtonState extends State<OauthButton> {
         );
     }
 }
+
+enum OauthService {
+    google,
+    discord,
+    spotify,
+    github,
+    gitlab,
+    dropbox
+}
+
+final oauthButtonsData = [
+    {
+        'service': OauthService.google,
+        'iconPath': 'assets/google.png',
+        'url': 'google/oauth',
+        'resize': false,
+    },
+    {
+        'service': OauthService.discord,
+        'iconPath': 'assets/discord.png',
+        'url': 'discord/oauth',
+        'resize': false,
+    },
+    {
+        'service': OauthService.spotify,
+        'iconPath': 'assets/spotify.png',
+        'url': 'spotify/oauth',
+        'resize': false,
+    },
+    {
+        'service': OauthService.github,
+        'iconPath': 'assets/github.png',
+        'url': 'github/oauth',
+        'resize': true,
+        'resizePadding': const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
+    },
+    {
+        'service': OauthService.gitlab,
+        'iconPath': 'assets/gitlab.png',
+        'url': 'gitlab/oauth',
+        'resize': false,
+    },
+    {
+        'service': OauthService.dropbox,
+        'iconPath': 'assets/dropbox.png',
+        'url': 'dropbox/oauth',
+        'resize': false,
+    },
+];
+
+class OAuthButtonsRow extends StatelessWidget {
+    final String host;
+
+    const OAuthButtonsRow({super.key, required this.host});
+
+    @override
+    Widget build(BuildContext context) {
+        return Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            alignment: WrapAlignment.center,
+            children: oauthButtonsData.map((buttonData) {
+                //final service = buttonData['service'] as OauthService;
+                final iconPath = buttonData['iconPath'] as String;
+                //final url = buttonData['url'] as String;
+                final resize = buttonData['resize'] as bool;
+                final resizePadding = buttonData['resizePadding'] as EdgeInsets?;
+
+                return OauthButton(
+                    iconPath: iconPath,
+                    resize: resize,
+                    resizePadding: resizePadding,
+                    onPressed: (context) async {
+                        //String oauthUrl = await classicGet(url: 'http://$host:8080/$url');
+                        //if (context.mounted) {
+                        //  Navigator.push(
+                        //    context,
+                        //    MaterialPageRoute(
+                        //      builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
+                        //    ),
+                        //  );
+                        //}
+                    },
+                );
+            }).toList(),
+        );
+    }
+}

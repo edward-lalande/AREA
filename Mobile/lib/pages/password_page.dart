@@ -3,9 +3,134 @@ import 'package:go_router/go_router.dart';
 import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
 import '../myWidgets/my_title.dart';
-import '../myWidgets/my_divider_text.dart';
 
 class PasswordPage extends StatefulWidget {
+  const PasswordPage({super.key});
+
+  @override
+  State<PasswordPage> createState() => _PasswordPageState();
+}
+
+class _PasswordPageState extends State<PasswordPage> {
+    final scrollController = ScrollController();
+        final emailController = TextEditingController();
+        final passwordController = TextEditingController();
+
+    @override
+    Widget build(BuildContext context) {
+      final theme = Theme.of(context);
+          return Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: AppBar(
+                shadowColor: Theme.of(context).scaffoldBackgroundColor,
+                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                leading: Padding(
+                    padding: const EdgeInsets.only(left: 35.0),
+                    child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                            context.go("/login");
+                        },
+                    ),
+                ),
+            ),
+            body: Padding(
+                padding: EdgeInsets.only(left: 8, right: 14),
+                child: RawScrollbar(
+                    radius: Radius.circular(10),
+                    thumbColor: Colors.black,
+                    thickness: 5,
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                        controller: scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                            children: [
+                                const MyTitle2(
+                                    title: "AREA",
+                                    fontSize: 45,
+                                    padding: EdgeInsets.only(top: 30),
+
+                                ),
+                                const MyTitle2(
+                                    title: "Reset password",
+                                    fontSize: 30,
+                                    padding: EdgeInsets.only(top: 30, bottom: 50),
+
+                                ),
+                                MyTextField2(
+                                    hintText: "New password",
+                                    controller: emailController,
+                                    prefixIcon: Icon(Icons.email),
+
+                                ),
+                                SizedBox(height: 7),
+                                Container(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(left: 20, top: 6, bottom: 20),
+                                        child: Row(
+                                            children: [
+                                                const Text(
+                                                    "Remember you're",
+                                                    style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w300),
+                                                ),
+                                                const SizedBox(width: 7),
+                                                InkWell(
+                                                    onTap: () {
+                                                        context.go('/login');
+                                                    },
+                                                    child: const Text(
+                                                        "Password",
+                                                        style: TextStyle(
+                                                            fontFamily: 'Avenir',
+                                                            color: Colors.blue,
+                                                            decoration: TextDecoration.underline,
+                                                            decorationColor: Colors.blue,
+                                                            decorationThickness: 2,
+                                                        ),
+                                                    ),
+                                                ),
+                                                const Text(
+                                                    "  ?",
+                                                    style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w900),
+                                                ),
+                                            ],
+                                        ),
+                                    ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                MyButton2(
+                                    title: "Save password",
+                                    onPressed: (context) {
+                                        if (emailController.text.isNotEmpty) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(content: Text("You're password has been saved.", style: TextStyle(fontFamily: "avenir"))),
+                                            );
+                                            context.go('/login');
+                                        } else {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(content: Text('Please enter a new password.', style: TextStyle(fontFamily: "avenir"))),
+                                            );
+                                        }
+                                    },
+                                ),
+                            ],
+                        )
+                    )
+                ),
+            ),
+        );
+    }
+}
+
+/*class PasswordPage extends StatefulWidget {
   const PasswordPage({super.key});
 
   @override
@@ -17,40 +142,40 @@ class _PasswordPageState extends State<PasswordPage> {
 
     @override
     Widget build(BuildContext context) {
-        return SafeArea(
-            child: Scaffold(
-                backgroundColor: Colors.white,
+      final theme = Theme.of(context);
+            return Scaffold(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 resizeToAvoidBottomInset: false,
+                appBar: AppBar(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                leading: Padding(
+                    padding: const EdgeInsets.only(left: 35.0),
+                    child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                            context.go("/login");
+                        },
+                    ),
+                ),
+                
+            ),
                 body: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                         children: [
-                            MyButton(
-                                title: "",
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black,
-                                padding: const EdgeInsets.only(top: 30, left: 25),
-                                fontSize: 0,
-                                spaceBetweenIconAndText: 0,
-                                onPressed: (context) {
-                                    context.go("/login");
-                                },
-                                prefixIcon: const Icon(
-                                    size: 30,
-                                    Icons.arrow_back,
-                                ),
-                            ),
-                            const MyTitle(
+                           
+                             const MyTitle2(
                                     title: "AREA",
                                     fontSize: 45,
-                                    padding: EdgeInsets.only(top: 80),
-                                    color: Colors.black
+                                    padding: EdgeInsets.only(top: 30),
+
                                 ),
-                                const MyTitle(
-                                    title: "Reset Password",
+                                const MyTitle2(
+                                    title: "Peset Password",
                                     fontSize: 30,
                                     padding: EdgeInsets.only(top: 30, bottom: 50),
-                                    color: Colors.black
+
                                 ),
                             MyTextField(
                                 controller: emailController,
@@ -134,7 +259,6 @@ class _PasswordPageState extends State<PasswordPage> {
                         ],
                     ),
                 )
-            ),
-        );
+            );
     }
-}
+}*/

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:provider/provider.dart';
 import 'package:second_app/theme/theme_provider.dart';
-import 'package:second_app/theme/themes.dart';
+import 'package:second_app/theme/theme.dart';
 
 
 import 'pages/home_page.dart';
@@ -17,17 +17,24 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-    const MyApp({super.key});
+  const MyApp({super.key});
 
-    @override
-     Widget build(BuildContext context) {
-        return MaterialApp.router(
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
+            theme: themeProvider.isDarkMode ? darkTheme : lightTheme,
             routerConfig: appRouter(context),
-        );
-    }
+          );
+        },
+      ),
+    );
+  }
 }
-
 GoRouter appRouter(BuildContext context) {
     return GoRouter(
 

@@ -12,17 +12,16 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-    late TextEditingController firstNameController;
-    late TextEditingController lastnameController;
+
     late TextEditingController emailController;
     late TextEditingController passwordController;
+    final scrollController = ScrollController();
 
     @override
     void initState() {
 
         super.initState();
-        firstNameController = TextEditingController(text: userData['name']);
-        lastnameController = TextEditingController(text: userData['lastname']);
+
         emailController = TextEditingController(text: userData['mail']);
         passwordController = TextEditingController(text: userData['password']);
 
@@ -31,8 +30,6 @@ class _AccountPageState extends State<AccountPage> {
     void updateUserInfo() {
         setState(() {
 
-            userData['name'] = firstNameController.text;
-            userData['lastname'] = lastnameController.text;
             userData['mail'] = emailController.text;
             userData['password'] = passwordController.text;
 
@@ -41,136 +38,98 @@ class _AccountPageState extends State<AccountPage> {
 
     @override
     Widget build(BuildContext context) {
-        return SafeArea(
-            child: Scaffold(
-                backgroundColor: Colors.white,
-                body: Column(
-                        children: [
-                            MyButton(
-                                title: "",
-                                backgroundColor: Colors.white,
-                                textColor: Colors.black,
-                                padding: const EdgeInsets.only(top: 30, left: 25),
-                                fontSize: 0,
-                                spaceBetweenIconAndText: 0,
-                                prefixIcon: const Icon(
-                                size: 30,
-                                Icons.settings,
-                                ),
-                                onPressed: (context) {
-                                context.go("/host");
-                                },
-                            ),
-                            const MyTitle(
-                                title: "Account",
-                                fontSize: 30,
-                                padding: EdgeInsets.only(top: 30, bottom: 50),
-                                color: Colors.black,
-                            ),
-                            MyTextField(
-                                controller: firstNameController,
-                                obscureText: false,
-                                hintText: "First Name",
-                                hintTextColor: Colors.black,
-                                bgColor: Colors.white,
-                                fieldBgColor: Colors.white,
-                                padding: const EdgeInsets.only(top: 50, bottom: 0, left: 35, right: 35),
-                                inputColor: Colors.black,
-                                prefixIcon: const Icon(
-                                Icons.person,
-                                color: Colors.black,
-                                ),
-                            ),
-                            MyTextField(
-                                controller: lastnameController,
-                                obscureText: false,
-                                hintText: "Last Name",
-                                hintTextColor: Colors.black,
-                                bgColor: Colors.white,
-                                fieldBgColor: Colors.white,
-                                padding: const EdgeInsets.only(top: 35, bottom: 0, left: 35, right: 35),
-                                inputColor: Colors.black,
-                                prefixIcon: const Icon(
-                                Icons.person,
-                                color: Colors.black,
-                                ),
-                            ),
-                            MyTextField(
-                                controller: emailController,
-                                obscureText: false,
-                                hintText: "Email",
-                                hintTextColor: Colors.black,
-                                bgColor: Colors.white,
-                                fieldBgColor: Colors.white,
-                                padding: const EdgeInsets.only(top: 35, bottom: 0, left: 35, right: 35),
-                                inputColor: Colors.black,
-                                prefixIcon: const Icon(
-                                Icons.email,
-                                color: Colors.black,
-                                ),
-                            ),
-                            MyTextField(
-                                controller: passwordController,
-                                obscureText: true,
-                                hintText: "Password",
-                                hintTextColor: Colors.black,
-                                bgColor: Colors.white,
-                                fieldBgColor: Colors.white,
-                                padding: const EdgeInsets.only(top: 35, bottom: 0, left: 35, right: 35),
-                                inputColor: Colors.black,
-                                prefixIcon: const Icon(
-                                Icons.lock,
-                                color: Colors.black,
-                                ),
-                            ),
-                            MyButton(
-                                padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
-                                title: "Save Changes",
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                                fontSize: 20,
-                                spaceBetweenIconAndText: 10,
-                                onPressed: (context) {
-                                    updateUserInfo();
-                                },
-                            ),
-                            Container(
-                                height: 100,
-                                color: Colors.white,
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                        const Text(
-                                            "Log out ?",
-                                            style: TextStyle(
-                                                fontFamily: "Avenir",
-                                                fontSize: 16,
-                                            ),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        GestureDetector(
-                                            onTap: () {
-                                                userData.clear();
-                                                context.go('/login');
-                                            },
-                                            child: const Text(
-                                                "See you soon",
-                                                style: TextStyle(
-                                                    decoration: TextDecoration.underline,
-                                                    color: Colors.blue,
-                                                    fontFamily: "Avenir",
-                                                    fontSize: 16,
-                                                    decorationColor: Colors.blue,
-                                                    decorationThickness: 2,
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: Padding(
+                padding: EdgeInsets.only(left: 8, right: 14),
+                child: RawScrollbar(
+                        radius: Radius.circular(10),
+                        thumbColor: Colors.black,
+                        thickness: 5,
+                        controller: scrollController,
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Column(
+                                children: [
+                                    SizedBox(height: 100,),
+                                    const MyTitle2(
+                                        title: "AREA",
+                                        fontSize: 45,
+                                        padding: EdgeInsets.only(top: 30),
+
+                                    ),
+                                    const MyTitle2(
+                                        title: "Account settings",
+                                        fontSize: 30,
+                                        padding: EdgeInsets.only(top: 30, bottom: 50),
+
+                                    ),
+                                    MyTextField2(
+                                        hintText: "Email",
+                                        controller: emailController,
+                                        prefixIcon: Icon(Icons.email),
+
+                                    ),
+                                    SizedBox(height: 20),
+                                    MyTextField2(
+                                        hintText: "Password",
+                                        controller: passwordController,
+                                        obscureText: true,
+                                        prefixIcon: Icon(Icons.lock),
+
+                                    ),
+                                    SizedBox(height: 30),
+                                    MyButton2(
+                                        title: "Save",
+                                        onPressed: (context) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                    backgroundColor: Colors.grey,
+                                                    duration: Duration(seconds: 3),
+                                                    content: Text(
+                                                        'Informations saved.',
+                                                        style: TextStyle(color: Colors.white, fontFamily: "avenir"),
+                                                    ),
                                                 ),
-                                            ),
-                                        )
-                                    ],
-                                ),
-                            ),
-                        ],
+                                            );
+                                        }
+                                    ),
+                                    SizedBox(height: 30),
+                                    Padding(
+                                        padding: const EdgeInsets.only(left: 20, top: 6),
+                                        child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                                const Text(
+                                                    "See you soon ?",
+                                                    style: TextStyle(fontSize: 16, fontFamily: "Avenir", fontWeight: FontWeight.w300),
+                                                ),
+                                                const SizedBox(width: 7),
+                                                InkWell(
+                                                    onTap: () {
+                                                        context.go('/password');
+                                                    },
+                                                    child: const Text(
+                                                        "Log out",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontFamily: 'Avenir',
+                                                            color: Colors.blue,
+                                                            decoration: TextDecoration.underline,
+                                                            decorationColor: Colors.blue,
+                                                            decorationThickness: 2,
+                                                        ),
+                                                    ),
+                                                ),
+                                            ],
+                                        ),
+                                    ),
+                                ],
+                        ),
                     ),
                 ),
-            );
+            )
+        );
     }
 }

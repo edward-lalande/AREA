@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:second_app/theme/theme_provider.dart';
 
-class MySwitchButton extends StatefulWidget {
+class MySwitchButton extends StatelessWidget {
     const MySwitchButton({
         super.key,
-        required this.padding
+        required this.padding,
     });
 
     final EdgeInsetsGeometry padding;
-    @override
-    State<MySwitchButton> createState() => _MySwitchButtonState();
-}
-
-class _MySwitchButtonState extends State<MySwitchButton> {
-
-    static bool light = true;
 
     @override
     Widget build(BuildContext context) {
-        return  Padding(
-            padding: widget.padding,
+
+        final themeProvider = Provider.of<ThemeProvider>(context);
+
+        return Padding(
+            padding: padding,
             child: Switch(
                 activeColor: Colors.grey,
                 thumbIcon: WidgetStatePropertyAll(
                     Icon(
-                        light ? Icons.light_mode : Icons.dark_mode,
-                        color: light ? Colors.yellow : Colors.white,
+                        themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                        color: themeProvider.isDarkMode ? Colors.white : Colors.yellow,
                     ),
                 ),
-                value: light,
-                onChanged: (bool value) {
-                    setState(() {
-                        light = value;
-                    });
+                value: themeProvider.isDarkMode,
+                onChanged: (value) {
+                    themeProvider.toggleTheme();
                 },
             ),
         );

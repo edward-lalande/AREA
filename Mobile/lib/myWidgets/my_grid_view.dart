@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:second_app/myWidgets/my_card.dart';
-import 'package:second_app/myWidgets/my_title.dart';
 
 extension HexColor on Color {
 
@@ -13,145 +12,91 @@ extension HexColor on Color {
 
 }
 
-class MyGridView extends StatefulWidget {
-    const MyGridView({
-        super.key,
-        required this.map,
-        required this.typeKey,
-        required this.appbarVisible,
-        required this.homeAnimation,
-        this.gridClick,
+class OauthButton extends StatelessWidget {
+    const OauthButton({
+      super.key,
+      required this.title,
+      required this.iconPath,
     });
 
-    final Map<String, dynamic> map;
-    final String typeKey;
-    final bool appbarVisible;
-    final bool homeAnimation;
-    final Function(int idx)? gridClick;
-
-    @override
-    State<MyGridView> createState() => _MyGridViewState();
-}
-
-class _MyGridViewState extends State<MyGridView> {
-    int selectedIndex = -1;
-    bool  isBig = false;
-
-    void _onCardTap(int index, dynamic service) {
-        setState(() {
-            selectedIndex = selectedIndex == index ? -1 : index;
-            isBig = !isBig;
-        });
-        widget.gridClick!(index);
-
-        Future.delayed(Duration(milliseconds: 200), () {
-            setState(() {
-                isBig = false;
-            });
-        });
-    }
+    final String title;
+    final String iconPath;
 
     @override
     Widget build(BuildContext context) {
-        final List<dynamic> services = widget.map[widget.typeKey];
-        final scrollController = ScrollController();
-  
-        return Padding(
-                    padding: EdgeInsets.only(left: 8, right: 14),
-                    child: RawScrollbar(
-                        radius: Radius.circular(10),
-                        thumbColor: Colors.black,
-                        thickness: 5,
-                        controller: scrollController,
-                        thumbVisibility: true,
-                        child: CustomScrollView(
-            slivers: [
-                if (widget.appbarVisible)
-                    SliverPadding(
-                        padding: const EdgeInsets.only(
-                            top: 80,
-                            left: 20,
-                            right: 20
-                        ),
-                        sliver: SliverToBoxAdapter(
-                            child: MyTitle(
-                                margin: EdgeInsets.only(bottom: 20),
-                                title: "AREA",
-                                fontSize: 45,
-                                padding: EdgeInsets.zero,
-                                color: Colors.black,
-                            ),
-                        ),
-                    ),
-                if (widget.appbarVisible)
-                    SliverPadding(
-                        padding: const EdgeInsets.only(
-                            top: 20,
-                            left: 20,
-                            right: 20
-                        ),
-                        sliver: SliverToBoxAdapter(
-                            child: MyTitle(
-                                margin: EdgeInsets.only(bottom: 20),
-                                title: "Available services",
-                                fontSize: 30,
-                                padding: EdgeInsets.zero,
-                                color: Colors.black,
-                            ),
-                        ),
-                    ),
-                SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    sliver: SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                            childCount: services.length,
-                            (context, index) {
-                                final tmp = services[index];
-                                final serviceName = tmp["name"];
-                                String serviceColor = tmp["color"];
-                                if (serviceColor == "black") {
-                                    serviceColor = "000000";
-                                }
-                                return InkWell(
-                                    onTap: () => _onCardTap(index, tmp),
-                                    child: AnimatedScale(
-                                        scale: selectedIndex == index ? 1.1 : 1.0,
-                                        duration: Duration(milliseconds: 200),
-                                        child: Card(
-                                            elevation: 7,
-                                            color: HexColor.fromHex(serviceColor),
-                                            child: MyCard(
-                                                title: serviceName,
-                                                padding: const EdgeInsets.all(8),
-                                                icon: Icon(
-                                                    color: Colors.white,
-                                                    Icons.discord,
-                                                    size: 60,
-                                                ),
-                                            ),
-                                        ),
-                                    ),
+        return Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+                width: 100,
+                height: 120,
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                        Expanded(
+                            child: Image.asset(
+                                iconPath,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                    Icons.broken_image,
+                                    size: 50,
+                                    color: Colors.grey,
                                 );
-                            },
-                        )
-                    ),
-                ),
-                SliverPadding(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    sliver: SliverToBoxAdapter(
-                        child: SizedBox(
-                            height: 20,
+                                },
+                            ),
                         ),
-                    ),
+                        const SizedBox(height: 8),
+                        Text(
+                            title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontFamily: "Avenir",
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                            ),
+                        ),
+                    ],
                 ),
-            ],
-                        )
-                    )
+            ),
+        );
+    }
+}
+
+class MyGridViewHome extends StatelessWidget {
+    final Map<String, dynamic> servicesMap;
+
+    const MyGridViewHome({super.key, required this.servicesMap});
+
+    @override
+    Widget build(BuildContext context) {
+
+        final services = servicesMap['services'] as List<dynamic>;
+
+        return GridView.builder(
+            padding: const EdgeInsets.all(20),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 20,
+                childAspectRatio: 1,
+            ),
+            itemCount: services.length,
+            itemBuilder: (context, index) {
+                final service = services[index];
+                final name = service['name'] as String;
+                final iconPath = 'assets/${name.toLowerCase().replaceAll(' ', '_')}.png';
+
+                return OauthButton(
+                    title: name,
+                    iconPath: iconPath,
+                );
+            },
         );
     }
 }
