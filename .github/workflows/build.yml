@@ -13,4 +13,4 @@ jobs:
     name: Build Project
     runs-on: ${{ matrix.os }}
     steps:
-        run: docker-compose up --build -d
+        - run: docker-compose up --build -d
