@@ -1,7 +1,9 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
+	models "poc-crud-users/Models"
 	"poc-crud-users/utils"
 
 	"github.com/gin-gonic/gin"
@@ -17,17 +19,35 @@ import (
 // @Failure 500 {object} map[string]interface{} "Internal Server Error"
 // @Router /users [get]
 func GetUser(c *gin.Context) {
-	var value []SignUp
-	db := utils.OpenDB(c)
-	if db == nil {
+	var user models.User
+
+	token := c.GetHeader("token")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return
 	}
 
-	row := db.QueryRow(c, "SELECT * FROM \"User\"")
-	err := row.Scan(value)
-	if err == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"Error": err})
+	id := utils.ParseToken(token)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
 	}
-	db.Close(c)
-	c.JSON(http.StatusOK, value)
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return
+	}
+	defer db.Close(c)
+
+	fmt.Println(id)
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }

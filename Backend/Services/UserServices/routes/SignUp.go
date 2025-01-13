@@ -65,17 +65,21 @@ func SignUpUserHandler(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.CreateToken(receivedData.Mail)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
 	if writeValue := writeInDB(receivedData, db); writeValue != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": writeValue})
 		return
 	}
 
-	db.Close(c)
+	var id string
+
+	row := db.QueryRow(context.Background(), "SELECT id FROM \"User\" WHERE mail = $1", receivedData.Mail)
+	_ = row.Scan(&id)
+	defer db.Close(c)
+
+	token, err := utils.CreateToken(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
