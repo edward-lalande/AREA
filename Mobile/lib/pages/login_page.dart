@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_switch_button.dart';
+import 'package:second_app/myWidgets/my_text_button.dart';
 import 'package:second_app/myWidgets/oauth2_button.dart';
 import 'package:second_app/utils/post_request.dart';
 
@@ -28,7 +30,7 @@ class LoginPage extends StatelessWidget {
                 surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0,
                 leading: Padding(
-                    padding: const EdgeInsets.only(left: 35.0),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: IconButton(
                         icon: const Icon(Icons.settings),
                         onPressed: () {
@@ -82,40 +84,14 @@ class LoginPage extends StatelessWidget {
                                     prefixIcon: Icon(Icons.lock),
 
                                 ),
-                                Container(
-                                    color: Theme.of(context).scaffoldBackgroundColor,
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(left: 20, top: 6, bottom: 20),
-                                        child: Row(
-                                            children: [
-                                                const Text(
-                                                    "Forget your",
-                                                    style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w300),
-                                                ),
-                                                const SizedBox(width: 7),
-                                                InkWell(
-                                                    onTap: () {
-                                                        context.go('/password');
-                                                    },
-                                                    child: const Text(
-                                                        "Password",
-                                                        style: TextStyle(
-                                                            fontFamily: 'Avenir',
-                                                            color: Colors.blue,
-                                                            decoration: TextDecoration.underline,
-                                                            decorationColor: Colors.blue,
-                                                            decorationThickness: 2,
-                                                        ),
-                                                    ),
-                                                ),
-                                                const Text(
-                                                    "  ?",
-                                                    style: TextStyle(fontFamily: "Avenir", fontWeight: FontWeight.w900),
-                                                ),
-                                            ],
-                                        ),
-                                    ),
+                                SizedBox(height: 7,),
+                                MyTextButton(
+                                    onTap: (context) {
+                                        context.go("/password");
+                                    }, firstTitle: "Forget your're", secondTitle: "Password",
+                                    padding: EdgeInsets.only(left: 20)
                                 ),
+                                SizedBox(height: 20,),
                                 MyButton2(title: "Log in",
                                      onPressed: (context) async {
                                         //if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -168,38 +144,13 @@ class LoginPage extends StatelessWidget {
                                     textBetween: "Or continue with",
                                 ),
                                 OAuthButtonsRow(host: "10.0.2.2"),
-                                Container(
-                                    color: Theme.of(context).scaffoldBackgroundColor,
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(left: 20, top: 35, bottom: 35),
-                                        child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                                const Text(
-                                                    "No account ?",
-                                                    style: TextStyle(fontSize: 16, fontFamily: "Avenir", fontWeight: FontWeight.w300),
-                                                ),
-                                                const SizedBox(width: 7),
-                                                InkWell(
-                                                    onTap: () {
-                                                        context.go('/signup');
-                                                    },
-                                                    child: const Text(
-                                                        " Sign-in",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontFamily: 'Avenir',
-                                                            color: Colors.blue,
-                                                            decoration: TextDecoration.underline,
-                                                            decorationColor: Colors.blue,
-                                                            decorationThickness: 2,
-                                                        ),
-                                                    ),
-                                                ),
-                                            ],
-                                        ),
-                                    ),
-                                ),
+                                MyTextButton(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    onTap: (context) {
+                                        context.go("/signup");
+                                    }, firstTitle: "No account ?", secondTitle: "Create one",
+                                    padding: EdgeInsets.only(top: 35, left: 20, bottom: 35)
+                                )
                             ],
                         )
                     )

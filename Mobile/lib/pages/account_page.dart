@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_app/myWidgets/my_text_button.dart';
 import 'package:second_app/utils/post_request.dart';
 
 import '../myWidgets/my_button.dart';
@@ -96,35 +97,15 @@ class _AccountPageState extends State<AccountPage> {
                                         }
                                     ),
                                     SizedBox(height: 30),
-                                    Padding(
-                                        padding: const EdgeInsets.only(left: 20, top: 6),
-                                        child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                                const Text(
-                                                    "See you soon ?",
-                                                    style: TextStyle(fontSize: 16, fontFamily: "Avenir", fontWeight: FontWeight.w300),
-                                                ),
-                                                const SizedBox(width: 7),
-                                                InkWell(
-                                                    onTap: () {
-                                                        context.go('/password');
-                                                    },
-                                                    child: const Text(
-                                                        "Log out",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontFamily: 'Avenir',
-                                                            color: Colors.blue,
-                                                            decoration: TextDecoration.underline,
-                                                            decorationColor: Colors.blue,
-                                                            decorationThickness: 2,
-                                                        ),
-                                                    ),
-                                                ),
-                                            ],
-                                        ),
-                                    ),
+                                    MyTextButton(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        onTap: (context) {
+                                            context.go("/login");
+
+                                        },
+                                        firstTitle: "See you soon ?", secondTitle: "Log out",
+                                        padding: EdgeInsets.only(left: 15),
+                                    )
                                 ],
                         ),
                     ),
