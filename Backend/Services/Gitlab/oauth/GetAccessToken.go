@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"context"
 	models "gitlab/Models"
 	"gitlab/utils"
 	"io"
@@ -34,14 +35,45 @@ func GetAccessToken(c *gin.Context) {
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
-	rep, _ := http.PostForm(accessTokenUrl, data)
+	rep, err := http.PostForm(accessTokenUrl, data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if rep.StatusCode > 200 {
+		return
+	}
+
 	respBody, err := io.ReadAll(rep.Body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	query := `
+		INSERT INTO "User" (gitlab_token)
+		VALUES ($1)
+		RETURNING id;
+	`
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return
+	}
+
+	var id string
+	row := db.QueryRow(context.Background(), query, utils.BytesToJson(respBody))
+	_ = row.Scan(&id)
+	defer db.Close(c)
+
+	token, err := utils.CreateToken(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(rep.StatusCode, gin.H{
-		"body": utils.BytesToJson(respBody),
+		"body": token,
 	})
 }
