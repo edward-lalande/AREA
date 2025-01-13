@@ -12,7 +12,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useSearchParams } from "react-router-dom";
 
-enum OauthServices {
+export enum OauthServices {
 	DISCORD = "discord",
 	SPOTIFY = "spotify",
 	GITHUB = "github",
@@ -23,7 +23,7 @@ enum OauthServices {
 	MIRO = "miro"
 }
 
-type Code = {
+export type Code = {
 	name: string;
 	service: OauthServices;
 }
@@ -51,7 +51,9 @@ const LoginForm: React.FC = () => {
 
 		axios.post(url, data).then((res) => {
 
-			setCookie("token", res.data.body.token);
+			if (res.data.body.token != undefined) {
+				setCookie("token", res.data.body.token);
+			}
 			window.location.href = "/";
 
 		}).catch(() => {
@@ -62,7 +64,6 @@ const LoginForm: React.FC = () => {
 
 	const oauth = (service: OauthServices) => {
 		const url: string = `http://127.0.0.1:8080/${service}/oauth`;
-		console.log("calling: ", url)
 
 		axios.get(url).then((res) => {
 
@@ -77,9 +78,16 @@ const LoginForm: React.FC = () => {
 		const url: string = `http://127.0.0.1:8080/${service}/access-token`;
 
 		axios.post(url, { code }).then((res) => {
-			setCookie("token", res.data.body.access_token);
+
+			console.log("token [" + res.data.body + "]");
+
+			if (res.data.body != undefined) {
+				setCookie("token", res.data.body);
+			}
 			window.location.href = "/";
+
 		});
+
 		
 	}
 
@@ -90,11 +98,7 @@ const LoginForm: React.FC = () => {
 		codes.push({ name: "discord_code", service: OauthServices.DISCORD });
 		codes.push({ name: "spotify_code", service: OauthServices.SPOTIFY });
 		codes.push({ name: "github_code", service: OauthServices.GITHUB });
-		codes.push({ name: "gitlab_code", service: OauthServices.GITLAB });
 		codes.push({ name: "google_code", service: OauthServices.GOOGLE });
-		codes.push({ name: "dropbox_code", service: OauthServices.DROPBOX });
-		codes.push({ name: "asana_code", service: OauthServices.ASANA });
-		codes.push({ name: "miro_code", service: OauthServices.MIRO });
 
 		for (let i = 0; i < codes.length; i++) {
 
@@ -126,14 +130,10 @@ const LoginForm: React.FC = () => {
 
 				<AreaTextDivider text="or" />
 
-				<DiscordButton onClick={() => oauth(OauthServices.DISCORD)} />
-				<SpotifyButton onClick={() => oauth(OauthServices.SPOTIFY)} />
-				<GithubButton onClick={() => oauth(OauthServices.GITHUB)} />
-				<GitlabButton onClick={() => oauth(OauthServices.GITLAB)} />
-				<GoogleButton onClick={() => oauth(OauthServices.GOOGLE)} />
-				<DropboxButton onClick={() => oauth(OauthServices.DROPBOX)} />
-				<AsanaButton onClick={() => oauth(OauthServices.ASANA)} />
-				<MiroButton onClick={() => oauth(OauthServices.MIRO)} />Frontend/src/components/elements/AreaButton.tsx
+				<DiscordButton text="Continue with Discord" onClick={() => oauth(OauthServices.DISCORD)} />
+				<SpotifyButton text="Continue with Spotify" onClick={() => oauth(OauthServices.SPOTIFY)} />
+				<GithubButton text="Continue with Github" onClick={() => oauth(OauthServices.GITHUB)} />
+				<GoogleButton text="Continue with Google" onClick={() => oauth(OauthServices.GOOGLE)} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />
