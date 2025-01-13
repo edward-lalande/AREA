@@ -4,6 +4,7 @@ import (
 	models "asana/Models"
 	"asana/utils"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -42,6 +43,7 @@ func GetAccessToken(c *gin.Context) {
 	}
 
 	if rep.StatusCode > 200 {
+		fmt.Println("error")
 		return
 	}
 
