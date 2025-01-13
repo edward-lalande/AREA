@@ -27,3 +27,16 @@ func OAuthFront(c *gin.Context) {
 
 	c.String(http.StatusOK, authUrl)
 }
+
+func AddOAuthFront(c *gin.Context) {
+	authUrl := "https://accounts.google.com/o/oauth2/auth?client_id=" + utils.GetEnvKey("CLIENT_ID_ADD") +
+		"&redirect_uri=http://127.0.0.1:8088/add-callback&response_type=code" +
+		"&scope=" + "https://www.googleapis.com/auth/userinfo.profile " +
+		"https://www.googleapis.com/auth/userinfo.email " +
+		"https://www.googleapis.com/auth/calendar " +
+		"https://www.googleapis.com/auth/gmail.readonly " +
+		"https://www.googleapis.com/auth/gmail.send " +
+		"https://www.googleapis.com/auth/tasks"
+
+	c.String(http.StatusOK, authUrl)
+}

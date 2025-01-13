@@ -1,9 +1,8 @@
 package oauth
 
 import (
-	"context"
-	models "gitlab/Models"
-	"gitlab/utils"
+	models "discord-service/Models"
+	"discord-service/utils"
 	"io"
 	"net/http"
 	"net/url"
@@ -11,27 +10,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Gitlab OAUTH2
-// @Summary Get
-// @Description Send the code received by the frontend to get the Gitlab access-token of the user
-// @Tags Gitlab OAUTH2
-// @Accept json
-// @Produce json
-// @Params object models.OauthInformation true "The code must be send as object and the token is not necessary, it can be null"
-// @Success 200 {object} map[string]string "the code to redirect to"
-// @Router /access-token [post]
-func GetAccessToken(c *gin.Context) {
+func AddAccessToken(c *gin.Context) {
 	var receivedData models.OauthInformation
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	accessTokenUrl := "https://gitlab.com/oauth/token"
+
+	accessTokenUrl := "https://discord.com/api/oauth2/token"
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI"))
+	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_WEB"))
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
@@ -51,29 +42,33 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
-	query := `
-		INSERT INTO "User" (gitlab_token)
-		VALUES ($1)
-		RETURNING id;
-	`
-
 	db := utils.OpenDB(c)
 	if db == nil {
 		return
 	}
 
-	var id string
-	row := db.QueryRow(context.Background(), query, utils.BytesToJson(respBody))
-	_ = row.Scan(&id)
-	defer db.Close(c)
+	access_token := utils.BytesToJson(respBody)["access_token"]
 
-	token, err := utils.CreateToken(id)
-	if err != nil {
+	if access_token == nil || access_token == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(rep.StatusCode, gin.H{
-		"body": token,
-	})
+	userToken := c.GetHeader("token")
+	if userToken == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
+		return
+	}
+
+	id := utils.ParseToken(userToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	query := `UPDATE "User" SET discord_token = $1 WHERE id = $2;`
+
+	db.Exec(c, query, access_token, id)
+
+	c.JSON(rep.StatusCode, "Token registered!")
 }

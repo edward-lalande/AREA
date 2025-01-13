@@ -5,13 +5,16 @@ import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { AreaButton, DiscordButton } from "./elements/AreaButton";
+import { AreaButton, DiscordButton, GithubButton, GoogleButton, SpotifyButton } from "./elements/AreaButton";
 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useSearchParams } from "react-router-dom";
 
 import axios from "axios";
+
+import { OauthServices } from "./LoginForm";
+import { Code } from "./LoginForm";
 
 const SignupForm: React.FC = () => {
 
@@ -49,9 +52,8 @@ const SignupForm: React.FC = () => {
 	
 	}
 
-	const authDiscord = () => {
-
-		const url: string = "http://127.0.0.1:8083/oauth2";
+	const oauth = (service: OauthServices) => {
+		const url: string = `http://127.0.0.1:8080/${service}/oauth`;
 
 		axios.get(url).then((res) => {
 
@@ -61,23 +63,39 @@ const SignupForm: React.FC = () => {
 
 	}
 
-	const getToken = (code: string) => {
+	const getToken = (code: string, service: OauthServices) => {
 
-		const url: string = "http://127.0.0.1:8083/access-token";
+		const url: string = `http://127.0.0.1:8080/${service}/access-token`;
 
 		axios.post(url, { code }).then((res) => {
-			setCookie("token", res.data.body.access_token);
+
+			if (res.data.body != undefined) {
+				setCookie("token", res.data.body);
+			}
 			window.location.href = "/";
+
 		});
+
 		
 	}
 
 	useEffect(() => {
 
-		const code = searchParams.get("code");
+		const codes: Code[] = [];
 
-		if (code) {
-			getToken(code);
+		codes.push({ name: "discord_code", service: OauthServices.DISCORD });
+		codes.push({ name: "spotify_code", service: OauthServices.SPOTIFY });
+		codes.push({ name: "github_code", service: OauthServices.GITHUB });
+		codes.push({ name: "google_code", service: OauthServices.GOOGLE });
+
+		for (let i = 0; i < codes.length; i++) {
+
+			const findCode: string | null = searchParams.get(codes[i].name);
+
+			if (findCode) {
+				getToken(findCode, codes[i].service);
+			}
+
 		}
 
 	}, [searchParams]);
@@ -103,7 +121,10 @@ const SignupForm: React.FC = () => {
 
 				<AreaTextDivider text="or" />
 
-				<DiscordButton onClick={authDiscord} />
+				<DiscordButton text="Continue with Discord" onClick={() => oauth(OauthServices.DISCORD)} />
+				<SpotifyButton text="Continue with Spotify" onClick={() => oauth(OauthServices.SPOTIFY)} />
+				<GithubButton text="Continue with Github" onClick={() => oauth(OauthServices.GITHUB)} />
+				<GoogleButton text="Continue with Google" onClick={() => oauth(OauthServices.GOOGLE)} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="Already on AREA?" sx={{ mr: 2 }} />
