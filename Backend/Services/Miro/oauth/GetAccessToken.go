@@ -40,7 +40,27 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
+	query := `
+		INSERT INTO "User" (miro_token)
+		VALUES ($1)
+		RETURNING id;
+	`
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return
+	}
+
+	var id string
+	db.QueryRow(c, query, utils.BytesToJson(respBody)).Scan(&id)
+
+	token, err := utils.CreateToken(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(rep.StatusCode, gin.H{
-		"body": utils.BytesToJson(respBody),
+		"body": token,
 	})
 }

@@ -21,3 +21,10 @@ func OAuthFront(c *gin.Context) {
 		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI")
 	c.String(http.StatusOK, authUrl)
 }
+
+func AddOAuthFront(c *gin.Context) {
+	authUrl := "https://miro.com/oauth/authorize?response_type=code" +
+		"&client_id=" + utils.GetEnvKey("CLIENT_ID") +
+		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI_ADD")
+	c.String(http.StatusOK, authUrl)
+}
