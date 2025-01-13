@@ -3,7 +3,6 @@ package oauth
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	models "google/Models"
 	"google/utils"
 	"io"
@@ -50,9 +49,34 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("status code: ", rep.StatusCode)
+	query := `
+		INSERT INTO "User" (google_token)
+		VALUES ($1)
+		RETURNING id;
+	`
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
+
+	if access_token == nil || access_token == "" {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var id string
+	db.QueryRow(c, query, access_token).Scan(&id)
+
+	token, err := utils.CreateToken(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	c.JSON(rep.StatusCode, gin.H{
-		"body": utils.BytesToJson(respBody),
+		"body": token,
 	})
 }
