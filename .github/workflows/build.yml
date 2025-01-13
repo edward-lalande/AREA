@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build-project:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    name: Build Project
+    runs-on: ${{ matrix.os }}
+    steps:
+        run: docker-compose up --build -d
