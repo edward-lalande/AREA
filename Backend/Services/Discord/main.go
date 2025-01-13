@@ -106,6 +106,7 @@ func BackUpLocalDataCall() {
 				if err := json.NewEncoder(&buf).Encode(send); err != nil {
 					continue
 				}
+				fmt.Println(buf)
 				http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 
 				url := fmt.Sprintf(
