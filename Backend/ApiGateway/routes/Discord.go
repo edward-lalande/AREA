@@ -186,6 +186,26 @@ func DiscordOauth2(c *gin.Context) {
 	io.Copy(c.Writer, resp.Body)
 }
 
+func DiscordAddOauth2(c *gin.Context) {
+
+	resp, err := http.Get(utils.GetEnvKey("DISCORD_API") + "add-oauth")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
 // DiscordAccessToken
 // @Summary Exchange Discord OAuth2 authorization code for an access token
 // @Description Receives an OAuth2 authorization code and exchanges it for an access token with Discord.
@@ -216,6 +236,41 @@ func DiscordAccessToken(c *gin.Context) {
 	}
 
 	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+"access-token", "application/json", &buf)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
+func DiscordAddAccessToken(c *gin.Context) {
+
+	var (
+		OauthCode models.OauthCode
+	)
+
+	if err := c.ShouldBindJSON(&OauthCode); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(OauthCode)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("DISCORD_API")+"add-access-token", "application/json", &buf)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -57,6 +57,26 @@ func AsanaOauth2(c *gin.Context) {
 
 }
 
+func AsanaAddOauth2(c *gin.Context) {
+
+	resp, err := http.Get(utils.GetEnvKey("ASANA_API") + "add-oauth")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+
+}
+
 // AsanaAccessToken
 // @Summary Exchange Asana OAuth2 authorization code for an access token
 // @Description Receives an OAuth2 authorization code and exchanges it for an access token with Asana.
@@ -87,6 +107,41 @@ func AsanaAccessToken(c *gin.Context) {
 	}
 
 	resp, err := http.Post(utils.GetEnvKey("ASANA_API")+"access-token", "application/json", &buf)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
+func AsanaAddAccessToken(c *gin.Context) {
+
+	var (
+		OauthCode models.OauthCode
+	)
+
+	if err := c.ShouldBindJSON(&OauthCode); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(OauthCode)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("ASANA_API")+"add-access-token", "application/json", &buf)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -19,9 +19,13 @@ func GetActionName(actionId int) string {
 		"GitlabActions",
 		"GoogleActions",
 		"MeteoActions",
+		"__",
 		"SpotifyActions",
-		"__TicketMaster",
+		"__Asana",
+		"TicketMasterActions",
 		"__Twilio",
+		"CryptoMoneyActions",
+		"__Miro",
 	}
 
 	if actionsArray[actionId][0] == '_' {
@@ -41,9 +45,13 @@ func GetReactionName(reactionId int) string {
 		"GitlabReactions",
 		"GoogleReactions",
 		"__Meteo",
+		"__",
 		"SpotifyReactions",
+		"AsanaReactions",
 		"__TicketMaster",
 		"__Twilio",
+		"__CryptoMoney",
+		"MiroReactions",
 	}
 
 	if reactionsArray[reactionId][0] == '_' {
@@ -77,7 +85,6 @@ func GetAction(c *gin.Context, actionId int, areaId string) map[string]interface
 	defer rows.Close()
 
 	if !rows.Next() {
-		c.JSON(http.StatusNotFound, gin.H{"error": "No action found"})
 		return nil
 	}
 
@@ -130,7 +137,6 @@ func GetReaction(c *gin.Context, reactionId int, areaId string) map[string]inter
 	defer rows.Close()
 
 	if !rows.Next() {
-		c.JSON(http.StatusNotFound, gin.H{"error": "No reaction found"})
 		return nil
 	}
 
@@ -205,6 +211,8 @@ func GetUserAreas(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse area"})
 			return
 		}
+
+		fmt.Println("AREA ID => " + area.AreaId)
 
 		areas = append(areas, map[string]interface{}{
 			"id":            area.Id,
