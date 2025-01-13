@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	models "meteo/Models"
 	"meteo/utils"
 	"net/http"
@@ -29,7 +28,7 @@ func StoreActions(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "Invalid Request")
 		return
 	}
-	fmt.Println("received: ", receivedData)
+
 	query := `
 		INSERT INTO "MeteoActions" (area_id, action_type, latitude, longitude, value)
 		VALUES ($1, $2, $3, $4, $5)
@@ -52,7 +51,7 @@ func StoreActions(c *gin.Context) {
 // @Success 200 {object} map[string]string "Reactions name with parameters of it as object"
 // @Router /actions [get]
 func GetActions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Actions.json")
+	b, err := utils.OpenFile(models.GetActionsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
