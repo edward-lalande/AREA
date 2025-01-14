@@ -17,11 +17,10 @@ class _MyAreaState extends State<MyArea> {
             backgroundColor: Colors.white,
         body: Column(
             children: [
-                MyTitle(
+                MyTitle2(
                     title: "AREA",
                     fontSize: 45,
                     padding: EdgeInsets.only(top: 80),
-                    color: const Color.fromARGB(255, 255, 0, 0)
                 ),
             ],
         ),

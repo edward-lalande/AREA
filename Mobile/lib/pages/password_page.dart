@@ -63,6 +63,8 @@ class _PasswordPageState extends State<PasswordPage> {
 
                                 ),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+
                                     hintText: "New password",
                                     controller: emailController,
                                     prefixIcon: Icon(Icons.lock),

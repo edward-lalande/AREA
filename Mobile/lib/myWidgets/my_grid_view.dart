@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:second_app/myWidgets/my_card.dart';
+import 'package:second_app/myWidgets/my_dialog.dart';
+import 'package:second_app/myWidgets/my_title.dart';
+import 'package:second_app/utils/post_request.dart';
 
 extension HexColor on Color {
 
@@ -12,8 +14,8 @@ extension HexColor on Color {
 
 }
 
-class OauthButton extends StatelessWidget {
-    const OauthButton({
+class ServiceCard extends StatelessWidget {
+    const ServiceCard({
       super.key,
       required this.title,
       required this.iconPath,
@@ -69,7 +71,10 @@ class OauthButton extends StatelessWidget {
 class MyGridViewHome extends StatelessWidget {
     final Map<String, dynamic> servicesMap;
 
-    const MyGridViewHome({super.key, required this.servicesMap});
+    const MyGridViewHome({
+        super.key,
+        required this.servicesMap
+    });
 
     @override
     Widget build(BuildContext context) {
@@ -92,7 +97,7 @@ class MyGridViewHome extends StatelessWidget {
                 final name = service['name'] as String;
                 final iconPath = 'assets/${name.toLowerCase().replaceAll(' ', '_')}.png';
 
-                return OauthButton(
+                return ServiceCard(
                     title: name,
                     iconPath: iconPath,
                 );
@@ -101,62 +106,94 @@ class MyGridViewHome extends StatelessWidget {
     }
 }
 
-class MyGridViewActionsName extends StatefulWidget {
+class ActionsPage extends StatelessWidget {
+    final Service service;
 
-    const MyGridViewActionsName({
+    const ActionsPage({
         super.key,
-        this.gridClick,
-        required this.dataMap,
+        required this.service,
     });
-
-    final Function(int idx)? gridClick;
-    final Map<String, dynamic> dataMap;
-
-    @override
-    State<MyGridViewActionsName> createState() => _MyGridViewActionsNameState();
-}
-
-class _MyGridViewActionsNameState extends State<MyGridViewActionsName> {
-    int selectedIndex = -1;
-
-    void _onCardTap(int index, dynamic service) {
-        setState(() {
-            selectedIndex = selectedIndex == index ? -1 : index;
-        });
-        widget.gridClick!(index);
-    }
 
     @override
     Widget build(BuildContext context) {
-        List<String> keysList = widget.dataMap.keys.toList();
-
-        return SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: 50, left: 50, right: 50),
-            child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                ),
-                itemCount: keysList.length,
-                itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                            _onCardTap(index, widget.dataMap[keysList[index]]);
-                        },
-                        child: Card(
-                            color: Colors.grey,
-                            elevation: 7,
-                            child: MyCard(
-                                title: keysList[index],
-                                padding: const EdgeInsets.all(8),
-                            ),
-                        ),
-                    );
-                },
+        return Scaffold(
+            appBar: AppBar(
+                title: Text("Choice of actions"),
             ),
+            body: Column(
+                children: [
+                    SizedBox(height: 80,),
+                    MyTitle2(title: service.name,
+                        fontSize: 40, padding: EdgeInsets.only(bottom: 50)
+                    ),
+                    ListView.builder(
+                        padding: EdgeInsets.only(left: 25, right: 25),
+                        shrinkWrap: true,
+                        itemCount: service.actions.length,
+                        itemBuilder: (context, index) {
+                            final action = service.actions[index];
+                            return InkWell(
+                                onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => ActionDialog(action: action),
+                                    );
+                                },
+                                child: Card(
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(25.0),
+                                        child: Text(
+                                            action.name,
+                                        style: TextStyle(fontSize: 18),
+                                        ),
+                                    ),
+                                ),
+                            );
+                        },
+                    ),
+                ],
+            )
+        );
+    }
+}
+
+class ServicesGrid extends StatelessWidget {
+    final List<Service> services;
+
+    const ServicesGrid({
+        super.key,
+        required this.services
+    });
+
+    @override
+    Widget build(BuildContext context) {
+
+        return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1,
+            ),
+            itemCount: services.length,
+            itemBuilder: (context, index) {
+                final service = services[index];
+                return InkWell(
+                    onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ActionsPage(service: service),
+                            ),
+                        );
+                    },
+                    child: ServiceCard(
+                        title: service.name, iconPath: "assets/${service.name.toLowerCase().replaceAll(' ', '_')}.png")
+                );
+            },
         );
     }
 }

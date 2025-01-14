@@ -70,6 +70,8 @@ class LoginPage extends StatelessWidget {
 
                                 ),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+
                                     hintText: "Email",
                                     controller: emailController,
                                     prefixIcon: Icon(Icons.email),
@@ -77,6 +79,8 @@ class LoginPage extends StatelessWidget {
                                 ),
                                 SizedBox(height: 30),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+
                                     hintText: "Password",
                                     controller: passwordController,
                                     obscureText: true,
@@ -113,10 +117,14 @@ class LoginPage extends StatelessWidget {
                                         //        "password": passwordController.text
                                         //    }
                                         //);
+                                        final String actionsString = await classicGet(
+                                            url: "http://10.0.2.2:8080/actions",
+                                        );
                                         final String servString = await classicGet(
                                             url: "http://10.0.2.2:8080/services",
                                         );
                                         servicesMap = jsonDecode(servString);
+                                        services = parseServices(actionsString);
                                         context.go("/home");
                                         /*if (tmp) {
                                             if (context.mounted) {

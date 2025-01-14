@@ -67,6 +67,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                                 ),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     hintText: "First name",
                                     controller: firstNameController,
                                     prefixIcon: Icon(Icons.account_circle_sharp),
@@ -74,6 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                                 SizedBox(height: 20),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     hintText: "Last name",
                                     controller: lastNameController,
                                     prefixIcon: Icon(Icons.account_circle_sharp),
@@ -81,6 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                                 SizedBox(height: 20),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     hintText: "Email",
                                     controller: emailController,
                                     prefixIcon: Icon(Icons.email),
@@ -88,6 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                                 SizedBox(height: 20),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     hintText: "Password",
                                     controller: passwordController,
                                     obscureText: true,

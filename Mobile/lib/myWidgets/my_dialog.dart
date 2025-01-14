@@ -1,171 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:second_app/myWidgets/my_text_fields.dart';
+import 'package:second_app/utils/post_request.dart';
 
-class CustomFormDialog extends StatefulWidget {
-    final int numberOfFields;
-    final int actionId;
-    final int actionType;
-    final List<String> fieldLabels;
-    final Function(Map<String, dynamic>) onSubmit;
-    final bool isActionChose;
 
-    const CustomFormDialog({
+class ActionDialog extends StatelessWidget {
+    final ActionServ action;
+
+    const ActionDialog({
         super.key,
-        required this.numberOfFields,
-        required this.fieldLabels,
-        required this.onSubmit,
-        required this.actionId,
-        required this.actionType,
-        required this.isActionChose
+        required this.action,
     });
 
     @override
-    _CustomFormDialogState createState() => _CustomFormDialogState();
-}
-
-class _CustomFormDialogState extends State<CustomFormDialog> {
-
-    Map<String, dynamic> actionForm = {};
-    Map<String, dynamic> reactionForm = {};
-    final List<TextEditingController> controllers = [];
-
-    @override
-    void initState() {
-        super.initState();
-        controllers.addAll(List.generate(widget.numberOfFields, (_) => TextEditingController()));
-    }
-
-    @override
-    void dispose() {
-        for (var controller in controllers) {
-            controller.dispose();
-        }
-        super.dispose();
-    }
-
-    @override
     Widget build(BuildContext context) {
-        return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-            ),
-            backgroundColor: Colors.white.withOpacity(0.9),
-            child: SingleChildScrollView(
-                child: Padding(
-                    padding: const EdgeInsets.all(40),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                            Text(
-                                'Options Requirement',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "avenir",
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                ),
+
+    final controllers = action.arguments.map((arg) => TextEditingController()).toList();
+
+    return AlertDialog(
+        backgroundColor: Theme.of(context).primaryColorLight,
+
+        title: Text(action.name),
+        content: SingleChildScrollView(
+            child: Column(
+                children: [
+                    Text(action.description, style: TextStyle(fontSize: 15),),
+                    SizedBox(height: 20),
+                    ...List.generate(action.arguments.length, (index) {
+                        final arg = action.arguments[index];
+                        return Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: MyTextField2(
+                                color: Theme.of(context).primaryColorLight,
+                                hintText: arg.display,
+                                controller: controllers[index],
                             ),
-                            const SizedBox(height: 20),
-                            ...List.generate(
-                                widget.numberOfFields,
-                                (index) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
-                                    child: TextFormField(
-                                        controller: controllers[index],
-                                        decoration: InputDecoration(
-                                            labelText: widget.fieldLabels[index],
-                                            labelStyle: const TextStyle(
-                                                fontFamily: "avenir",
-                                                fontSize: 15,
-                                                color: Colors.black,
-                                            ),
-                                            hintStyle: const TextStyle(
-                                                fontFamily: "avenir",
-                                                color: Colors.black,
-                                            ),
-                                            border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.black,
-                                                    width: 2,
-                                                ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.black,
-                                                    width: 2,
-                                                ),
-                                            ),
-                                        ),
-                                        style: const TextStyle(
-                                            fontFamily: "avenir",
-                                            color: Colors.black,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 15,
-                                        horizontal: 30,
-                                    ),
-                                ),
-                                onPressed: () {
-                                    if (widget.isActionChose) {
-                                        reactionForm = {
-                                            "reaction_id": widget.actionId,
-                                            "reaction_type": widget.actionType,
-                                        };
-                                        //reactionForm["reaction_id"] = widget.actionId.toString();
-                                        //reactionForm["reaction_type"] = widget.actionType.toString();
-                                        for (int i = 0; i < widget.numberOfFields; i++) {
-                                            reactionForm[widget.fieldLabels[i].toLowerCase()] = controllers[i].text;
-                                        }
-                                        widget.onSubmit(reactionForm);
-                                    }
-                                    else {
-                                        //actionForm["action_id"] = widget.actionId.toString();
-                                        //actionForm["action_type"] = widget.actionType.toString();
-                                        actionForm = {
-                                            "action_id": widget.actionId,
-                                            "action_type": widget.actionType,
-                                        };
-                                        for (int i = 0; i < widget.numberOfFields; i++) {
-                                            actionForm[widget.fieldLabels[i].toLowerCase()] = controllers[i].text;
-                                        }
-                                        widget.onSubmit(actionForm);
-                                    }
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                    backgroundColor: Colors.lightGreen,
-                                                    duration: Duration(seconds: 3),
-                                                    content: Text(
-                                                        'Options Saved !',
-                                                        style: TextStyle(color: Colors.white, fontFamily: "avenir"),
-                                                    ),
-                                                ));
-                                },
-                                child: const Text(
-                                    'Submit',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: 'avenir',
-                                        color: Colors.white,
-                                    ),
-                                ),
-                            ),
-                        ],
-                    ),
+                        );
+                    }
                 ),
+                ]
             ),
+        ),
+        actions: [
+            TextButton(
+                onPressed: () {
+                    for (int i = 0; i < controllers.length; i++) {
+                        print('${action.arguments[i].name}: ${controllers[i].text}');
+                    }
+                    Navigator.of(context).pop();
+                },
+                child: Center(child: Text('Save options', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),),),)
+            ],
         );
     }
 }

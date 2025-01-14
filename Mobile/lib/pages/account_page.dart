@@ -67,6 +67,7 @@ class _AccountPageState extends State<AccountPage> {
 
                                     ),
                                     MyTextField2(
+                                        color: Theme.of(context).scaffoldBackgroundColor,
                                         hintText: "Email",
                                         controller: emailController,
                                         prefixIcon: Icon(Icons.email),
@@ -74,6 +75,7 @@ class _AccountPageState extends State<AccountPage> {
                                     ),
                                     SizedBox(height: 20),
                                     MyTextField2(
+                                        color: Theme.of(context).scaffoldBackgroundColor,
                                         hintText: "Password",
                                         controller: passwordController,
                                         obscureText: true,

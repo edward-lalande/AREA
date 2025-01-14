@@ -5,6 +5,7 @@ class MyTextField2 extends StatefulWidget {
         super.key,
         required this.hintText,
         required this.controller,
+        required this.color,
         this.prefixIcon,
         this.obscureText = false,
         this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -15,6 +16,7 @@ class MyTextField2 extends StatefulWidget {
     final Widget? prefixIcon;
     final bool obscureText;
     final EdgeInsets padding;
+    final Color color;
 
     @override
     State<MyTextField2> createState() => _MyTextField2State();
@@ -47,7 +49,7 @@ class _MyTextField2State extends State<MyTextField2> {
         final theme = Theme.of(context);
 
         return Container(
-            color: theme.scaffoldBackgroundColor,
+            color: widget.color,
             padding: widget.padding,
             child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),

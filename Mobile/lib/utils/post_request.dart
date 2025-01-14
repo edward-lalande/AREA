@@ -115,7 +115,7 @@ Future<String> classicGet({required String url}) async
 class Service {
 
     final String name;
-    final List<Action> actions;
+    final List<ActionServ> actions;
 
     Service({required this.name, required this.actions});
 
@@ -124,13 +124,13 @@ class Service {
         return Service(
             name: json['name'],
             actions: (json['actions'] as List)
-                .map((action) => Action.fromJson(action))
+                .map((action) => ActionServ.fromJson(action))
                 .toList(),
         );
     }
 }
 
-class Action {
+class ActionServ {
 
     final int actionId;
     final int actionType;
@@ -138,7 +138,7 @@ class Action {
     final String description;
     final List<Argument> arguments;
 
-    Action({
+    ActionServ({
         required this.actionId,
         required this.actionType,
         required this.name,
@@ -146,9 +146,9 @@ class Action {
         required this.arguments,
     });
 
-    factory Action.fromJson(Map<String, dynamic> json)
+    factory ActionServ.fromJson(Map<String, dynamic> json)
     {
-        return Action(
+        return ActionServ(
             actionId: json['action_id'],
             actionType: json['action_type'],
             name: json['name'],

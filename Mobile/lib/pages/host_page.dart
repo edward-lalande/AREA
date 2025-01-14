@@ -65,6 +65,8 @@ class _HostPageState extends State<HostPage> {
 
                                 ),
                                 MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+
                                     hintText: "10.0.2.2 (default)",
                                     controller: emailController,
                                     prefixIcon: Icon(Icons.email),
