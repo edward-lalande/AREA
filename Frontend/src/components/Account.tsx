@@ -16,7 +16,7 @@ import axios from "axios";
 import { OauthServices } from "./LoginForm";
 import { Code } from "./LoginForm";
 
-type User = {
+export type User = {
 	id: string;
 	mail: string;
 	password: string;
@@ -46,18 +46,18 @@ const Account: React.FC = () => {
 
 		console.log(service)
 
-		//const url: string = `http://127.0.0.1:8080/${service}/add-oauth`;
-//
-		//axios.get(url, {
-		//	headers: {
-		//		"Content-Type": "application/json",
-		//		"token": cookies["token"]
-		//	}
-		//}).then((res) => {
-//
-		//	window.location.href = res.data;
-//
-		//});
+		const url: string = `http://127.0.0.1:8080/${service}/add-oauth`;
+
+		axios.get(url, {
+			headers: {
+				"Content-Type": "application/json",
+				"token": cookies["token"]
+			}
+		}).then((res) => {
+
+			window.location.href = res.data;
+
+		});
 
 	}
 
@@ -65,12 +65,7 @@ const Account: React.FC = () => {
 
 		const url: string = `http://127.0.0.1:8080/${service}/add-access-token`;
 
-		axios.post(url, { code }, {
-			headers: {
-				"Content-Type": "application/json",
-				"token": cookies["token"]
-			}
-		}).then(getUser);
+		axios.post(url, { code, token: cookies["token"] }).then(getUser);
 
 	}
 
