@@ -45,6 +45,7 @@ class _CreateAreaState extends State<CreateArea> {
 
                                 ),
                                 ServicesGrid(services: services,),
+                                ReactionsGrid(reactionServices: reactions)
                             ],
                         )
                     )

@@ -12,6 +12,7 @@ Map<String, dynamic> actionsMap = {};
 Map<String, dynamic> reactionsMap = {};
 Map<String, String> userData = {};
 List<Service> services = [];
+List<ReactionService> reactions = [];
 
 String parseGetToken(String body)
 {
@@ -187,4 +188,61 @@ List<Service> parseServices(String jsonString)
 {
     final List<dynamic> jsonData = jsonDecode(jsonString);
     return jsonData.map((service) => Service.fromJson(service)).toList();
+}
+
+// reactions
+
+class ReactionService {
+
+    final String name;
+    final List<Reaction> reactions;
+
+    ReactionService({required this.name, required this.reactions});
+
+    factory ReactionService.fromJson(Map<String, dynamic> json) {
+        return ReactionService(
+            name: json['name'],
+            reactions: (json['reactions'] as List)
+                .map((reaction) => Reaction.fromJson(reaction))
+                .toList(),
+        );
+    }
+}
+
+class Reaction {
+
+    final String name;
+    final String description;
+    final int reactionId;
+    final int reactionType;
+    final List<Argument> arguments;
+
+    Reaction({
+        required this.name,
+        required this.description,
+        required this.reactionId,
+        required this.reactionType,
+        required this.arguments,
+    });
+
+    factory Reaction.fromJson(Map<String, dynamic> json) {
+        return Reaction(
+            name: json['name'] ?? 'Unknown',
+            description: json['description'] ?? '',
+            reactionId: json['reaction_id'] ?? 0,
+            reactionType: json['reaction_type'] ?? 0,
+            arguments: (json['arguments'] as List?)?.map((arg) => Argument.fromJson(arg)).toList() ?? [],
+        );
+    }
+}
+
+
+List<ReactionService> parseReactionServices(String jsonString)
+{
+    final List<dynamic> jsonData = jsonDecode(jsonString);
+
+    return jsonData
+      .where((item) => item != null)
+      .map((item) => ReactionService.fromJson(item))
+      .toList();
 }

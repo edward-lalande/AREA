@@ -53,3 +53,47 @@ class ActionDialog extends StatelessWidget {
         );
     }
 }
+
+class ReactionDialog extends StatelessWidget {
+  final Reaction reaction;
+
+  const ReactionDialog({
+    super.key,
+    required this.reaction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controllers = reaction.arguments.map((arg) => TextEditingController()).toList();
+
+    return AlertDialog(
+      title: Text(reaction.name),
+      content: SingleChildScrollView(
+        child: Column(
+          children: List.generate(reaction.arguments.length, (index) {
+            final arg = reaction.arguments[index];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: MyTextField2(
+                color: Theme.of(context).primaryColorLight,
+                hintText: arg.display,
+                controller: controllers[index],
+              ),
+            );
+          }),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            for (int i = 0; i < controllers.length; i++) {
+              print('${reaction.arguments[i].name}: ${controllers[i].text}');
+            }
+            Navigator.of(context).pop();
+          },
+          child: Text('Save options'),
+        ),
+      ],
+    );
+  }
+}

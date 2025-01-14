@@ -157,6 +157,119 @@ class ActionsPage extends StatelessWidget {
     }
 }
 
+class ReactionsPage extends StatelessWidget {
+
+    final ReactionService service;
+
+
+    const ReactionsPage({
+        super.key,
+        required this.service,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+        return Scaffold(
+            appBar: AppBar(
+                title: Text("Choice of reactions"),
+            ),
+            body: Padding(
+                padding: const EdgeInsets.only(left: 5, right: 14),
+                child: RawScrollbar(
+                radius: Radius.circular(10),
+                thumbColor: Theme.of(context).primaryColor,
+                    thickness: 5,
+                    controller: scrollController,
+                    thumbVisibility: true,
+                child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                        children: [
+                            SizedBox(height: 80),
+                            MyTitle2(
+                                title: service.name,
+                                fontSize: 40,
+                                padding: EdgeInsets.only(bottom: 50),
+                            ),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.symmetric(horizontal: 25),
+                                itemCount: service.reactions.length,
+                                itemBuilder: (context, index) {
+                                    final reaction = service.reactions[index];
+                                    return InkWell(
+                                        onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) => ReactionDialog(reaction: reaction),
+                                            );
+                                        },
+                                        child: Card(
+                                            child: Padding(
+                                                padding: const EdgeInsets.all(25),
+                                                child: Text(
+                                                    reaction.name,
+                                                    style: TextStyle(fontSize: 18),
+                                                ),
+                                            ),
+                                        ),
+                                    );
+                                },
+                            ),
+                        ],
+                    ),
+                )
+            ),
+        )
+        );
+    }
+}
+
+class ReactionsGrid extends StatelessWidget {
+
+    final List<ReactionService> reactionServices;
+
+    const ReactionsGrid({
+        super.key,
+        required this.reactionServices,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+        return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1,
+            ),
+            itemCount: reactionServices.length,
+            itemBuilder: (context, index) {
+                final reactionService = reactionServices[index];
+                return InkWell(
+                    onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReactionsPage(service: reactionService),
+                            ),
+                        );
+                    },
+                    child: ServiceCard(
+                        title: reactionService.name,
+                        iconPath: "assets/${reactionService.name.toLowerCase().replaceAll(' ', '_')}.png",
+                    ),
+                );
+            },
+        );
+    }
+}
+
+
 class ServicesGrid extends StatelessWidget {
     final List<Service> services;
 
