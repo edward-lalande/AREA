@@ -21,7 +21,7 @@ func AddAccessToken(c *gin.Context) {
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI"))
+	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI_ADD"))
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 

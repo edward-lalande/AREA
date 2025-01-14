@@ -12,7 +12,7 @@ import (
 )
 
 func AddAccessToken(c *gin.Context) {
-	var receivedData models.OauthInformation
+	var receivedData models.OauthInformationToken
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -24,7 +24,7 @@ func AddAccessToken(c *gin.Context) {
 		"code":          receivedData.Code,
 		"client_id":     utils.GetEnvKey("CLIENT_ID"),
 		"client_secret": utils.GetEnvKey("CLIENT_SECRET"),
-		"redirect_uri":  utils.GetEnvKey("REDIRECT_URI"),
+		"redirect_uri":  utils.GetEnvKey("REDIRECT_URI_ADD"),
 	})
 
 	responseBody := bytes.NewBuffer(data)
@@ -45,14 +45,18 @@ func AddAccessToken(c *gin.Context) {
 		return
 	}
 
-	access_token := utils.BytesToJson(respBody)
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
 
 	if access_token == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	userToken := c.GetHeader("token")
+	userToken := receivedData.Token
 	if userToken == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return

@@ -23,7 +23,7 @@ func OAuthFront(c *gin.Context) {
 }
 
 func AddOAuthFront(c *gin.Context) {
-	authUrl := "https://gitlab.com/oauth/authorize?client_id=" + utils.GetEnvKey("CLIENT_ID_ADD") +
+	authUrl := "https://gitlab.com/oauth/authorize?client_id=" + utils.GetEnvKey("CLIENT_ID") +
 		"&redirect_uri=http://127.0.0.1:8087/add-callback&response_type=code" +
 		"&scope=api read_api read_user write_repository read_repository create_runner manage_runner openid profile email sudo"
 	c.String(http.StatusOK, authUrl)

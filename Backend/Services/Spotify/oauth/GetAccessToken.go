@@ -58,6 +58,10 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
 	access_token := utils.BytesToJson(respBody)["access_token"]
 
 	if access_token == nil || access_token == "" {
