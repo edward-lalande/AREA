@@ -126,7 +126,7 @@ func DropboxAccessToken(c *gin.Context) {
 func DropboxAddAccessToken(c *gin.Context) {
 
 	var (
-		OauthCode models.OauthCode
+		OauthCode models.OauthCodeToken
 	)
 
 	if err := c.ShouldBindJSON(&OauthCode); err != nil {

@@ -220,7 +220,7 @@ func DiscordAddOauth2(c *gin.Context) {
 func DiscordAccessToken(c *gin.Context) {
 
 	var (
-		OauthCode models.OauthCode
+		OauthCode models.OauthCodeToken
 	)
 
 	if err := c.ShouldBindJSON(&OauthCode); err != nil {
@@ -240,13 +240,13 @@ func DiscordAccessToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	defer resp.Body.Close()
 
 	for key, values := range resp.Header {
 		for _, value := range values {
 			c.Header(key, value)
 		}
 	}
+	defer resp.Body.Close()
 
 	c.Status(resp.StatusCode)
 	io.Copy(c.Writer, resp.Body)
@@ -255,7 +255,7 @@ func DiscordAccessToken(c *gin.Context) {
 func DiscordAddAccessToken(c *gin.Context) {
 
 	var (
-		OauthCode models.OauthCode
+		OauthCode models.OauthCodeToken
 	)
 
 	if err := c.ShouldBindJSON(&OauthCode); err != nil {
@@ -275,13 +275,13 @@ func DiscordAddAccessToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	defer resp.Body.Close()
 
 	for key, values := range resp.Header {
 		for _, value := range values {
 			c.Header(key, value)
 		}
 	}
+	defer resp.Body.Close()
 
 	c.Status(resp.StatusCode)
 	io.Copy(c.Writer, resp.Body)

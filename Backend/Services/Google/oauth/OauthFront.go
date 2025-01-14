@@ -29,7 +29,7 @@ func OAuthFront(c *gin.Context) {
 }
 
 func AddOAuthFront(c *gin.Context) {
-	authUrl := "https://accounts.google.com/o/oauth2/auth?client_id=" + utils.GetEnvKey("CLIENT_ID_ADD") +
+	authUrl := "https://accounts.google.com/o/oauth2/auth?client_id=" + utils.GetEnvKey("CLIENT_ID") +
 		"&redirect_uri=http://127.0.0.1:8088/add-callback&response_type=code" +
 		"&scope=" + "https://www.googleapis.com/auth/userinfo.profile " +
 		"https://www.googleapis.com/auth/userinfo.email " +

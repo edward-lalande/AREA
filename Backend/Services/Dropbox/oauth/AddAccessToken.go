@@ -21,7 +21,7 @@ func AddAccessToken(c *gin.Context) {
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("APP_KEY"))
 	data.Set("client_secret", utils.GetEnvKey("APP_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI"))
+	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI_ADD"))
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
@@ -37,14 +37,18 @@ func AddAccessToken(c *gin.Context) {
 		return
 	}
 
-	access_token := utils.BytesToJson(respBody)
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
 
 	if access_token == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	userToken := c.GetHeader("token")
+	userToken := receivedData.Token
 	if userToken == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return

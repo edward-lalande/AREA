@@ -146,7 +146,7 @@ func GoogleAccessToken(c *gin.Context) {
 func GoogleAddAccessToken(c *gin.Context) {
 
 	var (
-		OauthCode models.OauthCode
+		OauthCode models.OauthCodeToken
 	)
 
 	if err := c.ShouldBindJSON(&OauthCode); err != nil {

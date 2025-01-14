@@ -3,6 +3,7 @@ import { Action, CreatePage } from "../Create";
 import { AreaBox } from "../elements/AreaBox";
 import { ServiceButton } from "../elements/AreaButton";
 import { AreaTypography } from "../elements/AreaTypography";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from "axios";
 
 interface ActionServices {
@@ -45,7 +46,7 @@ const ActionServices: React.FC<ActionServicesProps> = ({
     return (
 
         <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2 }}>
-
+            
             <AreaTypography variant="h2" text="Select a service" sx={{ mb: 5 }} />
 
             <AreaBox sx={{ height: "20vh", width: "98vw", gap: 2, flexDirection: "row" }}>
