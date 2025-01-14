@@ -22,17 +22,13 @@ func AddAccessToken(c *gin.Context) {
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_WEB"))
+	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_WEB_ADD"))
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
 	rep, err := http.PostForm(accessTokenUrl, data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	if rep.StatusCode > 200 {
 		return
 	}
 
@@ -47,14 +43,18 @@ func AddAccessToken(c *gin.Context) {
 		return
 	}
 
-	access_token := utils.BytesToJson(respBody)["access_token"]
-
-	if access_token == nil || access_token == "" {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	if utils.BytesToJson(respBody)["error"] != nil {
 		return
 	}
 
-	userToken := c.GetHeader("token")
+	access_token := utils.BytesToJson(respBody)["access_token"]
+
+	if access_token == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "No access_token"})
+		return
+	}
+
+	userToken := receivedData.Token
 	if userToken == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return
@@ -70,5 +70,5 @@ func AddAccessToken(c *gin.Context) {
 
 	db.Exec(c, query, access_token, id)
 
-	c.JSON(rep.StatusCode, "Token registered!")
+	c.JSON(http.StatusOK, "Token registered!")
 }

@@ -12,7 +12,7 @@ import (
 )
 
 func AddAccessToken(c *gin.Context) {
-	var receivedData models.OauthInformation
+	var receivedData models.OauthInformationToken
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -59,7 +59,7 @@ func AddAccessToken(c *gin.Context) {
 		return
 	}
 
-	userToken := c.GetHeader("token")
+	userToken := receivedData.Token
 	if userToken == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return
