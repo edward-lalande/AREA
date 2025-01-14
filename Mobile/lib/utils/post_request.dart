@@ -11,6 +11,7 @@ Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
 Map<String, dynamic> reactionsMap = {};
 Map<String, String> userData = {};
+List<Service> services = [];
 
 String parseGetToken(String body)
 {
@@ -35,16 +36,8 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
             body: json.encode(body),
         );
         if (response.statusCode == 200) {
-            print(response.body);
             stockData.write("token", parseGetToken(response.body));
-
-            //final token = await stockData.read('token');
-                //if (token != null) {
-                //  print('Token: $token');
-                //}
-
             return true;
-
         } else {
             print('ERRRORR : ${response.statusCode}, ${response.body}');
             return false;
@@ -55,7 +48,7 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
     }
 }
 
-Future<bool> classicPost({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
+Future<bool> classicPost({List<Map<String, dynamic>>? body, Map<String, String>? headers, required String url}) async
 {
     try {
         final response = await http.post(
@@ -117,4 +110,81 @@ Future<String> classicGet({required String url}) async
     } catch (e) {
         throw Exception('ERRORRR: $e');
     }
+}
+
+class Service {
+
+    final String name;
+    final List<Action> actions;
+
+    Service({required this.name, required this.actions});
+
+
+    factory Service.fromJson(Map<String, dynamic> json) {
+        return Service(
+            name: json['name'],
+            actions: (json['actions'] as List)
+                .map((action) => Action.fromJson(action))
+                .toList(),
+        );
+    }
+}
+
+class Action {
+
+    final int actionId;
+    final int actionType;
+    final String name;
+    final String description;
+    final List<Argument> arguments;
+
+    Action({
+        required this.actionId,
+        required this.actionType,
+        required this.name,
+        required this.description,
+        required this.arguments,
+    });
+
+    factory Action.fromJson(Map<String, dynamic> json)
+    {
+        return Action(
+            actionId: json['action_id'],
+            actionType: json['action_type'],
+            name: json['name'],
+            description: json['description'],
+            arguments: (json['arguments'] as List)
+                .map((arg) => Argument.fromJson(arg))
+                .toList(),
+        );
+    }
+}
+
+class Argument {
+
+    final String display;
+    final String name;
+    final String type;
+
+    Argument({
+        required this.display,
+        required this.name,
+        required this.type
+    });
+
+    factory Argument.fromJson(Map<String, dynamic> json)
+    {
+        return Argument(
+            display: json['display'],
+            name: json['name'],
+            type: json['type'],
+        );
+    }
+}
+
+
+List<Service> parseServices(String jsonString)
+{
+    final List<dynamic> jsonData = jsonDecode(jsonString);
+    return jsonData.map((service) => Service.fromJson(service)).toList();
 }

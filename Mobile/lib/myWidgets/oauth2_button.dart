@@ -48,7 +48,7 @@ class _OauthButtonState extends State<OauthButton> {
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
                         if (widget.onPressed != null) {
-                        widget.onPressed!(context);
+                            widget.onPressed!(context);
                         }
                     },
                     onFocusChange: (hasFocus) {
