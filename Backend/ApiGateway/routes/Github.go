@@ -42,19 +42,27 @@ func GithubOauth2(c *gin.Context) {
 
 func GithubAddOauth2(c *gin.Context) {
 
-	resp, err := http.Get(utils.GetEnvKey("GITHUB_API") + "add-oauth")
+	client := http.Client{}
+
+	req, err := http.NewRequest("GET", utils.GetEnvKey("GITHUB_API")+"add-oauth", nil)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	req.Header = http.Header{
+		"Content-Type": {"application/json"},
+		"token":        {c.GetHeader("token")},
+	}
+
+	resp, err := client.Do(req)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	defer resp.Body.Close()
-
-	for key, values := range resp.Header {
-		for _, value := range values {
-			c.Header(key, value)
-		}
-	}
 
 	c.Status(resp.StatusCode)
 	io.Copy(c.Writer, resp.Body)
@@ -109,7 +117,7 @@ func GithubAccessToken(c *gin.Context) {
 func GithubAddAccessToken(c *gin.Context) {
 
 	var (
-		OauthCode models.OauthCode
+		OauthCode models.OauthCodeToken
 	)
 
 	if err := c.ShouldBindJSON(&OauthCode); err != nil {
@@ -129,13 +137,13 @@ func GithubAddAccessToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	defer resp.Body.Close()
 
 	for key, values := range resp.Header {
 		for _, value := range values {
 			c.Header(key, value)
 		}
 	}
+	defer resp.Body.Close()
 
 	c.Status(resp.StatusCode)
 	io.Copy(c.Writer, resp.Body)
