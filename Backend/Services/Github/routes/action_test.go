@@ -3,15 +3,40 @@ package routes_test
 import (
 	"bytes"
 	"encoding/json"
-	models "github/Models"
-	"github/routes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	models "github/Models"
+	"github/routes"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestGetWebhooksPush(t *testing.T) {
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+
+	w := httptest.NewRecorder()
+	body := `{"pusher": {"name": "test_pusher"}, "commits": [{"added": ["test_value"]}]}`
+	req, _ := http.NewRequest("POST", "/webhook/push", bytes.NewBufferString(body))
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
+}
+
+func TestGetWebhooksCommitComment(t *testing.T) {
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+
+	w := httptest.NewRecorder()
+	body := `{"comment": {"body": "test comment"}}`
+	req, _ := http.NewRequest("POST", "/webhook/commit_comment", bytes.NewBufferString(body))
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
 
 func TestGetActions(t *testing.T) {
 	router := gin.Default()
