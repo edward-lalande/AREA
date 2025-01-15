@@ -17,7 +17,7 @@ type SignUp struct {
 	LastName string `json:"lastname"`
 }
 
-func isUserAlreadyExists(receivedData SignUp, db *pgx.Conn) bool {
+func IsUserAlreadyExists(receivedData SignUp, db *pgx.Conn) bool {
 	var count int
 	row := db.QueryRow(context.Background(), "SELECT COUNT(*) FROM \"User\" WHERE mail = $1", receivedData.Mail)
 	if err := row.Scan(&count); err != nil {
@@ -26,7 +26,7 @@ func isUserAlreadyExists(receivedData SignUp, db *pgx.Conn) bool {
 	return count > 0
 }
 
-func writeInDB(receivedData SignUp, db *pgx.Conn) error {
+func WriteInDB(receivedData SignUp, db *pgx.Conn) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(receivedData.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
@@ -66,12 +66,12 @@ func SignUpUserHandler(c *gin.Context) {
 		return
 	}
 
-	if isUserAlreadyExists(receivedData, db) {
+	if IsUserAlreadyExists(receivedData, db) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "User already exists"})
 		return
 	}
 
-	if writeValue := writeInDB(receivedData, db); writeValue != nil {
+	if writeValue := WriteInDB(receivedData, db); writeValue != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": writeValue})
 		return
 	}

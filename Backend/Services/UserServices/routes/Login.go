@@ -11,7 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func isUserExists(receivedData models.Login, db *pgx.Conn) bool {
+func IsUserExists(receivedData models.Login, db *pgx.Conn) bool {
 	var hashedPassword string
 	row := db.QueryRow(context.Background(), "SELECT password FROM \"User\" WHERE mail = $1", receivedData.Mail)
 	if err := row.Scan(&hashedPassword); err != nil {
@@ -21,8 +21,6 @@ func isUserExists(receivedData models.Login, db *pgx.Conn) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(receivedData.Password)) == nil
 }
 
-// LoginUserHandler logs in a user and generates an authentication token.
-//
 // @Summary User login
 // @Description Authenticates a user by verifying their email and password, then generates a JWT token upon successful login.
 // @Tags Authentication
@@ -47,7 +45,7 @@ func LoginUserHandler(c *gin.Context) {
 		return
 	}
 
-	if !isUserExists(receivedData, db) {
+	if !IsUserExists(receivedData, db) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Wrong email or password"})
 		return
 	}
