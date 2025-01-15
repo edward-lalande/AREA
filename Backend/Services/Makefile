@@ -13,6 +13,8 @@ tests_run:
 	cd Dropbox/Area && go test -cover
 	cd Asana/oauth && go test -cover
 	cd Asana/Area && go test -cover
+	cd Miro/oauth && go test -cover
+	cd Miro/Area && go test -cover
 	cd Github/routes && go test -cover
 	cd Github/oauth && go test -cover
 	cd Gitlab/routes && go test -cover

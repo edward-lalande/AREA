@@ -121,3 +121,18 @@ func TestPingRoute(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, "{\"ping\":\"pong\"}", w.Body.String())
 }
+
+func TestTriggerStatusInternalServerError(t *testing.T) {
+	body := models.MessageBrocker{}
+
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+
+	b, _ := json.Marshal(body)
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("POST", "/trigger", bytes.NewBuffer(b))
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.Equal(t, "{\"error\":\"failed to connect to `user=edward database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}", w.Body.String())
+}
