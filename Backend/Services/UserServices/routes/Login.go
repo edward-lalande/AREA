@@ -8,18 +8,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func isUserExists(receivedData models.Login, db *pgx.Conn) bool {
-	var count int
-
-	row := db.QueryRow(context.Background(), "SELECT COUNT(*) FROM \"User\" WHERE mail = $1 AND password = $2",
-		receivedData.Mail, receivedData.Password)
-	if err := row.Scan(&count); err != nil {
+	var hashedPassword string
+	row := db.QueryRow(context.Background(), "SELECT password FROM \"User\" WHERE mail = $1", receivedData.Mail)
+	if err := row.Scan(&hashedPassword); err != nil {
 		return false
 	}
 
-	return count == 1
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(receivedData.Password)) == nil
 }
 
 // LoginUserHandler logs in a user and generates an authentication token.

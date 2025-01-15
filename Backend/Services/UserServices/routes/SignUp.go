@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type SignUp struct {
@@ -26,8 +27,13 @@ func isUserAlreadyExists(receivedData SignUp, db *pgx.Conn) bool {
 }
 
 func writeInDB(receivedData SignUp, db *pgx.Conn) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(receivedData.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
 	_, dbExecError := db.Exec(context.Background(), "INSERT INTO \"User\"(mail, password, name, lastname)"+
-		" VALUES ($1, $2, $3, $4)", receivedData.Mail, receivedData.Password, receivedData.Name, receivedData.LastName)
+		" VALUES ($1, $2, $3, $4)", receivedData.Mail, string(hashedPassword), receivedData.Name, receivedData.LastName)
 	return dbExecError
 }
 
