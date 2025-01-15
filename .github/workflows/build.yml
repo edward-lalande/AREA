@@ -23,7 +23,7 @@ jobs:
 
       - name: Build APK
         run: |
-          docker-compose up --build
+          docker-compose up --build -d
         continue-on-error: false
 
       - name: Stop services
