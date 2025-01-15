@@ -54,6 +54,46 @@ func TestCallBack(t *testing.T) {
 	}
 }
 
+func TestAddCallBack(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	tests := []struct {
+		name         string
+		queryParams  string
+		expectedCode int
+		expectedURL  string
+	}{
+		{
+			name:         "Valid code",
+			queryParams:  "?code=valid_code",
+			expectedCode: http.StatusFound,
+			expectedURL:  "http://localhost:8081/login?dropbox_code=valid_code",
+		},
+		{
+			name:         "Missing code",
+			queryParams:  "",
+			expectedCode: http.StatusBadRequest,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			router := gin.New()
+			router.GET("/add-callback", oauth.CallBack)
+			w := httptest.NewRecorder()
+			req, _ := http.NewRequest("GET", "/add-callback"+tt.queryParams, nil)
+
+			router.ServeHTTP(w, req)
+
+			assert.Equal(t, tt.expectedCode, w.Code)
+
+			if tt.expectedCode == http.StatusFound {
+				assert.Equal(t, tt.expectedURL, w.Header().Get("Location"))
+			}
+		})
+	}
+}
+
 func TestAddAccessToken(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
@@ -121,5 +161,22 @@ func TestOAuthFront(t *testing.T) {
 
 		assert.Contains(t, w.Body.String(), "https://www.dropbox.com/oauth2/authorize")
 		assert.Contains(t, w.Body.String(), "response_type=code")
+	})
+}
+
+func TestAddOAuthFront(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	t.Run("Get OAuth URL", func(t *testing.T) {
+		router := gin.New()
+		router.GET("/oauth", oauth.OAuthFront)
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/oauth", nil)
+
+		router.ServeHTTP(w, req)
+
+		assert.Equal(t, http.StatusOK, w.Code)
+
+		assert.Contains(t, w.Body.String(), "https://www.dropbox.com/oauth2/authorize")
 	})
 }

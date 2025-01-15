@@ -11,6 +11,8 @@ tests_run:
 	cd Discord/routes && go test -cover
 	cd Dropbox/oauth && go test -cover
 	cd Dropbox/Area && go test -cover
+	cd Github/routes && go test -cover
+	cd Github/oauth && go test -cover
 	cd Asana/oauth && go test -cover
 	cd Asana/Area && go test -cover
 	cd Meteo/routes && go test -cover

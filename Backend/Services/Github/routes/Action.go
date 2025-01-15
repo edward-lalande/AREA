@@ -19,7 +19,7 @@ import (
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /actions [get]
 func getActions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Actions.json")
+	b, err := utils.OpenFile(models.ActionsModelsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

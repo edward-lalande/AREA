@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	models "discord-service/Models"
-	"discord-service/oauth"
+	models "github/Models"
+	"github/oauth"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -27,7 +27,7 @@ func TestCallBack(t *testing.T) {
 			name:         "Valid code",
 			queryParams:  "?code=valid_code",
 			expectedCode: http.StatusFound,
-			expectedURL:  "http://localhost:8081/login?discord_code=valid_code",
+			expectedURL:  "http://localhost:8081/login?github_code=valid_code",
 		},
 		{
 			name:         "Missing code",
@@ -42,46 +42,6 @@ func TestCallBack(t *testing.T) {
 			router.GET("/callback", oauth.CallBack)
 			w := httptest.NewRecorder()
 			req, _ := http.NewRequest("GET", "/callback"+tt.queryParams, nil)
-
-			router.ServeHTTP(w, req)
-
-			assert.Equal(t, tt.expectedCode, w.Code)
-
-			if tt.expectedCode == http.StatusFound {
-				assert.Equal(t, tt.expectedURL, w.Header().Get("Location"))
-			}
-		})
-	}
-}
-
-func TestAddCallBack(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-
-	tests := []struct {
-		name         string
-		queryParams  string
-		expectedCode int
-		expectedURL  string
-	}{
-		{
-			name:         "Valid code",
-			queryParams:  "?code=valid_code",
-			expectedCode: http.StatusFound,
-			expectedURL:  "http://localhost:8081/login?discord_code=valid_code",
-		},
-		{
-			name:         "Missing code",
-			queryParams:  "",
-			expectedCode: http.StatusBadRequest,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			router := gin.New()
-			router.GET("/add-callback", oauth.CallBack)
-			w := httptest.NewRecorder()
-			req, _ := http.NewRequest("GET", "/add-callback"+tt.queryParams, nil)
 
 			router.ServeHTTP(w, req)
 
@@ -159,8 +119,7 @@ func TestOAuthFront(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, w.Code)
 
-		assert.Contains(t, w.Body.String(), "https://discord.com/oauth2/authorize")
-		assert.Contains(t, w.Body.String(), "response_type=code")
+		assert.Contains(t, w.Body.String(), "https://github.com/login/oauth/authorize")
 	})
 }
 
@@ -177,6 +136,6 @@ func TestAddOAuthFront(t *testing.T) {
 
 		assert.Equal(t, http.StatusOK, w.Code)
 
-		assert.Contains(t, w.Body.String(), "https://discord.com/oauth2/authorize")
+		assert.Contains(t, w.Body.String(), "https://github.com/login/oauth/authorize")
 	})
 }
