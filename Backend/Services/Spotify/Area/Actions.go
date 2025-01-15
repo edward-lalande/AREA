@@ -84,7 +84,7 @@ func Actions(c *gin.Context) {
 // @Success 200 {object} map[string]string "Reactions name with parameters of it as object"
 // @Router /actions [get]
 func GetActions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Actions.json")
+	b, err := utils.OpenFile(models.ActionsModelsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

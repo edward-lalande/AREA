@@ -92,7 +92,7 @@ func ReceivedReactions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Reactions.json")
+	b, err := utils.OpenFile(models.ReactionsModelsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

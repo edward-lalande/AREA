@@ -22,6 +22,9 @@ tests_run:
 	cd Gitlab/Area && go test -cover
 	cd Google/oauth && go test -cover
 	cd Google/Area && go test -cover
+	cd Spotify/Area && go test -cover
+	cd Spotify/oauth && go test -cover
+	cd Spotify/routes && go test -cover
 	cd Meteo/routes && go test -cover
 	cd DateTimeServices/routes && go test -cover
 	cd CryptoMoney/routes && go test -cover

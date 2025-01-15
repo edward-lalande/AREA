@@ -1,5 +1,7 @@
 package models
 
+var ReactionsModelsPath string = "Models/Reactions.json"
+
 type Reactions struct {
 	UserToken    string
 	ReactionType int
