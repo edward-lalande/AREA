@@ -9,7 +9,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-
+    run: |
+      apt install docker-compose
     name: Build Project
     runs-on: ${{ matrix.os }}
     steps:
