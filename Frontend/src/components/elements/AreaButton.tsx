@@ -34,6 +34,28 @@ const AreaButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     </Button>
 );
 
+const AccountButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
+    <Button
+    variant="contained"
+    fullWidth
+    sx={{
+            backgroundColor: "#000",
+            color: "#fff",
+            borderRadius: 5,
+            width: "15vw",
+            fontWeight: "bold",
+            py: 1.5,
+            fontSize: "1rem",
+            textTransform: "none",
+            maxWidth: 400,
+            ...props.sx
+        }}
+        {...props}
+    >
+        {text}
+    </Button>
+);
+
 const ServiceButton: React.FC<ServiceButtonProps> = ({ text, backgroundColor, ...props }) => (
     <Button
     variant="contained"
@@ -127,7 +149,7 @@ const Logout: React.FC<ButtonProps> = (props) => (
     </Button>
 );
 
-const DiscordButton: React.FC<ButtonProps> = (props) => (
+const DiscordButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -147,11 +169,11 @@ const DiscordButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="discord-logo.png" alt="discord logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Discord" sx={{ ml: 2 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 2 }}/>
     </Button>
 );
 
-const SpotifyButton: React.FC<ButtonProps> = (props) => (
+const SpotifyButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -171,11 +193,11 @@ const SpotifyButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="spotify-logo.png" alt="spotify logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Spotify" sx={{ ml: 2 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 2 }}/>
     </Button>
 );
 
-const GithubButton: React.FC<ButtonProps> = (props) => (
+const GithubButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -195,11 +217,11 @@ const GithubButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="logo-github.png" alt="github logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Github" sx={{ ml: 2 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 2 }}/>
     </Button>
 );
 
-const GitlabButton: React.FC<ButtonProps> = (props) => (
+const GitlabButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -219,11 +241,11 @@ const GitlabButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="logo-gitlab.png" alt="gitlab logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Gitlab" sx={{ ml: 3 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 3 }}/>
     </Button>
 );
 
-const GoogleButton: React.FC<ButtonProps> = (props) => (
+const GoogleButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -243,11 +265,11 @@ const GoogleButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="google-logo.png" alt="google logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Google" sx={{ ml: 3 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 3 }}/>
     </Button>
 );
 
-const DropboxButton: React.FC<ButtonProps> = (props) => (
+const DropboxButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -267,11 +289,11 @@ const DropboxButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="dropbox-logo.png" alt="dropbox logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Dropbox" sx={{ ml: 3 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 3 }}/>
     </Button>
 )
 
-const AsanaButton: React.FC<ButtonProps> = (props) => (
+const AsanaButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -291,11 +313,11 @@ const AsanaButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="asana-logo.png" alt="asana logo" width={70} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Asana" sx={{ ml: 3 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 3 }}/>
     </Button>
 )
 
-const MiroButton: React.FC<ButtonProps> = (props) => (
+const MiroButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     <Button
         variant="outlined"
         fullWidth
@@ -315,8 +337,8 @@ const MiroButton: React.FC<ButtonProps> = (props) => (
         {...props}
     >
         <img src="miro-logo.png" alt="miro logo" width={44} height={44}/>
-        <AreaTypography variant="h6" text="Continue with Miro" sx={{ ml: 3 }}/>
+        <AreaTypography variant="h6" text={text} sx={{ ml: 3 }}/>
     </Button>
 )
 
-export { MiroButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton };
+export { MiroButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };

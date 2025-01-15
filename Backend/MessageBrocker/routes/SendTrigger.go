@@ -3,6 +3,7 @@ package routes
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	models "message-brocker/Models"
 	"message-brocker/utils"
 	"net/http"
@@ -63,6 +64,7 @@ func Trigger(c *gin.Context) {
 	resp, err := http.Post(services[serviceReactionId]+"trigger", "application/json", &buf)
 
 	if err != nil {
+		fmt.Println("error:", err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

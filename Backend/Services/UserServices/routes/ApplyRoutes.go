@@ -13,11 +13,13 @@ func ApplyRoutes(r *gin.Engine) {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.GET("/users", GetUser)
+	r.GET("/user", GetUser)
 
 	r.POST("/sign-up", SignUpUserHandler)
 	r.POST("/login", LoginUserHandler)
 
-	r.POST("/update", UpdateUser)
+	r.POST("/update-email", UpdateEmail)
+	r.POST("/update-name", UpdateName)
+	r.POST("/update-lastname", UpdateLastname)
 	r.DELETE("/user", DeleteUser)
 }

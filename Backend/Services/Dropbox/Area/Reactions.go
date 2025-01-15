@@ -5,13 +5,37 @@ import (
 	models "dropbox/Models"
 	"dropbox/utils"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func renameFile(info models.DropBoxReactions) (*http.Response, error) {
+func GetToken(c *gin.Context, token string) string {
+
+	id := utils.ParseToken(token)
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return ""
+	}
+
+	var discord_token string
+
+	query := `SELECT discord_token FROM "User" WHERE id = $1`
+	err := db.QueryRow(c, query, id).Scan(&discord_token)
+	if err != nil {
+		return ""
+	}
+
+	defer db.Close(c)
+	fmt.Println("discord token => " + discord_token)
+	return discord_token
+
+}
+
+func renameFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
 	url := "https://api.dropboxapi.com/2/files/move_v2"
 
 	body := map[string]interface{}{
@@ -29,14 +53,14 @@ func renameFile(info models.DropBoxReactions) (*http.Response, error) {
 		log.Fatal(err)
 	}
 
-	req.Header.Set("Authorization", "Bearer "+info.UserToken)
+	req.Header.Set("Authorization", "Bearer "+GetToken(c, info.UserToken))
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	return client.Do(req)
 }
 
-func shareFile(info models.DropBoxReactions) (*http.Response, error) {
+func shareFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
 	url := "https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings"
 
 	body := map[string]interface{}{
@@ -55,20 +79,20 @@ func shareFile(info models.DropBoxReactions) (*http.Response, error) {
 		log.Fatal(err)
 	}
 
-	req.Header.Set("Authorization", "Bearer "+info.UserToken)
+	req.Header.Set("Authorization", "Bearer "+GetToken(c, info.UserToken))
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	return client.Do(req)
 }
 
-func findReactions(info models.DropBoxReactions) (*http.Response, error) {
-	Reactions := map[int]func(models.DropBoxReactions) (*http.Response, error){
+func findReactions(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
+	Reactions := map[int]func(*gin.Context, models.DropBoxReactions) (*http.Response, error){
 		0: renameFile,
 		1: shareFile,
 	}
 
-	return Reactions[info.ReactionType](info)
+	return Reactions[info.ReactionType](c, info)
 }
 
 // Dropbox Services
@@ -102,7 +126,7 @@ func Trigger(c *gin.Context) {
 	}
 	defer db.Close(c)
 
-	resp, err := findReactions(database)
+	resp, err := findReactions(c, database)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	}

@@ -5,7 +5,6 @@ import (
 	"api-gateway/utils"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -23,6 +22,26 @@ import (
 func MiroOauth2(c *gin.Context) {
 
 	resp, err := http.Get(utils.GetEnvKey("MIRO_API") + "oauth")
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
+func MiroAddOauth2(c *gin.Context) {
+
+	resp, err := http.Get(utils.GetEnvKey("MIRO_API") + "add-oauth")
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -81,7 +100,42 @@ func MiroAccessToken(c *gin.Context) {
 			c.Header(key, value)
 		}
 	}
-	fmt.Println("okay okay")
+
+	c.Status(resp.StatusCode)
+	io.Copy(c.Writer, resp.Body)
+}
+
+func MiroAddAccessToken(c *gin.Context) {
+
+	var (
+		OauthCode models.OauthCodeToken
+	)
+
+	if err := c.ShouldBindJSON(&OauthCode); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(OauthCode)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	resp, err := http.Post(utils.GetEnvKey("MIRO_API")+"add-access-token", "application/json", &buf)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
 	c.Status(resp.StatusCode)
 	io.Copy(c.Writer, resp.Body)
 }

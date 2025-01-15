@@ -22,3 +22,11 @@ func OAuthFront(c *gin.Context) {
 
 	c.String(http.StatusOK, authUrl)
 }
+
+func AddOAuthFront(c *gin.Context) {
+	authUrl := "https://www.dropbox.com/oauth2/authorize?&client_id=" + utils.GetEnvKey("APP_KEY") +
+		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI_ADD") +
+		"&response_type=code"
+
+	c.String(http.StatusOK, authUrl)
+}

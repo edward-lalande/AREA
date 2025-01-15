@@ -1,7 +1,6 @@
 package oauth
 
 import (
-	"context"
 	models "discord-service/Models"
 	"discord-service/utils"
 	"io"
@@ -11,16 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Discord OAUTH2
-// @Summary Get
-// @Description Send the code received by the frontend to get the discord access-token of the user
-// @Tags Discord OAUTH2
-// @Accept json
-// @Produce json
-// @Params object models.OauthInformation true "The code must be send as object and the token is not necessary, it can be null"
-// @Success 200 {object} map[string]string "the code to redirect to"
-// @Router /access-token [post]
-func GetAccessToken(c *gin.Context) {
+func AddAccessToken(c *gin.Context) {
 	var receivedData models.OauthInformation
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
@@ -32,7 +22,7 @@ func GetAccessToken(c *gin.Context) {
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_WEB"))
+	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_WEB_ADD"))
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
@@ -48,36 +38,37 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
-	query := `
-		INSERT INTO "User" (discord_token)
-		VALUES ($1)
-		RETURNING id;
-	`
 	db := utils.OpenDB(c)
 	if db == nil {
 		return
 	}
 
-	access_token := utils.BytesToJson(respBody)
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
 
 	if access_token == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No access_token"})
 		return
 	}
 
-	var id string
-
-	row := db.QueryRow(context.Background(), query, access_token)
-	_ = row.Scan(&id)
-	defer db.Close(c)
-
-	token, err := utils.CreateToken(id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	userToken := receivedData.Token
+	if userToken == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return
 	}
 
-	c.JSON(rep.StatusCode, gin.H{
-		"body": token,
-	})
+	id := utils.ParseToken(userToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	query := `UPDATE "User" SET discord_token = $1 WHERE id = $2;`
+
+	db.Exec(c, query, access_token, id)
+
+	c.JSON(http.StatusOK, "Token registered!")
 }

@@ -58,7 +58,7 @@ func LoginUserHandler(c *gin.Context) {
 	_ = row.Scan(&user.Id, &user.Login)
 	db.Close(c)
 
-	token, err := utils.CreateToken(string(user.Id))
+	token, err := utils.CreateToken(user.Id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
