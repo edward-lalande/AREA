@@ -15,6 +15,11 @@ tests_run:
 	cd Asana/Area && go test -cover
 	cd Github/routes && go test -cover
 	cd Github/oauth && go test -cover
+	cd Gitlab/routes && go test -cover
+	cd Gitlab/oauth && go test -cover
+	cd Gitlab/Area && go test -cover
+	cd Google/oauth && go test -cover
+	cd Google/Area && go test -cover
 	cd Meteo/routes && go test -cover
 	cd DateTimeServices/routes && go test -cover
 	cd CryptoMoney/routes && go test -cover

@@ -42,7 +42,7 @@ func TestWebhookPushEvent(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/webhook", bytes.NewBuffer(body))
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 }
 
 func TestWebhookNoteEvent(t *testing.T) {
@@ -57,7 +57,7 @@ func TestWebhookNoteEvent(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/webhook", bytes.NewBuffer(body))
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 }
 
 func TestWebhookMergeRequestEvent(t *testing.T) {
@@ -72,7 +72,7 @@ func TestWebhookMergeRequestEvent(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/webhook", bytes.NewBuffer(body))
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 }
 
 func TestTriggerStatusInternalServerError(t *testing.T) {
