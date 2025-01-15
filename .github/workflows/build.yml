@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build-project:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    name: Build Project
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        run: docker-compose --version
+
+      - name: Build APK
+        run: |
+          docker-compose up --build
+        continue-on-error: false
+
+      - name: Stop services
+        if: always()
+        run: docker-compose down
