@@ -2,6 +2,7 @@ import React from "react";
 import { Button, ButtonProps } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import LogoutIcon from '@mui/icons-material/Logout';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { AreaTypography } from "./AreaTypography";
 
 interface AreaButtonProps extends ButtonProps {
@@ -146,6 +147,29 @@ const Logout: React.FC<ButtonProps> = (props) => (
         {...props}
         >
             Logout
+    </Button>
+);
+
+const HelpButton: React.FC<ButtonProps> = (props) => (
+    <Button
+        variant="outlined"
+        fullWidth
+        startIcon={<HelpOutlineIcon />}
+        sx={{
+            borderColor: "black",
+            color: "black",
+            borderRadius: 10,
+            maxWidth: 150,
+            py: 1.5,
+            textTransform: "none",
+            fontWeight: "bold",
+            fontSize: "1rem",
+            mb: 1,
+            ...props.sx
+        }}
+        {...props}
+        >
+            Help
     </Button>
 );
 
@@ -341,4 +365,4 @@ const MiroButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     </Button>
 )
 
-export { MiroButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };
+export { MiroButton, HelpButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };
