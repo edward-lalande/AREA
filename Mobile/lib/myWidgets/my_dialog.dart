@@ -30,6 +30,7 @@ class ActionDialog extends StatelessWidget {
                         return Padding(
                             padding: const EdgeInsets.only(bottom: 16.0),
                             child: MyTextField2(
+                                padding: EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 8),
                                 color: Theme.of(context).primaryColorLight,
                                 hintText: arg.display,
                                 controller: controllers[index],
@@ -55,45 +56,52 @@ class ActionDialog extends StatelessWidget {
 }
 
 class ReactionDialog extends StatelessWidget {
-  final Reaction reaction;
+    final Reaction reaction;
 
-  const ReactionDialog({
-    super.key,
-    required this.reaction,
-  });
+    const ReactionDialog({
+        super.key,
+        required this.reaction,
+    });
 
-  @override
-  Widget build(BuildContext context) {
-    final controllers = reaction.arguments.map((arg) => TextEditingController()).toList();
+    @override
+    Widget build(BuildContext context) {
 
-    return AlertDialog(
-      title: Text(reaction.name),
-      content: SingleChildScrollView(
-        child: Column(
-          children: List.generate(reaction.arguments.length, (index) {
-            final arg = reaction.arguments[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: MyTextField2(
-                color: Theme.of(context).primaryColorLight,
-                hintText: arg.display,
-                controller: controllers[index],
-              ),
-            );
-          }),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            for (int i = 0; i < controllers.length; i++) {
-              print('${reaction.arguments[i].name}: ${controllers[i].text}');
-            }
-            Navigator.of(context).pop();
-          },
-          child: Text('Save options'),
-        ),
-      ],
-    );
-  }
+        final controllers = reaction.arguments.map((arg) => TextEditingController()).toList();
+
+        return AlertDialog(
+            backgroundColor: Theme.of(context).primaryColorLight,
+            title: Text(reaction.name),
+            content: SingleChildScrollView(
+                child: Column(
+                    children: [
+                        Text(reaction.description, style: TextStyle(fontSize: 15),),
+                        SizedBox(height: 20,),
+                        ...List.generate(reaction.arguments.length, (index) {
+                            final arg = reaction.arguments[index];
+                            return Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: MyTextField2(
+                                    padding: EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 8),
+                                    color: Theme.of(context).primaryColorLight,
+                                    hintText: arg.display,
+                                    controller: controllers[index],
+                                ),
+                            );
+                        }),
+                    ]
+                    ),
+                ),
+                actions: [
+                    TextButton(
+                        onPressed: () {
+                            for (int i = 0; i < controllers.length; i++) {
+                                print('${reaction.arguments[i].name}: ${controllers[i].text}');
+                            }
+                            Navigator.of(context).pop();
+                        },
+                        child: Center(child: Text("Save options", textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),),),
+                ),
+            ],
+        );
+    }
 }

@@ -113,6 +113,27 @@ Future<String> classicGet({required String url}) async
     }
 }
 
+void getDatas() async
+{
+    try {
+        final String actionsString = await classicGet(
+            url: "http://10.0.2.2:8080/actions",
+        );
+        final String reactionsString = await classicGet(
+            url: "http://10.0.2.2:8080/reactions",
+        );
+        final String servString = await classicGet(
+            url: "http://10.0.2.2:8080/services",
+        );
+        servicesMap = jsonDecode(servString);
+        services = parseServices(actionsString);
+        reactions = parseReactionServices(reactionsString);
+    }
+    catch (e) {
+        throw Exception("ERORR: $e");
+    }
+}
+
 class Service {
 
     final String name;

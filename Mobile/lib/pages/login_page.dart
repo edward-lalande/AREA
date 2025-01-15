@@ -15,11 +15,11 @@ import '../myWidgets/my_divider_text.dart';
 class LoginPage extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
-        
+
         final scrollController = ScrollController();
         final emailController = TextEditingController();
         final passwordController = TextEditingController();
-  
+
         return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
@@ -95,8 +95,9 @@ class LoginPage extends StatelessWidget {
                                     padding: EdgeInsets.only(left: 20)
                                 ),
                                 SizedBox(height: 20,),
-                                MyButton2(title: "Log in",
-                                     onPressed: (context) async {
+                                MyButton2(
+                                    title: "Log in",
+                                    onPressed: (context) async {
                                         //if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                                         //    ScaffoldMessenger.of(context).showSnackBar(
                                         //        SnackBar(

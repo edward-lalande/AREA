@@ -116,42 +116,57 @@ class ActionsPage extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
         return Scaffold(
             appBar: AppBar(
                 title: Text("Choice of actions"),
             ),
-            body: Column(
-                children: [
-                    SizedBox(height: 80,),
-                    MyTitle2(title: service.name,
-                        fontSize: 40, padding: EdgeInsets.only(bottom: 50)
-                    ),
-                    ListView.builder(
-                        padding: EdgeInsets.only(left: 25, right: 25),
-                        shrinkWrap: true,
-                        itemCount: service.actions.length,
-                        itemBuilder: (context, index) {
-                            final action = service.actions[index];
-                            return InkWell(
-                                onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => ActionDialog(action: action),
-                                    );
-                                },
-                                child: Card(
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(25.0),
-                                        child: Text(
-                                            action.name,
-                                        style: TextStyle(fontSize: 18),
-                                        ),
-                                    ),
+            body: Padding(
+                padding: const EdgeInsets.only(left: 5, right: 14),
+                child: RawScrollbar(
+                    radius: Radius.circular(10),
+                    thumbColor: Theme.of(context).primaryColor,
+                    thickness: 5,
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                            children: [
+                                SizedBox(height: 80,),
+                                MyTitle2(title: service.name,
+                                    fontSize: 40, padding: EdgeInsets.only(bottom: 50)
                                 ),
-                            );
-                        },
+                                ListView.builder(
+                                    padding: EdgeInsets.only(left: 25, right: 25),
+                                    shrinkWrap: true,
+                                    itemCount: service.actions.length,
+                                    itemBuilder: (context, index) {
+                                        final action = service.actions[index];
+                                        return InkWell(
+                                            onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) => ActionDialog(action: action),
+                                                );
+                                            },
+                                            child: Card(
+                                                child: Padding(
+                                                    padding: const EdgeInsets.all(25.0),
+                                                    child: Text(
+                                                        action.name,
+                                                    style: TextStyle(fontSize: 18),
+                                                    ),
+                                                ),
+                                            ),
+                                        );
+                                    },
+                                ),
+                            ],
+                        )
                     ),
-                ],
+                ),
             )
         );
     }
@@ -177,51 +192,51 @@ class ReactionsPage extends StatelessWidget {
             body: Padding(
                 padding: const EdgeInsets.only(left: 5, right: 14),
                 child: RawScrollbar(
-                radius: Radius.circular(10),
-                thumbColor: Theme.of(context).primaryColor,
+                    radius: Radius.circular(10),
+                    thumbColor: Theme.of(context).primaryColor,
                     thickness: 5,
                     controller: scrollController,
                     thumbVisibility: true,
-                child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                        children: [
-                            SizedBox(height: 80),
-                            MyTitle2(
-                                title: service.name,
-                                fontSize: 40,
-                                padding: EdgeInsets.only(bottom: 50),
-                            ),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(horizontal: 25),
-                                itemCount: service.reactions.length,
-                                itemBuilder: (context, index) {
-                                    final reaction = service.reactions[index];
-                                    return InkWell(
-                                        onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) => ReactionDialog(reaction: reaction),
-                                            );
-                                        },
-                                        child: Card(
-                                            child: Padding(
-                                                padding: const EdgeInsets.all(25),
-                                                child: Text(
-                                                    reaction.name,
-                                                    style: TextStyle(fontSize: 18),
+                    child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                            children: [
+                                SizedBox(height: 80),
+                                MyTitle2(
+                                    title: service.name,
+                                    fontSize: 40,
+                                    padding: EdgeInsets.only(bottom: 50),
+                                ),
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.symmetric(horizontal: 25),
+                                    itemCount: service.reactions.length,
+                                    itemBuilder: (context, index) {
+                                        final reaction = service.reactions[index];
+                                        return InkWell(
+                                            onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) => ReactionDialog(reaction: reaction),
+                                                );
+                                            },
+                                            child: Card(
+                                                child: Padding(
+                                                    padding: const EdgeInsets.all(25),
+                                                    child: Text(
+                                                        reaction.name,
+                                                        style: TextStyle(fontSize: 18),
+                                                    ),
                                                 ),
                                             ),
-                                        ),
-                                    );
-                                },
-                            ),
-                        ],
-                    ),
-                )
-            ),
-        )
+                                        );
+                                    },
+                                ),
+                            ],
+                        ),
+                    )
+                ),
+            )
         );
     }
 }
