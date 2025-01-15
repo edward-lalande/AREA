@@ -1,12 +1,14 @@
 package models
 
+var ReactionModelPath string = "Models/Reactions.json"
+
 type ReactionReceiveData struct {
 	AreaId       string `json:"area_id"`
 	UserToken    string `json:"user_token"`
 	ReactionType int    `json:"reaction_type"`
 	ChannelID    string `json:"channel_id"`
 	Message      string `json:"message"`
-	GuildID		 string `json:"guild_id"`
+	GuildID      string `json:"guild_id"`
 }
 
 type ReactionGet struct {
@@ -14,7 +16,7 @@ type ReactionGet struct {
 	ReactionType int    `json:"reaction_type"`
 	ChannelID    string `json:"channel_id"`
 	Message      string `json:"message"`
-	GuildID		 string `json:"guild_id"`
+	GuildID      string `json:"guild_id"`
 }
 
 type ActiveReactionData struct {
@@ -25,5 +27,5 @@ type ActiveReactionData struct {
 type Reactions struct {
 	Message   string `json:"message"`
 	ChannelId string `json:"channel_id"`
-	GuildId string `json:"guild_id"`
+	GuildId   string `json:"guild_id"`
 }

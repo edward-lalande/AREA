@@ -22,11 +22,11 @@ import (
 func ReceivedReactions(c *gin.Context) {
 	var receivedData models.ReactionReceiveData
 
-	db := utils.OpenDB(c)
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	db := utils.OpenDB(c)
 
 	_, err := db.Exec(c, "INSERT INTO \"DiscordReactions\" (area_id, reaction_type, user_token, channel_id, message, guild_id)"+
 		" VALUES($1, $2, $3, $4, $5, $6)", receivedData.AreaId, receivedData.ReactionType, receivedData.UserToken, receivedData.ChannelID, receivedData.Message, receivedData.GuildID)
