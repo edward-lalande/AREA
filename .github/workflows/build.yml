@@ -18,7 +18,7 @@ jobs:
 
       - name: Set up Docker Compose
         run: |
-          apt install docker-compose
+          apt-get install docker-compose
           docker-compose --version
 
       - name: Build APK
