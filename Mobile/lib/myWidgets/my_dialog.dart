@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_text_fields.dart';
 import 'package:second_app/utils/post_request.dart';
 
@@ -17,18 +18,19 @@ class ActionDialog extends StatelessWidget {
     final controllers = action.arguments.map((arg) => TextEditingController()).toList();
 
     return AlertDialog(
+
         backgroundColor: Theme.of(context).primaryColorLight,
 
         title: Text(action.name),
         content: SingleChildScrollView(
             child: Column(
                 children: [
-                    Text(action.description, style: TextStyle(fontSize: 15),),
-                    SizedBox(height: 20),
+                    Text(action.description, style: TextStyle(fontSize: 16),),
+                    SizedBox(height: 25),
                     ...List.generate(action.arguments.length, (index) {
                         final arg = action.arguments[index];
                         return Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
+                            padding: const EdgeInsets.only(bottom: 20.0),
                             child: MyTextField2(
                                 padding: EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 8),
                                 color: Theme.of(context).primaryColorLight,
@@ -42,15 +44,21 @@ class ActionDialog extends StatelessWidget {
             ),
         ),
         actions: [
-            TextButton(
-                onPressed: () {
-                    for (int i = 0; i < controllers.length; i++) {
-                        print('${action.arguments[i].name}: ${controllers[i].text}');
-                    }
+            MyButton2(
+                padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+                title: "Save options",
+                onPressed: (_) {
+                    actionData = {
+                        "action_name": action.name,
+                        "action_id": action.actionId,
+                        "action_type": action.actionType,
+                        ...getFormsData(controllers, action.arguments),
+                    };
+                    Navigator.of(context).pop();
                     Navigator.of(context).pop();
                 },
-                child: Center(child: Text('Save options', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),),),)
-            ],
+            ),
+        ],
         );
     }
 }
@@ -74,12 +82,12 @@ class ReactionDialog extends StatelessWidget {
             content: SingleChildScrollView(
                 child: Column(
                     children: [
-                        Text(reaction.description, style: TextStyle(fontSize: 15),),
-                        SizedBox(height: 20,),
+                        Text(reaction.description, style: TextStyle(fontSize: 16),),
+                        SizedBox(height: 25,),
                         ...List.generate(reaction.arguments.length, (index) {
                             final arg = reaction.arguments[index];
                             return Padding(
-                                padding: const EdgeInsets.only(bottom: 16.0),
+                                padding: const EdgeInsets.only(bottom: 20.0),
                                 child: MyTextField2(
                                     padding: EdgeInsets.only(left: 0, right: 0, top: 8, bottom: 8),
                                     color: Theme.of(context).primaryColorLight,
@@ -92,16 +100,32 @@ class ReactionDialog extends StatelessWidget {
                     ),
                 ),
                 actions: [
-                    TextButton(
-                        onPressed: () {
-                            for (int i = 0; i < controllers.length; i++) {
-                                print('${reaction.arguments[i].name}: ${controllers[i].text}');
-                            }
+                    MyButton2(
+                        padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
+                        title: "Save options",
+                        onPressed: (_) {
+                            reactionData = {
+                                "reaction_name": reaction.name,
+                                "reaction_id": reaction.reactionId,
+                                "reaction_type": reaction.reactionType,
+                                ...getFormsData(controllers, reaction.arguments),
+                            };
                             Navigator.of(context).pop();
-                        },
-                        child: Center(child: Text("Save options", textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),),),
-                ),
+                            Navigator.of(context).pop();
+                        }
+                    ),
             ],
         );
     }
+}
+
+Map<String, dynamic> getFormsData(List<TextEditingController> controllers, List<Argument> arguments)
+{
+    final Map<String, dynamic> result = {};
+
+    for (int i = 0; i < arguments.length; i++) {
+        result[arguments[i].name] = controllers[i].text;
+    }
+
+    return result;
 }

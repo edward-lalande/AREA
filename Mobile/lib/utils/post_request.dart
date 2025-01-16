@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
 
 import 'package:second_app/utils/my_secure_storage.dart';
@@ -11,23 +11,41 @@ Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
 Map<String, dynamic> reactionsMap = {};
 Map<String, String> userData = {};
+Map<String, dynamic> actionData = {};
+Map<String, dynamic> reactionData = {};
+
 List<Service> services = [];
 List<ReactionService> reactions = [];
 
-String parseGetToken(String body)
+String parseGetToken(String body, int delim)
 {
     StringBuffer result = StringBuffer();
 
-    for (var i = 25; i <= body.length; i++) {
-        if (body[i] == '"') {
+    for (; delim <= body.length; delim++) {
+        if (body[delim] == '"') {
             break;
         }
-        result.write(body[i]);
+        result.write(body[delim]);
     }
+    print(result.toString());
     return result.toString();
 }
 
-Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url}) async
+void showCustomSnackBar(BuildContext context, String message, {Color backgroundColor = Colors.grey})
+{
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: backgroundColor,
+            duration: const Duration(seconds: 3),
+            content: Text(
+                message,
+            ),
+        ),
+    );
+}
+
+
+Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url, required int delim}) async
 {
 
     try {
@@ -37,7 +55,8 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
             body: json.encode(body),
         );
         if (response.statusCode == 200) {
-            stockData.write("token", parseGetToken(response.body));
+            //print(response.body);
+            //stockData.write("token", parseGetToken(response.body, delim));
             return true;
         } else {
             print('ERRRORR : ${response.statusCode}, ${response.body}');
@@ -48,6 +67,27 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
         return false;
     }
 }
+
+Future<void> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dynamic>> reactionsData) async
+{
+    final body = [{
+        "user_token": "fuck",
+        "action": actionData,
+        "reactions": reactionsData,
+    }];
+
+    final success = await classicPost(
+        url: "http://$host:8080/area",
+        body: body,
+    );
+
+    if (success) {
+        print("Area created successfully!");
+    } else {
+        print("Failed to create Area.");
+    }
+}
+
 
 Future<bool> classicPost({List<Map<String, dynamic>>? body, Map<String, String>? headers, required String url}) async
 {
@@ -113,7 +153,7 @@ Future<String> classicGet({required String url}) async
     }
 }
 
-void getDatas() async
+Future<void> getDatas() async
 {
     try {
         final String actionsString = await classicGet(

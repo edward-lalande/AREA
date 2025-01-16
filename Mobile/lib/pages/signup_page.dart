@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_app/utils/post_request.dart';
 
 import '../myWidgets/my_title.dart';
 import '../myWidgets/my_button.dart';
@@ -101,8 +102,23 @@ class _SignUpPageState extends State<SignUpPage> {
                                 SizedBox(height: 30),
                                 MyButton2(
                                     title: "Sign in",
-                                    onPressed: (context) {
-                                      context.go("/login");
+                                    onPressed: (context) async {
+                                         if (emailController.text.isEmpty || passwordController.text.isEmpty
+                                         || lastNameController.text.isEmpty || firstNameController.text.isEmpty) {
+                                            showCustomSnackBar(context, "Please fill all the fields");
+                                            return;
+                                        }
+                                        await sendSignUp(
+                                            delim: 18,
+                                            url: "http://$host:8080/sign-up",
+                                            body: {
+                                                "mail": emailController.text,
+                                                "password": passwordController.text,
+                                                "name": firstNameController.text,
+                                                "lastname": lastNameController.text,
+                                            }
+                                        );
+                                        context.go("/login");
                                     }
                                 ),
                             ],

@@ -86,16 +86,11 @@ class _AccountPageState extends State<AccountPage> {
                                     MyButton2(
                                         title: "Save",
                                         onPressed: (context) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                    backgroundColor: Colors.grey,
-                                                    duration: Duration(seconds: 3),
-                                                    content: Text(
-                                                        'Informations saved.',
-                                                        style: TextStyle(color: Colors.white, fontFamily: "avenir"),
-                                                    ),
-                                                ),
-                                            );
+                                            if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+                                                showCustomSnackBar(context, "Please fill the fields.");
+                                                return;
+                                            }
+                                            showCustomSnackBar(context, "Informations has been saved.");
                                         }
                                     ),
                                     SizedBox(height: 30),
@@ -103,7 +98,6 @@ class _AccountPageState extends State<AccountPage> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         onTap: (context) {
                                             context.go("/login");
-
                                         },
                                         firstTitle: "See you soon ?", secondTitle: "Log out",
                                         padding: EdgeInsets.only(left: 15),

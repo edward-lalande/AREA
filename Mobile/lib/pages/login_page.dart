@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_switch_button.dart';
@@ -89,73 +87,49 @@ class LoginPage extends StatelessWidget {
                                 ),
                                 SizedBox(height: 7,),
                                 MyTextButton(
+                                    firstTitle: "Forget your're",
+                                    secondTitle: "Password",
                                     onTap: (context) {
                                         context.go("/password");
-                                    }, firstTitle: "Forget your're", secondTitle: "Password",
+                                    },
                                     padding: EdgeInsets.only(left: 20)
                                 ),
                                 SizedBox(height: 20,),
                                 MyButton2(
                                     title: "Log in",
                                     onPressed: (context) async {
-                                        //if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-                                        //    ScaffoldMessenger.of(context).showSnackBar(
-                                        //        SnackBar(
-                                        //            backgroundColor: Colors.grey,
-                                        //            duration: Duration(seconds: 3),
-                                        //            content: Text(
-                                        //                'Please enter your email and password',
-                                        //                style: TextStyle(color: Colors.white, fontFamily: "avenir"),
-                                        //            ),
-                                        //        ),
-                                        //    );
-                                        //    return;
-                                        //}
-                                        //bool tmp = await sendSignUp(
-                                        //    url: 'http://$host:8080/login',
-                                        //    body: {
-                                        //        "mail": emailController.text,
-                                        //        "password": passwordController.text
-                                        //    }
-                                        //);
-                                        final String actionsString = await classicGet(
-                                            url: "http://10.0.2.2:8080/actions",
+                                        if (emailController.text.isEmpty ||
+                                        passwordController.text.isEmpty) {
+                                            showCustomSnackBar(
+                                                context,
+                                                "Please enter your email and password."
+                                            );
+                                            return;
+                                        }
+                                        bool res = await sendSignUp(
+                                            delim: 18,
+                                            url: 'http://$host:8080/login',
+                                            body: {
+                                                "mail": emailController.text,
+                                                "password": passwordController.text
+                                            }
                                         );
-                                        final String reactionsString = await classicGet(
-                                            url: "http://10.0.2.2:8080/reactions",
-                                        );
-                                        final String servString = await classicGet(
-                                            url: "http://10.0.2.2:8080/services",
-                                        );
-                                        servicesMap = jsonDecode(servString);
-                                        services = parseServices(actionsString);
-                                        reactions = parseReactionServices(reactionsString);
-                                        context.go("/home");
-                                        /*if (tmp) {
+                                        await getDatas();
+                                        if (res) {
                                             if (context.mounted) {
+                                                context.go("/home");
                                             }
                                         } else {
-                                            if (context.mounted) {
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                    SnackBar(
-                                                        backgroundColor: Colors.grey,
-                                                        duration: Duration(seconds: 3),
-                                                        content: Text(
-                                                            'Wrong email or password',
-                                                            style: TextStyle(color: Colors.white, fontFamily: "avenir"),
-                                                        ),
-                                                    ),
-                                                );
-                                                context.go("/login");
-                                            }
-                                        }*/
+                                            showCustomSnackBar(context, "Wrong email or password.");
+                                            return;
+                                        }
                                     }
                                 ),
                                 const MyDividerText2(
                                     padding: EdgeInsets.only(top: 35, right: 35, left: 35, bottom: 35),
                                     textBetween: "Or continue with",
                                 ),
-                                OAuthButtonsRow(host: "10.0.2.2"),
+                                OAuthButtonsRow(host: host.toString()),
                                 MyTextButton(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     onTap: (context) {

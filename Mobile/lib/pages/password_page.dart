@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_text_button.dart';
+import 'package:second_app/utils/post_request.dart';
 import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
 import '../myWidgets/my_title.dart';
@@ -85,14 +86,10 @@ class _PasswordPageState extends State<PasswordPage> {
                                     title: "Save password",
                                     onPressed: (context) {
                                         if (emailController.text.isNotEmpty) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text("You're password has been saved.", style: TextStyle(fontFamily: "avenir"))),
-                                            );
+                                            showCustomSnackBar(context, "You're password has been saved.");
                                             context.go('/login');
                                         } else {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text('Please enter a new password.', style: TextStyle(fontFamily: "avenir"))),
-                                            );
+                                            showCustomSnackBar(context, "No changes.");
                                         }
                                     },
                                 ),

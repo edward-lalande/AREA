@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_text_fields.dart';
 import 'package:second_app/myWidgets/my_title.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class HostPage extends StatefulWidget {
     const HostPage({super.key});
@@ -31,9 +32,7 @@ class _HostPageState extends State<HostPage> {
                     child: IconButton(
                         icon: const Icon(Icons.arrow_back),
                         onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('No changes.', style: TextStyle(fontFamily: "avenir"))),
-                            );
+                            showCustomSnackBar(context, "No changes.");
                             context.go("/login");
                         },
                     ),
@@ -80,14 +79,10 @@ class _HostPageState extends State<HostPage> {
                                     title: "Save address",
                                     onPressed: (context) {
                                         if (emailController.text.isNotEmpty) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text("Netword location has been saved.", style: TextStyle(fontFamily: "avenir"))),
-                                            );
+                                            showCustomSnackBar(context, "Network location has been changed.");
                                             context.go('/login');
                                         } else {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text('No changes.', style: TextStyle(fontFamily: "avenir"))),
-                                            );
+                                            showCustomSnackBar(context, "No changes.");
                                             context.go('/login');
                                         }
                                     },
