@@ -1,3 +1,4 @@
+import Help from "./components/Help";
 import Home from "./components/Home";
 import Areas from "./components/Areas";
 import Create from "./components/Create";
@@ -42,6 +43,10 @@ const App: React.FC = () => {
         {
             path: "/create",
             element: <ProtectedRoute children={<Create/>} />
+        },
+        {
+            path: "/help",
+            element: <ProtectedRoute children={<Help/>} />
         },
         {
             path: "*",
