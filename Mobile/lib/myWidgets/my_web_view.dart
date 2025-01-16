@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
-import '../utils/post_request.dart';
+import 'package:second_app/utils/post_request.dart';
 
 class WebViewPage extends StatefulWidget {
     final String url;
@@ -31,6 +29,7 @@ class _WebViewPageState extends State<WebViewPage> {
         String servRoot = widget.serv;
         _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent("random")
         ..setNavigationDelegate(
             NavigationDelegate(
                 onPageStarted: (String url) {
@@ -39,25 +38,7 @@ class _WebViewPageState extends State<WebViewPage> {
                     });
                 },
                 onPageFinished: (String url) async {
-                    final String servString = await classicGet(
-                        url: "http://10.0.2.2:8080/services",
-                    );
-                    final String actionsString = await classicGet(
-                        url: "http://10.0.2.2:8080/actions",
-                    );
-                    List<dynamic> data = jsonDecode(actionsString);
-                    actionsMap = {
-                        for (var service in data.where((element) => element != null))
-                            service['name']: {
-                                'actions': service['actions'].map((action) {
-                                    return {
-                                        'name': action['name'],
-                                        'arguments': action['arguments'],
-                                    };
-                                }).toList(),
-                            }
-                    };
-                    servicesMap = jsonDecode(servString);
+                    await getDatas();
                     setState(() {
                         _isLoading = false;
                     });
@@ -67,9 +48,9 @@ class _WebViewPageState extends State<WebViewPage> {
                         final String? code = uri.queryParameters["code"];
                         if (code != null) {
                             bool tmp = await sendSignUp(
-                                url: "http://10.0.2.2:8080/$servRoot/access-token",
+                                delim: 9,
+                                url: "http://$host:8080/$servRoot/access-token",
                                 body: {
-                                //"routes": "access-token",
                                     "code": code,
                                 }
                             );
@@ -106,11 +87,12 @@ class _WebViewPageState extends State<WebViewPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             appBar: AppBar(
-                title: const Text('Authentification'),
-                leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context),
-                ),
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    title: const Text('Authentification'),
+                    leading: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () => Navigator.pop(context),
+                    ),
             ),
             body: Stack(
                 children: [
@@ -118,8 +100,8 @@ class _WebViewPageState extends State<WebViewPage> {
                         controller: _controller
                     ),
                     if (_isLoading)
-                        const Center(
-                            child: CircularProgressIndicator(),
+                        Center(
+                            child: CircularProgressIndicator(color: Theme.of(context).scaffoldBackgroundColor,),
                         ),
                 ],
             ),
