@@ -287,3 +287,25 @@ func TestErrorPostArea(t *testing.T) {
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
+
+func TestErrorGetArea(t *testing.T) {
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+	w := httptest.NewRecorder()
+
+	b, _ := json.Marshal(models.Comment{})
+	req, _ := http.NewRequest("GET", "/areas", bytes.NewBuffer(b))
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
+}
+
+func TestErrorDeleteArea(t *testing.T) {
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+	w := httptest.NewRecorder()
+
+	b, _ := json.Marshal(models.Comment{})
+	req, _ := http.NewRequest("DELETE", "/areas", bytes.NewBuffer(b))
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
+}
