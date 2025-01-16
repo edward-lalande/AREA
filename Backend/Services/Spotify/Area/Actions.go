@@ -54,6 +54,7 @@ func GetNbPlaylists(spotifyToken, id string) int {
 // @Router /actions [post]
 func Actions(c *gin.Context) {
 	var receivedData models.ActionsData
+	var user models.User
 	db := utils.OpenDB(c)
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
@@ -65,11 +66,25 @@ func Actions(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Unable to open the database")
 		return
 	}
-	id := getUserSpotifyId(receivedData.AccessToken)
+
+	userId := utils.ParseToken(receivedData.AccessToken)
+	if userId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", userId)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	id := getUserSpotifyId(*user.SpotifyToken)
 	nbPlaylists := GetNbPlaylists(receivedData.AccessToken, id)
 
 	db.Exec(c, "INSERT INTO \"SpotifyActions\" (area_id, action_type, user_token, user_id, is_playing, nb_playlists)"+
-		" VALUES ($1, $2, $3, $4, $5, $6)", receivedData.AreaId, receivedData.ActionType, receivedData.AccessToken, id, receivedData.IsPlaying, nbPlaylists)
+		" VALUES ($1, $2, $3, $4, $5, $6)", receivedData.AreaId, receivedData.ActionType, *user.SpotifyToken, id, receivedData.IsPlaying, nbPlaylists)
 
 	defer db.Close(c)
 	c.JSON(http.StatusAccepted, "Spotify Actions Accepted")
