@@ -1,5 +1,5 @@
 {
-    "name": "Météo",
+    "name": "Meteo",
     "actions": [
             {
                 "name": "At temperature in the day",
