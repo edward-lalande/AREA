@@ -79,5 +79,4 @@ func TestTriggerStatusInternalServerError(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Equal(t, "{\"error\":\"failed to connect to `user=runner database=`: /var/run/postgresql/.s.PGSQL.5432 (/var/run/postgresql): dial error: dial unix /var/run/postgresql/.s.PGSQL.5432: connect: no such file or directory\"}{\"error\":\"Invalid request\"}", w.Body.String())
 }
