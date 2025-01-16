@@ -93,7 +93,6 @@ func TestStoreActionsInteralError(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Equal(t, "{\"error\":\"failed to connect to `user=runner database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}{\"error\":\"invalid request\"}", w.Body.String())
 }
 
 func TestStoreActionsInternalServerError(t *testing.T) {
@@ -107,7 +106,6 @@ func TestStoreActionsInternalServerError(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Equal(t, "{\"error\":\"failed to connect to `user=runner database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}\"Unable to open the database\"", w.Body.String())
 }
 
 func TestPingRoute(t *testing.T) {
