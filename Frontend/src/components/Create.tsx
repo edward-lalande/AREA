@@ -30,6 +30,7 @@ export interface Argument {
 
 export interface Action {
     name: string;
+    description: string;
     action_id: number;
     action_type: number;
     arguments: Argument[];
@@ -37,6 +38,7 @@ export interface Action {
 
 export interface Reaction {
     name: string;
+    description: string;
     reaction_id: number;
     reaction_type: number;
     arguments: Argument[];

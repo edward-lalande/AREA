@@ -5,7 +5,6 @@ import (
 	models "dropbox/Models"
 	"dropbox/utils"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -21,17 +20,16 @@ func GetToken(c *gin.Context, token string) string {
 		return ""
 	}
 
-	var discord_token string
+	var dropbox_token string
 
-	query := `SELECT discord_token FROM "User" WHERE id = $1`
-	err := db.QueryRow(c, query, id).Scan(&discord_token)
+	query := `SELECT dropbox_token FROM "User" WHERE id = $1`
+	err := db.QueryRow(c, query, id).Scan(&dropbox_token)
 	if err != nil {
 		return ""
 	}
 
 	defer db.Close(c)
-	fmt.Println("discord token => " + discord_token)
-	return discord_token
+	return dropbox_token
 
 }
 
@@ -150,6 +148,7 @@ func Trigger(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
+	var user models.User
 	receivedData := models.DropBoxReactions{}
 	db := utils.OpenDB(c)
 	defer db.Close(c)
@@ -159,10 +158,23 @@ func StoreReactions(c *gin.Context) {
 		return
 	}
 
+	id := utils.ParseToken(receivedData.UserToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
 	query := `INSERT INTO "DropboxReactions" (user_token, reaction_type, area_id, from_path, to_path, filepath_share) 
 	          VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := db.Exec(c, query, receivedData.UserToken, receivedData.ReactionType, receivedData.AreaId, receivedData.FromPath, receivedData.ToPath, receivedData.FilepathShare)
+	_, err = db.Exec(c, query, *user.DropboxToken, receivedData.ReactionType, receivedData.AreaId, receivedData.FromPath, receivedData.ToPath, receivedData.FilepathShare)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert data", "details": err.Error()})
 		return
