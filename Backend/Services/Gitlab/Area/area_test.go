@@ -52,7 +52,7 @@ func TestStoreReactionsInternalServerError(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Equal(t, "{\"error\":\"failed to connect to `user=edward database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}", w.Body.String())
+	assert.Equal(t, "{\"error\":\"failed to connect to `user=runner database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}", w.Body.String())
 }
 
 func TestGetActions(t *testing.T) {
@@ -93,7 +93,7 @@ func TestStoreActionsInteralError(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Equal(t, "{\"error\":\"failed to connect to `user=edward database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}{\"error\":\"Invalid request\"}", w.Body.String())
+	assert.Equal(t, "{\"error\":\"failed to connect to `user=runner database=`: /tmp/.s.PGSQL.5432 (/tmp): dial error: dial unix /tmp/.s.PGSQL.5432: connect: no such file or directory\"}{\"error\":\"Invalid request\"}", w.Body.String())
 }
 
 func TestStoreActionsInternalServerError(t *testing.T) {
