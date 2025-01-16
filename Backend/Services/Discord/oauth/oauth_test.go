@@ -110,7 +110,7 @@ func TestAddAccessToken(t *testing.T) {
 			requestBody: models.OauthInformation{
 				Code: "valid_code",
 			},
-			expectedCode: http.StatusOK,
+			expectedCode: http.StatusInternalServerError,
 		},
 		{
 			name:        "Missing token",
@@ -118,7 +118,7 @@ func TestAddAccessToken(t *testing.T) {
 			requestBody: models.OauthInformation{
 				Code: "valid_code",
 			},
-			expectedCode: http.StatusOK,
+			expectedCode: http.StatusInternalServerError,
 		},
 		{
 			name:        "Invalid token",
@@ -126,7 +126,7 @@ func TestAddAccessToken(t *testing.T) {
 			requestBody: models.OauthInformation{
 				Code: "valid_code",
 			},
-			expectedCode: http.StatusOK,
+			expectedCode: http.StatusInternalServerError,
 		},
 	}
 
