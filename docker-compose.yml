@@ -22,21 +22,12 @@ services:
   api-gateway:
     build: Backend/ApiGateway
     container_name: api-gateway
-    environment:
-      PORT: 8080
-      USER_API: http://user-services:8085/
-      TIME_API: http://time-services:8082/
-      DISCORD_API: http://discord:8083/
     ports:
       - 8080:8080
 
   message-brocker:
     build: Backend/MessageBrocker
     container_name: message-brocker
-    environment:
-      USER_API: http://user-services:8085/
-      TIME_API: http://time-services:8082/
-      DISCORD_API: http://discord:8083/
     ports:
       - 8084:8084
 
@@ -55,11 +46,6 @@ services:
   user-services:
     build: Backend/Services/UserServices
     container_name: user-services
-    environment: 
-      PORT: 8085
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8085:8085
     depends_on:
@@ -68,11 +54,6 @@ services:
   dropbox:
     build: Backend/Services/Dropbox
     container_name: dropbox
-    environment:
-      PORT: 8096
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8096:8096
     depends_on:
@@ -81,11 +62,6 @@ services:
   github:
     build: Backend/Services/Github
     container_name: github
-    environment:
-      PORT: 8086
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8086:8086
     depends_on:
@@ -94,11 +70,6 @@ services:
   gitlab:
     build: Backend/Services/Gitlab
     container_name: gitlab
-    environment:
-      PORT: 8087
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8087:8087
     depends_on:
@@ -107,11 +78,6 @@ services:
   google:
     build: Backend/Services/Google
     container_name: google
-    environment:
-      PORT: 8088
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8088:8088
     depends_on:
@@ -120,11 +86,6 @@ services:
   meteo:
     build: Backend/Services/Meteo
     container_name: meteo
-    environment:
-      PORT: 8090
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8089:8089
     depends_on:
@@ -133,11 +94,6 @@ services:
   spotify:
     build: Backend/Services/Spotify
     container_name: spotify
-    environment:
-      PORT: 8091
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8091:8091
     depends_on:
@@ -146,11 +102,6 @@ services:
   asana:
     build: Backend/Services/Asana
     container_name: asana
-    environment: 
-      PORT: 8092
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8092:8092
     depends_on:
@@ -159,26 +110,8 @@ services:
   ticket-master:
     build: Backend/Services/TicketMaster
     container_name: ticket-master
-    environment: 
-      PORT: 8094
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
     ports:
       - 8093:8093
-    depends_on:
-      - area-db
-
-  twilio:
-    build: Backend/Services/Twilio
-    container_name: twilio
-    environment: 
-      PORT: 8094
-      API_GATEWAY: http://api-gateway:8080/
-      DB: postgresql://root:password@area-db:5432/area
-      SECRET_KEY: PET
-    ports:
-      - 8094:8094
     depends_on:
       - area-db
 
@@ -196,12 +129,6 @@ services:
   time-services:
     build: Backend/Services/DateTimeServices
     container_name: time-services
-    environment:
-      PORT: 8082
-      API_GATEWAY: http://api-gateway:8080/
-      DATE_TIME_API: http://worldtimeapi.org/api/timezone/Etc/UTC
-      DB: postgresql://root:password@area-db:5432/area
-      MESSAGE_BROCKER: "http://message-brocker:8084/"
     ports:
       - 8082:8082
     depends_on:
@@ -210,16 +137,6 @@ services:
   discord:
     build: Backend/Services/Discord
     container_name: discord
-    environment:
-      PORT: 8083
-      API_GATEWAY: http://api-gateway:8080/
-      MESSAGE_BROCKER: "http://message-brocker:8084/"
-      DB: postgresql://root:password@area-db:5432/area
-      CLIENT_ID: 1313077002005385236
-      CLIENT_SECRET: Ku7K2lQYvws_L-xp7ialrt11weriVHyk
-      REDIRECT_WEB: http://localhost:8083/callback
-      REDIRECT_MOBILE: http://localhost:8083/mobile-callback
-      BOT_TOKEN: MTMxMzA3NzAwMjAwNTM4NTIzNg.GATaQr.oeLw_BYAncCgHUoImxp1YK97Bn_NCgEIWkmDq4
     ports:
       - 8083:8083
     depends_on:
