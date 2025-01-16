@@ -2,7 +2,7 @@ import { Action, Parameters, CreatePage, Argument } from "../Create";
 import { AreaBox } from "../elements/AreaBox";
 import { AreaButton } from "../elements/AreaButton";
 import { AreaTextField } from "../elements/AreaTextFiled";
-import { AreaTypography } from "../elements/AreaTypography";
+import { AreasTypography, AreaTypography } from "../elements/AreaTypography";
 
 type ActionParametersProps = {
     action: Action;
@@ -35,6 +35,7 @@ const ActionParameters: React.FC<ActionParametersProps> = ({
         <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2, mt: 10 }}>
 
             <AreaTypography variant="h2" text={action.name} sx={{ mb: 5 }} />
+            <AreasTypography variant="h4" text={action.description} sx={{ mb: 5 }} />
 
             { action.arguments && action.arguments.map<JSX.Element>((value: Argument) => {
                 
