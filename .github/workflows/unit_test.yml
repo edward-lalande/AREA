@@ -17,7 +17,7 @@ jobs:
 
     - name: Run Unit Tests
       working-directory: Backend/Services
-      run: make -f Makefile tests_unitaires
+      run: make tests_run
 
     - name: Verify Tests
       if: failure()
