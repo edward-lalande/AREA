@@ -1,5 +1,7 @@
 package models
 
+var GetActionsPath string = "Models/Actions.json"
+
 type TimeActionReceive struct {
 	AreaId     string `json:"area_id"`
 	ActionType int    `json:"action_type"`

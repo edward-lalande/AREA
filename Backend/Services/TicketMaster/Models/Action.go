@@ -1,5 +1,7 @@
 package models
 
+var ActionsModelsPath string = "Models/Actions.json"
+
 type Action struct {
 	AreaID     string `json:"area_id"`
 	ActionType int    `json:"action_type"`

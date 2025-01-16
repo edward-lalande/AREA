@@ -9,7 +9,7 @@
                 "arguments": [
                     {
                         "display": "Temperature in degrees celsius",
-                        "name": "value_",
+                        "name": "value",
                         "type": "number"
                     },
                     {
