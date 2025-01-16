@@ -23,6 +23,7 @@ import (
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
+	var user models.User
 	receivedData := models.Reactions{}
 	db := utils.OpenDB(c)
 
@@ -31,6 +32,19 @@ func StoreReactions(c *gin.Context) {
 		return
 	}
 	defer db.Close(context.Background())
+
+	id := utils.ParseToken(receivedData.UserToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
 
 	query := `
 		INSERT INTO "MiroReactions" (
@@ -41,9 +55,11 @@ func StoreReactions(c *gin.Context) {
 		) VALUES ($1, $2, $3, $4)
 	`
 
-	_, err := db.Exec(context.Background(),
+	token := *user.MiroToken
+
+	_, err = db.Exec(context.Background(),
 		query,
-		receivedData.UserToken,
+		token,
 		receivedData.ReactionType,
 		receivedData.AreaId,
 		receivedData.Name,

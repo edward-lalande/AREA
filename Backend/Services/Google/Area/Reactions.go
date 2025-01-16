@@ -46,6 +46,7 @@ func GetReactions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
+	var user models.User
 	db := utils.OpenDB(c)
 
 	defer db.Close(c)
@@ -56,6 +57,19 @@ func StoreReactions(c *gin.Context) {
 		return
 	}
 
+	id := utils.ParseToken(receivedData.UserToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
 	query := `
 		INSERT INTO "GoogleReactions" 
 		(user_token, area_id, reaction_type, summary, description, start_time, end_time, attendees, recipient, subject, message)
@@ -63,7 +77,7 @@ func StoreReactions(c *gin.Context) {
 	`
 
 	db.QueryRow(context.Background(), query,
-		receivedData.UserToken,
+		user.GoogleToken,
 		receivedData.AreaId,
 		receivedData.ReactionType,
 		receivedData.Summary,
