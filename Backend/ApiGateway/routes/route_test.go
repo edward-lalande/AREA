@@ -1,7 +1,10 @@
 package routes_test
 
 import (
+	models "api-gateway/Models"
 	"api-gateway/routes"
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -152,4 +155,135 @@ func TestAddOauth(t *testing.T) {
 		assert.Equal(t, w.Code, test.CodeExcepected)
 		assert.Contains(t, w.Body.String(), test.ResponseExcpected)
 	}
+}
+
+func TestGetAccessToken(t *testing.T) {
+	tests := []struct {
+		Oauth        models.OauthCode
+		Link         string
+		CodeExpected int
+	}{
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/discord/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/spotify/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/github/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/gitlab/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/google/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/dropbox/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/asana/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/miro/access-token",
+			CodeExpected: 400,
+		},
+	}
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+	w := httptest.NewRecorder()
+
+	for _, test := range tests {
+
+		b, _ := json.Marshal(test.Oauth)
+		req, _ := http.NewRequest("POST", test.Link, bytes.NewBuffer(b))
+		router.ServeHTTP(w, req)
+		assert.Equal(t, test.CodeExpected, w.Code)
+	}
+}
+
+func TestAddAccessToken(t *testing.T) {
+	tests := []struct {
+		Oauth        models.OauthCode
+		Link         string
+		CodeExpected int
+	}{
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/discord/access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/spotify/add-access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/github/add-access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/gitlab/add-access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/google/add-access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/dropbox/add-access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/asana/add-access-token",
+			CodeExpected: 400,
+		},
+		{
+			Oauth:        models.OauthCode{},
+			Link:         "/miro/add-access-token",
+			CodeExpected: 400,
+		},
+	}
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+	w := httptest.NewRecorder()
+
+	for _, test := range tests {
+
+		b, _ := json.Marshal(test.Oauth)
+		req, _ := http.NewRequest("POST", test.Link, bytes.NewBuffer(b))
+		router.ServeHTTP(w, req)
+		assert.Equal(t, test.CodeExpected, w.Code)
+	}
+}
+
+func TestErrorPostArea(t *testing.T) {
+	router := gin.Default()
+	routes.ApplyRoutes(router)
+	w := httptest.NewRecorder()
+
+	b, _ := json.Marshal(models.Comment{})
+	req, _ := http.NewRequest("POST", "/areas", bytes.NewBuffer(b))
+	router.ServeHTTP(w, req)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
