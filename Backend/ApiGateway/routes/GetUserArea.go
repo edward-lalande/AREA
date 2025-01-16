@@ -212,8 +212,6 @@ func GetUserAreas(c *gin.Context) {
 			return
 		}
 
-		fmt.Println("AREA ID => " + area.AreaId)
-
 		areas = append(areas, map[string]interface{}{
 			"id":            area.Id,
 			"area_id":       area.AreaId,
