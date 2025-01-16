@@ -134,8 +134,16 @@ Map<String, dynamic> getFormsData(List<TextEditingController> controllers, List<
     final Map<String, dynamic> result = {};
 
     for (int i = 0; i < arguments.length; i++) {
-        result[arguments[i].name] = controllers[i].text;
-    }
+        final arg = arguments[i];
+        final value = controllers[i].text;
 
+        if (arg.type == "number") {
+            result[arg.name] = int.tryParse(value) ?? 0;
+        } else if (arg.type == "string") {
+            result[arg.name] = value;
+        } else {
+            result[arg.name] = value;
+        }
+    }
     return result;
 }

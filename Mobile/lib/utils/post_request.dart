@@ -58,7 +58,6 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
             body: json.encode(body),
         );
         if (response.statusCode == 200) {
-            //print(response.body);
             //stockData.write("token", parseGetToken(response.body, delim));
             return true;
         } else {
@@ -71,7 +70,7 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
     }
 }
 
-Future<void> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dynamic>> reactionsData) async
+Future<bool> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dynamic>> reactionsData) async
 {
     final body = [{
         "user_token": "fuck",
@@ -80,14 +79,14 @@ Future<void> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dyn
     }];
 
     final success = await classicPost(
-        url: "http://$host:8080/area",
+        url: "http://$host:8080/areas",
         body: body,
     );
 
     if (success) {
-        print("Area created successfully!");
+        return true;
     } else {
-        print("Failed to create Area.");
+        return false;
     }
 }
 

@@ -122,10 +122,19 @@ class _CreateAreaState extends State<CreateArea> {
                                         children: [
                                             MyButton2(
                                                 title: "Create Area",
-                                                onPressed: (context) {
+                                                onPressed: (context) async {
+                                                    bool res = await setupAreaArgs(
+                                                        actionData,
+                                                        [reactionData]
+                                                    );
                                                     reactionDone = false;
                                                     actionDone = false;
-                                                    showCustomSnackBar(context, "AREA Created !");
+                                                    if (res) {
+                                                        showCustomSnackBar(context, "AREA Created !");
+                                                    }
+                                                    else {
+                                                      showCustomSnackBar(context, "Creation of Area failed !");
+                                                    }
                                                 },
                                             ),
                                         ],
