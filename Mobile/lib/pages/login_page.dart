@@ -46,7 +46,7 @@ class LoginPage extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8, right: 14),
                 child: RawScrollbar(
                     radius: Radius.circular(10),
-                    thumbColor: Theme.of(context).primaryColor,
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
                     thickness: 5,
                     controller: scrollController,
                     thumbVisibility: true,

@@ -6,16 +6,20 @@ import 'package:second_app/utils/my_secure_storage.dart';
 
 final SecureStorageService stockData = SecureStorageService();
 final host = StringBuffer("10.0.2.2");
-bool isChanged = false;
+
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
 Map<String, dynamic> reactionsMap = {};
+
 Map<String, String> userData = {};
 Map<String, dynamic> actionData = {};
 Map<String, dynamic> reactionData = {};
 
 List<Service> services = [];
 List<ReactionService> reactions = [];
+
+bool actionDone = false;
+bool reactionDone = false;
 
 String parseGetToken(String body, int delim)
 {
@@ -27,7 +31,6 @@ String parseGetToken(String body, int delim)
         }
         result.write(body[delim]);
     }
-    print(result.toString());
     return result.toString();
 }
 
@@ -250,8 +253,6 @@ List<Service> parseServices(String jsonString)
     final List<dynamic> jsonData = jsonDecode(jsonString);
     return jsonData.map((service) => Service.fromJson(service)).toList();
 }
-
-// reactions
 
 class ReactionService {
 

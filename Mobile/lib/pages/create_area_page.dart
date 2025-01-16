@@ -16,7 +16,7 @@ class _CreateAreaState extends State<CreateArea> {
     bool showActionsGrid = false;
     bool showReactionsGrid = false;
 
-    bool start_select = false;
+    bool startSelect = false;
 
     @override
     Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _CreateAreaState extends State<CreateArea> {
                 padding: EdgeInsets.only(left: 8, right: 14),
                 child: RawScrollbar(
                     radius: Radius.circular(10),
-                    thumbColor: Theme.of(context).primaryColor,
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
                     thickness: 5,
                     controller: scrollController,
                     thumbVisibility: true,
@@ -59,7 +59,7 @@ class _CreateAreaState extends State<CreateArea> {
                                                 title: "If this (actions)",
                                                 onPressed: (context) {
                                                     setState(() {
-                                                        start_select = true;
+                                                        startSelect = true;
                                                         showActionsGrid = !showActionsGrid;
                                                         showReactionsGrid = false;
                                                     });
@@ -71,8 +71,13 @@ class _CreateAreaState extends State<CreateArea> {
                                 SizedBox(height: 20),
                                 AnimatedSwitcher(
                                     duration: const Duration(milliseconds: 300),
-                                    child: start_select && showActionsGrid
-                                        ? ServicesGrid(
+                                    child: startSelect && showActionsGrid && !actionDone
+                                        ? ActionsGrid(
+                                            onActionSelected: (isActionDone) {
+                                                setState(() {
+                                                  actionDone = true;
+                                                });
+                                            },
                                             services: services,
                                             key: ValueKey("servicesGrid")
                                         )
@@ -97,13 +102,35 @@ class _CreateAreaState extends State<CreateArea> {
                                 ),
                                 AnimatedSwitcher(
                                     duration: const Duration(milliseconds: 300),
-                                    child: showReactionsGrid
+                                    child: showReactionsGrid && !reactionDone
                                         ? ReactionsGrid(
+                                            onReactionSelected: (isReactionDone) {
+                                                setState(() {
+                                                    reactionDone = true;
+                                                });
+                                            },
                                             reactionServices: reactions,
                                             key: ValueKey("reactionsGrid")
                                         )
                                         : SizedBox.shrink(),
                                 ),
+                                SizedBox(height: 20,),
+                                reactionDone && actionDone ? Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                            MyButton2(
+                                                title: "Create Area",
+                                                onPressed: (context) {
+                                                    reactionDone = false;
+                                                    actionDone = false;
+                                                    showCustomSnackBar(context, "AREA Created !");
+                                                },
+                                            ),
+                                        ],
+                                    ),
+                                ) : SizedBox.shrink(),
                             ],
                         ),
                     ),

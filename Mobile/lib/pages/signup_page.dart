@@ -46,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: EdgeInsets.only(left: 8, right: 14),
                 child: RawScrollbar(
                     radius: Radius.circular(10),
-                    thumbColor: Colors.black,
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
                     thickness: 5,
                     controller: scrollController,
                     thumbVisibility: true,

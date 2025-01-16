@@ -106,27 +106,30 @@ class MyGridViewHome extends StatelessWidget {
     }
 }
 
-class ActionsPage extends StatelessWidget {
-    final Service service;
+class ActionPage extends StatelessWidget {
 
-    const ActionsPage({
+    final Service service;
+    final Function(bool) onActionDone;
+
+    const ActionPage({
         super.key,
         required this.service,
+        required this.onActionDone,
     });
 
     @override
     Widget build(BuildContext context) {
-    final scrollController = ScrollController();
+        final scrollController = ScrollController();
 
         return Scaffold(
             appBar: AppBar(
-                title: Text("Choice of actions"),
+                title: const Text("Choice of actions"),
             ),
             body: Padding(
                 padding: const EdgeInsets.only(left: 5, right: 14),
                 child: RawScrollbar(
-                    radius: Radius.circular(10),
-                    thumbColor: Theme.of(context).primaryColor,
+                    radius: const Radius.circular(10),
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
                     thickness: 5,
                     controller: scrollController,
                     thumbVisibility: true,
@@ -134,12 +137,14 @@ class ActionsPage extends StatelessWidget {
                         controller: scrollController,
                         child: Column(
                             children: [
-                                SizedBox(height: 80,),
-                                MyTitle2(title: service.name,
-                                    fontSize: 40, padding: EdgeInsets.only(bottom: 50)
+                                const SizedBox(height: 80),
+                                MyTitle2(
+                                    title: service.name,
+                                    fontSize: 40,
+                                    padding: const EdgeInsets.only(bottom: 50),
                                 ),
                                 ListView.builder(
-                                    padding: EdgeInsets.only(left: 25, right: 25),
+                                    padding: const EdgeInsets.only(left: 25, right: 25),
                                     shrinkWrap: true,
                                     itemCount: service.actions.length,
                                     itemBuilder: (context, index) {
@@ -148,7 +153,12 @@ class ActionsPage extends StatelessWidget {
                                             onTap: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder: (context) => ActionDialog(action: action),
+                                                    builder: (context) => ActionDialog(
+                                                        action: action,
+                                                        done: () {
+                                                            onActionDone(true);
+                                                        },
+                                                    ),
                                                 );
                                             },
                                             child: Card(
@@ -156,7 +166,7 @@ class ActionsPage extends StatelessWidget {
                                                     padding: const EdgeInsets.all(25.0),
                                                     child: Text(
                                                         action.name,
-                                                    style: TextStyle(fontSize: 18),
+                                                        style: const TextStyle(fontSize: 18),
                                                     ),
                                                 ),
                                             ),
@@ -164,10 +174,10 @@ class ActionsPage extends StatelessWidget {
                                     },
                                 ),
                             ],
-                        )
+                        ),
                     ),
                 ),
-            )
+            ),
         );
     }
 }
@@ -175,25 +185,27 @@ class ActionsPage extends StatelessWidget {
 class ReactionsPage extends StatelessWidget {
 
     final ReactionService service;
+    final Function(bool) onReactionDone;
 
 
     const ReactionsPage({
         super.key,
         required this.service,
+        required this.onReactionDone,
     });
 
     @override
     Widget build(BuildContext context) {
-    final scrollController = ScrollController();
+        final scrollController = ScrollController();
         return Scaffold(
             appBar: AppBar(
-                title: Text("Choice of reactions"),
+                title: const Text("Choice of reactions"),
             ),
             body: Padding(
                 padding: const EdgeInsets.only(left: 5, right: 14),
                 child: RawScrollbar(
                     radius: Radius.circular(10),
-                    thumbColor: Theme.of(context).primaryColor,
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
                     thickness: 5,
                     controller: scrollController,
                     thumbVisibility: true,
@@ -201,7 +213,7 @@ class ReactionsPage extends StatelessWidget {
                         controller: scrollController,
                         child: Column(
                             children: [
-                                SizedBox(height: 80),
+                                const SizedBox(height: 80),
                                 MyTitle2(
                                     title: service.name,
                                     fontSize: 40,
@@ -217,7 +229,12 @@ class ReactionsPage extends StatelessWidget {
                                             onTap: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder: (context) => ReactionDialog(reaction: reaction),
+                                                    builder: (context) => ReactionDialog(
+                                                        done: () {
+                                                            onReactionDone(true);
+                                                        },
+                                                        reaction: reaction
+                                                    ),
                                                 );
                                             },
                                             child: Card(
@@ -225,7 +242,7 @@ class ReactionsPage extends StatelessWidget {
                                                     padding: const EdgeInsets.all(25),
                                                     child: Text(
                                                         reaction.name,
-                                                        style: TextStyle(fontSize: 18),
+                                                        style: const TextStyle(fontSize: 18),
                                                     ),
                                                 ),
                                             ),
@@ -244,10 +261,12 @@ class ReactionsPage extends StatelessWidget {
 class ReactionsGrid extends StatelessWidget {
 
     final List<ReactionService> reactionServices;
+    final Function(bool) onReactionSelected;
 
     const ReactionsGrid({
         super.key,
         required this.reactionServices,
+        required this.onReactionSelected,
     });
 
     @override
@@ -270,7 +289,12 @@ class ReactionsGrid extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ReactionsPage(service: reactionService),
+                                builder: (context) => ReactionsPage(
+                                    service: reactionService,
+                                    onReactionDone: (isReactionDone) {
+                                        onReactionSelected(isReactionDone);
+                                    },
+                                ),
                             ),
                         );
                     },
@@ -284,18 +308,25 @@ class ReactionsGrid extends StatelessWidget {
     }
 }
 
+class ActionsGrid extends StatefulWidget {
 
-class ServicesGrid extends StatelessWidget {
     final List<Service> services;
+    final Function(bool) onActionSelected;
 
-    const ServicesGrid({
+    const ActionsGrid({
         super.key,
-        required this.services
+        required this.services,
+        required this.onActionSelected,
     });
 
     @override
-    Widget build(BuildContext context) {
+    State<ActionsGrid> createState() => _ActionsGridState();
+}
 
+class _ActionsGridState extends State<ActionsGrid> {
+
+    @override
+    Widget build(BuildContext context) {
         return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -306,20 +337,27 @@ class ServicesGrid extends StatelessWidget {
                 mainAxisSpacing: 10,
                 childAspectRatio: 1,
             ),
-            itemCount: services.length,
+            itemCount: widget.services.length,
             itemBuilder: (context, index) {
-                final service = services[index];
+                final service = widget.services[index];
                 return InkWell(
                     onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ActionsPage(service: service),
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ActionPage(
+                            service: service,
+                            onActionDone: (isActionDone) {
+                                widget.onActionSelected(isActionDone);
+                            },
                             ),
+                        ),
                         );
                     },
                     child: ServiceCard(
-                        title: service.name, iconPath: "assets/${service.name.toLowerCase().replaceAll(' ', '_')}.png")
+                        title: service.name,
+                        iconPath: "assets/${service.name.toLowerCase().replaceAll(' ', '_')}.png",
+                    ),
                 );
             },
         );

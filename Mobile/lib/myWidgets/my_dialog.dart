@@ -5,11 +5,14 @@ import 'package:second_app/utils/post_request.dart';
 
 
 class ActionDialog extends StatelessWidget {
+
     final ActionServ action;
+    final VoidCallback done;
 
     const ActionDialog({
         super.key,
         required this.action,
+        required this.done,
     });
 
     @override
@@ -48,6 +51,7 @@ class ActionDialog extends StatelessWidget {
                 padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
                 title: "Save options",
                 onPressed: (_) {
+                    actionDone = true;
                     actionData = {
                         "action_name": action.name,
                         "action_id": action.actionId,
@@ -56,6 +60,7 @@ class ActionDialog extends StatelessWidget {
                     };
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
+                    done();
                 },
             ),
         ],
@@ -64,11 +69,14 @@ class ActionDialog extends StatelessWidget {
 }
 
 class ReactionDialog extends StatelessWidget {
+
     final Reaction reaction;
+    final VoidCallback done;
 
     const ReactionDialog({
         super.key,
         required this.reaction,
+        required this.done,
     });
 
     @override
@@ -104,6 +112,7 @@ class ReactionDialog extends StatelessWidget {
                         padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
                         title: "Save options",
                         onPressed: (_) {
+                            reactionDone = true;
                             reactionData = {
                                 "reaction_name": reaction.name,
                                 "reaction_id": reaction.reactionId,
@@ -112,6 +121,7 @@ class ReactionDialog extends StatelessWidget {
                             };
                             Navigator.of(context).pop();
                             Navigator.of(context).pop();
+                            done();
                         }
                     ),
             ],
