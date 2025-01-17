@@ -4,6 +4,7 @@ import Areas from "./components/Areas";
 import Create from "./components/Create";
 import Account from "./components/Account";
 import LoginForm from "./components/LoginForm";
+import CreateLLM from "./components/CreateLLM";
 import SignupForm from "./components/SignupForm";
 import defaultTheme from "./themes/defaultTheme";
 import ThemeProvider from "./components/ThemeProvider";
@@ -43,6 +44,10 @@ const App: React.FC = () => {
         {
             path: "/create",
             element: <ProtectedRoute children={<Create/>} />
+        },
+        {
+            path: "/create-ai",
+            element: <ProtectedRoute children={<CreateLLM/>} />
         },
         {
             path: "/help",
