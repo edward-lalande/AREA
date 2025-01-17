@@ -58,7 +58,11 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
-	access_token := utils.BytesToJson(respBody)
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
 
 	if access_token == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No access_token"})

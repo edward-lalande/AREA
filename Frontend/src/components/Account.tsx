@@ -186,19 +186,19 @@ const Account: React.FC = () => {
 					<AreaBox sx={{ height: "80vh", width: "20vw" }}>
 						<AreaTypography variant="h2" text="Account" sx={{ mb: 10 }} />
 
-						<AreasTypography text={"Email: " + user?.mail} />
+						<AreasTypography text={user?.mail ? ("Email: " + user?.mail) : ("Email: Pas défini")} color={user?.mail ? "back" : "red"} />
 						<AreaBox sx={{ height: "10vh", width: "20vw", flexDirection: "row", gap: 5 }}>
 							<AreaTextField onChange={(s) => setEmail(s.target.value)}/>
 							<AccountButton text="Edit" onClick={editEmail}/>
 						</AreaBox>
 
-						<AreasTypography text={"Name: " + user?.name} />
+						<AreasTypography text={user?.name ? ("Name: " + user?.name) : ("Name: Pas défini")} color={user?.name ? "black" : "red"} />
 						<AreaBox sx={{ height: "10vh", width: "20vw", flexDirection: "row", gap: 5 }}>
 							<AreaTextField onChange={(s) => setName(s.target.value)} />
 							<AccountButton text="Edit" onClick={editName}/>
 						</AreaBox>
 
-						<AreasTypography text={"Lastname: " + user?.lastname} />
+						<AreasTypography text={user?.lastname ? ("Lastname: " + user?.lastname) : ("Lastname: Pas défini")} color={user?.lastname ? "black" : "red"} />
 						<AreaBox sx={{ height: "10vh", width: "20vw", flexDirection: "row", gap: 5 }}>
 							<AreaTextField onChange={(s) => setLastname(s.target.value)} />
 							<AccountButton text="Edit" onClick={editLastname}/>
