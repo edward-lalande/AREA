@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +24,7 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 	id := utils.ParseToken(userToken)
 
 	if id == "" {
+		fmt.Println("no id")
 		return nil
 	}
 
@@ -229,9 +231,13 @@ func Area(c *gin.Context) {
 			}
 		}
 
+		fmt.Println("step forward")
+
 		for _, reactionData := range item.Reactions {
 			var reaction models.BaseReaction
 			_ = json.Unmarshal(*reactionData, &reaction)
+
+			fmt.Println("go write area in db")
 
 			err := writeAreaInDatabase(c, areaID, item.UserToken, action.ActionID, reaction.ReactionID, action.Name, reaction.Name)
 			if err != nil {
