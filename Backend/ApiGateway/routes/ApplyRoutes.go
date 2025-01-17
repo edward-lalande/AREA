@@ -15,6 +15,7 @@ func ApplyRoutes(r *gin.Engine) {
 	r.GET("/services", Services)
 
 	r.POST("/areas", Area)
+	r.POST("/areas-llm", AreaLLM)
 	r.GET("/areas", GetUserAreas)
 	r.DELETE("/areas", DeleteArea)
 	r.GET("/actions", GetActions)
