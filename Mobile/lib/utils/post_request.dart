@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:second_app/utils/my_secure_storage.dart';
 
 final SecureStorageService stockData = SecureStorageService();
-String host = "10.0.2.2";
 
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
@@ -21,6 +20,8 @@ List<ReactionService> reactions = [];
 bool actionDone = false;
 bool reactionDone = false;
 bool isOAuthStarted = false;
+
+String host = "10.68.255.153";
 
 String parseGetToken(String body, int delim)
 {
@@ -195,13 +196,13 @@ Future<void> getDatas() async
 {
     try {
         final String actionsString = await classicGet(
-            url: "http://10.0.2.2:8080/actions",
+            url: "http://$host:8080/actions",
         );
         final String reactionsString = await classicGet(
-            url: "http://10.0.2.2:8080/reactions",
+            url: "http://$host:8080/reactions",
         );
         final String servString = await classicGet(
-            url: "http://10.0.2.2:8080/services",
+            url: "http://$host:8080/services",
         );
         servicesMap = jsonDecode(servString);
         services = parseServices(actionsString);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:second_app/utils/post_request.dart';
 
 class MyArea extends StatefulWidget {
     const MyArea({super.key});
@@ -26,7 +27,7 @@ class _MyAreaState extends State<MyArea> {
 
     Future<void> _fetchAreas() async
     {
-        const String url = "http://127.0.0.1:8080/areas";
+        String url = "http://$host:8080/areas";
 
         try {
 
