@@ -11,6 +11,14 @@ services:
     volumes:
       - apk-volume:/app/public
 
+  client_mobile:
+    container_name: client_mobile
+    build:
+      context: ./Mobile
+      dockerfile: Dockerfile
+    volumes:
+      - apk-volume:/home/builder/app/mobile
+
   api-gateway:
     build: Backend/ApiGateway
     container_name: api-gateway
