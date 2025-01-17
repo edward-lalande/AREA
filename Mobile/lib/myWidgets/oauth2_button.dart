@@ -119,9 +119,13 @@ final oauthButtonsData = [
 ];
 
 class OAuthButtonsRow extends StatelessWidget {
+
     final String host;
 
-    const OAuthButtonsRow({super.key, required this.host});
+    const OAuthButtonsRow({
+      super.key,
+      required this.host,
+    });
 
     @override
     Widget build(BuildContext context) {
@@ -141,14 +145,15 @@ class OAuthButtonsRow extends StatelessWidget {
                     resize: resize,
                     resizePadding: resizePadding,
                     onPressed: (context) async {
+                        isOAuthStarted = true;
                         String oauthUrl = await classicGet(url: 'http://$host:8080/$url');
                         if (context.mounted) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
-                            ),
-                          );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
+                                ),
+                            );
                         }
                     },
                 );

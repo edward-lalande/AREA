@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_dialog.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
@@ -324,42 +326,56 @@ class ActionsGrid extends StatefulWidget {
 }
 
 class _ActionsGridState extends State<ActionsGrid> {
+    final List<String> restrictedServices = [
+      "discord",
+      "google",
+      "spotify",
+      "github",
+      "gitlab",
+      "dropbox",
+    ];
 
-    @override
-    Widget build(BuildContext context) {
-        return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(20),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1,
-            ),
-            itemCount: widget.services.length,
-            itemBuilder: (context, index) {
-                final service = widget.services[index];
-                return InkWell(
-                    onTap: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ActionPage(
-                            service: service,
-                            onActionDone: (isActionDone) {
-                                widget.onActionSelected(isActionDone);
-                            },
-                            ),
-                        ),
-                        );
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(20),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 1,
+      ),
+      itemCount: widget.services.length,
+      itemBuilder: (context, index) {
+        final service = widget.services[index];
+        return InkWell(
+          onTap: () {
+ 
+            if (restrictedServices.contains(service.name.toLowerCase()) && !isOAuthStarted) {
+                myOauthDialog(context, service.name);
+            } else {
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ActionPage(
+                    service: service,
+                    onActionDone: (isActionDone) {
+                      widget.onActionSelected(isActionDone);
                     },
-                    child: ServiceCard(
-                        title: service.name,
-                        iconPath: "assets/${service.name.toLowerCase().replaceAll(' ', '_')}.png",
-                    ),
-                );
-            },
+                  ),
+                ),
+              );
+            }
+          },
+          child: ServiceCard(
+            title: service.name,
+            iconPath: "assets/${service.name.toLowerCase().replaceAll(' ', '_')}.png",
+          ),
         );
-    }
+      },
+    );
+  }
 }

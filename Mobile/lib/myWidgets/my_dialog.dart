@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_text_fields.dart';
 import 'package:second_app/utils/post_request.dart';
@@ -127,6 +128,28 @@ class ReactionDialog extends StatelessWidget {
             ],
         );
     }
+}
+
+void myOauthDialog(BuildContext context, String serviceName)
+{
+    showDialog(
+        context: context,
+        builder: (context) {
+            return AlertDialog(
+                title: Text("Authentification required"),
+                content: Text("You're not logged in with $serviceName. You have to.",
+                    style: TextStyle(fontSize: 16),),
+                actions: [
+                    MyButton2(
+                        title: "Log in",
+                        onPressed: (context) {
+                            context.go("/login");
+                        },
+                    ),
+                ],
+            );
+        },
+    );
 }
 
 Map<String, dynamic> getFormsData(List<TextEditingController> controllers, List<Argument> arguments)
