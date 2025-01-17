@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	models "poc-crud-users/Models"
 	"poc-crud-users/utils"
@@ -11,14 +12,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func IsUserExists(receivedData models.Login, db *pgx.Conn) bool {
+func IsUserExists(receivedData models.Login, db *pgx.Conn) (string, error) {
 	var hashedPassword string
 	row := db.QueryRow(context.Background(), "SELECT password FROM \"User\" WHERE mail = $1", receivedData.Mail)
 	if err := row.Scan(&hashedPassword); err != nil {
-		return false
+		return "", fmt.Errorf("Impossible to retrieve Password")
 	}
 
-	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(receivedData.Password)) == nil
+	if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(receivedData.Password)); err != nil {
+		return "", err
+	}
+	return hashedPassword, nil
 }
 
 // @Summary User login
@@ -35,7 +39,7 @@ func LoginUserHandler(c *gin.Context) {
 	var receivedData models.Login
 	var user models.User
 	db := utils.OpenDB(c)
-
+	hashedPassword := ""
 	if db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open Database"})
 		return
@@ -45,14 +49,15 @@ func LoginUserHandler(c *gin.Context) {
 		return
 	}
 
-	if !IsUserExists(receivedData, db) {
+	hashedPassword, err := IsUserExists(receivedData, db)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Wrong email or password"})
 		return
 	}
 
-	row := db.QueryRow(context.Background(), "SELECT id, name FROM \"User\" WHERE mail = $1 AND password = $2",
-		receivedData.Mail, receivedData.Password)
-	_ = row.Scan(&user.Id, &user.Login)
+	row := db.QueryRow(context.Background(), "SELECT id FROM \"User\" WHERE mail = $1 AND password = $2",
+		receivedData.Mail, string(hashedPassword))
+	_ = row.Scan(&user.Id)
 	db.Close(c)
 
 	token, err := utils.CreateToken(user.Id)
