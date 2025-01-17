@@ -1,8 +1,8 @@
 package routes
 
 import (
-	_ "asana/docs"
 	area "asana/Area"
+	_ "asana/docs"
 	"asana/oauth"
 	"net/http"
 
@@ -21,8 +21,11 @@ func ApplyRoutes(r *gin.Engine) {
 	})
 
 	r.GET("/oauth", oauth.OAuthFront)
+	r.GET("/add-oauth", oauth.AddOAuthFront)
 	r.GET("/callback", oauth.CallBack)
+	r.GET("/add-callback", oauth.AddCallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
+	r.POST("/add-access-token", oauth.AddAccessToken)
 
 	r.GET("/reactions", area.GetReactions)
 

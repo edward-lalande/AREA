@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/url"
@@ -34,14 +35,52 @@ func GetAccessToken(c *gin.Context) {
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
-	rep, _ := http.PostForm(accessTokenUrl, data)
+	rep, err := http.PostForm(accessTokenUrl, data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	respBody, err := io.ReadAll(rep.Body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	query := `
+		INSERT INTO "User" (spotify_token)
+		VALUES ($1)
+		RETURNING id;
+	`
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return
+	}
+
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
+
+	if access_token == nil || access_token == "" {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var id string
+	row := db.QueryRow(context.Background(), query, access_token)
+	_ = row.Scan(&id)
+	defer db.Close(c)
+
+	token, err := utils.CreateToken(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(rep.StatusCode, gin.H{
-		"body": utils.BytesToJson(respBody),
+		"body": token,
 	})
 }

@@ -10,6 +10,8 @@ import ActionServices from "./ActionServices";
 import ReactionServices from "./ReactionServices";
 import { useCookies } from "react-cookie";
 
+import { User } from "../Account";
+
 type CreateElementProps = {
     action: Action | undefined;
     actionParameters: Parameters | undefined;
@@ -29,22 +31,102 @@ const CreateElement: React.FC<CreateElementProps> = ({
 }) => {
 
     const [open, setOpen] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
     const [nbActions, setNbActions] = useState<number>(0);
     const [nbReactions, setNbReactions] = useState<number>(0);
   	const [cookies, setCookie] = useCookies();
 
-    const createArea = (action: Action, reaction: Reaction) => {
+    const validToken = async (action: Action, reaction: Reaction): Promise<boolean> => {
+
+        const url: string = "http://127.0.0.1:8085/user";
+        
+        const token: string = cookies["token"];
+
+        let result: boolean = true;
+
+		await axios.get(url, {
+			headers: {
+				"Content-Type": "application/json",
+				token
+			}
+		}).then((res) => {
+
+            if (action.action_id === 2 && res.data.user.discord_token === null) {
+                result = false;
+            }
+    
+            if (action.action_id === 4 && res.data.user.github_token === null) {
+                result = false;
+            }
+    
+            if (action.action_id === 5 && res.data.user.gitlab_token === null) {
+                result = false;
+            }
+    
+            if (action.action_id === 6 && res.data.user.google_token === null) {
+                result = false;
+            }
+    
+            if (action.action_id === 9 && res.data.user.spotify_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 2 && res.data.user.discord_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 3 && res.data.user.dropbox_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 5 && res.data.user.gitlab_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 6 && res.data.user.google_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 9 && res.data.user.spotify_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 10 && res.data.user.asana_token === null) {
+                result = false;
+            }
+
+            if (reaction.reaction_id === 14 && res.data.user.miro_token === null) {
+                result = false;
+            }
+
+        });
+
+        return result;
+
+    }
+
+    const createArea = async (action: Action, reaction: Reaction): Promise<boolean> => {
+
+        let result: boolean = await validToken(action, reaction);
+
+        if (!result) {
+            setError(true);
+            setReset(true);
+            return false;
+        }
 
         const url: string = "http://127.0.0.1:8080/areas";
 
         const data = [{
             user_token: cookies["token"],
             action: {
+                name: action.name,
                 action_id: action.action_id,
                 action_type: action.action_type,
                 ...actionParameters
             },
             reactions: [{
+                name: reaction.name,
                 reaction_id: reaction.reaction_id,
                 reaction_type: reaction.reaction_type,
                 ...reactionParameters
@@ -57,6 +139,8 @@ const CreateElement: React.FC<CreateElementProps> = ({
             setReset(true);
 
         });
+
+        return true;
 
     };
 
@@ -142,6 +226,17 @@ const CreateElement: React.FC<CreateElementProps> = ({
                     sx={{ width:"100%", m: 2 }}
                 >
                     Info: Area created!
+                </Alert>
+			</Snackbar>	
+
+            <Snackbar open={error} autoHideDuration={6000} onClose={() => setError(false)}>
+                <Alert
+                    onClose={() => setError(false)}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width:"100%", m: 2 }}
+                >
+                    Error: You have to connect service to create this area!
                 </Alert>
 			</Snackbar>	
 

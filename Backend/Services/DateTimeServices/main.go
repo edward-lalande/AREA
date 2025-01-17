@@ -53,6 +53,7 @@ func getDatabaseSlice(actionType int) []models.Database {
 
 func GetEveryDayAt() {
 	databaseSlice := getDatabaseSlice(0)
+	fmt.Println(databaseSlice)
 	if databaseSlice == nil {
 		return
 	}
@@ -73,6 +74,13 @@ func GetEveryDayAt() {
 		}
 
 		jsonBody := utils.BytesToJson(body)
+
+		fmt.Println("compare")
+		fmt.Println(jsonBody["hour"].(float64))
+		fmt.Println(float64(slice.Hour))
+		fmt.Println(jsonBody["minute"].(float64))
+		fmt.Println(float64(slice.Minute))
+		fmt.Println("---")
 
 		if jsonBody["hour"].(float64) == float64(slice.Hour) && jsonBody["minute"].(float64) == float64(slice.Minute) {
 			send := models.TimeModelSendReaction{}
@@ -209,7 +217,7 @@ func main() {
 
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, token")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 

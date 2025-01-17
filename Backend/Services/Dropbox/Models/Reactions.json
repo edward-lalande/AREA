@@ -1,8 +1,9 @@
 {
-    "name": "Dropbox Services",
+    "name": "Dropbox",
     "reactions": [
         {
             "name": "Rename File",
+            "description": "Rename File as the file name indicated",
             "reaction_id": 3,
             "reaction_type": 0,
             "arguments": [
@@ -20,6 +21,7 @@
         },
         {
             "name": "Share File",
+            "description": "Share a file to your group",
             "reaction_id": 3,
             "reaction_type": 1,
             "arguments": [

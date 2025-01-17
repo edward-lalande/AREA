@@ -1,8 +1,9 @@
 {
-    "name": "CryptoMoney Services",
+    "name": "CryptoMoney",
     "actions": [
             {
                 "name": "CryptoMoney value is under your value",
+                "description": "If the CryptoMoney symbole is under the value indicate, it's trigger",
                 "action_id": 13,
                 "action_type": 0,
                 "arguments": [
@@ -25,6 +26,7 @@
             },
             {
                 "name": "CryptoMoney value is up to your value",
+                "description": "If the CryptoMoney symbole is up to the value indicate, it's trigger",
                 "action_id": 13,
                 "action_type": 1,
                 "arguments": [
@@ -47,6 +49,7 @@
             },
             {
                 "name": "CryptoMoney value is equal to your value",
+                "description": "If the CryptoMoney symbole is equal to the value indicate, it's trigger",
                 "action_id": 13,
                 "action_type": 2,
                 "arguments": [

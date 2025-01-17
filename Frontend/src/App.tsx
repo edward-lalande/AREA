@@ -1,14 +1,18 @@
+import Help from "./components/Help";
 import Home from "./components/Home";
+import Areas from "./components/Areas";
+import Create from "./components/Create";
 import Account from "./components/Account";
 import LoginForm from "./components/LoginForm";
+import CreateLLM from "./components/CreateLLM";
 import SignupForm from "./components/SignupForm";
 import defaultTheme from "./themes/defaultTheme";
 import ThemeProvider from "./components/ThemeProvider";
 
 import "./App.css"
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate, Link } from "react-router-dom";
 import { ProtectedRoute } from "./components/PrivateRoute";
-import Create from "./components/Create";
+import Download from "./components/Download";
 
 const App: React.FC = () => {
 
@@ -26,12 +30,28 @@ const App: React.FC = () => {
             element: <SignupForm />
         },
         {
+            path: "/client.apk",
+            element: <Download />
+        },
+        {
             path: "/account",
             element: <ProtectedRoute children={<Account/>} />
         },
         {
+            path: "/areas",
+            element: <ProtectedRoute children={<Areas/>} />
+        },
+        {
             path: "/create",
             element: <ProtectedRoute children={<Create/>} />
+        },
+        {
+            path: "/create-ai",
+            element: <ProtectedRoute children={<CreateLLM/>} />
+        },
+        {
+            path: "/help",
+            element: <ProtectedRoute children={<Help/>} />
         },
         {
             path: "*",

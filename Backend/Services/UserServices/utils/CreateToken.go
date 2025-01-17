@@ -1,15 +1,15 @@
 package utils
 
 import (
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
-func CreateToken(username string) (string, error) {
+func CreateToken(id string) (string, error) {
 	var secretKey string = GetEnvKey("SECRET_KEY")
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"username": username,
+			"id": id,
 		})
 
 	tokenString, err := token.SignedString([]byte(secretKey))
@@ -18,4 +18,22 @@ func CreateToken(username string) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func ParseToken(tokenString string) string {
+	var secretKey string = GetEnvKey("SECRET_KEY")
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secretKey), nil
+	})
+
+	if err != nil {
+		return ""
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims["id"].(string)
+	}
+
+	return ""
 }

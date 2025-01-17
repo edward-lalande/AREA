@@ -1,8 +1,9 @@
 {
-"name": "Github Services",
+"name": "Github",
 "actions": [
         {
             "name": "On user push",
+            "description": "When a user push, it's trigger",
             "action_id": 4,
             "action_type": 0,
             "arguments": [
@@ -15,6 +16,7 @@
         },
         {
             "name": "On files added count",
+            "description": "When the number of file added to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 1,
             "arguments": [
@@ -27,6 +29,7 @@
         },
         {
             "name": "On files modified count",
+            "description": "When the number of file modified to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 2,
             "arguments": [
@@ -39,6 +42,7 @@
         },
         {
             "name": "On files deleted count",
+            "description": "When the number of file deleted to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 3,
             "arguments": [
@@ -51,6 +55,7 @@
         },
         {
             "name": "On files added",
+            "description": "When the number of file added to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 4,
             "arguments": [
@@ -63,6 +68,7 @@
         },
         {
             "name": "On files modified",
+            "description": "When the number of file modified to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 5,
             "arguments": [
@@ -75,6 +81,7 @@
         },
         {
             "name": "On files removed",
+            "description": "When the number of file removeds to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 6,
             "arguments": [
@@ -87,6 +94,7 @@
         },
         {
             "name": "On commits count",
+            "description": "When the number of the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 7,
             "arguments": [
@@ -99,6 +107,7 @@
         },
         {
             "name": "On commit named",
+            "description": "When the commit is named to this, it's trigger",
             "action_id": 4,
             "action_type": 8,
             "arguments": [

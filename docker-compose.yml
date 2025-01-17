@@ -1,13 +1,15 @@
-version: '3.8'
+# version: '3.8'
 
 services:
-  frontend:
+  client_web:
     build: Frontend
-    container_name: frontend
+    container_name: client_web
     environment:
       PORT: 8081
     ports:
       - 8081:8081
+    volumes:
+      - apk-volume:/app/public
 
   api-gateway:
     build: Backend/ApiGateway
@@ -35,6 +37,12 @@ services:
     container_name: cryptomoney
     ports:
       - 8095:8095
+
+  miro:
+    build: Backend/Services/Miro
+    container_name: miro
+    ports:
+      - 8097:8097
 
   user-services:
     build: Backend/Services/UserServices
@@ -208,3 +216,6 @@ services:
       - 8083:8083
     depends_on:
       - area-db
+
+volumes:
+  apk-volume:

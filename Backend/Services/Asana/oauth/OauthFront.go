@@ -24,3 +24,13 @@ func OAuthFront(c *gin.Context) {
 		"&grant_type=authorization_code"
 	c.String(http.StatusOK, authUrl)
 }
+
+func AddOAuthFront(c *gin.Context) {
+	authUrl := "https://app.asana.com/-/oauth_authorize?client_id=" + utils.GetEnvKey("CLIENT_ID") +
+		"&redirect_uri=" + utils.GetEnvKey("REDIRECT_URI_ADD") +
+		"&response_type=code" +
+		"&state=default" +
+		"&scope=default" +
+		"&grant_type=authorization_code"
+	c.String(http.StatusOK, authUrl)
+}

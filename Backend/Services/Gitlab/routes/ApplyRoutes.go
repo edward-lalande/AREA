@@ -24,8 +24,11 @@ func ApplyRoutes(r *gin.Engine) {
 	r.POST("/webhook", Webhook)
 
 	r.GET("/oauth", oauth.OAuthFront)
+	r.GET("/add-oauth", oauth.AddOAuthFront)
 	r.GET("/callback", oauth.CallBack)
+	r.GET("/add-callback", oauth.AddCallBack)
 	r.POST("/access-token", oauth.GetAccessToken)
+	r.POST("/add-access-token", oauth.AddAccessToken)
 
 	r.POST("/trigger", Trigger)
 

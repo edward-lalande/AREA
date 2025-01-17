@@ -29,7 +29,7 @@ func Trigger(c *gin.Context) {
 	}
 	defer db.Close(c)
 
-	rep, err := area.FindReaction(database)
+	rep, err := area.FindReaction(c, database)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
