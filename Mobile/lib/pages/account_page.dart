@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_app/myWidgets/my_text_button.dart';
 import 'package:second_app/utils/post_request.dart';
 
 import '../myWidgets/my_button.dart';
@@ -12,17 +13,16 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-    late TextEditingController firstNameController;
-    late TextEditingController lastnameController;
+
     late TextEditingController emailController;
     late TextEditingController passwordController;
+    final scrollController = ScrollController();
 
     @override
     void initState() {
 
         super.initState();
-        firstNameController = TextEditingController(text: userData['name']);
-        lastnameController = TextEditingController(text: userData['lastname']);
+
         emailController = TextEditingController(text: userData['mail']);
         passwordController = TextEditingController(text: userData['password']);
 
@@ -31,8 +31,6 @@ class _AccountPageState extends State<AccountPage> {
     void updateUserInfo() {
         setState(() {
 
-            userData['name'] = firstNameController.text;
-            userData['lastname'] = lastnameController.text;
             userData['mail'] = emailController.text;
             userData['password'] = passwordController.text;
 
@@ -41,105 +39,74 @@ class _AccountPageState extends State<AccountPage> {
 
     @override
     Widget build(BuildContext context) {
-        return SafeArea(
-            child: Scaffold(
-                backgroundColor: Colors.white,
-                body: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                    children: [
-                        MyButton(
-                            title: "",
-                            backgroundColor: Colors.white,
-                            textColor: Colors.black,
-                            padding: const EdgeInsets.only(top: 30, left: 25),
-                            fontSize: 0,
-                            spaceBetweenIconAndText: 0,
-                            prefixIcon: const Icon(
-                            size: 30,
-                            Icons.settings,
-                            ),
-                            onPressed: (context) {
-                            context.go("/host");
-                            },
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: Padding(
+                padding: EdgeInsets.only(left: 8, right: 14),
+                child: RawScrollbar(
+                        radius: Radius.circular(10),
+                        thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
+                        thickness: 5,
+                        controller: scrollController,
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Column(
+                                children: [
+                                    SizedBox(height: 100,),
+                                    const MyTitle2(
+                                        title: "AREA",
+                                        fontSize: 45,
+                                        padding: EdgeInsets.only(top: 30),
+
+                                    ),
+                                    const MyTitle2(
+                                        title: "Account settings",
+                                        fontSize: 30,
+                                        padding: EdgeInsets.only(top: 30, bottom: 50),
+
+                                    ),
+                                    MyTextField2(
+                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                        hintText: "Email",
+                                        controller: emailController,
+                                        prefixIcon: Icon(Icons.email),
+
+                                    ),
+                                    SizedBox(height: 20),
+                                    MyTextField2(
+                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                        hintText: "Password",
+                                        controller: passwordController,
+                                        obscureText: true,
+                                        prefixIcon: Icon(Icons.lock),
+
+                                    ),
+                                    SizedBox(height: 30),
+                                    MyButton2(
+                                        title: "Save",
+                                        onPressed: (context) {
+                                            if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+                                                showCustomSnackBar(context, "Please fill the fields.");
+                                                return;
+                                            }
+                                            showCustomSnackBar(context, "Informations has been saved.");
+                                        }
+                                    ),
+                                    SizedBox(height: 30),
+                                    MyTextButton(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        onTap: (context) {
+                                            context.go("/login");
+                                        },
+                                        firstTitle: "See you soon ?", secondTitle: "Log out",
+                                        padding: EdgeInsets.only(left: 15),
+                                    )
+                                ],
                         ),
-                        const MyTitle(
-                            title: "Account",
-                            fontSize: 30,
-                            padding: EdgeInsets.only(top: 30, bottom: 50),
-                            color: Colors.black,
-                        ),
-                        MyTextField(
-                            controller: firstNameController,
-                            obscureText: false,
-                            hintText: "First Name",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(top: 50, bottom: 0, left: 35, right: 35),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                            Icons.person,
-                            color: Colors.black,
-                            ),
-                        ),
-                        MyTextField(
-                            controller: lastnameController,
-                            obscureText: false,
-                            hintText: "Last Name",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(top: 35, bottom: 0, left: 35, right: 35),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                            Icons.person,
-                            color: Colors.black,
-                            ),
-                        ),
-                        MyTextField(
-                            controller: emailController,
-                            obscureText: false,
-                            hintText: "Email",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(top: 35, bottom: 0, left: 35, right: 35),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                            Icons.email,
-                            color: Colors.black,
-                            ),
-                        ),
-                        MyTextField(
-                            controller: passwordController,
-                            obscureText: true, // Make password obscure for better UX
-                            hintText: "Password",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(top: 35, bottom: 0, left: 35, right: 35),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                            Icons.lock,
-                            color: Colors.black,
-                            ),
-                        ),
-                        MyButton(
-                            padding: const EdgeInsets.only(left: 35, right: 35, top: 35),
-                            title: "Save Changes",
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white,
-                            fontSize: 20,
-                            spaceBetweenIconAndText: 10,
-                            onPressed: (context) {
-                                updateUserInfo();
-                            },
-                        ),
-                        ],
                     ),
                 ),
-            ),
+            )
         );
     }
 }

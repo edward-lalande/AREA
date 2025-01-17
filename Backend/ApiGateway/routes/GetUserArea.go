@@ -227,6 +227,16 @@ func GetUserAreas(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"areas": areas})
 }
 
+// Delete Area of a user
+// @Summary Delete area from a users in all services
+// @Description Delete area from a users in all services
+// @Tags Area api-gateway
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string "Reactions name with parameters of it as object"
+// @Failure 400 {object} map[string]string "Bad Requests"
+// @Failure 500 {object} map[string]string "Internal error"
+// @Router /areas [delete]
 func DeleteArea(c *gin.Context) {
 	var area models.AreaDatabase
 

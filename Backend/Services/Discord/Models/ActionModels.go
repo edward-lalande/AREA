@@ -1,5 +1,7 @@
 package models
 
+var ModelPath string = "Models/Actions.json"
+
 type Message struct {
 	Pinned		bool	`json:"pinned"`
 }

@@ -1,5 +1,7 @@
 package models
 
+var GetActionsPath string = "Models/Actions.json"
+
 type MeteoActions struct {
 	ActionType int    `json:"action_type"`
 	AreaId     string `json:"area_id"`

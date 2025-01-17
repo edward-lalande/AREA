@@ -1,5 +1,7 @@
 package models
 
+var ActionsModelsPath string = "Models/Actions.json"
+
 type ReceivedActions struct {
 	UserToken  string `json:"user_token"`
 	AreaId     string `json:"area_id"`

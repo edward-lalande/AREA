@@ -1,205 +1,365 @@
 import 'package:flutter/material.dart';
-import 'package:second_app/myWidgets/my_card.dart';
+import 'package:second_app/myWidgets/my_dialog.dart';
 import 'package:second_app/myWidgets/my_title.dart';
 import 'package:second_app/utils/post_request.dart';
 
-class MyGridView extends StatefulWidget {
-    const MyGridView({
-        super.key,
-        required this.map,
-        required this.typeKey,
-        required this.appbarVisible,
-        required this.homeAnimation,
-        this.gridClick,
-    });
+extension HexColor on Color {
 
-    final Map<String, dynamic> map;
-    final String typeKey;
-    final bool appbarVisible;
-    final bool homeAnimation;
-    final Function(int idx)? gridClick;
+    static Color fromHex(String hexString) {
+        final buffer = StringBuffer();
+        if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+            buffer.write(hexString.replaceFirst('#', ''));
+        return Color(int.parse(buffer.toString(), radix: 16));
+    }
 
-    @override
-    State<MyGridView> createState() => _MyGridViewState();
 }
 
-class _MyGridViewState extends State<MyGridView> {
-    int selectedIndex = -1;
-    bool  isBig = false;
+class ServiceCard extends StatelessWidget {
+    const ServiceCard({
+      super.key,
+      required this.title,
+      required this.iconPath,
+    });
 
-    void _onCardTap(int index, dynamic service) {
-        setState(() {
-            selectedIndex = selectedIndex == index ? -1 : index;
-            isBig = !isBig;
-        });
-        widget.gridClick!(index);
-
-        Future.delayed(Duration(milliseconds: 200), () {
-            setState(() {
-                isBig = false;
-            });
-        });
-    }
+    final String title;
+    final String iconPath;
 
     @override
     Widget build(BuildContext context) {
-        final List<dynamic> services = widget.map[widget.typeKey];
-
-        return CustomScrollView(
-            slivers: [
-                if (widget.appbarVisible)
-                    SliverPadding(
-                        padding: const EdgeInsets.only(
-                            top: 80,
-                            left: 20,
-                            right: 20
-                        ),
-                        sliver: SliverToBoxAdapter(
-                            child: MyTitle(
-                                margin: EdgeInsets.only(bottom: 20),
-                                title: "AREA",
-                                fontSize: 45,
-                                padding: EdgeInsets.zero,
-                                color: Colors.black,
+        return Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+                width: 80,
+                height: 100,
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                        Expanded(
+                            child: Image.asset(
+                                iconPath,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                    Icons.broken_image,
+                                    size: 50,
+                                    color: Colors.grey,
+                                );
+                                },
                             ),
                         ),
-                    ),
-                if (widget.appbarVisible)
-                    SliverPadding(
-                        padding: const EdgeInsets.only(
-                            top: 20,
-                            left: 20,
-                            right: 20
-                        ),
-                        sliver: SliverToBoxAdapter(
-                            child: MyTitle(
-                                margin: EdgeInsets.only(bottom: 20),
-                                title: "Available services",
-                                fontSize: 30,
-                                padding: EdgeInsets.zero,
-                                color: Colors.black,
+                        const SizedBox(height: 8),
+                        Text(
+                            title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontFamily: "Avenir",
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                             ),
                         ),
-                    ),
-                SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    sliver: SliverGrid(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                        ),
-                        delegate: widget.homeAnimation ? SliverChildBuilderDelegate(
-                            childCount: services.length,
-                            (context, index) {
-                                final tmp = services[index];
-                                return InkWell(
-                                    onTap: () => _onCardTap(index, tmp),
-                                    child: AnimatedScale(
-                                        scale: selectedIndex == index ? 1.1 : 1.0,
-                                        duration: Duration(milliseconds: 200),
-                                        child: Card(
-                                            elevation: 7,
-                                            color: Colors.grey,
-                                            child: MyCard(
-                                                title: tmp["name"],
-                                                padding: const EdgeInsets.all(8),
-                                                icon: Icon(
-                                                    color: Colors.white,
-                                                    Icons.discord,
-                                                    size: 60,
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                );
-                            },
-                        ) : SliverChildBuilderDelegate(
-                            childCount: services.length,
-                            (context, index) {
-                                final tmp = services[index];
-                                return InkWell(
-                                    onTap: () => _onCardTap(index, tmp),
-                                    child: Card(
-                                            elevation: 7,
-                                            color: Color(0XFF5865F2),
-                                            child: MyCard(
-                                                title: tmp["name"],
-                                                padding: const EdgeInsets.all(8),
-                                    ),
-                                )
-                                );
-                            },
-                        ),
-                    ),
+                    ],
                 ),
-                SliverPadding(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    sliver: SliverToBoxAdapter(
-                        child: SizedBox(
-                            height: 20,
-                        ),
-                    ),
-                ),
-            ],
+            ),
         );
     }
 }
 
-    class MyGridViewActionsName extends StatefulWidget {
+class MyGridViewHome extends StatelessWidget {
+    final Map<String, dynamic> servicesMap;
 
-    const MyGridViewActionsName({
+    const MyGridViewHome({
         super.key,
-        this.gridClick,
+        required this.servicesMap
     });
-
-    final Function(int idx)? gridClick;
-
-    @override
-    State<MyGridViewActionsName> createState() => _MyGridViewActionsNameState();
-}
-
-class _MyGridViewActionsNameState extends State<MyGridViewActionsName> {
-    int selectedIndex = -1;
-
-    void _onCardTap(int index, dynamic service) {
-        setState(() {
-        selectedIndex = selectedIndex == index ? -1 : index;
-        });
-        widget.gridClick!(index);
-    }
 
     @override
     Widget build(BuildContext context) {
-        List<String> keysList = actionsMap.keys.toList();
 
-        return SingleChildScrollView(
-            padding: EdgeInsets.all(50),
-            child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+        final services = servicesMap['services'] as List<dynamic>;
+
+        return GridView.builder(
+            padding: const EdgeInsets.all(20),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 20,
+                childAspectRatio: 1,
+            ),
+            itemCount: services.length,
+            itemBuilder: (context, index) {
+                final service = services[index];
+                final name = service['name'] as String;
+                final iconPath = 'assets/${name.toLowerCase().replaceAll(' ', '_')}.png';
+
+                return ServiceCard(
+                    title: name,
+                    iconPath: iconPath,
+                );
+            },
+        );
+    }
+}
+
+class ActionPage extends StatelessWidget {
+
+    final Service service;
+    final Function(bool) onActionDone;
+
+    const ActionPage({
+        super.key,
+        required this.service,
+        required this.onActionDone,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+        final scrollController = ScrollController();
+
+        return Scaffold(
+            appBar: AppBar(
+                title: const Text("Choice of actions"),
+            ),
+            body: Padding(
+                padding: const EdgeInsets.only(left: 5, right: 14),
+                child: RawScrollbar(
+                    radius: const Radius.circular(10),
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
+                    thickness: 5,
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                            children: [
+                                const SizedBox(height: 80),
+                                MyTitle2(
+                                    title: service.name,
+                                    fontSize: 40,
+                                    padding: const EdgeInsets.only(bottom: 50),
+                                ),
+                                ListView.builder(
+                                    padding: const EdgeInsets.only(left: 25, right: 25),
+                                    shrinkWrap: true,
+                                    itemCount: service.actions.length,
+                                    itemBuilder: (context, index) {
+                                        final action = service.actions[index];
+                                        return InkWell(
+                                            onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) => ActionDialog(
+                                                        action: action,
+                                                        done: () {
+                                                            onActionDone(true);
+                                                        },
+                                                    ),
+                                                );
+                                            },
+                                            child: Card(
+                                                child: Padding(
+                                                    padding: const EdgeInsets.all(25.0),
+                                                    child: Text(
+                                                        action.name,
+                                                        style: const TextStyle(fontSize: 18),
+                                                    ),
+                                                ),
+                                            ),
+                                        );
+                                    },
+                                ),
+                            ],
+                        ),
+                    ),
                 ),
-                itemCount: keysList.length,
-                itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                            _onCardTap(index, actionsMap[keysList[index]]);
-                        },
-                        child: Card(
-                            color: Colors.grey,
-                            elevation: 7,
-                            child: MyCard(
-                                title: keysList[index],
-                                padding: const EdgeInsets.all(8),
+            ),
+        );
+    }
+}
+
+class ReactionsPage extends StatelessWidget {
+
+    final ReactionService service;
+    final Function(bool) onReactionDone;
+
+
+    const ReactionsPage({
+        super.key,
+        required this.service,
+        required this.onReactionDone,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+        final scrollController = ScrollController();
+        return Scaffold(
+            appBar: AppBar(
+                title: const Text("Choice of reactions"),
+            ),
+            body: Padding(
+                padding: const EdgeInsets.only(left: 5, right: 14),
+                child: RawScrollbar(
+                    radius: Radius.circular(10),
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
+                    thickness: 5,
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                            children: [
+                                const SizedBox(height: 80),
+                                MyTitle2(
+                                    title: service.name,
+                                    fontSize: 40,
+                                    padding: EdgeInsets.only(bottom: 50),
+                                ),
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.symmetric(horizontal: 25),
+                                    itemCount: service.reactions.length,
+                                    itemBuilder: (context, index) {
+                                        final reaction = service.reactions[index];
+                                        return InkWell(
+                                            onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) => ReactionDialog(
+                                                        done: () {
+                                                            onReactionDone(true);
+                                                        },
+                                                        reaction: reaction
+                                                    ),
+                                                );
+                                            },
+                                            child: Card(
+                                                child: Padding(
+                                                    padding: const EdgeInsets.all(25),
+                                                    child: Text(
+                                                        reaction.name,
+                                                        style: const TextStyle(fontSize: 18),
+                                                    ),
+                                                ),
+                                            ),
+                                        );
+                                    },
+                                ),
+                            ],
+                        ),
+                    )
+                ),
+            )
+        );
+    }
+}
+
+class ReactionsGrid extends StatelessWidget {
+
+    final List<ReactionService> reactionServices;
+    final Function(bool) onReactionSelected;
+
+    const ReactionsGrid({
+        super.key,
+        required this.reactionServices,
+        required this.onReactionSelected,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+        return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1,
+            ),
+            itemCount: reactionServices.length,
+            itemBuilder: (context, index) {
+                final reactionService = reactionServices[index];
+                return InkWell(
+                    onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReactionsPage(
+                                    service: reactionService,
+                                    onReactionDone: (isReactionDone) {
+                                        onReactionSelected(isReactionDone);
+                                    },
+                                ),
+                            ),
+                        );
+                    },
+                    child: ServiceCard(
+                        title: reactionService.name,
+                        iconPath: "assets/${reactionService.name.toLowerCase().replaceAll(' ', '_')}.png",
+                    ),
+                );
+            },
+        );
+    }
+}
+
+class ActionsGrid extends StatefulWidget {
+
+    final List<Service> services;
+    final Function(bool) onActionSelected;
+
+    const ActionsGrid({
+        super.key,
+        required this.services,
+        required this.onActionSelected,
+    });
+
+    @override
+    State<ActionsGrid> createState() => _ActionsGridState();
+}
+
+class _ActionsGridState extends State<ActionsGrid> {
+
+    @override
+    Widget build(BuildContext context) {
+        return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 1,
+            ),
+            itemCount: widget.services.length,
+            itemBuilder: (context, index) {
+                final service = widget.services[index];
+                return InkWell(
+                    onTap: () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ActionPage(
+                            service: service,
+                            onActionDone: (isActionDone) {
+                                widget.onActionSelected(isActionDone);
+                            },
                             ),
                         ),
-                    );
-                },
-            ),
+                        );
+                    },
+                    child: ServiceCard(
+                        title: service.name,
+                        iconPath: "assets/${service.name.toLowerCase().replaceAll(' ', '_')}.png",
+                    ),
+                );
+            },
         );
     }
 }

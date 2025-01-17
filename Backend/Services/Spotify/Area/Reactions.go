@@ -64,14 +64,29 @@ func FindReactions(id int, information models.Reactions) (*http.Response, error)
 // @Router /reaction [post]
 func ReceivedReactions(c *gin.Context) {
 	var receivedData models.ReactionsReceived
+	var user models.User
 
 	db := utils.OpenDB(c)
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	_, err := db.Exec(c, "INSERT INTO \"SpotifyReactions\" (area_id, reaction_type, user_token)"+
-		" VALUES($1, $2, $3)", receivedData.AreaId, receivedData.ReactionType, receivedData.UserToken)
+
+	userId := utils.ParseToken(receivedData.UserToken)
+	if userId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", userId)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	_, err = db.Exec(c, "INSERT INTO \"SpotifyReactions\" (area_id, reaction_type, user_token)"+
+		" VALUES($1, $2, $3)", receivedData.AreaId, receivedData.ReactionType, *user.SpotifyToken)
 	if err != nil {
 		c.JSON(http.StatusInsufficientStorage, gin.H{"error": err.Error()})
 		return
@@ -92,7 +107,7 @@ func ReceivedReactions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Reactions.json")
+	b, err := utils.OpenFile(models.ReactionsModelsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
