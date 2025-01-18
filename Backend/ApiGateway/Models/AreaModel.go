@@ -223,6 +223,11 @@ type PayloadItem struct {
 	Reactions []*json.RawMessage `json:"reactions,omitempty"`
 }
 
+type PayloadLLM struct {
+	UserToken string `json:"user_token"`
+	Request   string `json:"request"`
+}
+
 type AreaDatabase struct {
 	Id                int    `json:"id"`
 	UserToken         string `json:"user_token"`

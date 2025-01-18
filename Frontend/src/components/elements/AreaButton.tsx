@@ -104,6 +104,30 @@ const CreateButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     </Button>
 )
 
+const AIButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
+    <Button
+    variant="contained"
+    fullWidth
+    href="/create-ai"
+    sx={{
+            backgroundColor: "#352f5f",
+            color: "#fff",
+            borderRadius: 10,
+            ml: 1,
+            fontWeight: "bold",
+            fontSize: "1.2em",
+            textTransform: "none",
+            width: "10%",
+            minWidth: 100,
+            height: "65%",
+            ...props.sx
+        }}
+        {...props}
+    >
+        {text}
+    </Button>
+)
+
 const AddButton: React.FC<ButtonProps> = (props) => (
     <Button
     variant="contained"
@@ -365,4 +389,4 @@ const MiroButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     </Button>
 )
 
-export { MiroButton, HelpButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };
+export { AIButton, MiroButton, HelpButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };

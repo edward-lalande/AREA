@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from "@mui/material";
 import { AreaBox } from "./elements/AreaBox";
 import { AreaLink } from "./elements/AreaLink";
-import { CreateButton } from "./elements/AreaButton";
+import { AIButton, CreateButton } from "./elements/AreaButton";
 
 const Navbar: React.FC = () => {
 
@@ -18,6 +18,7 @@ const Navbar: React.FC = () => {
                 <AreaLink href="/" text="Services" sx={{ fontSize: "1.5em", textDecoration: "none" }} />
                 <AreaLink href="/areas" text="Areas" sx={{ fontSize: "1.5em", textDecoration: "none" }} /> 
                 <CreateButton text="Create" />
+                <AIButton text="Ask AI" />
 
                 <IconButton href="/account">
                     <Avatar sx={{ border: "3px solid black", width: 48, height: 48 }}>P</Avatar>
