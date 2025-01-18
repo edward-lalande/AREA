@@ -96,9 +96,9 @@ const LoginForm: React.FC = () => {
 		const codes: Code[] = [];
 
 		codes.push({ name: "discord_code", service: OauthServices.DISCORD });
-		codes.push({ name: "spotify_code", service: OauthServices.SPOTIFY });
 		codes.push({ name: "github_code", service: OauthServices.GITHUB });
 		codes.push({ name: "google_code", service: OauthServices.GOOGLE });
+		codes.push({ name: "gitlab_code", service: OauthServices.GITLAB });
 
 		for (let i = 0; i < codes.length; i++) {
 
@@ -131,9 +131,9 @@ const LoginForm: React.FC = () => {
 				<AreaTextDivider text="or" />
 
 				<DiscordButton text="Continue with Discord" onClick={() => oauth(OauthServices.DISCORD)} />
-				<SpotifyButton text="Continue with Spotify" onClick={() => oauth(OauthServices.SPOTIFY)} />
-				<GithubButton text="Continue with Github" onClick={() => oauth(OauthServices.GITHUB)} />
 				<GoogleButton text="Continue with Google" onClick={() => oauth(OauthServices.GOOGLE)} />
+				<GithubButton text="Continue with Github" onClick={() => oauth(OauthServices.GITHUB)} />
+				<GitlabButton text="Continue with Gitlab" onClick={() => oauth(OauthServices.GITLAB)} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="New on Area?" sx={{ mr: 2 }} />

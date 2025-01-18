@@ -2,6 +2,7 @@ package oauth
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -69,16 +70,22 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(access_token)
+
 	var id string
 	row := db.QueryRow(context.Background(), query, access_token)
 	_ = row.Scan(&id)
 	defer db.Close(c)
+
+	fmt.Println("user id  = " + id)
 
 	token, err := utils.CreateToken(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	fmt.Println("user token = " + token)
 
 	c.JSON(rep.StatusCode, gin.H{
 		"body": token,

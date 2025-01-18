@@ -56,26 +56,29 @@ const CreateLLM: React.FC = () => {
 
                 <AreaBox sx={{ height: "96vh", width: "98vw", gap: 2 }}>
 
-                <AreaTypography text="What AREA would you like to create?" sx={{ fontSize: "20px", fontWeight: "bold" }} />
+					<AreaTypography variant="h2" text="Ask AI" />
 
-                <AreaTextField
-                    placeholder="Enter your request here..."
-                    value={input}
-                    onChange={(e) => {setInput(e.target.value)}}
-                    sx={{ width: "40%" }}
-                />
 
-                <AreaButton text={isLoading ? "Processing..." : "Send"} onClick={sendRequest} disabled={isLoading} />
+                    <AreaTypography text="What AREA would you like to create?" sx={{ fontSize: "20px", fontWeight: "bold" }} />
 
-                <AreaBox sx={{ marginTop: "16px", textAlign: "center" }}>
+                    <AreaTextField
+                        placeholder="Enter your request here..."
+                        value={input}
+                        onChange={(e) => {setInput(e.target.value)}}
+                        sx={{ width: "40%" }}
+                    />
 
-                    {isLoading && <AreaTypography text="Chatbot is speaking..." />}
+                    <AreaButton text={isLoading ? "Processing..." : "Send"} onClick={sendRequest} disabled={isLoading} />
 
-                    {!isLoading && response && (
-                        <AreaTypography text={response} sx={{ color: response.includes("Error") ? "red" : "green" }} />
-                    )}
+                    <AreaBox sx={{ marginTop: "16px", textAlign: "center" }}>
 
-                </AreaBox>
+                        {isLoading && <AreaTypography text="Chatbot is speaking..." />}
+
+                        {!isLoading && response && (
+                            <AreaTypography text={response} sx={{ color: response.includes("Error") ? "red" : "green" }} />
+                        )}
+
+                    </AreaBox>
 
                 </AreaBox>
 

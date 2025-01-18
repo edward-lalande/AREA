@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -11,7 +12,7 @@ import (
 )
 
 func AddAccessToken(c *gin.Context) {
-	var receivedData models.OauthInformation
+	var receivedData models.OauthInformationToken
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -46,24 +47,39 @@ func AddAccessToken(c *gin.Context) {
 		return
 	}
 
-	access_token := utils.BytesToJson(respBody)
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
 
 	if access_token == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	userToken := c.GetHeader("token")
+	fmt.Println(access_token)
+
+	if access_token == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	userToken := receivedData.Token
 	if userToken == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return
 	}
+
+	fmt.Println("add user token = " + userToken)
 
 	id := utils.ParseToken(userToken)
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
 		return
 	}
+
+	fmt.Println("add user id  = " + id)
 
 	query := `UPDATE "User" SET spotify_token = $1 WHERE id = $2;`
 

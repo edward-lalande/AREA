@@ -5,7 +5,7 @@ import { AreaPaper } from "./elements/AreaPaper";
 import { AreaTextDivider } from "./elements/AreaDivider";
 import { AreaTextField } from "./elements/AreaTextFiled";
 import { AreaTypography } from "./elements/AreaTypography";
-import { AreaButton, DiscordButton, GithubButton, GoogleButton, SpotifyButton } from "./elements/AreaButton";
+import { AreaButton, DiscordButton, GithubButton, GitlabButton, GoogleButton, SpotifyButton } from "./elements/AreaButton";
 
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -84,7 +84,7 @@ const SignupForm: React.FC = () => {
 		const codes: Code[] = [];
 
 		codes.push({ name: "discord_code", service: OauthServices.DISCORD });
-		codes.push({ name: "spotify_code", service: OauthServices.SPOTIFY });
+		codes.push({ name: "gitlab_code", service: OauthServices.SPOTIFY });
 		codes.push({ name: "github_code", service: OauthServices.GITHUB });
 		codes.push({ name: "google_code", service: OauthServices.GOOGLE });
 
@@ -122,9 +122,9 @@ const SignupForm: React.FC = () => {
 				<AreaTextDivider text="or" />
 
 				<DiscordButton text="Continue with Discord" onClick={() => oauth(OauthServices.DISCORD)} />
-				<SpotifyButton text="Continue with Spotify" onClick={() => oauth(OauthServices.SPOTIFY)} />
-				<GithubButton text="Continue with Github" onClick={() => oauth(OauthServices.GITHUB)} />
 				<GoogleButton text="Continue with Google" onClick={() => oauth(OauthServices.GOOGLE)} />
+				<GithubButton text="Continue with Github" onClick={() => oauth(OauthServices.GITHUB)} />
+				<GitlabButton text="Continue with Gitlab" onClick={() => oauth(OauthServices.GITLAB)} />
 
 				<AreaBox sx={{ flexDirection: "row", mt: 1 }}>
 					<AreaTypography variant="h6" text="Already on AREA?" sx={{ mr: 2 }} />
