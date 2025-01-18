@@ -14,8 +14,10 @@ func pauseSound(information models.Reactions) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	req.Header.Set("Authorization", "Bearer "+information.UserToken)
 	req.Header.Set("Content-Type", "application/json")
+
 	return client.Do(req)
 }
 

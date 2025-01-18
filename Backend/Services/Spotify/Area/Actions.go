@@ -1,6 +1,7 @@
 package area
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	models "spotify/Models"
@@ -38,6 +39,11 @@ func GetNbPlaylists(spotifyToken, id string) int {
 	b, _ := io.ReadAll(resp.Body)
 	json := utils.BytesToJson(b)
 	defer resp.Body.Close()
+	if json["total"] == nil {
+		fmt.Println("playlists -1")
+		return -1
+	}
+	fmt.Println("json total: ", json["total"])
 	return int(json["total"].(float64))
 }
 
