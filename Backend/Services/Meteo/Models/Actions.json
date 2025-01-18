@@ -1,5 +1,6 @@
 {
     "name": "Meteo",
+    "color": "#4285F4",
     "actions": [
             {
                 "name": "At temperature in the day",

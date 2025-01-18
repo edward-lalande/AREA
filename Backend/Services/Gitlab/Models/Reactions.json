@@ -1,5 +1,6 @@
 {
     "name": "Gitlab",
+    "color": "#fc6d26",
     "reactions": [
             {
                 "name": "Comment last Merge Requets",

@@ -43,7 +43,7 @@ To add the Bot, the user needs to have the Manage Server permission. Note: Revok
 		{"Spotify", `Spotify is a digital music service that gives you access to millions of songs. Applets can help you save your Discover Weekly and Release Radar playlists, share your favorite tunes, and much more.`, utils.GetEnvKey("SPOTIFY_API"), "#1db954"},
 		{"Asana", `Asana is the easiest way for teams to track their work. From tasks and projects to conversations and dashboards, Asana enables teams to move work from start to finish — and get great results.`, utils.GetEnvKey("ASANA_API"), "#ff80e1"},
 		{"Ticket Master", "Create a reactions when there is your favorite kind of music concert in your city", utils.GetEnvKey("TICKET_MASTER_API"), "#1c24ff"},
-		{"Cryptomoney", "Create a reactions when your favorite cryptomoney is up to or down to or equal to a certains value", utils.GetEnvKey("CRYPTOMONEY_API"), "#f7931a"},
+		{"CryptoMoney", "Create a reactions when your favorite cryptomoney is up to or down to or equal to a certains value", utils.GetEnvKey("CRYPTOMONEY_API"), "#f7931a"},
 		{"Miro", "Create a reactions when you need to create a share board to work", utils.GetEnvKey("MIRO_API"), "#faca00"},
 	}
 	var uppedServices []serviceSendList

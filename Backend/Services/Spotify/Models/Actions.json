@@ -1,5 +1,6 @@
 {
     "name": "Spotify",
+    "color": "#1db954",
     "actions": [
         {
             "name": "Listen to music",

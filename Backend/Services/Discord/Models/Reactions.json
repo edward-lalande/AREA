@@ -1,5 +1,6 @@
 {
     "name": "Discord",
+    "color": "#7289da",
     "reactions": [
         {
             "name": "Send message on channel",

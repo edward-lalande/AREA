@@ -1,5 +1,6 @@
 {
     "name": "Asana",
+    "color": "#ff80e1",
     "reactions": [
         {
             "name": "Create a new Project",

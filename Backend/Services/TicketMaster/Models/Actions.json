@@ -1,5 +1,6 @@
 {
     "name": "Ticket Master",
+    "color": "#1c24ff",
     "actions": [
         {
             "name": "New events in this city",

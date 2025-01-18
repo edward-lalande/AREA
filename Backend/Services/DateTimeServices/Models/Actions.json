@@ -1,5 +1,6 @@
 {
 "name": "Date Time",
+"color": "#b3b3b3",
 "actions": [
         {
             "name": "Every day at",

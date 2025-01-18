@@ -1,5 +1,6 @@
 {
     "name": "Spotify",
+    "color": "#1db954",
     "reactions": [
         {
             "name": "Pause the music",
