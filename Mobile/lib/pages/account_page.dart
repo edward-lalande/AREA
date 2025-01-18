@@ -16,6 +16,8 @@ class _AccountPageState extends State<AccountPage> {
 
     late TextEditingController emailController;
     late TextEditingController passwordController;
+    late TextEditingController nameController;
+    late TextEditingController lastNameController;
     final scrollController = ScrollController();
 
     @override
@@ -23,6 +25,8 @@ class _AccountPageState extends State<AccountPage> {
         super.initState();
         emailController = TextEditingController(text: "");
         passwordController = TextEditingController(text: "");
+        nameController = TextEditingController(text: "");
+        lastNameController = TextEditingController(text: "");
         fetchAndSetUserData();
     }
 
@@ -37,7 +41,9 @@ class _AccountPageState extends State<AccountPage> {
 
             setState(() {
                 emailController = TextEditingController(text: userData['mail']);
-                passwordController = TextEditingController(text: userData['password'] ?? '');
+                passwordController = TextEditingController();
+                nameController = TextEditingController(text: userData['name'] ?? '');
+                lastNameController = TextEditingController(text: userData['lastname'] ?? '');
             });
         } catch (e) {
             print("Failed to fetch user data: $e");
@@ -74,6 +80,20 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 MyTextField2(
                                     color: Theme.of(context).scaffoldBackgroundColor,
+                                    hintText: "Name",
+                                    controller: nameController,
+                                    prefixIcon: Icon(Icons.email),
+                                ),
+                                SizedBox(height: 20),
+                                MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    hintText: "Lastname",
+                                    controller: lastNameController,
+                                    prefixIcon: Icon(Icons.email),
+                                ),
+                                SizedBox(height: 20),
+                                MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
                                     hintText: "Email",
                                     controller: emailController,
                                     prefixIcon: Icon(Icons.email),
@@ -106,6 +126,7 @@ class _AccountPageState extends State<AccountPage> {
                                     firstTitle: "See you soon ?", secondTitle: "Log out",
                                     padding: EdgeInsets.only(left: 15),
                                 ),
+                                SizedBox(height: 30),
                             ],
                         ),
                     ),

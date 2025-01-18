@@ -85,8 +85,10 @@ Future<bool> sendSignUp({Map<String, dynamic>? body,Map<String, String>? headers
 
 Future<bool> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dynamic>> reactionsData) async
 {
+    String? token = await stockData.read("token");
+
     final body = [{
-        "user_token": "fuck",
+        "user_token" : token,
         "action": actionData,
         "reactions": reactionsData,
     }];
