@@ -1,5 +1,6 @@
 {
     "name": "Gitlab",
+    "color": "#fc6d26",
     "actions": [
             {
                 "name": "Push",

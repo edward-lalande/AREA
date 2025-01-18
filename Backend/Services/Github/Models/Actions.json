@@ -1,5 +1,6 @@
 {
 "name": "Github",
+"color": "black",
 "actions": [
         {
             "name": "On user push",

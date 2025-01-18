@@ -1,5 +1,6 @@
 {
     "name": "Dropbox",
+    "color": "#0061FE",
     "reactions": [
         {
             "name": "Rename File",

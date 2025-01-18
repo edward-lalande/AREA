@@ -1,5 +1,6 @@
 {
     "name": "Miro",
+    "color": "#faca00",
     "reactions": [
         {
             "name": "Create a board",

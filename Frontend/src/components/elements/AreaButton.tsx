@@ -1,9 +1,17 @@
 import React from "react";
-import { Button, ButtonProps } from "@mui/material";
+import { Box, Button, ButtonProps, Card, CardProps, Typography } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import LogoutIcon from '@mui/icons-material/Logout';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { AreaTypography } from "./AreaTypography";
+import { AreaBox } from "./AreaBox";
+
+interface Service {
+	id: number;
+	name: string;
+	color: string;
+	description: string;
+}
 
 interface AreaButtonProps extends ButtonProps {
     text: string;
@@ -12,6 +20,16 @@ interface AreaButtonProps extends ButtonProps {
 interface ServiceButtonProps extends ButtonProps {
     text: string;
     backgroundColor: string;
+}
+
+interface ServiceCardCreateProps extends CardProps {
+    text: string;
+    backgroundColor: string;
+}
+
+interface ServiceCardProps {
+    service: Service;
+    onClick: (value: Service) => void;
 }
 
 const AreaButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
@@ -57,27 +75,58 @@ const AccountButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     </Button>
 );
 
-const ServiceButton: React.FC<ServiceButtonProps> = ({ text, backgroundColor, ...props }) => (
-    <Button
-    variant="contained"
-    fullWidth
-    sx={{
-            backgroundColor,
-            color: "#fff",
-            borderRadius: 8,
-            fontWeight: "bold",
-            height: "8vw",
-            width: "8vw",
-            py: 1.5,
-            fontSize: "1rem",
-            textTransform: "none",
-            maxWidth: 400,
-            ...props.sx
-        }}
-        {...props}
-    >
-        {text}
-    </Button>
+const ServiceButton: React.FC<ServiceButtonProps> = ({ text, backgroundColor, ...props }) => {
+    return (
+        <Button
+        variant="contained"
+        fullWidth
+        sx={{
+                backgroundColor,
+                color: "#fff",
+                borderRadius: 8,
+                fontWeight: "bold",
+                height: "8vw",
+                width: "8vw",
+                py: 1.5,
+                fontSize: "1rem",
+                textTransform: "none",
+                maxWidth: 400,
+                ...props.sx
+            }}
+            {...props}
+        >
+            {text}
+        </Button>
+    );
+};
+
+const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick }) => (
+    <Card variant="outlined" sx={{ width: "22vw", height: "18vh", display: "flex", flexDirection: "row", borderRadius: 5 }}>
+        <AreaBox sx={{ width: "8vw", height: "18vh" }}>
+            <img src={service.name.toLowerCase().replace(' ', '_') + ".png"} width={80} height={80} />
+        </AreaBox>
+        <Box sx={{ width: "14vw", height: "18vh", backgroundColor: service.color, padding: 2, gap: 2 }}>
+            <Typography color="white" sx={{ fontSize: 24, mb: 0.5 }}>
+                {service.name}
+            </Typography>
+            <Typography color="white" sx={{ height: "5.8vh", fontSize: 12 }}>
+                {service.description.length > 80 ? service.description.slice(0, 80) + "..." : service.description}
+            </Typography>
+            <Button
+                variant="contained"
+                onClick={() => onClick(service)}
+                sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    textTransform: "none",
+                    borderRadius: 3,
+                    mt: 1,
+                }}
+            >
+                See details
+            </Button>
+        </Box>
+    </Card>
 );
 
 const CreateButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
@@ -389,4 +438,4 @@ const MiroButton: React.FC<AreaButtonProps> = ({ text, ...props }) => (
     </Button>
 )
 
-export { AIButton, MiroButton, HelpButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };
+export { ServiceCard, AIButton, MiroButton, HelpButton, AsanaButton, DropboxButton, AreaButton, DiscordButton, GoogleButton, SpotifyButton, GithubButton, GitlabButton, Logout, CreateButton, AddButton, ServiceButton, AccountButton };

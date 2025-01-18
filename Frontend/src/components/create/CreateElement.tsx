@@ -10,8 +10,6 @@ import ActionServices from "./ActionServices";
 import ReactionServices from "./ReactionServices";
 import { useCookies } from "react-cookie";
 
-import { User } from "../Account";
-
 type CreateElementProps = {
     action: Action | undefined;
     actionParameters: Parameters | undefined;

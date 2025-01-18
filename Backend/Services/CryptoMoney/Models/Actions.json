@@ -1,5 +1,6 @@
 {
     "name": "CryptoMoney",
+    "color": "#f7931a",
     "actions": [
             {
                 "name": "CryptoMoney value is under your value",
