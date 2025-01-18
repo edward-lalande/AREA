@@ -32,15 +32,16 @@ func Trigger(c *gin.Context) {
 	}
 
 	db := utils.OpenDB(c)
-	row := db.QueryRow(c, "SELECT message, channel_id, guild_id FROM \"DiscordReactions\" WHERE area_id = $1", receivedData.AreaId)
+	row := db.QueryRow(c, "SELECT reaction_type, message, channel_id, guild_id FROM \"DiscordReactions\" WHERE area_id = $1", receivedData.AreaId)
 
-	if err := row.Scan(&user.Message, &user.Channel, &user.Guild); err != nil {
+	if err := row.Scan(&user.ReactionType, &user.Message, &user.Channel, &user.Guild); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	defer db.Close(c)
 
-	rep, _ := area.FindReactions(user.ReactionType, models.Reactions{user.Message, user.Channel, user.Guild})
+	rep, _ := area.FindReactions(user.ReactionType, models.Reactions{Message: user.Message, ChannelId: user.Channel, GuildId: user.Guild})
+
 	c.JSON(rep.StatusCode, gin.H{
 		"body": rep.Body,
 	})

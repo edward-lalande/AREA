@@ -113,6 +113,14 @@ func listenActions(db *pgx.Conn, slice models.Database) int {
 func addPlaylistAction(db *pgx.Conn, slice models.Database) int {
 	actualNbPlaylists := area.GetNbPlaylists(slice.AccessToken, slice.UserId)
 
+	if actualNbPlaylists < slice.NbPlaylists {
+		db.Exec(context.Background(),
+			`UPDATE "SpotifyActions" 
+		SET nb_playlists = $1 WHERE area_id = $2 AND user_token = $3
+	`, actualNbPlaylists, slice.AreaId, slice.AccessToken)
+		return 1
+	}
+
 	if actualNbPlaylists > slice.NbPlaylists {
 		var send models.TriggerModelGateway
 		var buf bytes.Buffer
@@ -123,7 +131,7 @@ func addPlaylistAction(db *pgx.Conn, slice models.Database) int {
 		db.Exec(context.Background(),
 			`UPDATE "SpotifyActions" 
 			SET nb_playlists = $1 WHERE area_id = $2 AND user_token = $3
-		`, slice.NbPlaylists+1, slice.AreaId, slice.AccessToken)
+		`, actualNbPlaylists, slice.AreaId, slice.AccessToken)
 		http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 	}
 
@@ -132,6 +140,14 @@ func addPlaylistAction(db *pgx.Conn, slice models.Database) int {
 
 func removePlaylistAction(db *pgx.Conn, slice models.Database) int {
 	actualNbPlaylists := area.GetNbPlaylists(slice.AccessToken, slice.UserId)
+
+	if actualNbPlaylists > slice.NbPlaylists {
+		db.Exec(context.Background(),
+			`UPDATE "SpotifyActions" 
+		SET nb_playlists = $1 WHERE area_id = $2 AND user_token = $3
+	`, actualNbPlaylists, slice.AreaId, slice.AccessToken)
+		return 1
+	}
 
 	if actualNbPlaylists < slice.NbPlaylists {
 		var send models.TriggerModelGateway
@@ -143,7 +159,8 @@ func removePlaylistAction(db *pgx.Conn, slice models.Database) int {
 		db.Exec(context.Background(),
 			`UPDATE "SpotifyActions" 
 			SET nb_playlists = $1 WHERE area_id = $2 AND user_token = $3
-		`, slice.NbPlaylists-1, slice.AreaId, slice.AccessToken)
+		`, actualNbPlaylists, slice.AreaId, slice.AccessToken)
+		fmt.Println("area_id: ", slice.AreaId)
 		http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 	}
 

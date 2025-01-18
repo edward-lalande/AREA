@@ -134,6 +134,7 @@ func Area(c *gin.Context) {
 					return
 				}
 				actionData.AreaId = areaID
+				actionData.AccessToken = item.UserToken
 				resp := SendSpotifyActions(actionData, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 11:
@@ -190,6 +191,7 @@ func Area(c *gin.Context) {
 					return
 				}
 				reactionDetail.AreaId = areaID
+				reactionDetail.AccessToken = item.UserToken
 				resp := SendSpotifyReactions(reactionDetail, c)
 				c.JSON(http.StatusOK, gin.H{"body": resp.Body})
 			case 6:

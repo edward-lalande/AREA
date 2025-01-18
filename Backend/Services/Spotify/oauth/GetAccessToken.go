@@ -77,15 +77,11 @@ func GetAccessToken(c *gin.Context) {
 	_ = row.Scan(&id)
 	defer db.Close(c)
 
-	fmt.Println("user id  = " + id)
-
 	token, err := utils.CreateToken(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	fmt.Println("user token = " + token)
 
 	c.JSON(rep.StatusCode, gin.H{
 		"body": token,

@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -27,11 +29,15 @@ func ParseToken(tokenString string) string {
 		return []byte(secretKey), nil
 	})
 
+	fmt.Println("tokenString: ", tokenString)
+	fmt.Println("token parse: ", token)
 	if err != nil {
+		fmt.Println("error:", err.Error())
 		return ""
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		fmt.Println("claims: ", claims)
 		return claims["id"].(string)
 	}
 

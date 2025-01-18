@@ -71,15 +71,11 @@ func AddAccessToken(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("add user token = " + userToken)
-
 	id := utils.ParseToken(userToken)
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
 		return
 	}
-
-	fmt.Println("add user id  = " + id)
 
 	query := `UPDATE "User" SET spotify_token = $1 WHERE id = $2;`
 
