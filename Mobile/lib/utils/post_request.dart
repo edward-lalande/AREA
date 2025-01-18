@@ -21,20 +21,7 @@ bool actionDone = false;
 bool reactionDone = false;
 bool isOAuthStarted = false;
 
-String host = "https://a776-163-5-3-68.ngrok-free.app";
-
-String parseGetToken(String body, int delim)
-{
-    StringBuffer result = StringBuffer();
-
-    for (; delim <= body.length; delim++) {
-        if (body[delim] == '"') {
-            break;
-        }
-        result.write(body[delim]);
-    }
-    return result.toString();
-}
+String host = "https://3100-163-5-3-68.ngrok-free.app";
 
 void showCustomSnackBar(BuildContext context, String message, {Color backgroundColor = Colors.grey})
 {
@@ -127,27 +114,6 @@ Future<bool> classicPost({List<Map<String, dynamic>>? body, Map<String, String>?
     }
 }
 
-Future<bool> postArea({Map<String, String>? body, Map<String, String>? headers, required String url }) async
-{
-    try {
-
-        final response = await http.post(
-            Uri.parse(url),
-            headers: headers,
-            body: body,
-        );
-
-        if (response.statusCode == 200) {
-            return true;
-        } else {
-            print('ERROR: ${response.statusCode}, ${response.body}');
-            return false;
-        }
-  } catch (e) {
-        print('ERRORRRRR : $e');
-        return false;
-    }
-}
 
 Future<String> classicGet({required String url}) async
 {

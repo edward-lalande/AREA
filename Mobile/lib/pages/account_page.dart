@@ -19,12 +19,13 @@ class _AccountPageState extends State<AccountPage> {
     late TextEditingController nameController;
     late TextEditingController lastNameController;
     final scrollController = ScrollController();
+    bool isLoading = true;
+
 
     @override
     void initState() {
         super.initState();
         emailController = TextEditingController(text: "");
-        passwordController = TextEditingController(text: "");
         nameController = TextEditingController(text: "");
         lastNameController = TextEditingController(text: "");
         fetchAndSetUserData();
@@ -32,7 +33,7 @@ class _AccountPageState extends State<AccountPage> {
 
     Future<void> fetchAndSetUserData() async {
 
-        String url = "http://10.68.255.153:8085/user";
+        String url = "https://015f-163-5-3-68.ngrok-free.app/user";
 
         try {
             final userData = await fetchUserData(url);
@@ -42,10 +43,14 @@ class _AccountPageState extends State<AccountPage> {
                 emailController = TextEditingController(text: userData['mail']);
                 nameController = TextEditingController(text: userData['name'] ?? '');
                 lastNameController = TextEditingController(text: userData['lastname'] ?? '');
+                isLoading = false;
             });
         } catch (e) {
             print("Failed to fetch user data: $e");
             showCustomSnackBar(context, "Failed to load user data.");
+            setState(() {
+                isLoading = false;
+            });
         }
     }
 
@@ -53,7 +58,8 @@ class _AccountPageState extends State<AccountPage> {
     Widget build(BuildContext context) {
         return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: Padding(
+            body: isLoading ? Center(child: CircularProgressIndicator(color: Theme.of(context).textTheme.bodyLarge?.color,))
+                  : Padding(
                 padding: EdgeInsets.only(left: 8, right: 14),
                 child: RawScrollbar(
                     radius: Radius.circular(10),
@@ -78,16 +84,16 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 MyTextField2(
                                     color: Theme.of(context).scaffoldBackgroundColor,
-                                    hintText: "Name",
+                                    hintText: "Firstname",
                                     controller: nameController,
-                                    prefixIcon: Icon(Icons.email),
+                                    prefixIcon: Icon(Icons.account_circle_sharp),
                                 ),
                                 SizedBox(height: 20),
                                 MyTextField2(
                                     color: Theme.of(context).scaffoldBackgroundColor,
                                     hintText: "Lastname",
                                     controller: lastNameController,
-                                    prefixIcon: Icon(Icons.email),
+                                    prefixIcon: Icon(Icons.account_circle_sharp),
                                 ),
                                 SizedBox(height: 20),
                                 MyTextField2(
@@ -98,7 +104,7 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 SizedBox(height: 30),
                                 MyButton2(
-                                    title: "Save",
+                                    title: "Save edit",
                                     onPressed: (context) {
                                         if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                                             showCustomSnackBar(context, "Please fill the fields.");

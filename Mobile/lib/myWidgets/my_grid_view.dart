@@ -16,53 +16,58 @@ extension HexColor on Color {
 
 class ServiceCard extends StatelessWidget {
     const ServiceCard({
-      super.key,
-      required this.title,
-      required this.iconPath,
+        super.key,
+        required this.title,
+        required this.iconPath,
+        this.onTap,
     });
 
     final String title;
     final String iconPath;
+    final VoidCallback? onTap;
 
     @override
     Widget build(BuildContext context) {
-        return Card(
-            color: Theme.of(context).cardColor,
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-            ),
-            child: Container(
-                width: 80,
-                height: 100,
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                        Expanded(
-                            child: Image.asset(
-                                iconPath,
-                                fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) {
-                                return const Icon(
-                                    Icons.broken_image,
-                                    size: 50,
-                                    color: Colors.grey,
-                                );
-                                },
+        return GestureDetector(
+            onTap: onTap,
+            child: Card(
+                color: Theme.of(context).cardColor,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                ),
+                child: Container(
+                    width: 80,
+                    height: 100,
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            Expanded(
+                                child: Image.asset(
+                                    iconPath,
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                        return const Icon(
+                                            Icons.broken_image,
+                                            size: 50,
+                                            color: Colors.grey,
+                                        );
+                                    },
+                                    ),
                             ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                            title,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontFamily: "Avenir",
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                            const SizedBox(height: 8),
+                            Text(
+                                title,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontFamily: "Avenir",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                ),
                             ),
-                        ),
-                    ],
+                        ],
+                    ),
                 ),
             ),
         );
@@ -70,11 +75,12 @@ class ServiceCard extends StatelessWidget {
 }
 
 class MyGridViewHome extends StatelessWidget {
+
     final Map<String, dynamic> servicesMap;
 
     const MyGridViewHome({
         super.key,
-        required this.servicesMap
+        required this.servicesMap,
     });
 
     @override
@@ -96,16 +102,87 @@ class MyGridViewHome extends StatelessWidget {
             itemBuilder: (context, index) {
                 final service = services[index];
                 final name = service['name'] as String;
+                final description = service['description'] as String;
                 final iconPath = 'assets/${name.toLowerCase().replaceAll(' ', '_')}.png';
 
                 return ServiceCard(
                     title: name,
                     iconPath: iconPath,
+                    onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => ServiceDialog(name: name, description: description),
+                        );
+                    },
                 );
             },
         );
     }
 }
+
+class ServiceDialog extends StatelessWidget {
+    final String name;
+    final String description;
+
+    const ServiceDialog({
+        super.key,
+        required this.name,
+        required this.description,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+        return Dialog(
+            insetPadding: const EdgeInsets.all(20),
+            backgroundColor: Theme.of(context).primaryColorLight,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                    Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                        ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                                IconButton(
+                                icon: const Icon(Icons.arrow_back),
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                                onPressed: () => Navigator.of(context).pop(),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                        name,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        ),
+                                    ),
+                                ),
+                                const SizedBox(width: 48),
+                            ],
+                        ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                        description,
+                        style: const TextStyle(fontSize: 16),
+                        ),
+                    ),
+                ],
+            ),
+        );
+    }
+}
+
 
 class ActionPage extends StatelessWidget {
 
