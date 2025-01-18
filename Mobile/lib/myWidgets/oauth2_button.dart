@@ -38,6 +38,7 @@ class _OauthButtonState extends State<OauthButton> {
     @override
     Widget build(BuildContext context) {
         return Card(
+          color: Theme.of(context).cardColor,
             elevation: 5,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -146,7 +147,7 @@ class OAuthButtonsRow extends StatelessWidget {
                     resizePadding: resizePadding,
                     onPressed: (context) async {
                         isOAuthStarted = true;
-                        String oauthUrl = await classicGet(url: 'http://$host:8080/$url');
+                        String oauthUrl = await classicGet(url: '$host/$url');
                         if (context.mounted) {
                             Navigator.push(
                                 context,

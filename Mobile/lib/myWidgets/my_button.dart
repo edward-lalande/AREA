@@ -33,7 +33,7 @@ class MyButton2 extends StatelessWidget {
                     overlayColor: WidgetStateProperty.resolveWith(
                         (states) {
                             if (states.contains(WidgetState.pressed) || states.contains(WidgetState.hovered)) {
-                                return theme.primaryColorLight.withOpacity(0.2);
+                                return theme.primaryColorLight.withOpacity(0.4);
                             }
                             return null;
                         },
@@ -70,4 +70,3 @@ class MyButton2 extends StatelessWidget {
         );
     }
 }
-

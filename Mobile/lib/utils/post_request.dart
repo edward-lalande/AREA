@@ -21,7 +21,7 @@ bool actionDone = false;
 bool reactionDone = false;
 bool isOAuthStarted = false;
 
-String host = "10.68.255.153";
+String host = "https://a776-163-5-3-68.ngrok-free.app";
 
 String parseGetToken(String body, int delim)
 {
@@ -94,7 +94,7 @@ Future<bool> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dyn
     }];
 
     final success = await classicPost(
-        url: "http://$host:8080/areas",
+        url: "$host/areas",
         body: body,
     );
 
@@ -198,13 +198,13 @@ Future<void> getDatas() async
 {
     try {
         final String actionsString = await classicGet(
-            url: "http://$host:8080/actions",
+            url: "$host/actions",
         );
         final String reactionsString = await classicGet(
-            url: "http://$host:8080/reactions",
+            url: "$host/reactions",
         );
         final String servString = await classicGet(
-            url: "http://$host:8080/services",
+            url: "$host/services",
         );
         servicesMap = jsonDecode(servString);
         services = parseServices(actionsString);

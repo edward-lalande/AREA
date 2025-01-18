@@ -32,7 +32,7 @@ class _AccountPageState extends State<AccountPage> {
 
     Future<void> fetchAndSetUserData() async {
 
-        String url = "http://$host:8085/user";
+        String url = "http://10.68.255.153:8085/user";
 
         try {
             final userData = await fetchUserData(url);

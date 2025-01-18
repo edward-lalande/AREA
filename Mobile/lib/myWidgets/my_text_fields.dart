@@ -7,6 +7,8 @@ class MyTextField2 extends StatefulWidget {
         required this.controller,
         required this.color,
         this.prefixIcon,
+        this.suffixIcon,
+        this.onSuffixIconPressed,
         this.obscureText = false,
         this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     });
@@ -14,6 +16,8 @@ class MyTextField2 extends StatefulWidget {
     final String hintText;
     final TextEditingController controller;
     final Widget? prefixIcon;
+    final Widget? suffixIcon;
+    final VoidCallback? onSuffixIconPressed;
     final bool obscureText;
     final EdgeInsets padding;
     final Color color;
@@ -24,28 +28,16 @@ class MyTextField2 extends StatefulWidget {
 
 class _MyTextField2State extends State<MyTextField2> {
 
-    final FocusNode _focusNode = FocusNode();
-    bool _isFocused = false;
+    late bool _isObscure;
 
     @override
     void initState() {
         super.initState();
-        _focusNode.addListener(() {
-            setState(() {
-                _isFocused = _focusNode.hasFocus;
-            });
-        });
-    }
-
-    @override
-    void dispose() {
-        _focusNode.dispose();
-        super.dispose();
+        _isObscure = widget.obscureText;
     }
 
     @override
     Widget build(BuildContext context) {
-
         final theme = Theme.of(context);
 
         return Container(
@@ -57,33 +49,46 @@ class _MyTextField2State extends State<MyTextField2> {
                     color: theme.cardColor,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                        color: _isFocused ? theme.primaryColor : theme.dividerColor,
+                        color: theme.dividerColor,
                         width: 2,
                     ),
                     boxShadow: [
                         BoxShadow(
-                            color: theme.shadowColor.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                        color: theme.shadowColor.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
                         ),
                     ],
-                ),
-                child: TextField(
-                    focusNode: _focusNode,
-                    controller: widget.controller,
-                    obscureText: widget.obscureText,
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TextStyle(
-                        color: theme.textTheme.bodyLarge?.color,
-                        fontFamily: "Avenir",
                     ),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: widget.prefixIcon,
-                        hintText: widget.hintText,
-                        hintStyle: TextStyle(color: theme.hintColor),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                    child: TextField(
+                      controller: widget.controller,
+                      obscureText: _isObscure,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: TextStyle(
+                          color: theme.textTheme.bodyLarge?.color,
+                          fontFamily: "Avenir",
+                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: widget.prefixIcon,
+                          hintText: widget.hintText,
+                          hintStyle: TextStyle(color: theme.hintColor),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                          suffixIcon: widget.obscureText
+                              ? GestureDetector(
+                                  onTap: widget.onSuffixIconPressed ??
+                                      () {
+                                      setState(() {
+                                          _isObscure = !_isObscure;
+                                      });
+                                      },
+                                  child: Icon(
+                                  _isObscure ? Icons.visibility_off : Icons.visibility,
+                                  color: theme.iconTheme.color,
+                                  ),
+                              )
+                              : null,
                     ),
                 ),
             ),

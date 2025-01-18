@@ -27,7 +27,7 @@ class _MyAreaState extends State<MyArea> {
 
     Future<void> _fetchAreas() async
     {
-        String url = "http://$host:8080/areas";
+        String url = "$host/areas";
 
         try {
 
@@ -96,7 +96,7 @@ class _MyAreaState extends State<MyArea> {
                                 ),
                                 const SizedBox(height: 20),
                                 if (isLoading)
-                                    const Center(child: CircularProgressIndicator())
+                                     Center(child: CircularProgressIndicator(color: Theme.of(context).textTheme.bodyLarge?.color,),)
                                 else if (areas.isEmpty)
                                 const Center(
                                     child: Padding(

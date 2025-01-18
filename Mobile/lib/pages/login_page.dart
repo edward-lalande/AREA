@@ -108,7 +108,7 @@ class LoginPage extends StatelessWidget {
                                         }
                                         bool res = await sendSignUp(
                                             delim: 18,
-                                            url: 'http://$host:8080/login',
+                                            url: '$host/login',
                                             body: {
                                                 "mail": emailController.text,
                                                 "password": passwordController.text
