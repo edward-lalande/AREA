@@ -94,10 +94,21 @@ func StoreReactions(c *gin.Context) {
 }
 
 func CreateEvents(information models.GoogleReaction) (*http.Response, error) {
-	body := &models.GoogleReactionSend{information.Summary, information.Description, models.DateTime{information.StartTime}, models.DateTime{information.EndTime}, []models.Attendee{{information.Attendees}}}
+	attendees := []models.Attendee{}
+	if information.Attendees != "" {
+		attendees = append(attendees, models.Attendee{Email: information.Attendees})
+	}
+
+	body := &models.GoogleReactionSend{
+		Summary:     information.Summary,
+		Description: information.Description,
+		StartTime:   models.DateTime{DateTimeFields: information.StartTime},
+		EndTime:     models.DateTime{DateTimeFields: information.EndTime},
+		Attendees:   attendees,
+	}
+
 	client := &http.Client{}
 	b, err := json.Marshal(body)
-
 	if err != nil {
 		return nil, err
 	}
@@ -189,6 +200,7 @@ func Trigger(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
+
 	c.JSON(rep.StatusCode, gin.H{
 		"body": rep.Body,
 	})

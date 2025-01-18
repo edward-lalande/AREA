@@ -5,6 +5,8 @@ import (
 	models "dropbox/Models"
 	"dropbox/utils"
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 
@@ -33,12 +35,18 @@ func GetToken(c *gin.Context, token string) string {
 
 }
 
+func IsSlash(str string) string {
+	if str[0] != '/' {
+		return "/" + str
+	}
+	return str
+}
+
 func renameFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
 	url := "https://api.dropboxapi.com/2/files/move_v2"
-
 	body := map[string]interface{}{
-		"from_path": info.FromPath,
-		"to_path":   info.ToPath,
+		"from_path": IsSlash(info.FromPath),
+		"to_path":   IsSlash(info.ToPath),
 	}
 
 	jsonData, err := json.Marshal(body)
@@ -51,7 +59,7 @@ func renameFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, e
 		log.Fatal(err)
 	}
 
-	req.Header.Set("Authorization", "Bearer "+GetToken(c, info.UserToken))
+	req.Header.Set("Authorization", "Bearer "+info.UserToken)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
@@ -62,7 +70,7 @@ func shareFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, er
 	url := "https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings"
 
 	body := map[string]interface{}{
-		"path": info.FilepathShare,
+		"path": IsSlash(info.FilepathShare),
 		"settings": map[string]interface{}{
 			"requested_visibility": "public",
 		},
@@ -77,7 +85,7 @@ func shareFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, er
 		log.Fatal(err)
 	}
 
-	req.Header.Set("Authorization", "Bearer "+GetToken(c, info.UserToken))
+	req.Header.Set("Authorization", "Bearer "+info.UserToken)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
@@ -130,7 +138,9 @@ func Trigger(c *gin.Context) {
 	}
 
 	defer resp.Body.Close()
-
+	fmt.Println("status code: ", resp.StatusCode)
+	b, _ := io.ReadAll(resp.Body)
+	fmt.Println("body: ", string(b))
 	c.JSON(resp.StatusCode, gin.H{
 		"body": resp.Body,
 	})
