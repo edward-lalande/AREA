@@ -25,7 +25,7 @@ func TestGetReactions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"name\":\"Dropbox\",\"reactions\":[{\"arguments\":[{\"display\":\"From file\",\"name\":\"from_path\",\"type\":\"string\"},{\"display\":\"To file\",\"name\":\"to_path\",\"type\":\"string\"}],\"description\":\"Rename File as the file name indicated that must begin from /\",\"name\":\"Rename File\",\"reaction_id\":3,\"reaction_type\":0},{\"arguments\":[{\"display\":\"File to share\",\"name\":\"filepath_share\",\"type\":\"string\"}],\"description\":\"Share a file to your group that must begin from /\",\"name\":\"Share File\",\"reaction_id\":3,\"reaction_type\":1}]}", w.Body.String())
+	assert.Equal(t, "{\"color\":\"#0061FE\",\"name\":\"Dropbox\",\"reactions\":[{\"arguments\":[{\"display\":\"From file\",\"name\":\"from_path\",\"type\":\"string\"},{\"display\":\"To file\",\"name\":\"to_path\",\"type\":\"string\"}],\"description\":\"Rename File as the file name indicated that must begin from /\",\"name\":\"Rename File\",\"reaction_id\":3,\"reaction_type\":0},{\"arguments\":[{\"display\":\"File to share\",\"name\":\"filepath_share\",\"type\":\"string\"}],\"description\":\"Share a file to your group that must begin from /\",\"name\":\"Share File\",\"reaction_id\":3,\"reaction_type\":1}]}", w.Body.String())
 	models.ReactionsModelPath = "Models/Reactions.json"
 }
 

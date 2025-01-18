@@ -24,7 +24,7 @@ func TestGetReactions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"name\":\"Google\",\"reactions\":[{\"arguments\":[{\"display\":\"Summary events\",\"name\":\"summary\",\"type\":\"string\"},{\"display\":\"Description events\",\"name\":\"description\",\"type\":\"string\"},{\"display\":\"Start time in format ISO-8601 date\",\"name\":\"start_time\",\"type\":\"string\"},{\"display\":\"End time in format ISO-8601 date\",\"name\":\"end_time\",\"type\":\"string\"},{\"display\":\"Attendees\",\"name\":\"attendees\",\"type\":\"string\"}],\"description\":\"Create an event in a start time end end time with attendees if you want\",\"name\":\"Create Event\",\"reaction_id\":6,\"reaction_type\":0},{\"arguments\":[{\"display\":\"Recipient\",\"name\":\"recipient\",\"type\":\"string\"},{\"display\":\"Subject\",\"name\":\"subject\",\"type\":\"string\"},{\"display\":\"Message\",\"name\":\"message\",\"type\":\"string\"}],\"description\":\"Send a mail to the recipient with the subject and the your message\",\"name\":\"Send mail\",\"reaction_id\":6,\"reaction_type\":1}]}", w.Body.String())
+	assert.Equal(t, "{\"color\":\"#0F9D58\",\"name\":\"Google\",\"reactions\":[{\"arguments\":[{\"display\":\"Summary events\",\"name\":\"summary\",\"type\":\"string\"},{\"display\":\"Description events\",\"name\":\"description\",\"type\":\"string\"},{\"display\":\"Start time in format ISO-8601 date\",\"name\":\"start_time\",\"type\":\"string\"},{\"display\":\"End time in format ISO-8601 date\",\"name\":\"end_time\",\"type\":\"string\"},{\"display\":\"Attendees\",\"name\":\"attendees\",\"type\":\"string\"}],\"description\":\"Create an event in a start time end end time with attendees if you want\",\"name\":\"Create Event\",\"reaction_id\":6,\"reaction_type\":0},{\"arguments\":[{\"display\":\"Recipient\",\"name\":\"recipient\",\"type\":\"string\"},{\"display\":\"Subject\",\"name\":\"subject\",\"type\":\"string\"},{\"display\":\"Message\",\"name\":\"message\",\"type\":\"string\"}],\"description\":\"Send a mail to the recipient with the subject and the your message\",\"name\":\"Send mail\",\"reaction_id\":6,\"reaction_type\":1}]}", w.Body.String())
 	models.ReactionsModelPath = "Models/Reactions.json"
 }
 
@@ -66,7 +66,7 @@ func TestGetActions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"actions\":[{\"action_id\":6,\"action_type\":0,\"arguments\":[],\"description\":\"When you create an event, it's trigger\",\"name\":\"Create Event\"},{\"action_id\":6,\"action_type\":1,\"arguments\":[],\"description\":\"When you delete an event, it's trigger\",\"name\":\"Delete Event\"},{\"action_id\":6,\"action_type\":2,\"arguments\":[],\"description\":\"When you send or receive an email, it's trigger\",\"name\":\"Send/Receive new mail\"}],\"name\":\"Google\"}", w.Body.String())
+	assert.Equal(t, "{\"actions\":[{\"action_id\":6,\"action_type\":0,\"arguments\":[],\"description\":\"When you create an event, it's trigger\",\"name\":\"Create Event\"},{\"action_id\":6,\"action_type\":1,\"arguments\":[],\"description\":\"When you delete an event, it's trigger\",\"name\":\"Delete Event\"},{\"action_id\":6,\"action_type\":2,\"arguments\":[],\"description\":\"When you send or receive an email, it's trigger\",\"name\":\"Send/Receive new mail\"}],\"color\":\"#0F9D58\",\"name\":\"Google\"}", w.Body.String())
 	models.ActionsModelsPath = "Models/Actions.json"
 }
 

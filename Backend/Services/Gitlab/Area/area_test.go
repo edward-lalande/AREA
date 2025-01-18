@@ -24,7 +24,7 @@ func TestGetReactions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"name\":\"Gitlab\",\"reactions\":[{\"arguments\":[{\"display\":\"Project ID\",\"name\":\"project_id\",\"type\":\"string\"},{\"display\":\"Commentary\",\"name\":\"body\",\"type\":\"string\"}],\"name\":\"Comment last Merge Requets\",\"reaction_id\":5,\"reaction_type\":0},{\"arguments\":[{\"display\":\"Project ID\",\"name\":\"project_id\",\"type\":\"string\"},{\"display\":\"Label\",\"name\":\"body\",\"type\":\"string\"}],\"name\":\"labelise last Merge Requets\",\"reaction_id\":5,\"reaction_type\":1}]}", w.Body.String())
+	assert.Equal(t, "{\"color\":\"#fc6d26\",\"name\":\"Gitlab\",\"reactions\":[{\"arguments\":[{\"display\":\"Project ID\",\"name\":\"project_id\",\"type\":\"string\"},{\"display\":\"Commentary\",\"name\":\"body\",\"type\":\"string\"}],\"name\":\"Comment last Merge Requets\",\"reaction_id\":5,\"reaction_type\":0},{\"arguments\":[{\"display\":\"Project ID\",\"name\":\"project_id\",\"type\":\"string\"},{\"display\":\"Label\",\"name\":\"body\",\"type\":\"string\"}],\"name\":\"labelise last Merge Requets\",\"reaction_id\":5,\"reaction_type\":1}]}", w.Body.String())
 	models.ReactionsModelsPath = "Models/Reactions.json"
 }
 
@@ -65,7 +65,7 @@ func TestGetActions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"actions\":[{\"action_id\":5,\"action_type\":0,\"arguments\":[],\"description\":\"If you push, it's trigger\",\"name\":\"Push\"},{\"action_id\":5,\"action_type\":1,\"arguments\":[],\"description\":\"If you comment a Merge Requests, it's trigger\",\"name\":\"Comments\"},{\"action_id\":5,\"action_type\":2,\"arguments\":[],\"description\":\"If you create a Merge Requests, it's trigger\",\"name\":\"Merge Requests\"}],\"name\":\"Gitlab\"}", w.Body.String())
+	assert.Equal(t, "{\"actions\":[{\"action_id\":5,\"action_type\":0,\"arguments\":[],\"description\":\"If you push, it's trigger\",\"name\":\"Push\"},{\"action_id\":5,\"action_type\":1,\"arguments\":[],\"description\":\"If you comment a Merge Requests, it's trigger\",\"name\":\"Comments\"},{\"action_id\":5,\"action_type\":2,\"arguments\":[],\"description\":\"If you create a Merge Requests, it's trigger\",\"name\":\"Merge Requests\"}],\"color\":\"#fc6d26\",\"name\":\"Gitlab\"}", w.Body.String())
 	models.ActionsModelsPath = "Models/Actions.json"
 }
 

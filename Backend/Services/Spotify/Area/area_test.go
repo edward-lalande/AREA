@@ -24,7 +24,7 @@ func TestGetReactions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"name\":\"Spotify\",\"reactions\":[{\"arguments\":[],\"description\":\"It's pause your music on all your devices\",\"name\":\"Pause the music\",\"reaction_id\":9,\"reaction_type\":0}]}", w.Body.String())
+	assert.Equal(t, "{\"color\":\"#1db954\",\"name\":\"Spotify\",\"reactions\":[{\"arguments\":[],\"description\":\"It's pause your music on all your devices\",\"name\":\"Pause the music\",\"reaction_id\":9,\"reaction_type\":0}]}", w.Body.String())
 	models.ReactionsModelsPath = "Models/Reactions.json"
 }
 
@@ -66,7 +66,7 @@ func TestGetActions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"actions\":[{\"action_id\":9,\"action_type\":0,\"arguments\":[],\"description\":\"If you listen to a music, it's trigger\",\"name\":\"Listen to music\"},{\"action_id\":9,\"action_type\":1,\"arguments\":[],\"description\":\"If you create a new playlist, it's trigger\",\"name\":\"Create new playlist\"},{\"action_id\":9,\"action_type\":2,\"arguments\":[],\"description\":\"If you remove a playlist, it's trigger\",\"name\":\"Remove a playlist\"}],\"name\":\"Spotify\"}", w.Body.String())
+	assert.Equal(t, "{\"actions\":[{\"action_id\":9,\"action_type\":0,\"arguments\":[],\"description\":\"If you listen to a music, it's trigger\",\"name\":\"Listen to music\"},{\"action_id\":9,\"action_type\":1,\"arguments\":[],\"description\":\"If you create a new playlist, it's trigger\",\"name\":\"Create new playlist\"},{\"action_id\":9,\"action_type\":2,\"arguments\":[],\"description\":\"If you remove a playlist, it's trigger\",\"name\":\"Remove a playlist\"}],\"color\":\"#1db954\",\"name\":\"Spotify\"}", w.Body.String())
 	models.ActionsModelsPath = "Models/Actions.json"
 }
 

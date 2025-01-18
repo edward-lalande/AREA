@@ -24,7 +24,7 @@ func TestGetReactions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"name\":\"Miro\",\"reactions\":[{\"arguments\":[{\"display\":\"Name\",\"name\":\"name\",\"type\":\"string\"}],\"description\":\"Creating a board in your team at the name indicated\",\"name\":\"Create a board\",\"reaction_id\":14,\"reaction_type\":0}]}", w.Body.String())
+	assert.Equal(t, "{\"color\":\"#faca00\",\"name\":\"Miro\",\"reactions\":[{\"arguments\":[{\"display\":\"Name\",\"name\":\"name\",\"type\":\"string\"}],\"description\":\"Creating a board in your team at the name indicated\",\"name\":\"Create a board\",\"reaction_id\":14,\"reaction_type\":0}]}", w.Body.String())
 	models.ReactionsModelsPath = "Models/Reactions.json"
 }
 
