@@ -51,7 +51,7 @@ class _CreateAreaState extends State<CreateArea> {
                                 ),
                                 SizedBox(height: 50),
                                 Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
                                     child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -84,7 +84,7 @@ class _CreateAreaState extends State<CreateArea> {
                                         : SizedBox.shrink(),
                                 ),
                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    padding: EdgeInsets.symmetric(horizontal: 4),
                                     child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [

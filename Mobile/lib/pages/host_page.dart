@@ -14,7 +14,7 @@ class HostPage extends StatefulWidget {
 
 class _HostPageState extends State<HostPage> {
 
-    final emailController = TextEditingController();
+    final emailController = TextEditingController(text: "10.68.255.153");
     final scrollController = ScrollController();
 
     @override
@@ -65,10 +65,9 @@ class _HostPageState extends State<HostPage> {
                                 ),
                                 MyTextField2(
                                     color: Theme.of(context).scaffoldBackgroundColor,
-
-                                    hintText: "10.0.2.2 (default)",
+                                    hintText: "",
                                     controller: emailController,
-                                    prefixIcon: Icon(Icons.email),
+                                    prefixIcon: Icon(Icons.network_wifi),
 
                                 ),
                                 SizedBox(height: 7),
@@ -79,10 +78,11 @@ class _HostPageState extends State<HostPage> {
                                     title: "Save address",
                                     onPressed: (context) {
                                         if (emailController.text.isNotEmpty) {
-                                            showCustomSnackBar(context, "Network location has been changed.");
+                                            host = emailController.text;
+                                            showCustomSnackBar(context, "Network location has been changed to $host");
                                             context.go('/login');
                                         } else {
-                                            showCustomSnackBar(context, "No changes.");
+                                            showCustomSnackBar(context, "Default network location $host");
                                             context.go('/login');
                                         }
                                     },

@@ -110,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         }
                                         await sendSignUp(
                                             delim: 18,
-                                            url: "http://$host:8080/sign-up",
+                                            url: "$host/sign-up",
                                             body: {
                                                 "mail": emailController.text,
                                                 "password": passwordController.text,

@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:second_app/utils/my_secure_storage.dart';
 
 final SecureStorageService stockData = SecureStorageService();
-final host = StringBuffer("10.0.2.2");
 
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
@@ -20,19 +19,9 @@ List<ReactionService> reactions = [];
 
 bool actionDone = false;
 bool reactionDone = false;
+bool isOAuthStarted = false;
 
-String parseGetToken(String body, int delim)
-{
-    StringBuffer result = StringBuffer();
-
-    for (; delim <= body.length; delim++) {
-        if (body[delim] == '"') {
-            break;
-        }
-        result.write(body[delim]);
-    }
-    return result.toString();
-}
+String host = "https://3100-163-5-3-68.ngrok-free.app";
 
 void showCustomSnackBar(BuildContext context, String message, {Color backgroundColor = Colors.grey})
 {
@@ -48,18 +37,29 @@ void showCustomSnackBar(BuildContext context, String message, {Color backgroundC
 }
 
 
-Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? headers, required String url, required int delim}) async
+Future<bool> sendSignUp({Map<String, dynamic>? body,Map<String, String>? headers,required String url, required int delim,}) async
 {
-
     try {
         final response = await http.post(
             Uri.parse(url),
             headers: headers,
             body: json.encode(body),
         );
+
         if (response.statusCode == 200) {
-            //stockData.write("token", parseGetToken(response.body, delim));
-            return true;
+
+            final tmp = json.decode(response.body);
+            print(tmp);
+            final token = tmp["body"] is String ? tmp["body"] : tmp["body"]?["token"];
+
+            if (token != null) {
+                await stockData.write("token", token);
+                print("Token stored: $token");
+                return true;
+            } else {
+                print("No token found in response.");
+                return false;
+            }
         } else {
             print('ERRRORR : ${response.statusCode}, ${response.body}');
             return false;
@@ -72,14 +72,16 @@ Future<bool> sendSignUp({Map<String, dynamic>? body, Map<String, String>? header
 
 Future<bool> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dynamic>> reactionsData) async
 {
+    String? token = await stockData.read("token");
+
     final body = [{
-        "user_token": "fuck",
+        "user_token" : token,
         "action": actionData,
         "reactions": reactionsData,
     }];
 
     final success = await classicPost(
-        url: "http://$host:8080/areas",
+        url: "$host/areas",
         body: body,
     );
 
@@ -112,27 +114,6 @@ Future<bool> classicPost({List<Map<String, dynamic>>? body, Map<String, String>?
     }
 }
 
-Future<bool> postArea({Map<String, String>? body, Map<String, String>? headers, required String url }) async
-{
-    try {
-
-        final response = await http.post(
-            Uri.parse(url),
-            headers: headers,
-            body: body,
-        );
-
-        if (response.statusCode == 200) {
-            return true;
-        } else {
-            print('ERROR: ${response.statusCode}, ${response.body}');
-            return false;
-        }
-  } catch (e) {
-        print('ERRORRRRR : $e');
-        return false;
-    }
-}
 
 Future<String> classicGet({required String url}) async
 {
@@ -155,17 +136,41 @@ Future<String> classicGet({required String url}) async
     }
 }
 
+Future<Map<String, dynamic>> fetchUserData(String url) async
+{
+    String? token = await stockData.read("token");
+
+    try {
+        final response = await http.get(
+            Uri.parse(url),
+            headers: {
+                "Content-Type": "application/json",
+                "token": token ?? "",
+            },
+        );
+
+        if (response.statusCode == 200) {
+            final Map<String, dynamic> responseData = json.decode(response.body);
+            return responseData['user'];
+        } else {
+            throw Exception('Error: ${response.statusCode}, ${response.body}');
+        }
+    } catch (e) {
+        throw Exception('Failed to fetch user data: $e');
+    }
+}
+
 Future<void> getDatas() async
 {
     try {
         final String actionsString = await classicGet(
-            url: "http://10.0.2.2:8080/actions",
+            url: "$host/actions",
         );
         final String reactionsString = await classicGet(
-            url: "http://10.0.2.2:8080/reactions",
+            url: "$host/reactions",
         );
         final String servString = await classicGet(
-            url: "http://10.0.2.2:8080/services",
+            url: "$host/services",
         );
         servicesMap = jsonDecode(servString);
         services = parseServices(actionsString);

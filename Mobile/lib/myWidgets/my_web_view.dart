@@ -38,10 +38,13 @@ class _WebViewPageState extends State<WebViewPage> {
                     });
                 },
                 onPageFinished: (String url) async {
+
                     await getDatas();
+
                     setState(() {
                         _isLoading = false;
                     });
+
                     if (url.contains("code=")) {
 
                         final Uri uri = Uri.parse(url);
@@ -49,7 +52,7 @@ class _WebViewPageState extends State<WebViewPage> {
                         if (code != null) {
                             bool tmp = await sendSignUp(
                                 delim: 9,
-                                url: "http://$host:8080/$servRoot/access-token",
+                                url: "$host/$servRoot/access-token",
                                 body: {
                                     "code": code,
                                 }

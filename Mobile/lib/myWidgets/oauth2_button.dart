@@ -38,6 +38,7 @@ class _OauthButtonState extends State<OauthButton> {
     @override
     Widget build(BuildContext context) {
         return Card(
+          color: Theme.of(context).cardColor,
             elevation: 5,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -119,9 +120,13 @@ final oauthButtonsData = [
 ];
 
 class OAuthButtonsRow extends StatelessWidget {
+
     final String host;
 
-    const OAuthButtonsRow({super.key, required this.host});
+    const OAuthButtonsRow({
+      super.key,
+      required this.host,
+    });
 
     @override
     Widget build(BuildContext context) {
@@ -141,14 +146,15 @@ class OAuthButtonsRow extends StatelessWidget {
                     resize: resize,
                     resizePadding: resizePadding,
                     onPressed: (context) async {
-                        String oauthUrl = await classicGet(url: 'http://$host:8080/$url');
+                        isOAuthStarted = true;
+                        String oauthUrl = await classicGet(url: '$host/$url');
                         if (context.mounted) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
-                            ),
-                          );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WebViewPage(url: oauthUrl, serv: service.name),
+                                ),
+                            );
                         }
                     },
                 );
