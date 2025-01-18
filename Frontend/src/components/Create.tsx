@@ -8,8 +8,8 @@ import CreateElement from "./create/CreateElement";
 import ActionElement from "./create/ActionElement";
 import ReactionElement from "./create/ReactionElement";
 import ActionParameters from "./create/ActionParameters";
-import ActionServices from "./create/ActionServices";
 import ReactionParameters from "./create/ReactionParameters";
+import ActionServices from "./create/ActionServices";
 import ReactionServices from "./create/ReactionServices";
 
 export enum CreatePage {
@@ -30,6 +30,7 @@ export interface Argument {
 
 export interface Action {
     name: string;
+    description: string;
     action_id: number;
     action_type: number;
     arguments: Argument[];
@@ -37,6 +38,7 @@ export interface Action {
 
 export interface Reaction {
     name: string;
+    description: string;
     reaction_id: number;
     reaction_type: number;
     arguments: Argument[];
@@ -53,8 +55,8 @@ const Create: React.FC = () => {
     const [action, setAction] = useState<Action>();
     const [reaction, setReaction] = useState<Reaction>();
 
-    const [selectedActions, setSelectedActions] = useState<Action[]>([]);
-    const [selectedReactions, setSelectedReactions] = useState<Reaction[]>([]);
+    const [selectedActions, setSelectedActions] = useState<ActionServices | null>(null);
+    const [selectedReactions, setSelectedReactions] = useState<ReactionServices | null>(null);
 
     const [actionParameters, setActionParameters] = useState<Parameters>();
     const [reactionParameters, setReactionParameters] = useState<Parameters>();
@@ -66,8 +68,8 @@ const Create: React.FC = () => {
         if (reset) {
             setAction(undefined);
             setReaction(undefined);
-            setSelectedActions([]);
-            setSelectedReactions([]);
+            setSelectedActions(null);
+            setSelectedReactions(null);
             setActionParameters(undefined);
             setReactionParameters(undefined);
             setReset(false);

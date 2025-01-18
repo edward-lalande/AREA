@@ -2,6 +2,7 @@ package area
 
 import (
 	"bytes"
+	"fmt"
 	models "gitlab/Models"
 	"gitlab/utils"
 	"net/http"
@@ -10,7 +11,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func findNumberOfMr(data models.Database) int {
+func GetToken(c *gin.Context, token string) string {
+
+	id := utils.ParseToken(token)
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return ""
+	}
+
+	var discord_token string
+
+	query := `SELECT gitlab_token FROM "User" WHERE id = $1`
+	err := db.QueryRow(c, query, id).Scan(&discord_token)
+	if err != nil {
+		return ""
+	}
+
+	defer db.Close(c)
+	fmt.Println("gitlab token => " + discord_token)
+	return discord_token
+
+}
+
+func findNumberOfMr(c *gin.Context, data models.Database) int {
 	client := &http.Client{}
 	url := "https://gitlab.com/api/v4/projects/" + data.ProjectId + "/merge_requests?state=all&per_page=1"
 	req, err := http.NewRequest("GET", url, nil)
@@ -19,7 +43,7 @@ func findNumberOfMr(data models.Database) int {
 		return -1
 	}
 
-	req.Header.Set("Authorization", "Bearer "+data.UserToken)
+	req.Header.Set("Authorization", "Bearer "+GetToken(c, data.UserToken))
 	req.Header.Set("Content-Type", "application/json")
 
 	response, err := client.Do(req)
@@ -41,8 +65,8 @@ func findNumberOfMr(data models.Database) int {
 	return nbOfMr
 }
 
-func labeliseMr(data models.Database) (*http.Response, error) {
-	lastMrId := findNumberOfMr(data)
+func labeliseMr(c *gin.Context, data models.Database) (*http.Response, error) {
+	lastMrId := findNumberOfMr(c, data)
 	url := "https://gitlab.com/api/v4/projects/" + data.ProjectId + "/merge_requests/" + strconv.Itoa(lastMrId)
 
 	requestBody := `{"labels": "` + data.Body + `"}`
@@ -54,14 +78,14 @@ func labeliseMr(data models.Database) (*http.Response, error) {
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+data.UserToken)
+	req.Header.Set("Authorization", "Bearer "+GetToken(c, data.UserToken))
 	req.Header.Set("Content-Type", "application/json")
 
 	return client.Do(req)
 }
 
-func automatiqueCommentary(data models.Database) (*http.Response, error) {
-	lastMrId := findNumberOfMr(data)
+func automatiqueCommentary(c *gin.Context, data models.Database) (*http.Response, error) {
+	lastMrId := findNumberOfMr(c, data)
 	url := "https://gitlab.com/api/v4/projects/" + data.ProjectId + "/merge_requests/" + strconv.Itoa(lastMrId) + "/notes"
 
 	requestBody := `{"body": "` + data.Body + `"}`
@@ -73,19 +97,19 @@ func automatiqueCommentary(data models.Database) (*http.Response, error) {
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+data.UserToken)
+	req.Header.Set("Authorization", "Bearer "+GetToken(c, data.UserToken))
 	req.Header.Set("Content-Type", "application/json")
 
 	return client.Do(req)
 }
 
-func FindReaction(data models.Database) (*http.Response, error) {
-	reactions := map[int]func(models.Database) (*http.Response, error){
+func FindReaction(c *gin.Context, data models.Database) (*http.Response, error) {
+	reactions := map[int]func(*gin.Context, models.Database) (*http.Response, error){
 		0: automatiqueCommentary,
 		1: labeliseMr,
 	}
 
-	return reactions[data.ReactionType](data)
+	return reactions[data.ReactionType](c, data)
 }
 
 // Gitlab Services
@@ -130,7 +154,7 @@ func StoreReactions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Reactions.json")
+	b, err := utils.OpenFile(models.ReactionsModelsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

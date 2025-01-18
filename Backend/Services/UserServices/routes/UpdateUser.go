@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"context"
 	"net/http"
 	models "poc-crud-users/Models"
 	"poc-crud-users/utils"
@@ -21,40 +20,107 @@ import (
 // @Failure 400 {object} map[string]interface{} "Bad Request: Invalid input or user not found"
 // @Failure 500 {object} map[string]interface{} "Internal Server Error"
 // @Router /user [post]
-func UpdateUser(c *gin.Context) {
+func UpdateName(c *gin.Context) {
 	var receivedData models.UserInformation
-	var user models.User
-	db := utils.OpenDB(c)
-
-	if db == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open Database"})
-		return
-	}
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	usefullInformation := models.Login{receivedData.Mail, receivedData.Password}
-	if !isUserExists(usefullInformation, db) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Wrong email or password"})
+	token := c.GetHeader("token")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
 		return
 	}
 
-	row := db.QueryRow(context.Background(), "ALTER \"User\" $1 WITH password $2",
-		receivedData.Id, receivedData.Password)
-	_ = row.Scan(&user.Id)
-	row = db.QueryRow(context.Background(), "ALTER \"User\" $1 WITH mail $2",
-		receivedData.Id, receivedData.Mail)
-	_ = row.Scan(&user.Id)
-	row = db.QueryRow(context.Background(), "ALTER \"User\" $1 WITH name $2",
-		receivedData.Id, receivedData.Name)
-	_ = row.Scan(&user.Id)
-	row = db.QueryRow(context.Background(), "ALTER \"User\" $1 WITH lastname $2",
-		receivedData.Id, receivedData.Lastname)
-	_ = row.Scan(&user.Id)
+	id := utils.ParseToken(token)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
 
-	db.Close(c)
-	c.JSON(http.StatusOK, gin.H{"user_updated": receivedData.Id})
+	db := utils.OpenDB(c)
+	if db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return
+	}
+	defer db.Close(c)
+
+	_, err := db.Query(c, "UPDATE \"User\" SET name = $1 WHERE id = $2", receivedData.Name, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, gin.H{"info": "User updated!"})
+}
+
+func UpdateEmail(c *gin.Context) {
+	var receivedData models.UserInformation
+
+	if err := c.ShouldBindJSON(&receivedData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	token := c.GetHeader("token")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
+		return
+	}
+
+	id := utils.ParseToken(token)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return
+	}
+	defer db.Close(c)
+
+	_, err := db.Query(c, "UPDATE \"User\" SET mail = $1 WHERE id = $2", receivedData.Mail, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, gin.H{"info": "User updated!"})
+}
+
+func UpdateLastname(c *gin.Context) {
+	var receivedData models.UserInformation
+
+	if err := c.ShouldBindJSON(&receivedData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	token := c.GetHeader("token")
+	if token == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Token is required"})
+		return
+	}
+
+	id := utils.ParseToken(token)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to open the database"})
+		return
+	}
+	defer db.Close(c)
+
+	_, err := db.Query(c, "UPDATE \"User\" SET lastname = $1 WHERE id = $2", receivedData.Lastname, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, gin.H{"info": "User updated!"})
 }

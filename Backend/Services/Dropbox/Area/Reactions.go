@@ -5,18 +5,48 @@ import (
 	models "dropbox/Models"
 	"dropbox/utils"
 	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func renameFile(info models.DropBoxReactions) (*http.Response, error) {
-	url := "https://api.dropboxapi.com/2/files/move_v2"
+func GetToken(c *gin.Context, token string) string {
 
+	id := utils.ParseToken(token)
+
+	db := utils.OpenDB(c)
+	if db == nil {
+		return ""
+	}
+
+	var dropbox_token string
+
+	query := `SELECT dropbox_token FROM "User" WHERE id = $1`
+	err := db.QueryRow(c, query, id).Scan(&dropbox_token)
+	if err != nil {
+		return ""
+	}
+
+	defer db.Close(c)
+	return dropbox_token
+
+}
+
+func IsSlash(str string) string {
+	if str[0] != '/' {
+		return "/" + str
+	}
+	return str
+}
+
+func renameFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
+	url := "https://api.dropboxapi.com/2/files/move_v2"
 	body := map[string]interface{}{
-		"from_path": info.FromPath,
-		"to_path":   info.ToPath,
+		"from_path": IsSlash(info.FromPath),
+		"to_path":   IsSlash(info.ToPath),
 	}
 
 	jsonData, err := json.Marshal(body)
@@ -36,11 +66,11 @@ func renameFile(info models.DropBoxReactions) (*http.Response, error) {
 	return client.Do(req)
 }
 
-func shareFile(info models.DropBoxReactions) (*http.Response, error) {
+func shareFile(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
 	url := "https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings"
 
 	body := map[string]interface{}{
-		"path": info.FilepathShare,
+		"path": IsSlash(info.FilepathShare),
 		"settings": map[string]interface{}{
 			"requested_visibility": "public",
 		},
@@ -62,13 +92,13 @@ func shareFile(info models.DropBoxReactions) (*http.Response, error) {
 	return client.Do(req)
 }
 
-func findReactions(info models.DropBoxReactions) (*http.Response, error) {
-	Reactions := map[int]func(models.DropBoxReactions) (*http.Response, error){
+func findReactions(c *gin.Context, info models.DropBoxReactions) (*http.Response, error) {
+	Reactions := map[int]func(*gin.Context, models.DropBoxReactions) (*http.Response, error){
 		0: renameFile,
 		1: shareFile,
 	}
 
-	return Reactions[info.ReactionType](info)
+	return Reactions[info.ReactionType](c, info)
 }
 
 // Dropbox Services
@@ -102,13 +132,15 @@ func Trigger(c *gin.Context) {
 	}
 	defer db.Close(c)
 
-	resp, err := findReactions(database)
+	resp, err := findReactions(c, database)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
 	defer resp.Body.Close()
-
+	fmt.Println("status code: ", resp.StatusCode)
+	b, _ := io.ReadAll(resp.Body)
+	fmt.Println("body: ", string(b))
 	c.JSON(resp.StatusCode, gin.H{
 		"body": resp.Body,
 	})
@@ -126,6 +158,7 @@ func Trigger(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
+	var user models.User
 	receivedData := models.DropBoxReactions{}
 	db := utils.OpenDB(c)
 	defer db.Close(c)
@@ -135,10 +168,23 @@ func StoreReactions(c *gin.Context) {
 		return
 	}
 
+	id := utils.ParseToken(receivedData.UserToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
 	query := `INSERT INTO "DropboxReactions" (user_token, reaction_type, area_id, from_path, to_path, filepath_share) 
 	          VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := db.Exec(c, query, receivedData.UserToken, receivedData.ReactionType, receivedData.AreaId, receivedData.FromPath, receivedData.ToPath, receivedData.FilepathShare)
+	_, err = db.Exec(c, query, *user.DropboxToken, receivedData.ReactionType, receivedData.AreaId, receivedData.FromPath, receivedData.ToPath, receivedData.FilepathShare)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert data", "details": err.Error()})
 		return
@@ -158,7 +204,7 @@ func StoreReactions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Reactions.json")
+	b, err := utils.OpenFile(models.ReactionsModelPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

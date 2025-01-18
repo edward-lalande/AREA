@@ -1,0 +1,24 @@
+{
+    "name": "Ticket Master",
+    "color": "#1c24ff",
+    "actions": [
+        {
+            "name": "New events in this city",
+            "description": "If there is a new events of the genre you wand in the city indicated, it's trigger",
+            "action_id": 11,
+            "action_type": 0,
+            "arguments": [
+                {
+                    "display": "City",
+                    "name": "city",
+                    "type": "string"
+                },
+                {
+                    "display": "Kind of event",
+                    "name": "name",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

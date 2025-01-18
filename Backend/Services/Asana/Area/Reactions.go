@@ -171,6 +171,7 @@ func Trigger(c *gin.Context) {
 // @Router /reaction [post]
 func StoreReactions(c *gin.Context) {
 	receivedData := models.Reactions{}
+	var user models.User
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid format", "details": err.Error()})
@@ -179,6 +180,19 @@ func StoreReactions(c *gin.Context) {
 
 	db := utils.OpenDB(c)
 	defer db.Close(c)
+
+	id := utils.ParseToken(receivedData.UserToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
 
 	query := `
 		INSERT INTO "AsanaReactions" (
@@ -192,8 +206,8 @@ func StoreReactions(c *gin.Context) {
 			task_id
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
-	_, err := db.Exec(c, query,
-		receivedData.UserToken,
+	_, err = db.Exec(c, query,
+		user.AsanaToken,
 		receivedData.ReactionType,
 		receivedData.AreaId,
 		receivedData.ProjectName,
@@ -222,7 +236,7 @@ func StoreReactions(c *gin.Context) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /reactions [get]
 func GetReactions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Reactions.json")
+	b, err := utils.OpenFile(models.ReactionsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

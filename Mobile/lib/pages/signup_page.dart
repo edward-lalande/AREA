@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:second_app/utils/post_request.dart';
 
 import '../myWidgets/my_title.dart';
 import '../myWidgets/my_button.dart';
 import '../myWidgets/my_text_fields.dart';
-import '../myWidgets/my_divider_text.dart';
-import '../utils/post_request.dart';
 
 class SignUpPage extends StatefulWidget {
     const SignUpPage({super.key});
@@ -18,211 +17,113 @@ class _SignUpPageState extends State<SignUpPage> {
 
     final firstNameController = TextEditingController();
     final lastNameController = TextEditingController();
+
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final scrollController = ScrollController();
 
     @override
     Widget build(BuildContext context) {
-        return SafeArea(
-            child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                    children: [
-                        const MyTitle(
-                            title: "AREA",
-                            fontSize: 45,
-                            padding: EdgeInsets.only(top: 80),
-                            color: Colors.black
-                        ),
-                        const MyTitle(
-                            title: "Sign Up",
-                            fontSize: 30,
-                            padding: EdgeInsets.only(top: 30, bottom: 50),
-                            color: Colors.black
-                        ),
-                        MyTextField(
-                            controller: firstNameController,
-                            obscureText: false,
-                            hintText: "First Name",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(
-                                top: 0,
-                                bottom: 0,
-                                left: 35,
-                                right: 35
-                            ),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                                Icons.person,
-                                color: Colors.black,
-                            ),
-                        ),
-                        MyTextField(
-                            controller: lastNameController,
-                            obscureText: false,
-                            hintText: "Last Name",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(
-                                top: 20,
-                                bottom: 0,
-                                left: 35,
-                                right: 35
-                            ),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                                Icons.person,
-                                color: Colors.black,
-                            ),
-                        ),
-                        MyTextField(
-                            controller: emailController,
-                            obscureText: false,
-                            hintText: "Email",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(top: 20, bottom: 0, left: 35, right: 35),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                            Icons.email,
-                            color: Colors.black,
-                            ),
-                        ),
-                        MyTextField(
-                            controller: passwordController,
-                            obscureText: true,
-                            hintText: "Password",
-                            hintTextColor: Colors.black,
-                            bgColor: Colors.white,
-                            fieldBgColor: Colors.white,
-                            padding: const EdgeInsets.only(
-                                top: 20,
-                                bottom: 0,
-                                left: 35,
-                                right: 35
-                            ),
-                            inputColor: Colors.black,
-                            prefixIcon: const Icon(
-                                Icons.lock,
-                                color: Colors.black,
-                            ),
-                        ),
-                        // Bouton Sign Up
-                        MyButton(
-                            padding: const EdgeInsets.only(
-                                left: 35,
-                                right: 35,
-                                top: 35
-                            ),
-                            title: "Sign Up",
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white,
-                            fontSize: 20,
-                            spaceBetweenIconAndText: 10,
-
-                            onPressed: (context) async {
-                                userData['name'] = firstNameController.text;
-                                userData['lastname'] = lastNameController.text;
-                                userData['mail'] = emailController.text;
-                                userData['password'] = passwordController.text;
-                                bool tmp = await sendSignUp(
-                                    url: "http://10.0.2.2:8080/sign-up",
-                                    body: {
-                                      "mail": emailController.text,
-                                      "password": passwordController.text,
-                                      "name": firstNameController.text,
-                                      "lastname": lastNameController.text
-                                    }
-                                );
-                                if (tmp) {
-                                    if (context.mounted) {
-                                    context.go("/login");
-                                    }
-                                } else {
-                                    if (context.mounted) {
-                                        context.go("/signup");
-                                    }
-                                }
-                            }
-                        ),
-                        const MyDividerText(
-                            bgColor: Colors.white,
-                            textBetween: "Or",
-                            padding: EdgeInsets.only(
-                                top: 35,
-                                right: 35,
-                                left: 35
-                            ),
-                        ),
-                        MyButton(
-                            padding: const EdgeInsets.only(
-                                left: 35,
-                                right: 35,
-                                top: 35
-                            ),
-                            title: "Continue with Google",
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white,
-                            fontSize: 17,
-                            spaceBetweenIconAndText: 10,
-                            prefixIcon: Container(
-                                width: 30,
-                                height: 30,
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white38,
-                                ),
-                                child: Image.asset('assets/google.png'),
-                            ),
-                            onPressed: (context) {
-                            context.go('/home');
-                            },
-                        ),
-                        Container(
-                            height: 130,
-                            color: Colors.white,
-                            child: Padding(
-                                padding: const EdgeInsets.only(),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                            const Text(
-                                                "Already have an account?",
-                                                style: TextStyle(
-                                                fontFamily: "Avenir",
-                                                fontSize: 16,
-                                                ),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            GestureDetector(
-                                                onTap: () {
-                                                    context.go('/login');
-                                                },
-                                                child: const Text(
-                                                    "Log in ",
-                                                    style: TextStyle(
-                                                        decoration: TextDecoration.underline,
-                                                        color: Colors.blue,
-                                                        fontFamily: "Avenir",
-                                                        fontSize: 16,
-                                                        decorationColor: Colors.blue,
-                                                        decorationThickness: 2,
-                                                    ),
-                                                ),
-                                            ),
-                                        ],
-                                    ),
-                                ),
-                            ),
-                        ],
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: AppBar(
+                shadowColor: Theme.of(context).scaffoldBackgroundColor,
+                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                leading: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                            context.go("/login");
+                        },
                     ),
+                ),
+            ),
+            body: Padding(
+                padding: EdgeInsets.only(left: 8, right: 14),
+                child: RawScrollbar(
+                    radius: Radius.circular(10),
+                    thumbColor: Theme.of(context).textTheme.bodyLarge?.color,
+                    thickness: 5,
+                    controller: scrollController,
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                        controller: scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                            children: [
+                                const MyTitle2(
+                                    title: "AREA",
+                                    fontSize: 45,
+                                    padding: EdgeInsets.only(top: 30),
+
+                                ),
+                                const MyTitle2(
+                                    title: "Sign in",
+                                    fontSize: 30,
+                                    padding: EdgeInsets.only(top: 30, bottom: 50),
+
+                                ),
+                                MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    hintText: "First name",
+                                    controller: firstNameController,
+                                    prefixIcon: Icon(Icons.account_circle_sharp),
+
+                                ),
+                                SizedBox(height: 20),
+                                MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    hintText: "Last name",
+                                    controller: lastNameController,
+                                    prefixIcon: Icon(Icons.account_circle_sharp),
+
+                                ),
+                                SizedBox(height: 20),
+                                MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    hintText: "Email",
+                                    controller: emailController,
+                                    prefixIcon: Icon(Icons.email),
+
+                                ),
+                                SizedBox(height: 20),
+                                MyTextField2(
+                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    hintText: "Password",
+                                    controller: passwordController,
+                                    obscureText: true,
+                                    prefixIcon: Icon(Icons.lock),
+
+                                ),
+                                SizedBox(height: 30),
+                                MyButton2(
+                                    title: "Sign in",
+                                    onPressed: (context) async {
+                                         if (emailController.text.isEmpty || passwordController.text.isEmpty
+                                         || lastNameController.text.isEmpty || firstNameController.text.isEmpty) {
+                                            showCustomSnackBar(context, "Please fill all the fields");
+                                            return;
+                                        }
+                                        await sendSignUp(
+                                            delim: 18,
+                                            url: "$host/sign-up",
+                                            body: {
+                                                "mail": emailController.text,
+                                                "password": passwordController.text,
+                                                "name": firstNameController.text,
+                                                "lastname": lastNameController.text,
+                                            }
+                                        );
+                                        context.go("/login");
+                                    }
+                                ),
+                            ],
+                        )
+                    )
                 ),
             ),
         );

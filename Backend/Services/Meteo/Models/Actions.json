@@ -1,14 +1,16 @@
 {
-    "name": "Météo Services",
+    "name": "Meteo",
+    "color": "#4285F4",
     "actions": [
             {
                 "name": "At temperature in the day",
+                "description": "If in the day there is this temperature degrees celsius at the location in latitude and longitude",
                 "action_id": 7,
                 "action_type": 0,
                 "arguments": [
                     {
                         "display": "Temperature in degrees celsius",
-                        "name": "value_",
+                        "name": "value",
                         "type": "number"
                     },
                     {
@@ -25,6 +27,7 @@
             },
             {
                 "name": "At wind speed in the day",
+                "description": "If in the day the wind speed is at this in km/h at the location in latitude and longitude",
                 "action_id": 7,
                 "action_type": 1,
                 "arguments": [
@@ -47,6 +50,7 @@
             },
             {
                 "name": "At humidity in the day",
+                "description": "If in the day the humidity in the day is at this in % at the location in latitude and longitude",
                 "action_id": 7,
                 "action_type": 2,
                 "arguments": [

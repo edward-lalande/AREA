@@ -74,7 +74,7 @@ func GetGmailProfile(accessToken string) (*models.GmailProfile, error) {
 // @Failure 500 {object} map[string]string "Internal error it contains the error"
 // @Router /actions [get]
 func GetActions(c *gin.Context) {
-	b, err := utils.OpenFile("Models/Actions.json")
+	b, err := utils.OpenFile(models.ActionsModelsPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -96,13 +96,28 @@ func GetActions(c *gin.Context) {
 // @Router /action [post]
 func StoreActions(c *gin.Context) {
 	var receivedData models.ReceivedActions
+	var user models.User
 	db := utils.OpenDB(c)
 
 	if err := c.ShouldBindJSON(&receivedData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input data", "details": err.Error()})
 		return
 	}
-	gmailProfile, err := GetGmailProfile(receivedData.UserToken)
+
+	id := utils.ParseToken(receivedData.UserToken)
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid token"})
+		return
+	}
+
+	row := db.QueryRow(c, "SELECT * FROM \"User\" WHERE id = $1", id)
+	err := row.Scan(&user.Id, &user.Mail, &user.Password, &user.Login, &user.Lastname, &user.AsanaToken, &user.DiscordToken,
+		&user.DropboxToken, &user.GithubToken, &user.GitlabToken, &user.GoogleToken, &user.MiroToken, &user.SpotifyToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	gmailProfile, err := GetGmailProfile(*user.GoogleToken)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input data", "details": err.Error()})
@@ -116,9 +131,8 @@ func StoreActions(c *gin.Context) {
 	`
 
 	var lastInsertID int
-	receivedData.NbEvents = GetNbEvents(receivedData.UserToken)
-
-	db.QueryRow(context.Background(), query, receivedData.UserToken, receivedData.AreaId, receivedData.ActionType, gmailProfile.MessagesTotal, receivedData.NbEvents).Scan(&lastInsertID)
+	receivedData.NbEvents = GetNbEvents(*user.GoogleToken)
+	db.QueryRow(context.Background(), query, *user.GoogleToken, receivedData.AreaId, receivedData.ActionType, gmailProfile.MessagesTotal, receivedData.NbEvents).Scan(&lastInsertID)
 	defer db.Close(c)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Action stored successfully", "id": lastInsertID})

@@ -1,8 +1,10 @@
 {
-    "name": "Google Services",
+    "name": "Google",
+    "color": "#0F9D58",
     "reactions": [
             {
                 "name": "Create Event",
+                "description": "Create an event in a start time end end time with attendees if you want",
                 "reaction_id": 6,
                 "reaction_type": 0,
                 "arguments": [
@@ -35,6 +37,7 @@
             },
             {
                 "name": "Send mail",
+                "description": "Send a mail to the recipient with the subject and the your message",
                 "reaction_id": 6,
                 "reaction_type": 1,
                 "arguments": [

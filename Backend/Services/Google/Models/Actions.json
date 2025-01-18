@@ -1,20 +1,24 @@
 {
-    "name": "Google Services",
+    "name": "Google",
+    "color": "#0F9D58",
     "actions": [
             {
                 "name": "Create Event",
+                "description": "When you create an event, it's trigger",
                 "action_id": 6,
                 "action_type": 0,
                 "arguments": []
             },
             {
                 "name": "Delete Event",
+                "description": "When you delete an event, it's trigger",
                 "action_id": 6,
                 "action_type": 1,
                 "arguments": []
             },
             {
                 "name": "Send/Receive new mail",
+                "description": "When you send or receive an email, it's trigger",
                 "action_id": 6,
                 "action_type": 2,
                 "arguments": []

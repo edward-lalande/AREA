@@ -1,0 +1,19 @@
+{
+    "name": "Miro",
+    "color": "#faca00",
+    "reactions": [
+        {
+            "name": "Create a board",
+            "description": "Creating a board in your team at the name indicated",
+            "reaction_id": 14,
+            "reaction_type": 0,
+            "arguments": [
+                {
+                    "display": "Name",
+                    "name": "name",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

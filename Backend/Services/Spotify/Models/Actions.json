@@ -1,20 +1,24 @@
 {
     "name": "Spotify",
+    "color": "#1db954",
     "actions": [
         {
             "name": "Listen to music",
+            "description": "If you listen to a music, it's trigger",
             "action_id": 9,
             "action_type": 0,
             "arguments": []
         },
         {
             "name": "Create new playlist",
+            "description": "If you create a new playlist, it's trigger",
             "action_id": 9,
             "action_type": 1,
             "arguments": []
         },
         {
             "name": "Remove a playlist",
+            "description": "If you remove a playlist, it's trigger",
             "action_id": 9,
             "action_type": 2,
             "arguments": []

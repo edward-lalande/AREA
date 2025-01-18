@@ -1,8 +1,10 @@
 {
-    "name": "Spotify Services",
+    "name": "Spotify",
+    "color": "#1db954",
     "reactions": [
         {
             "name": "Pause the music",
+            "description": "It's pause your music on all your devices",
             "reaction_id": 9,
             "reaction_type": 0,
             "arguments": []

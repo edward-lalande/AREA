@@ -1,9 +1,17 @@
 CREATE TABLE IF NOT EXISTS "User" (
     id                  SERIAL PRIMARY KEY,
-    mail                TEXT UNIQUE NOT NULL,
-    password            TEXT NOT NULL,
+    mail                TEXT UNIQUE,
+    password            TEXT,
     name                TEXT,
-    lastname            TEXT
+    lastname            TEXT,
+    asana_token         TEXT,
+    discord_token       TEXT,
+    dropbox_token       TEXT,
+    github_token        TEXT,
+    gitlab_token        TEXT,
+    google_token        TEXT,
+    miro_token          TEXT,
+    spotify_token       TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "TimeAction" (
@@ -21,7 +29,9 @@ CREATE TABLE IF NOT EXISTS "Area" (
     user_token          TEXT,
     area_id             TEXT,
     service_action_id   INT,
-    service_reaction_id INT
+    service_reaction_id INT,
+    action_name         TEXT,
+    reaction_name       TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "DiscordUser" (
@@ -144,4 +154,31 @@ CREATE TABLE IF NOT EXISTS "AsanaReactions" (
     note                TEXT,
     project_id          TEXT,
     task_id             TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "TicketMasterActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    name                TEXT,
+    venue               TEXT,
+    city                TEXT,
+    nb_events           INT
+);
+
+CREATE TABLE IF NOT EXISTS "CryptoMoneyActions" (
+    id                  SERIAL PRIMARY KEY,
+    area_id             TEXT,
+    action_type         INT,
+    symbole             TEXT,
+    devise              TEXT,
+    value               INT
+);
+
+CREATE TABLE IF NOT EXISTS "MiroReactions" (
+    id                  SERIAL PRIMARY KEY,
+    user_token          TEXT,
+    reaction_type       INT,
+    area_id             TEXT,
+    name                TEXT
 );

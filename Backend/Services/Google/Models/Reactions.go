@@ -1,5 +1,7 @@
 package models
 
+var ReactionsModelPath string = "Models/Reactions.json"
+
 type Attendee struct {
 	Email string `json:"email"`
 }
