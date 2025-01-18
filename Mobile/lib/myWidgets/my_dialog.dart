@@ -141,7 +141,7 @@ void myOauthDialog(BuildContext context, String serviceName)
                     style: TextStyle(fontSize: 16),),
                 actions: [
                     MyButton2(
-                        title: "Log in",
+                        title: "Log out",
                         onPressed: (context) {
                             context.go("/login");
                         },

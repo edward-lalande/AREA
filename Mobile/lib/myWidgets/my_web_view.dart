@@ -38,10 +38,13 @@ class _WebViewPageState extends State<WebViewPage> {
                     });
                 },
                 onPageFinished: (String url) async {
+
                     await getDatas();
+
                     setState(() {
                         _isLoading = false;
                     });
+
                     if (url.contains("code=")) {
 
                         final Uri uri = Uri.parse(url);

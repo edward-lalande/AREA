@@ -32,8 +32,7 @@ class _AccountPageState extends State<AccountPage> {
 
     Future<void> fetchAndSetUserData() async {
 
-        const String url = "http://10.0.2.2:8085/user";
-        //String? token = await stockData.read("token");
+        String url = "http://$host:8085/user";
 
         try {
             final userData = await fetchUserData(url);
@@ -41,7 +40,6 @@ class _AccountPageState extends State<AccountPage> {
 
             setState(() {
                 emailController = TextEditingController(text: userData['mail']);
-                passwordController = TextEditingController();
                 nameController = TextEditingController(text: userData['name'] ?? '');
                 lastNameController = TextEditingController(text: userData['lastname'] ?? '');
             });
@@ -97,14 +95,6 @@ class _AccountPageState extends State<AccountPage> {
                                     hintText: "Email",
                                     controller: emailController,
                                     prefixIcon: Icon(Icons.email),
-                                ),
-                                SizedBox(height: 20),
-                                MyTextField2(
-                                    color: Theme.of(context).scaffoldBackgroundColor,
-                                    hintText: "Password",
-                                    controller: passwordController,
-                                    obscureText: true,
-                                    prefixIcon: Icon(Icons.lock),
                                 ),
                                 SizedBox(height: 30),
                                 MyButton2(
