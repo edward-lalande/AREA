@@ -142,7 +142,7 @@ func SpotifyAccessToken(c *gin.Context) {
 func SpotifyAddAccessToken(c *gin.Context) {
 
 	var (
-		OauthCode models.OauthCode
+		OauthCode models.OauthCodeToken
 	)
 
 	if err := c.ShouldBindJSON(&OauthCode); err != nil {

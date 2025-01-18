@@ -131,8 +131,8 @@ func StoreActions(c *gin.Context) {
 	`
 
 	var lastInsertID int
-	receivedData.NbEvents = GetNbEvents(receivedData.UserToken)
-
+	receivedData.NbEvents = GetNbEvents(*user.GoogleToken)
+	fmt.Println("nb events: ", receivedData.NbEvents)
 	db.QueryRow(context.Background(), query, *user.GoogleToken, receivedData.AreaId, receivedData.ActionType, gmailProfile.MessagesTotal, receivedData.NbEvents).Scan(&lastInsertID)
 	defer db.Close(c)
 

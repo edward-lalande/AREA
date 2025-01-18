@@ -2,6 +2,7 @@ package area_test
 
 import (
 	"bytes"
+	area "dropbox/Area"
 	models "dropbox/Models"
 	"dropbox/routes"
 	"encoding/json"
@@ -24,7 +25,7 @@ func TestGetReactions(t *testing.T) {
 
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "{\"name\":\"Dropbox\",\"reactions\":[{\"arguments\":[{\"display\":\"From file\",\"name\":\"from_path\",\"type\":\"string\"},{\"display\":\"To file\",\"name\":\"to_path\",\"type\":\"string\"}],\"description\":\"Rename File as the file name indicated\",\"name\":\"Rename File\",\"reaction_id\":3,\"reaction_type\":0},{\"arguments\":[{\"display\":\"File to share\",\"name\":\"filepath_share\",\"type\":\"string\"}],\"description\":\"Share a file to your group\",\"name\":\"Share File\",\"reaction_id\":3,\"reaction_type\":1}]}", w.Body.String())
+	assert.Equal(t, "{\"name\":\"Dropbox\",\"reactions\":[{\"arguments\":[{\"display\":\"From file\",\"name\":\"from_path\",\"type\":\"string\"},{\"display\":\"To file\",\"name\":\"to_path\",\"type\":\"string\"}],\"description\":\"Rename File as the file name indicated that must begin from /\",\"name\":\"Rename File\",\"reaction_id\":3,\"reaction_type\":0},{\"arguments\":[{\"display\":\"File to share\",\"name\":\"filepath_share\",\"type\":\"string\"}],\"description\":\"Share a file to your group that must begin from /\",\"name\":\"Share File\",\"reaction_id\":3,\"reaction_type\":1}]}", w.Body.String())
 	models.ReactionsModelPath = "Models/Reactions.json"
 }
 
@@ -39,6 +40,11 @@ func TestGetReactionsError(t *testing.T) {
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
 	assert.Equal(t, "{\"error\":\"open Models/Reactions.json: no such file or directory\"}", w.Body.String())
+}
+
+func TestIsSlash(t *testing.T) {
+	assert.Equal(t, "/hello", area.IsSlash("hello"))
+	assert.Equal(t, "/hello", area.IsSlash("/hello"))
 }
 
 func TestStoreReactionsInternalServerError(t *testing.T) {

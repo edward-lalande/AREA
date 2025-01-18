@@ -41,10 +41,6 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
-	if rep.StatusCode > 200 {
-		return
-	}
-
 	respBody, err := io.ReadAll(rep.Body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -62,8 +58,19 @@ func GetAccessToken(c *gin.Context) {
 		return
 	}
 
+	if utils.BytesToJson(respBody)["error"] != nil {
+		return
+	}
+
+	access_token := utils.BytesToJson(respBody)["access_token"]
+
+	if access_token == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	var id string
-	row := db.QueryRow(context.Background(), query, utils.BytesToJson(respBody))
+	row := db.QueryRow(context.Background(), query, access_token)
 	_ = row.Scan(&id)
 	defer db.Close(c)
 

@@ -113,8 +113,6 @@ func GetWebhooksPush(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(data)
-
 	db := utils.OpenDB(c)
 	rows, err := db.Query(c, "SELECT area_id, action_type, user_token, pusher, value, number FROM \"GithubActions\" WHERE action_type < '9'")
 

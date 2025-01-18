@@ -28,6 +28,9 @@ func writeAreaInDatabase(c *gin.Context, areaID, userToken string, serviceAction
 		return nil
 	}
 
+	fmt.Println(actionName)
+	fmt.Println(reactionName)
+
 	query := `
 		INSERT INTO "Area" (user_token, area_id, service_action_id, service_reaction_id, action_name, reaction_name)
 		VALUES ($1, $2, $3, $4, $5, $6)

@@ -95,8 +95,7 @@ func TestGetAccessTokenBadRequest(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/access-token", bytes.NewBuffer(b))
 	router.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "", w.Body.String())
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
 }
 
 func TestAddAccessTokenBadRequest(t *testing.T) {
@@ -114,5 +113,4 @@ func TestAddAccessTokenBadRequest(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "", w.Body.String())
 }

@@ -4,7 +4,6 @@ import (
 	models "asana/Models"
 	"asana/utils"
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -32,18 +31,13 @@ func GetAccessToken(c *gin.Context) {
 	data := url.Values{}
 	data.Set("client_id", utils.GetEnvKey("CLIENT_ID"))
 	data.Set("client_secret", utils.GetEnvKey("CLIENT_SECRET"))
-	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI_ADD"))
+	data.Set("redirect_uri", utils.GetEnvKey("REDIRECT_URI"))
 	data.Set("code", receivedData.Code)
 	data.Set("grant_type", "authorization_code")
 
 	rep, err := http.PostForm(accessTokenUrl, data)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	if rep.StatusCode > 200 {
-		fmt.Println("error")
 		return
 	}
 
@@ -61,6 +55,10 @@ func GetAccessToken(c *gin.Context) {
 
 	db := utils.OpenDB(c)
 	if db == nil {
+		return
+	}
+
+	if utils.BytesToJson(respBody)["error"] != nil {
 		return
 	}
 
