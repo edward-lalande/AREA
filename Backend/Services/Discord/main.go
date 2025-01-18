@@ -107,9 +107,6 @@ func BackUpLocalDataCall() {
 					continue
 				}
 
-				b, _ := json.Marshal(buf.Bytes())
-
-				fmt.Println("buffer: ", string(b))
 				http.Post(utils.GetEnvKey("MESSAGE_BROCKER")+"trigger", "application/json", &buf)
 
 				url := fmt.Sprintf(
