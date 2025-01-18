@@ -55,7 +55,7 @@
         },
         {
             "name": "On files added",
-            "description": "When the number of file added to the commit have this count, it's trigger",
+            "description": "When the name of file added to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 4,
             "arguments": [
@@ -68,7 +68,7 @@
         },
         {
             "name": "On files modified",
-            "description": "When the number of file modified to the commit have this count, it's trigger",
+            "description": "When the name of file modified to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 5,
             "arguments": [
@@ -81,7 +81,7 @@
         },
         {
             "name": "On files removed",
-            "description": "When the number of file removeds to the commit have this count, it's trigger",
+            "description": "When the name of file removeds to the commit have this count, it's trigger",
             "action_id": 4,
             "action_type": 6,
             "arguments": [
