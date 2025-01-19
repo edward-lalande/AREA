@@ -14,7 +14,7 @@ class HostPage extends StatefulWidget {
 
 class _HostPageState extends State<HostPage> {
 
-    final emailController = TextEditingController(text: "10.68.255.153");
+    final emailController = TextEditingController(text: "http://10.0.2.2:8080");
     final scrollController = ScrollController();
 
     @override

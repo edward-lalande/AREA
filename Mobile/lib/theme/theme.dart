@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second_app/theme/theme_provider.dart';
 
 final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
@@ -18,24 +19,23 @@ final ThemeData lightTheme = ThemeData(
     ),
 );
 
-final ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.black,
-    fontFamily: "Avenir",
-    cardColor: Colors.grey[900],
-    primaryColor: Colors.black,
-    primaryColorLight: Colors.grey[900],
-    textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Colors.white),
-        bodyMedium: TextStyle(color: Colors.white),
-        bodySmall: TextStyle(color: Colors.white70),
-    ),
-    appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
-    ),
-);
-
-
-
-
+ThemeData darkTheme(ThemeProvider themeProvider)
+{
+    return ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: themeProvider.customDarkBackgroundColor,
+        fontFamily: "Avenir",
+        cardColor: themeProvider.customDarkPrimaryColor == Colors.black ? Colors.grey[900] : themeProvider.customDarkPrimaryColor.withOpacity(0.9),
+        primaryColor: themeProvider.customDarkPrimaryColor,
+        primaryColorLight: themeProvider.customDarkPrimaryColor.withOpacity(0.3),
+        textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: Colors.white),
+            bodyMedium: TextStyle(color: Colors.white),
+            bodySmall: TextStyle(color: Colors.white70),
+        ),
+        appBarTheme: AppBarTheme(
+            backgroundColor: themeProvider.customDarkPrimaryColor,
+            iconTheme: const IconThemeData(color: Colors.white),
+        ),
+    );
+}
