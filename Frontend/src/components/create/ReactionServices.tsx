@@ -47,7 +47,10 @@ const ReactionServices: React.FC<ReactionServicesProps> = ({
 
         <AreaBox sx={{ height: "80vh", width: "98vw", gap: 2 }}>
 
-            <AreaTypography variant="h2" text="Select a service" sx={{ mb: 5 }} />
+           <AreaBox sx={{ width: "98vw", flexDirection: "row", justifyContent: "center", gap: 3 }}>
+                <Button variant="contained" sx={{ backgroundColor: "black", color: "white", width: "5vw", borderRadius: 5, mb: 4 }} onClick={() => setPage(CreatePage.CREATE)}>Back</Button>
+                <AreaTypography variant="h2" text="Select a service" sx={{ mb: 5 }} />
+            </AreaBox>
 
             <AreaBox sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", height: "60vh", width: "80vw", marginLeft: 20 }}>
 
