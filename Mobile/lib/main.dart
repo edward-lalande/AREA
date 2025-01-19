@@ -17,24 +17,27 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+    const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            theme: themeProvider.isDarkMode ? darkTheme : lightTheme,
-            routerConfig: appRouter(context),
-          );
-        },
-      ),
-    );
-  }
+    @override
+    Widget build(BuildContext context) {
+        return ChangeNotifierProvider(
+            create: (_) => ThemeProvider(),
+            child: Consumer<ThemeProvider>(
+                builder: (context, themeProvider, child) {
+                    return MaterialApp.router(
+                        debugShowCheckedModeBanner: false,
+                        theme: lightTheme,
+                        darkTheme: darkTheme(themeProvider),
+                        themeMode: themeProvider.currentTheme,
+                        routerConfig: appRouter(context),
+                    );
+                },
+            ),
+        );
+    }
 }
+
 GoRouter appRouter(BuildContext context) {
     return GoRouter(
 

@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:second_app/utils/my_secure_storage.dart';
 
-final SecureStorageService stockData = SecureStorageService();
+final SecureStorageService stockToken = SecureStorageService();
 
 Map<String, dynamic> servicesMap = {};
 Map<String, dynamic> actionsMap = {};
@@ -21,7 +21,7 @@ bool actionDone = false;
 bool reactionDone = false;
 bool isOAuthStarted = false;
 
-String host = "https://3100-163-5-3-68.ngrok-free.app";
+String host = "http://10.0.2.2:8080";
 
 void showCustomSnackBar(BuildContext context, String message, {Color backgroundColor = Colors.grey})
 {
@@ -36,7 +36,6 @@ void showCustomSnackBar(BuildContext context, String message, {Color backgroundC
     );
 }
 
-
 Future<bool> sendSignUp({Map<String, dynamic>? body,Map<String, String>? headers,required String url, required int delim,}) async
 {
     try {
@@ -49,12 +48,10 @@ Future<bool> sendSignUp({Map<String, dynamic>? body,Map<String, String>? headers
         if (response.statusCode == 200) {
 
             final tmp = json.decode(response.body);
-            print(tmp);
             final token = tmp["body"] is String ? tmp["body"] : tmp["body"]?["token"];
 
             if (token != null) {
-                await stockData.write("token", token);
-                print("Token stored: $token");
+                await stockToken.write("token", token);
                 return true;
             } else {
                 print("No token found in response.");
@@ -72,7 +69,7 @@ Future<bool> sendSignUp({Map<String, dynamic>? body,Map<String, String>? headers
 
 Future<bool> setupAreaArgs(Map<String, dynamic> actionData, List<Map<String, dynamic>> reactionsData) async
 {
-    String? token = await stockData.read("token");
+    String? token = await stockToken.read("token");
 
     final body = [{
         "user_token" : token,
@@ -138,7 +135,7 @@ Future<String> classicGet({required String url}) async
 
 Future<Map<String, dynamic>> fetchUserData(String url) async
 {
-    String? token = await stockData.read("token");
+    String? token = await stockToken.read("token");
 
     try {
         final response = await http.get(
