@@ -21,18 +21,10 @@ class OauthButton extends StatefulWidget {
 }
 
 class _OauthButtonState extends State<OauthButton> {
-    late FocusNode _focusNode;
 
     @override
     void initState() {
         super.initState();
-        _focusNode = FocusNode();
-    }
-
-    @override
-    void dispose() {
-        _focusNode.dispose();
-        super.dispose();
     }
 
     @override
@@ -43,17 +35,12 @@ class _OauthButtonState extends State<OauthButton> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
             ),
-            child: Focus(
-                focusNode: _focusNode,
-                child: InkWell(
+            child: InkWell(
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
                         if (widget.onPressed != null) {
                             widget.onPressed!(context);
                         }
-                    },
-                    onFocusChange: (hasFocus) {
-                        setState(() {});
                     },
                     child: Padding(
                         padding: !widget.resize
@@ -65,11 +52,9 @@ class _OauthButtonState extends State<OauthButton> {
                             ),
                     ),
                 ),
-            ),
         );
     }
 }
-
 enum OauthService {
     google,
     discord,

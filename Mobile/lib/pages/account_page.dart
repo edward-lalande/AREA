@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:second_app/myWidgets/my_text_button.dart';
 import 'package:second_app/theme/theme_provider.dart';
 import 'package:second_app/utils/post_request.dart';
-
 import 'package:second_app/myWidgets/my_button.dart';
 import 'package:second_app/myWidgets/my_text_fields.dart';
 import 'package:second_app/myWidgets/my_title.dart';
@@ -19,6 +23,7 @@ class _AccountPageState extends State<AccountPage> {
     late TextEditingController emailController;
     late TextEditingController nameController;
     late TextEditingController lastNameController;
+    final _storage = FlutterSecureStorage();
     final scrollController = ScrollController();
     bool isLoading = true;
 
@@ -50,6 +55,55 @@ class _AccountPageState extends State<AccountPage> {
         lastNameController = TextEditingController(text: "");
         fetchAndSetUserData();
     }
+
+    Future<void> updateUser({required String email, required String name, required String lastName,}) async
+    {
+        try {
+            final token = await _storage.read(key: "token");
+            final emailResponse = await http.post(
+                Uri.parse("http://10.0.2.2:8085/update-email"),
+                headers: {
+                    'Content-Type': 'application/json',
+                    "token": token??"",
+                },
+                body: json.encode({"mail": email})
+            );
+
+            if (emailResponse.statusCode != 200) {
+                throw Exception("Failed to update email");
+            }
+
+            final nameResponse = await http.post(
+                Uri.parse('http://10.0.2.2:8085/update-name'),
+                headers: {
+                    'Content-Type': 'application/json',
+                    "token": token??"",
+                },
+                body: json.encode({"name": name})
+            );
+            if (nameResponse.statusCode != 200) {
+                throw Exception("Failed to update name");
+            }
+
+            final lastNameResponse = await http.post(
+                Uri.parse('http://10.0.2.2:8085/update-lastname'),
+                headers: {
+                    'Content-Type': 'application/json',
+                    "token": token??"",
+                },
+                body: json.encode({"lastname": lastName})
+            );
+            if (lastNameResponse.statusCode != 200) {
+                throw Exception("Failed to update lastname");
+            }
+
+
+        } catch (e) {
+
+            throw Exception("Error updating user: $e");
+        }
+    }
+
 
     Future<void> fetchAndSetUserData() async {
 
@@ -124,9 +178,9 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             SizedBox(height: 30),
                             if (themeProvider.isDarkMode)
-                                Column(
-                                    
+                                Row(
                                     children: [
+                                        SizedBox(width: 20,),
                                         Text(
                                             "Choose a theme color:",
                                             style: TextStyle(
@@ -135,7 +189,7 @@ class _AccountPageState extends State<AccountPage> {
                                             fontWeight: FontWeight.bold,
                                             ),
                                         ),
-                                        SizedBox(height: 10),
+
                                         DropdownButton<Color>(
                                             value: themeProvider.customDarkPrimaryColor,
                                             onChanged: (selectedColor) {
@@ -151,7 +205,7 @@ class _AccountPageState extends State<AccountPage> {
                                                 child: Row(
                                                     children: [
                                                         Container(
-                                                            width: 20,
+                                                            width: 40,
                                                             height: 20,
                                                             decoration: BoxDecoration(
                                                             color: color,
@@ -175,12 +229,22 @@ class _AccountPageState extends State<AccountPage> {
                             SizedBox(height: 30),
                             MyButton2(
                                 title: "Save edit",
-                                onPressed: (context) {
+                                onPressed: (context) async {
                                     if (emailController.text.isEmpty || nameController.text.isEmpty || lastNameController.text.isEmpty) {
                                         showCustomSnackBar(context, "Please fill the fields.");
                                         return;
                                     }
-                                    showCustomSnackBar(context, "Informations have been saved.");
+                                    try {
+                                        await updateUser(
+                                            email: emailController.text,
+                                            name: nameController.text,
+                                            lastName: lastNameController.text,
+                                        );
+                                        showCustomSnackBar(context, "Informations have been saved.");
+                                        if(context.mounted) context.go("/login");
+                                    } catch (e) {
+                                        showCustomSnackBar(context, "Failed to save user information.");
+                                    }
                                 },
                             ),
                             SizedBox(height: 30),
